@@ -83,6 +83,10 @@ MonoBehaviour:
   _hitEffect: {fileID: 22341060345199204}
   _lifeTimeAfterHit: 2
   _visualRoot: {fileID: 52021268794569382}
+  _fireTransform: {fileID: 0}
+  _hitMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1001 &20942570898425314
 PrefabInstance:
   m_ObjectHideFlags: 0
