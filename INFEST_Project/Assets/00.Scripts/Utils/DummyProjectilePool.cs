@@ -35,8 +35,8 @@ public class DummyProjectilePool : MonoBehaviour
             proj = Instantiate(_projectilePrefab);
         }
 
-        proj.gameObject.SetActive(true);
         proj.ResetProjectile();
+        proj.gameObject.SetActive(true);
         return proj;
     }
 

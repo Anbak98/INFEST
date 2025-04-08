@@ -17,23 +17,13 @@ public class DummyProjectile : MonoBehaviour
     private float _startTime; // 총알이 생성된 시간
     private float _duration; // 총알 목표까지의 시간
 
-
     public void SetHit(Vector3 hitPosition, Vector3 hitNormal, bool showHitEffect)
     {
         _targetPosition = hitPosition;
         _showHitEffect = showHitEffect;
         _hitNormal = hitNormal;
-    }
 
-    private void Start()
-    {
         _startPosition = transform.position;
-
-        if (_targetPosition == Vector3.zero)
-        {
-            _targetPosition = _startPosition + transform.forward * _maxDistance;
-        }
-
         _duration = Vector3.Distance(_startPosition, _targetPosition) / _speed;
         _startTime = Time.timeSinceLevelLoad;
     }
@@ -53,51 +43,44 @@ public class DummyProjectile : MonoBehaviour
         }
     }
 
+    // 총알 지속시간이 끝났을 때
     private void FinishProjectile()
     {
         if (_showHitEffect == false)
         {
             DummyProjectilePool.Instance.Return(this);
-            return; 
+            return;
         }
 
         enabled = false;
+        _hitEffect.SetActive(true);
 
-        if(_visualRoot != null)
+        if (_visualRoot != null)
         {
-            _visualRoot.gameObject.SetActive(false);
-        }
-
-        if(_hitEffect != null)
-        {
-            Instantiate(_hitEffect, _targetPosition,
-                Quaternion.LookRotation(_hitNormal), transform);
+            _visualRoot.SetActive(false);
         }
 
         Invoke(nameof(ReturnToPool), _lifeTimeAfterHit);
     }
 
+    // 풀에 돌아갈 때 초기화
     private void ReturnToPool()
     {
-        DummyProjectilePool.Instance.Return(this);
-    }   
+        _hitEffect.SetActive(false);
+        _visualRoot.SetActive(true);
 
+        transform.position = Vector3.zero;
+
+        DummyProjectilePool.Instance.Return(this);
+    }
+
+    // 프로젝타일이 켜질때 초기화
     public void ResetProjectile()
     {
-        _startPosition = Vector3.zero;
-        _targetPosition = Vector3.zero;
-        _hitNormal = Vector3.zero;
-
         _showHitEffect = false;
-
-        _startTime = 0f;
-        _duration = 0f;
+        _hitEffect.SetActive(false);
+        _visualRoot.SetActive(true);
 
         enabled = true;
-
-        if(_visualRoot != null )
-        {
-            _visualRoot.SetActive(true);
-        }
     }
 }
