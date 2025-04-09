@@ -5,16 +5,21 @@ using UnityEngine;
 
 public class Bullet : NetworkBehaviour
 {
-    [Networked] private TickTimer life { get; set; }
+    [Networked] private TickTimer _life { get; set; }
+    private Vector3 _charPos;
+    private float _maxHitDistance;
 
-    public void Init()
+    public void Init(Vector3 pos, float maxHitDistance)
     {
-        life = TickTimer.CreateFromSeconds(Runner, 5.0f);
+        _life = TickTimer.CreateFromSeconds(Runner, 5.0f);
+        _charPos = pos;
+        _maxHitDistance = maxHitDistance;
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (life.Expired(Runner))
+        float distance = Vector3.Distance(_charPos, transform.position);
+        if (distance >= _maxHitDistance)
             Runner.Despawn(Object);
         else
             transform.position += 5 * transform.forward * Runner.DeltaTime;

@@ -1,7 +1,5 @@
-using System.IO.Pipes;
 using Fusion;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum EWeaponType
 {
@@ -20,7 +18,7 @@ public class Weapon : NetworkBehaviour
     public bool isAutomatic = false; // 연사 or 단발
     public float damage = 10f; // 공격력
     public float fireRate = 100f; // 공격 속도
-    public float MaxHitDistance = 100f;
+    public float maxHitDistance = 100f; // 사거리
     public float Dispersion = 0; // 집탄율
     public LayerMask HitMask;
 
@@ -114,15 +112,15 @@ public class Weapon : NetworkBehaviour
         curClip--;
     }
 
-    private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
+    private void FireProjectile(Vector3 pos, Vector3 dir)
     {
         Runner.Spawn(bullet,
         transform.position,
-        Quaternion.LookRotation(fireDirection),
+        Quaternion.LookRotation(dir),
         Object.InputAuthority,
         (runner, o) =>
           {
-              o.GetComponent<Bullet>().Init();
+              o.GetComponent<Bullet>().Init(pos,maxHitDistance);
           });
 
         Debug.Log("총쏜다");
