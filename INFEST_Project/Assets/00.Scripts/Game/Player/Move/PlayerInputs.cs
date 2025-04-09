@@ -12,8 +12,6 @@ public struct PlayerInputs : INetworkStruct
 
 /// <summary>
 /// 여러 플레이어를 위한 입력 수집:
-
-
 /// </summary>
 public struct CombinedPlayerInputs : INetworkInput
 {

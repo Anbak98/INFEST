@@ -1,7 +1,11 @@
+using Cinemachine;
 using Fusion;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// 플레이어의 기본적인 사항들
+/// </summary>
 public class Player : NetworkBehaviour
 {
     //[SerializeField] private Ball _prefabBall;
@@ -11,6 +15,26 @@ public class Player : NetworkBehaviour
     // 
     private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
+
+    [Header("Components")]
+    //public SimpleKCC KCC;
+    //public Weapons Weapons;
+    //public Health Health;
+    public Animator Animator;
+    public HitboxRoot HitboxRoot;
+
+
+
+    [Header("Setup")]
+    public float MoveSpeed = 6f;
+    public float JumpForce = 10f;
+    //public AudioSource JumpSound;
+    //public AudioClip[] JumpClips;
+    public Transform CameraHandle;
+    public GameObject FirstPersonRoot;
+    public GameObject ThirdPersonRoot;
+    //public NetworkObject SprayPrefab;
+
 
     //[SerializeField] private PhysxBall _prefabPhysxBall;
 
@@ -56,7 +80,7 @@ public class Player : NetworkBehaviour
             if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
             {
                 // 마우스 좌클릭(공격)
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ATTACK))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
                 {
                     Debug.Log("공격");
 
@@ -93,6 +117,10 @@ public class Player : NetworkBehaviour
                 //spawnedProjectile = !spawnedProjectile;
             }
         }
+
+        // 1인칭, 3인칭에 따라 다르게 보여야한다
+
+
     }
 
     private void Update()
@@ -105,8 +133,32 @@ public class Player : NetworkBehaviour
     }
     public override void Spawned()
     {
+        // 튜토리얼에 있던 부분, 삭제하니까 오류가 많이 나서 일단 남겨두었다
         _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+
+        name = $"{Object.InputAuthority} ({(HasInputAuthority ? "Input Authority" : (HasStateAuthority ? "State Authority" : "Proxy"))})";
+
+        // Enable first person visual for local player, third person visual for proxies.
+        SetFirstPersonVisuals(HasInputAuthority);
+
+        if (HasInputAuthority == false)
+        {
+            // Virtual cameras are enabled only for local player.
+            var virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
+            for (int i = 0; i < virtualCameras.Length; i++)
+            {
+                virtualCameras[i].enabled = false;
+            }
+        }
     }
+    private void SetFirstPersonVisuals(bool firstPerson)
+    {
+        FirstPersonRoot.SetActive(firstPerson);
+        ThirdPersonRoot.SetActive(firstPerson == false);
+    }
+
+
+
     /// <summary>
     /// 마지막으로 ChangeDetector를 호출한 이후 네트워크화된 속성에 발생한 모든 변경 사항을 반복
     /// Render()는 Unity의 Update()처럼 Fusion이 매 프레임마다 렌더링 루프에서 자동으로 호출하는 함수다

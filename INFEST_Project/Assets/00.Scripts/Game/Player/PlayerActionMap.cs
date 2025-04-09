@@ -46,7 +46,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""6b0edc7f-b76c-4996-a010-12e718e07cb5"",
                     ""expectedControlType"": ""Button"",
@@ -192,7 +192,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -282,7 +282,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
@@ -353,7 +353,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Zoom;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Interaction;
@@ -367,7 +367,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         public PlayerActions(@PlayerActionMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
@@ -390,9 +390,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
@@ -424,9 +424,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
@@ -469,7 +469,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);

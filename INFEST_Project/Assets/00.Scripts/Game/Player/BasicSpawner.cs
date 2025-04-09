@@ -7,6 +7,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 이름만 Spawner 
+/// 
+/// 실제 기능이 달라 
+/// </summary>
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner _runner;
@@ -107,6 +112,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Remove(player);
         }
     }
+    
     /// <summary>
     /// Input Action을 사용하여 C# 이벤트 받는 방식으로 수정했다
     /// 메서드의 위치를 적절한 곳으로 옮기는 것이 남았다
@@ -139,9 +145,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         Vector2 move = _inputActions.Player.Move.ReadValue<Vector2>();
         data.direction = new Vector3(move.x, 0, move.y);
 
-        // 2. 버튼 입력
-        if (_inputActions.Player.Attack.WasPressedThisFrame())
-            data.buttons.Set(NetworkInputData.BUTTON_ATTACK, true);
+        // 2. 버튼 입력(세부동작 구현은 아직)
+        if (_inputActions.Player.Fire.WasPressedThisFrame())
+            data.buttons.Set(NetworkInputData.BUTTON_FIRE, true);
         if (_inputActions.Player.Zoom.WasPressedThisFrame())
             data.buttons.Set(NetworkInputData.BUTTON_ZOOM, true);
         if (_inputActions.Player.Jump.WasPressedThisFrame())
