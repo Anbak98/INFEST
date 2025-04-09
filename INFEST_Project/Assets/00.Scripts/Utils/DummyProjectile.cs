@@ -3,7 +3,7 @@ using UnityEngine;
 public class DummyProjectile : MonoBehaviour
 {
     [SerializeField] private float _speed = 80f; // 총알 속도
-    [SerializeField] private float _maxDistance = 100f; // 최대 비행 거리
+    //[SerializeField] private float _maxDistance = 100f; // 최대 비행 거리
     [SerializeField] private GameObject _hitEffect; // 히트이펙트
     [SerializeField] private float _lifeTimeAfterHit = 2f; // 오브젝트 삭제 대기시간
     [SerializeField] private GameObject _visualRoot; // 총알 외형 오브젝트

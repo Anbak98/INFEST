@@ -57,6 +57,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7524799660103093880}
+  - {fileID: 5218192605042614721}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &7174120239583064295
 Rigidbody:
@@ -149,6 +150,8 @@ MonoBehaviour:
     m_Bits: 4294967295
   _maxDistance: 100
   _fireRate: 0.1
+  _realProjectilePrefab:
+    RawGuidValue: 7affb485456bc0046a3e42266340171b
 --- !u!1 &2683815783778735796
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public class DummyProjectilePool : MonoBehaviour
 {
     [SerializeField] private DummyProjectile _projectilePrefab;
-    [SerializeField] private int _initialCount = 20;
+    [SerializeField] private int _initialCount = 22;
 
     private Queue<DummyProjectile> _pool = new Queue<DummyProjectile>();
 
