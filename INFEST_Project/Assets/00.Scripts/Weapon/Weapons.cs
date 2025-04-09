@@ -1,8 +1,10 @@
+using Cinemachine;
 using Fusion;
 using UnityEngine;
 
 public class Weapons : NetworkBehaviour
 {
+    public CinemachineVirtualCamera camera;
     public Transform fireTransform;
     public float weaponSwitchTime = 1f;
 
@@ -53,6 +55,25 @@ public class Weapons : NetworkBehaviour
             return;
 
         CurrentWeapon.Reload();
+    }
+
+    /// <summary>
+    /// ¡∂¡ÿ
+    /// </summary>
+    public void Aiming()
+    {
+        if (CurrentWeapon == null || IsSwitching)
+            return;
+
+        CurrentWeapon.Aiming(camera);
+    }
+
+    public void StopAiming()
+    {
+        if (CurrentWeapon == null || IsSwitching)
+            return;
+        if(CurrentWeapon.IsAiming)
+            CurrentWeapon.StopAiming();
     }
 
     /// <summary>

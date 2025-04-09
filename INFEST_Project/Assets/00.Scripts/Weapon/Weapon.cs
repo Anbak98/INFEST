@@ -1,3 +1,4 @@
+using Cinemachine;
 using Fusion;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public enum EWeaponType
 
 public class Weapon : NetworkBehaviour
 {
+    private CinemachineVirtualCamera _cam;
     public Bullet bullet;
     public EWeaponType Type; // 무기 종류
 
@@ -36,6 +38,7 @@ public class Weapon : NetworkBehaviour
 
     [Networked] public NetworkBool IsCollected { get; set; } = false; // 보유중인가?
     [Networked] public NetworkBool IsReloading { get; set; } = false; // 장전중인가?
+    [Networked] public NetworkBool IsAiming { get; set; } = false; // 장전중인가?
     [Networked] private TickTimer _fireCooldown { get; set; } // 행동 후 쿨타임
 
     private int _fireTicks; // 재사격 시간
@@ -46,6 +49,7 @@ public class Weapon : NetworkBehaviour
 
         if (curClip == 0)
         {
+            StopAiming();
             Reload();
         }
 
@@ -57,7 +61,6 @@ public class Weapon : NetworkBehaviour
             possessionAmmo -= Mathf.Min(possessionAmmo, startClip);
             Debug.Log("장전");
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
-
         }
     }
 
@@ -79,23 +82,14 @@ public class Weapon : NetworkBehaviour
     /// </summary>
     public void Fire(Vector3 pos, Vector3 dir, bool holdingPressed)
     {
-        if (!IsCollected)
-            return;
-        if (holdingPressed && !isAutomatic)
-            return;
-        if (IsReloading)
-            return;
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner))
-            return;
-
-        if (curClip == 0)
-        {
-            return;
-        }
+        if (!IsCollected) return;
+        if (holdingPressed && !isAutomatic) return;
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
+        if (curClip == 0) return;
 
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
-        for (int i = 0; i < ProjectilesPerShot; i++) 
+        for (int i = 0; i < ProjectilesPerShot; i++)
         {
             var projectileDirection = dir;
 
@@ -120,7 +114,7 @@ public class Weapon : NetworkBehaviour
         Object.InputAuthority,
         (runner, o) =>
           {
-              o.GetComponent<Bullet>().Init(pos,maxHitDistance);
+              o.GetComponent<Bullet>().Init(pos, maxHitDistance);
           });
 
         Debug.Log("총쏜다");
@@ -146,10 +140,33 @@ public class Weapon : NetworkBehaviour
     /// <summary>
     /// 조준
     /// </summary>
-    public void Aiming()
+    public void Aiming(CinemachineVirtualCamera cam)
     {
+        if (!IsCollected) return; // 보유중이지 않으면
+        if (curClip <= 0) return; // 현재 탄창에 탄약이 없으면
+        if (IsAiming) return;
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
 
+
+        _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.5f);
+        IsAiming = true;
+        cam.m_Lens.FieldOfView = 20;
+        _cam = cam;
+        Debug.Log("조준중");
     }
 
+    public void StopAiming()
+    {
+        if (!IsCollected) return; // 보유중이지 않으면
+        if (!IsAiming) return;
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
+
+
+        _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
+        IsAiming = false;
+        _cam.m_Lens.FieldOfView = 40;
+        _cam = null;
+        Debug.Log("조준끝");
+    }
 
 }

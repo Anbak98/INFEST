@@ -49,6 +49,15 @@ public class TestPlayer : NetworkBehaviour
                 bool _holdingPressed = data.isFiringHeld;
                 weapons.Fire(_holdingPressed);
             }
+
+            if (data.buttons.IsSet(TestNetworkInputData.MOUSEBUTTON1))
+            {
+                weapons.Aiming();
+            }
+            if (!data.buttons.IsSet(TestNetworkInputData.MOUSEBUTTON1))
+            {
+                weapons.StopAiming();
+            }
         }
     }
 

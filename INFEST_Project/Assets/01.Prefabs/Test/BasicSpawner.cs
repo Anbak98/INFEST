@@ -100,7 +100,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (Input.GetKey(KeyCode.R))
             data.reloadPressed = true;
 
-        data.isFiringHeld = Input.GetMouseButton(0);   
+        data.isFiringHeld = Input.GetMouseButton(0);
 
         data.buttons.Set(TestNetworkInputData.MOUSEBUTTON0, _mouseButton0);
         _mouseButton0 = false;
