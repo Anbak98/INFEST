@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : NetworkBehaviour
+public class TestPlayer : NetworkBehaviour
 {
 
     [Networked] private TickTimer delay { get; set; }
@@ -29,7 +29,7 @@ public class Player : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (GetInput(out NetworkInputData data))
+        if (GetInput(out TestNetworkInputData data))
         {
 
             data.direction.Normalize();
@@ -44,7 +44,7 @@ public class Player : NetworkBehaviour
                 data.reloadPressed = false;
             }
 
-            if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON0))
+            if (data.buttons.IsSet(TestNetworkInputData.MOUSEBUTTON0))
             {
                 bool _holdingPressed = data.isFiringHeld;
                 weapons.Fire(_holdingPressed);

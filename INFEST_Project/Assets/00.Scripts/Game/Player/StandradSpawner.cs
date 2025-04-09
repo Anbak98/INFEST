@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 /// 
 /// 실제 기능이 달라 
 /// </summary>
-public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
+public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner _runner;
     private bool _mouseButton0;
