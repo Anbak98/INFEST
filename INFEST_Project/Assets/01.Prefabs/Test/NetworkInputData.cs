@@ -8,7 +8,6 @@ public struct NetworkInputData : INetworkInput
 
     public bool reloadPressed;
     public bool isFiringHeld;
-
     public NetworkButtons buttons;
     public Vector3 direction;
 }

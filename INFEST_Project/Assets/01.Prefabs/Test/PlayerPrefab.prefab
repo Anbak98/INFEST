@@ -51,7 +51,7 @@ MonoBehaviour:
   damage: 10
   fireRate: 600
   maxHitDistance: 10
-  Dispersion: 0.8
+  Dispersion: 0.5
   HitMask:
     serializedVersion: 2
     m_Bits: 0
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 7817034666450524296}
   - component: {fileID: -8081330416567309693}
   m_Layer: 0
-  m_Name: TestPlayerPrefab
+  m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,8 +336,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5005337782658204529}
   - {fileID: 6619542755356427865}
+  - {fileID: 5005337782658204529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5059473433945879104
@@ -425,8 +425,8 @@ MonoBehaviour:
   - {fileID: 8671213920855113925}
   - {fileID: -8102010071621061624}
   - {fileID: -8081330416567309693}
-  - {fileID: 6961458591211817781}
   - {fileID: 5477981909603516414}
+  - {fileID: 6961458591211817781}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-8102010071621061624
 MonoBehaviour:
