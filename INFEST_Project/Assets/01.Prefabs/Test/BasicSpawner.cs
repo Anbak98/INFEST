@@ -38,7 +38,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     async void StartGame(GameMode mode)
     {
         // Create the Fusion runner and let it know that we will be providing user input
-        _runner = gameObject.AddComponent<NetworkRunner>();
+        _runner = gameObject.AddComponent<NetworkRunner>();       
 
 
         _runner.ProvideInput = true;
@@ -83,7 +83,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     }
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        var data = new TestNetworkInputData();            
+        var data = new TestNetworkInputData();
 
         if (Input.GetKey(KeyCode.W))
             data.direction += Vector3.forward;
@@ -100,7 +100,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (Input.GetKey(KeyCode.R))
             data.reloadPressed = true;
 
-        data.isFiringHeld = Input.GetMouseButton(0);   
+        data.isFiringHeld = Input.GetMouseButton(0);
 
         data.buttons.Set(TestNetworkInputData.MOUSEBUTTON0, _mouseButton0);
         _mouseButton0 = false;
