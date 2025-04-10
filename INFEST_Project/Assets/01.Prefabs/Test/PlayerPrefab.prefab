@@ -316,6 +316,7 @@ GameObject:
   - component: {fileID: -8102010071621061624}
   - component: {fileID: 7817034666450524296}
   - component: {fileID: -8081330416567309693}
+  - component: {fileID: -331549790756045129}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -402,7 +403,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba712ba5f1563df47a83e4cdf327dfe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireTransform: {fileID: 3703756247338203654}
+  fireTransform: {fileID: 2093489326051948806, guid: 09637b6f6cba79449b5adadd7faac738,
+    type: 3}
   weaponSwitchTime: 1
   AllWeapons: []
 --- !u!114 &6333536725637159004
@@ -425,6 +427,7 @@ MonoBehaviour:
   - {fileID: 8671213920855113925}
   - {fileID: -8102010071621061624}
   - {fileID: -8081330416567309693}
+  - {fileID: -331549790756045129}
   - {fileID: 5477981909603516414}
   - {fileID: 6961458591211817781}
   ForceRemoteRenderTimeframe: 0
@@ -487,3 +490,18 @@ MonoBehaviour:
   braking: 10
   maxSpeed: 2
   rotationSpeed: 15
+--- !u!114 &-331549790756045129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7720733011148518442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba712ba5f1563df47a83e4cdf327dfe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireTransform: {fileID: 0}
+  weaponSwitchTime: 1
+  AllWeapons: []

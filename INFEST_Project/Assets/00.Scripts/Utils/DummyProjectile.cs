@@ -44,7 +44,7 @@ public class DummyProjectile : MonoBehaviour
     }
 
     // 총알 지속시간이 끝났을 때
-    private void FinishProjectile()
+    public void FinishProjectile()
     {
         if (_showHitEffect == false)
         {
