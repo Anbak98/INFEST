@@ -53,33 +53,196 @@ public class PlayerInputHandler : NetworkBehaviour
     private bool _isSitting;
     private bool _isScoreBoardPopup;
 
-    // 읽기 전용 속성
-    public bool IsJumping => _isJumping; 
-    public bool IsReloading => _isReloading;
-    public bool IsFiring => _isFiring;
-    public bool IsZooming => _isZooming;
-    public bool IsInteracting => _isInteracting;
-    public bool IsUsingItem => _isUsingItem;
-    public bool IsRunning => _isRunning;
-    public bool IsSitting => _isSitting;
-    public bool IsScoreBoardPopup => _isScoreBoardPopup;
-
 
     // 임시(동적연결)
     public InputManager inputManager;
 
-    private void Start()
+    private void Awake()
     {
-        inputManager = FindAnyObjectByType<InputManager>();
-
         if (inputManager == null)
-        {
-            Debug.LogError("InputManager not assigned.");
-            return;
-        }
-        // InputManager에서 각 입력 액션을 구독
-        SubscribeToInputs();
+            inputManager = FindObjectOfType<InputManager>();
     }
+
+
+    private void OnEnable()
+    {
+        /// performed: 키가 눌렸을 때 호출된다
+        /// canceled: 키가 뗴졌을 때 호출
+        inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput;
+        inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
+
+        inputManager.GetInput(EPlayerInput.look).performed += SetLookInput;
+        inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
+
+        inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
+        inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
+
+        inputManager.GetInput(EPlayerInput.fire).performed += SetFireState;
+        inputManager.GetInput(EPlayerInput.fire).canceled += SetFireState;
+
+        inputManager.GetInput(EPlayerInput.zoom).performed += SetZoomState;
+        inputManager.GetInput(EPlayerInput.zoom).canceled += SetZoomState;
+
+        inputManager.GetInput(EPlayerInput.reload).performed += TriggerReload;
+
+        inputManager.GetInput(EPlayerInput.interaction).performed += TriggerInteraction;
+
+        inputManager.GetInput(EPlayerInput.useItem).performed += TriggerUseItem;
+
+        inputManager.GetInput(EPlayerInput.run).performed += SetRunState;
+        inputManager.GetInput(EPlayerInput.run).canceled += SetRunState;
+
+        inputManager.GetInput(EPlayerInput.sit).performed += SetSitState;
+        inputManager.GetInput(EPlayerInput.sit).canceled += SetSitState;
+
+        inputManager.GetInput(EPlayerInput.scoreboard).performed += OpenScoreboard;
+        inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
+
+    }
+
+    private void OnDisable()
+    {
+        inputManager.GetInput(EPlayerInput.move).performed -= SetMoveInput;
+        inputManager.GetInput(EPlayerInput.move).canceled -= SetMoveInput;
+
+        inputManager.GetInput(EPlayerInput.look).performed -= SetLookInput;
+        inputManager.GetInput(EPlayerInput.look).canceled -= SetLookInput;
+
+        inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
+        inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
+
+        inputManager.GetInput(EPlayerInput.fire).performed -= SetFireState;
+        inputManager.GetInput(EPlayerInput.fire).canceled -= SetFireState;
+
+        inputManager.GetInput(EPlayerInput.zoom).performed -= SetZoomState;
+        inputManager.GetInput(EPlayerInput.zoom).canceled -= SetZoomState;
+
+        inputManager.GetInput(EPlayerInput.reload).performed -= TriggerReload;
+
+        inputManager.GetInput(EPlayerInput.interaction).performed -= TriggerInteraction;
+
+        inputManager.GetInput(EPlayerInput.useItem).performed -= TriggerUseItem;
+
+        inputManager.GetInput(EPlayerInput.run).performed -= SetRunState;
+        inputManager.GetInput(EPlayerInput.run).canceled -= SetRunState;
+
+        inputManager.GetInput(EPlayerInput.sit).performed -= SetSitState;
+        inputManager.GetInput(EPlayerInput.sit).canceled -= SetSitState;
+
+        inputManager.GetInput(EPlayerInput.scoreboard).performed -= OpenScoreboard;
+        inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
+    }
+
+    // 외부에서 호출하는 저장용 메서드들
+    /// <summary>
+    /// SetXXXInput → 입력값을 저장하는 경우
+    /// UpdateXXXState / SetXXXState → Boolean 상태 토글
+    /// TriggerXXX / FireXXX → 단발성 이벤트(ex.reload, use item)
+    /// </summary>
+    /// <param name="context"></param>
+    private void SetMoveInput(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        MoveInput = new Vector3(moveInput.x, 0f, moveInput.y);
+    }
+
+    private void SetLookInput(InputAction.CallbackContext context)
+    {
+        Vector2 look = context.ReadValue<Vector2>();
+        Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
+        RotationX = look.x;
+        RotationY = look.y;
+    }
+
+    private void StartJumpInput(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] StartJumpInput - Jump started");
+        _isJumping = true;
+    }
+
+    private void CancelJumpInput(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] CancelJumpInput - Jump canceled");
+        _isJumping = false;
+    }
+
+    private void SetFireState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetFireState - Fire: {context.performed}");
+        _isFiring = context.performed;
+    }
+
+    private void SetZoomState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetZoomState - Zoom: {context.performed}");
+        _isZooming = context.performed;
+    }
+
+    private void TriggerReload(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] TriggerReload - Reload triggered");
+        _isReloading = true;
+        Invoke(nameof(ResetReloadState), 0.1f);
+    }
+
+    private void ResetReloadState()
+    {
+        Debug.Log("[Input] ResetReloadState - Reload reset");
+        _isReloading = false;
+    }
+
+    private void TriggerInteraction(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] TriggerInteraction - Interaction triggered");
+        _isInteracting = true;
+        Invoke(nameof(ResetInteractionState), 0.1f);
+    }
+
+    private void ResetInteractionState()
+    {
+        Debug.Log("[Input] ResetInteractionState - Interaction reset");
+        _isInteracting = false;
+    }
+
+    private void TriggerUseItem(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] TriggerUseItem - Use item triggered");
+        _isUsingItem = true;
+        Invoke(nameof(ResetUseItemState), 0.1f);
+    }
+
+    private void ResetUseItemState()
+    {
+        Debug.Log("[Input] ResetUseItemState - Use item reset");
+        _isUsingItem = false;
+    }
+
+    private void SetRunState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetRunState - Running: {context.performed}");
+        _isRunning = context.performed;
+    }
+
+    private void SetSitState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetSitState - Sitting: {context.performed}");
+        _isSitting = context.performed;
+    }
+
+    private void OpenScoreboard(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
+        _isScoreBoardPopup = true;
+    }
+
+    private void CloseScoreboard(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
+        _isScoreBoardPopup = false;
+    }
+
+
     /// <summary>
     /// 네트워크 입력 만들기
     /// PlayerInputSender에서 호출하여 저장된 입력을 서버로 전송한다
@@ -87,9 +250,15 @@ public class PlayerInputHandler : NetworkBehaviour
     /// <returns></returns>
     public NetworkInputData? GetNetworkInput()
     {
-        // 입력 없으면 null 반환
-        if (MoveInput == Vector3.zero && !_isJumping && !_isFiring && !_isReloading && !_isZooming && !_isRunning)
+        if (MoveInput == Vector3.zero &&
+            !_isJumping && !_isFiring && !_isReloading &&
+            !_isZooming && !_isInteracting && !_isUsingItem &&
+            !_isRunning && !_isSitting && !_isScoreBoardPopup)
+        {
             return null;
+        }
+        Debug.Log("입력 받았다");
+
 
         var data = new NetworkInputData
         {
@@ -109,69 +278,4 @@ public class PlayerInputHandler : NetworkBehaviour
 
         return data;
     }
-    #region Input Subscription
-    /// <summary>
-    /// 입력 이벤트를 구독합니다.
-    /// </summary>
-    private void SubscribeToInputs()
-    {
-        inputManager.GetInput(EPlayerInput.move).performed += InputMove;
-        inputManager.GetInput(EPlayerInput.move).canceled += InputMove;
-
-        inputManager.GetInput(EPlayerInput.look).performed += InputLook;
-
-        inputManager.GetInput(EPlayerInput.jump).started += ctx => SetBool(ref _isJumping, true);
-        inputManager.GetInput(EPlayerInput.jump).canceled += ctx => SetBool(ref _isJumping, false);
-
-        inputManager.GetInput(EPlayerInput.reload).started += ctx => SetBool(ref _isReloading, true);
-        inputManager.GetInput(EPlayerInput.reload).canceled += ctx => SetBool(ref _isReloading, false);
-
-        inputManager.GetInput(EPlayerInput.fire).started += ctx => SetBool(ref _isFiring, true);
-        inputManager.GetInput(EPlayerInput.fire).canceled += ctx => SetBool(ref _isFiring, false);
-
-        inputManager.GetInput(EPlayerInput.zoom).started += ctx => SetBool(ref _isZooming, true);
-        inputManager.GetInput(EPlayerInput.zoom).canceled += ctx => SetBool(ref _isZooming, false);
-
-        inputManager.GetInput(EPlayerInput.interaction).started += ctx => SetBool(ref _isInteracting, true);
-        inputManager.GetInput(EPlayerInput.interaction).canceled += ctx => SetBool(ref _isInteracting, false);
-
-        inputManager.GetInput(EPlayerInput.useItem).started += ctx => SetBool(ref _isUsingItem, true);
-        inputManager.GetInput(EPlayerInput.useItem).canceled += ctx => SetBool(ref _isUsingItem, false);
-
-        inputManager.GetInput(EPlayerInput.run).started += ctx => SetBool(ref _isRunning, true);
-        inputManager.GetInput(EPlayerInput.run).canceled += ctx => SetBool(ref _isRunning, false);
-
-        inputManager.GetInput(EPlayerInput.sit).started += ctx => SetBool(ref _isSitting, true);
-        inputManager.GetInput(EPlayerInput.sit).canceled += ctx => SetBool(ref _isSitting, false);
-
-        inputManager.GetInput(EPlayerInput.scoreboard).started += ctx => SetBool(ref _isScoreBoardPopup, true);
-        inputManager.GetInput(EPlayerInput.scoreboard).canceled += ctx => SetBool(ref _isScoreBoardPopup, false);
-    }
-
-    /// <summary>
-    /// 이동 입력 처리
-    /// </summary>
-    private void InputMove(InputAction.CallbackContext context)
-    {
-        Vector2 moveValue = context.ReadValue<Vector2>();
-        MoveInput = new Vector3(moveValue.x, 0f, moveValue.y);
-    }
-
-    /// <summary>
-    /// 시선 입력 처리
-    /// </summary>
-    private void InputLook(InputAction.CallbackContext context)
-    {
-        Vector2 lookValue = context.ReadValue<Vector2>();
-        RotationX = lookValue.x;
-        RotationY = lookValue.y;
-    }
-    /// <summary>
-    /// 상태 값을 설정
-    /// </summary>
-    private void SetBool(ref bool field, bool value)
-    {
-        field = value;
-    }
-    #endregion
 }

@@ -74,6 +74,7 @@ public class Player : NetworkBehaviour
     /// </summary>
     public override void FixedUpdateNetwork()
     {
+        //Debug.Log("FixedUpdateNetwork 진입");
         /// GetInput: OnInput에 있는 데이터 가져온다
         if (GetInput(out NetworkInputData data))
         {

@@ -23,7 +23,6 @@ public class PlayerInputSender : MonoBehaviour, INetworkRunnerCallbacks
 
     void Awake()
     {
-
         if (runner == null)
         {
             // Spawner 또는 GameManager를 찾아서 runner 할당
@@ -55,6 +54,14 @@ public class PlayerInputSender : MonoBehaviour, INetworkRunnerCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (playerInputHandler == null)
+        {
+            playerInputHandler = FindAnyObjectByType<PlayerInputHandler>();
+            if (playerInputHandler == null)
+            {
+                Debug.LogError("PlayerInputHandler가 씬에 없습니다!");
+            }
+        }
         //PlayerRef playerRef = new PlayerRef();
 
         // OnInput을 호출하는 클래스에서 AddCallbacks가 호출되어야한다
@@ -71,7 +78,9 @@ public class PlayerInputSender : MonoBehaviour, INetworkRunnerCallbacks
         if (playerInputHandler == null || !playerInputHandler.HasInputAuthority)
             return;
 
-        var networkInput = playerInputHandler.GetNetworkInput();
+        //Debug.Log("OnInput 진입");
+        NetworkInputData? networkInput = playerInputHandler.GetNetworkInput();
+
         if (networkInput.HasValue)
         {
             input.Set(networkInput.Value);

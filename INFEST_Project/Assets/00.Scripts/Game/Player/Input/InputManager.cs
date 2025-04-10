@@ -21,10 +21,9 @@ public enum EPlayerInput
 }
 
 /// <summary>
-/// 입력을 매핑한다
+/// Input Action 관리, 이벤트 제공
 /// 
 /// 
-/// InputManager.cs (입력 매핑 + 액션 제공)
 /// GetInput()으로 외부에서 액션 접근 가능하게 함.
 /// Update() 사용 안 하고 이벤트 기반 처리.
 /// 장점: Player Action의 c# 스크립트를 사용하여 자동으로 매핑되어있어서 따로 매핑할 필요가 없다.
@@ -43,11 +42,11 @@ public class InputManager : MonoBehaviour
     // PlayerAction.Player.Move.performed += 이벤트함수
     // 무엇이 있는지는 PlayerActionMap을 참고
 
-    private void Start()
+    private void Awake()
     {
         /// 이런 연결 방식은 심화강의 1-11 참고
         PlayerAction = new PlayerActionMap();
-        playerActions = PlayerAction.Player;
+        playerActions = PlayerAction.Player;        
     }
 
     private void OnEnable()
