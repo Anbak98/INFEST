@@ -931,7 +931,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.56, y: 0.61, z: -0.32}
+  m_Size: {x: 0.56, y: 0.61, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5682475787935417660
 GameObject:
@@ -1398,7 +1398,7 @@ MonoBehaviour:
   m_Script: {fileID: 1039544458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Config: 3
+  Config: -1
   BroadRadius: 1
   Offset: {x: 0, y: 1, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
@@ -2849,9 +2849,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   startClip: 30
-  curClip: 30
+  _curClip: 0
+  _possessionAmmo: 0
   maxAmmo: 360
-  possessionAmmo: 0
   reloadTime: 2
   ProjectilesPerShot: 1
   weaponPrice: 0
@@ -3159,9 +3159,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   startClip: 30
-  curClip: 30
+  _curClip: 0
+  _possessionAmmo: 0
   maxAmmo: 360
-  possessionAmmo: 0
   reloadTime: 2
   ProjectilesPerShot: 1
   weaponPrice: 0

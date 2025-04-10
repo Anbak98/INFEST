@@ -59,7 +59,7 @@ public class TestWeapon : NetworkBehaviour
             if (HasStateAuthority)
             {
                 IsReloading = false;
-                
+
                 curClip = Mathf.Min(startClip, possessionAmmo);
                 possessionAmmo -= Mathf.Min(startClip, possessionAmmo);
                 Debug.Log("장전");
@@ -105,11 +105,11 @@ public class TestWeapon : NetworkBehaviour
         _visibleFireCount = _fireCount;
 
         if (_reloadingVisible != IsReloading)
-        {            
+        {
             Debug.Log("장전 애니메이션 실행");
 
             if (IsReloading)
-            {                
+            {
                 Debug.Log("장전 사운드");
             }
 
@@ -160,30 +160,57 @@ public class TestWeapon : NetworkBehaviour
 
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
-        var projectileData = new ProjectileData();        
+        var projectileData = new ProjectileData();
         Vector3 origin = _fireTransform.position;
         Vector3 direction = _fireTransform.forward;
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hitInfo, maxHitDistance, HitMask))
+        var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
+
+        if (HasStateAuthority)
         {
-            projectileData.hitPosition = hitInfo.point;
-            projectileData.hitNormal = hitInfo.normal;
+            if (Runner.LagCompensation.Raycast(firePosition, fireDirection, maxHitDistance,
+                    Object.InputAuthority, out var hit, HitMask, hitOptions))
+            {
+                projectileData.hitPosition = hit.Point;
+                projectileData.hitNormal = hit.Normal;
 
-            // 피격된 오브젝트 로그 출력
-            Debug.Log($"Hit: {hitInfo.collider.gameObject.name}");
-
-            // Rigidbody가 있으면 밀기
-            var rb = hitInfo.collider.attachedRigidbody;
-            rb.AddForce(direction * 10f, ForceMode.Impulse);
-
-            projectileData.showHitEffect = true;
+                if (hit.Hitbox != null)
+                {
+                    //ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                }
+                else
+                {
+                    projectileData.showHitEffect = true;
+                }
+            }
+            else
+            {
+                projectileData.hitPosition = origin + direction * maxHitDistance;
+                projectileData.hitNormal = -direction;
+                projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
+            }
         }
-        else
-        {
-            projectileData.hitPosition = origin + direction * maxHitDistance;
-            projectileData.hitNormal = -direction;
-            projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
-        }
+
+        //if (Physics.Raycast(origin, direction, out RaycastHit hitInfo, maxHitDistance, HitMask))
+        //{
+        //    projectileData.hitPosition = hitInfo.point;
+        //    projectileData.hitNormal = hitInfo.normal;
+
+        //    // 피격된 오브젝트 로그 출력
+        //    Debug.Log($"Hit: {hitInfo.collider.gameObject.name}");
+
+        //    // Rigidbody가 있으면 밀기
+        //    var rb = hitInfo.collider.attachedRigidbody;
+        //    rb.AddForce(direction * 10f, ForceMode.Impulse);
+
+        //    projectileData.showHitEffect = true;
+        //}
+        //else
+        //{
+        //    projectileData.hitPosition = origin + direction * maxHitDistance;
+        //    projectileData.hitNormal = -direction;
+        //    projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
+        //}
 
         var projectile = DummyProjectilePool.Instance.Get();
         projectile.transform.position = origin;
@@ -200,51 +227,35 @@ public class TestWeapon : NetworkBehaviour
                 });
         }
 
-        //if (Runner.LagCompensation.Raycast(firePosition, fireDirection, maxHitDistance,
-        //        Object.InputAuthority, out var hit, HitMask, hitOptions))
-        //{
-        //    projectileData.hitPosition = hit.Point;
-        //    projectileData.hitNormal = hit.Normal;
-
-        //    if (hit.Hitbox != null)
-        //    {
-        //        ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
-        //    }
-        //    else
-        //    {
-        //        projectileData.showHitEffect = true;
-        //    }
-        //}
-
         _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
         _fireCount++;
 
         Debug.Log("총쏜다");
     }
 
-    private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
-    {
-        var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
-        if (enemyHealth == null || enemyHealth.isAlive == false)
-            return;
+    //private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
+    //{
+    //    var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
+    //    if (enemyHealth == null || enemyHealth.isAlive == false)
+    //        return;
 
-        float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
-        bool isCriticalHit = damageMultiplier > 1f;
+    //    float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
+    //    bool isCriticalHit = damageMultiplier > 1f;
 
-        float hitdamage = damage * damageMultiplier;
-        //if (_sceneObjects.Gameplay.DoubleDamageActive)
-        //{
-        //    damage *= 2f;
-        //}
+    //    float hitdamage = damage * damageMultiplier;
+    //    if (_sceneObjects.Gameplay.DoubleDamageActive)
+    //    {
+    //        damage *= 2f;
+    //    }
 
-        if (enemyHealth.ApplyDamage(Object.InputAuthority, damage, pos, dir, Type, isCriticalHit) == false)
-            return;
+    //    if (enemyHealth.ApplyDamage(Object.InputAuthority, damage, pos, dir, Type, isCriticalHit) == false)
+    //        return;
 
-        if (HasInputAuthority && Runner.IsForward)
-        {
-            //_sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
-        }
-    }
+    //    if (HasInputAuthority && Runner.IsForward)
+    //    {
+    //        _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
+    //    }
+    //}
 
     /// <summary>
     /// 재장전
