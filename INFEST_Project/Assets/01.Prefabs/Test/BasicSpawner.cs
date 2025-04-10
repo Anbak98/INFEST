@@ -14,10 +14,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private bool _mouseButton0;
     private bool _mouseButton1;
+    private bool _mouseButton2;
+
     private void Update()
     {
         _mouseButton0 = _mouseButton0 || Input.GetMouseButton(0);
         _mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
+        _mouseButton2 = _mouseButton2 || Input.GetMouseButton(2);
+
     }
 
     private void OnGUI()
@@ -106,6 +110,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         _mouseButton0 = false;
         data.buttons.Set(TestNetworkInputData.MOUSEBUTTON1, _mouseButton1);
         _mouseButton1 = false;
+        data.buttons.Set(TestNetworkInputData.MOUSEBUTTON2, _mouseButton2);
+        _mouseButton2 = false;
 
         input.Set(data);
     }

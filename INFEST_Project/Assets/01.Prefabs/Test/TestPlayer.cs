@@ -58,6 +58,10 @@ public class TestPlayer : NetworkBehaviour
             {
                 weapons.StopAiming();
             }
+            if (!data.buttons.IsSet(TestNetworkInputData.MOUSEBUTTON2))
+            {
+                weapons.Swap();
+            }
         }
     }
 
