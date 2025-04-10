@@ -13,7 +13,11 @@ GameObject:
   - component: {fileID: 7174120239583064295}
   - component: {fileID: 7524799660103093880}
   - component: {fileID: 3983338044558739239}
-  - component: {fileID: 5218192605042614721}
+  - component: {fileID: 2710011212695133201}
+  - component: {fileID: 7435718246072206405}
+  - component: {fileID: 3554112406485010520}
+  - component: {fileID: 986278003158352951}
+  - component: {fileID: 2506772460416724719}
   m_Layer: 0
   m_Name: JJMTestPlayer
   m_TagString: Untagged
@@ -57,7 +61,11 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7524799660103093880}
-  - {fileID: 5218192605042614721}
+  - {fileID: 7435718246072206405}
+  - {fileID: 3554112406485010520}
+  - {fileID: 986278003158352951}
+  - {fileID: 2506772460416724719}
+  - {fileID: 4637914288857244962}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &7174120239583064295
 Rigidbody:
@@ -132,7 +140,33 @@ CapsuleCollider:
   m_Height: 2.24
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!114 &5218192605042614721
+--- !u!143 &2710011212695133201
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383231552849033575}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7435718246072206405
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,17 +175,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 2383231552849033575}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d683936d418f140bda8e1ad34f109f, type: 3}
+  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fireTransform: {fileID: 5817817363064649828}
-  _hitMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  _maxDistance: 100
-  _fireRate: 0.1
-  _realProjectilePrefab:
-    RawGuidValue: 7affb485456bc0046a3e42266340171b
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  gravity: -20
+  jumpImpulse: 8
+  acceleration: 10
+  braking: 10
+  maxSpeed: 2
+  rotationSpeed: 15
+--- !u!114 &3554112406485010520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383231552849033575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd986c1767958eb4cb66fc8e85e8372e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  immortalDurationAfterSpawn: 2
+  _CurrentHealth: 0
+--- !u!114 &986278003158352951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383231552849033575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b2fa2b87ea6334da3375eba13ec602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireTransform: {fileID: 5817817363064649828}
+  weaponSwitchTime: 1
+  AllWeapons: []
+--- !u!114 &2506772460416724719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383231552849033575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21ebb015cfe47a4aad37e3d7e64d13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnedProjectile: 1
+  _material: {fileID: 0}
 --- !u!1 &2683815783778735796
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +468,7 @@ GameObject:
   - component: {fileID: 4986667092614803735}
   - component: {fileID: 3523378834809512278}
   - component: {fileID: 1529396996928552462}
+  - component: {fileID: 4637914288857244962}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -463,6 +541,46 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4637914288857244962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111688458957194885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8d2abcd65e2f2241b686b760a5df12c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 1
+  isAutomatic: 1
+  damage: 10
+  fireRate: 600
+  maxHitDistance: 100
+  Dispersion: 0
+  HitMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  startClip: 30
+  curClip: 30
+  maxAmmo: 360
+  possessionAmmo: 0
+  reloadTime: 2
+  ProjectilesPerShot: 1
+  weaponPrice: 0
+  ammoPrice: 0
+  _IsCollected:
+    _value: 0
+  _IsReloading:
+    _value: 0
+  firstPersonMuzzleTransform: {fileID: 5817817363064649828}
+  thirdPersonMuzzleTransform: {fileID: 5817817363064649828}
+  dummyProjectilePrefab: {fileID: 2676864090333110528, guid: 810d722e367026c4a8e8cf2048e6cb7a,
+    type: 3}
+  _fireTransform: {fileID: 5817817363064649828}
+  _realProjectilePrefab:
+    RawGuidValue: 7affb485456bc0046a3e42266340171b
 --- !u!1 &7997751294559502704
 GameObject:
   m_ObjectHideFlags: 0
