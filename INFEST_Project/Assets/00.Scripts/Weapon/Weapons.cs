@@ -15,15 +15,11 @@ public class Weapons : NetworkBehaviour
     [HideInInspector] public Weapon[] AllWeapons;
 
     private TickTimer _switchTimer { get; set; }
+    private int _weaponIdx = -1;
 
     private void Awake()
     {
         AllWeapons = GetComponentsInChildren<Weapon>();
-    }
-
-    public override void FixedUpdateNetwork()
-    {
-
     }
 
     public override void Spawned()
@@ -31,7 +27,9 @@ public class Weapons : NetworkBehaviour
         if (HasStateAuthority)
         {
             CurrentWeapon = AllWeapons[0];
+            AllWeapons[1].IsCollected = true;
             CurrentWeapon.IsCollected = true;
+            AllWeapons[1].GetComponentInChildren<Transform>().gameObject.SetActive(false);
         }
     }
 
@@ -79,8 +77,37 @@ public class Weapons : NetworkBehaviour
     /// <summary>
     /// 무기 교체
     /// </summary>
-    public void Swap()
+    public void Swap(float scrollWheelValue)
     {
+        for(int i = 0; i < AllWeapons.Length; i++)
+        {
+            if (AllWeapons[i] == CurrentWeapon)
+            {
+                CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(false);
+                _weaponIdx = i;
+                break;
+            }
+        }
 
+        if (scrollWheelValue > 0)
+        {
+            if(CurrentWeapon == AllWeapons[AllWeapons.Length - 1])
+                CurrentWeapon = AllWeapons[0];
+            else
+                CurrentWeapon = AllWeapons[_weaponIdx + 1];
+
+            CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
+            Debug.Log("스크롤 업");
+        }
+        else if(scrollWheelValue < 0)
+        {
+            if (CurrentWeapon == AllWeapons[0])
+                CurrentWeapon = AllWeapons[AllWeapons.Length - 1];
+            else
+                CurrentWeapon = AllWeapons[_weaponIdx - 1];
+
+            CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
+            Debug.Log("스크롤 다운");
+        }
     }
 }

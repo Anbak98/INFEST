@@ -64,14 +64,14 @@ public class Weapon : NetworkBehaviour
         if (IsAiming)
         {
             _cam.m_Lens.FieldOfView = Mathf.Lerp(_cam.m_Lens.FieldOfView, 20, Time.deltaTime * 10);
-            
+
             if (_cam.m_Lens.FieldOfView <= 21)
             {
                 Dispersion = _basicDispersion - 0.3f;
                 _cam.m_Lens.FieldOfView = 20;
             }
         }
-        else if(!IsAiming && _cam != null)
+        else if (!IsAiming && _cam != null)
         {
             _cam.m_Lens.FieldOfView = Mathf.Lerp(_cam.m_Lens.FieldOfView, 40, Time.deltaTime * 10);
 
@@ -82,14 +82,22 @@ public class Weapon : NetworkBehaviour
                 _cam = null;
             }
         }
-
-        if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
+        if(IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
+        {
+            IsReloading = false;
+            possessionAmmo--;
+            curClip++;
+            Debug.Log("장전 완료");
+            if (curClip < startClip)
+                Reload();
+        }
+        else if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
         {
             IsReloading = false;
             possessionAmmo += curClip;
             curClip = Mathf.Min(possessionAmmo, startClip);
             possessionAmmo -= Mathf.Min(possessionAmmo, startClip);
-            Debug.Log("장전");
+            Debug.Log("장전 완료");
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         }
     }
@@ -99,7 +107,6 @@ public class Weapon : NetworkBehaviour
         if (HasStateAuthority)
         {
             _basicDispersion = Dispersion;
-            possessionAmmo = 29;
             curClip = Mathf.Clamp(curClip, 0, startClip);
         }
 
@@ -132,7 +139,7 @@ public class Weapon : NetworkBehaviour
 
             int id = Animator.StringToHash("Fire");
             animator.SetTrigger(id);
-            camRecoil.ApplyCamRecoil(Dispersion);
+            camRecoil.ApplyCamRecoil(IsAiming ? 0.5f : 1f);
             gunRecoil.ApplyGunRecoil(Dispersion);
             FireProjectile(pos, projectileDirection);
         }
@@ -167,10 +174,19 @@ public class Weapon : NetworkBehaviour
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동 쿨타임중이면
 
         IsReloading = true;
-        int id = curClip == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
-        animator.SetTrigger(id);
+
+        if (Type == EWeaponType.Shotgun)
+        {
+            int id = curClip == startClip-1 ? Animator.StringToHash("Reload_End") : Animator.StringToHash("Reload_Start");
+            animator.SetTrigger(id);
+        }
+        else
+        {
+            int id = curClip == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
+            animator.SetTrigger(id);
+        }
+        Debug.Log("장전 시작");
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, reloadTime);
-        Debug.Log("장전시작");
 
     }
 

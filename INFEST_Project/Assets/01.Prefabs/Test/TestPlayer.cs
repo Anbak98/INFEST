@@ -58,9 +58,9 @@ public class TestPlayer : NetworkBehaviour
             {
                 weapons.StopAiming();
             }
-            if (!data.buttons.IsSet(TestNetworkInputData.MOUSEBUTTON2))
+            if (data.buttons.IsSet(TestNetworkInputData.MOUSEBUTTON2) || data.scrollWheel)
             {
-                weapons.Swap();
+                weapons.Swap(data.scrollWheelValue);
             }
         }
     }
