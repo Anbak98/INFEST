@@ -2,6 +2,7 @@ using Cinemachine;
 using Fusion;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 플레이어의 기본적인 사항들
@@ -64,6 +65,13 @@ public class Player : NetworkBehaviour
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
 
+    private void Start()
+    {
+    }
+
+    /// <summary>
+    /// FixedUpdateNetwork를 PlayerController로 옮기는 건?
+    /// </summary>
     public override void FixedUpdateNetwork()
     {
         /// GetInput: OnInput에 있는 데이터 가져온다
