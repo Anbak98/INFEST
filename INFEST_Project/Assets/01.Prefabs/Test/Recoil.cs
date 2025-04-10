@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Recoil : MonoBehaviour
 {
-    [Header("반동 세기")]
+    [Header("Recoil")]
     public Vector3 recoilKickBack = new Vector3(-0.1f, 0f, 0f); // 뒤로 물러남
     public Vector3 recoilRotation = new Vector3(5f, 2f, 2f);    // 회전 반동
 
-    [Header("회복 속도")]
+    [Header("Recovery")]
     public float returnSpeed = 5f;
     public float snappiness = 10f;
 

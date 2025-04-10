@@ -277,7 +277,7 @@ MonoBehaviour:
   Type: 1
   isAutomatic: 1
   damage: 10
-  fireRate: 100
+  fireRate: 500
   maxHitDistance: 100
   Dispersion: 0.8
   HitMask:
@@ -929,7 +929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
-  gravity: -20
+  gravity: -100
   jumpImpulse: 8
   acceleration: 10
   braking: 10
