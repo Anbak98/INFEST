@@ -36,7 +36,7 @@ public class Weapons : NetworkBehaviour
     }
 
     /// <summary>
-    /// πﬂªÁ
+    /// Î∞úÏÇ¨
     /// </summary>
     public void Fire(bool holdingPressed)
     {
@@ -47,7 +47,7 @@ public class Weapons : NetworkBehaviour
     }
 
     /// <summary>
-    /// ¿Á¿Â¿¸
+    /// Ïû¨Ïû•Ï†Ñ
     /// </summary>
     public void Reload()
     {
@@ -58,7 +58,7 @@ public class Weapons : NetworkBehaviour
     }
 
     /// <summary>
-    /// ¡∂¡ÿ
+    /// Ï°∞Ï§Ä
     /// </summary>
     public void Aiming()
     {
@@ -77,7 +77,7 @@ public class Weapons : NetworkBehaviour
     }
 
     /// <summary>
-    /// π´±‚ ±≥√º
+    /// Î¨¥Í∏∞ ÍµêÏ≤¥
     /// </summary>
     public void Swap()
     {
