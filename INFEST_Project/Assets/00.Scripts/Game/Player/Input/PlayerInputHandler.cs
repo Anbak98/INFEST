@@ -26,22 +26,12 @@ using static UnityEngine.EventSystems.StandaloneInputModule;
 public class PlayerInputHandler : NetworkBehaviour
 {
     /// <summary>
-    /// **속성(Property)**는 참조(ref)로 전달할 수 없으므로, ref 전달 하려면 필드로 바꿔라
+    /// 속성(Property)은 참조(ref)로 전달할 수 없으므로, ref 전달 하려면 필드로 바꿔라
     /// </summary>
     public Vector3 MoveInput { get; private set; } = Vector3.zero;      // 이동 방향 (Vector3)
 
     public float RotationX { get; private set; } = 0f;       // 마우스 X 회전 (pitch)
     public float RotationY { get; private set; } = 0f;       // 마우스 Y 회전 (yaw)
-
-    //public bool IsJumping { get; private set; } = false;    // jump
-    //public bool IsReloading { get; private set; } = false;  // reload
-    //public bool IsFiring { get; private set; } = false;     // fire
-    //public bool IsZooming { get; private set; } = false;    // zoom
-    //public bool IsInteracting { get; private set; } = false;    // interaction
-    //public bool IsUsingItem { get; private set; } = false;  // useItem
-    //public bool IsRunning { get; private set; } = false;    // run
-    //public bool IsSitting { get; private set; } = false;    // sit
-    //public bool IsScoreBoardPopup { get; private set; } = false;    // scoreboard
 
     private bool _isJumping;
     private bool _isReloading;
@@ -70,10 +60,10 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         /// performed: 키가 눌렸을 때 호출된다
         /// canceled: 키가 뗴졌을 때 호출
-        inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput;
+        inputManager.GetInput(EPlayerInput.move).started += SetMoveInput;
         inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
 
-        inputManager.GetInput(EPlayerInput.look).performed += SetLookInput;
+        inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
 
         // 계속 누르고 있는 경우 
@@ -85,78 +75,96 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
-        inputManager.GetInput(EPlayerInput.fire).started += SetOnFireState;
-        inputManager.GetInput(EPlayerInput.fire).performed += SetFireState;
-        inputManager.GetInput(EPlayerInput.fire).canceled += SetFireState;
+        inputManager.GetInput(EPlayerInput.fire).started += StartFireState;
+        inputManager.GetInput(EPlayerInput.fire).canceled += CancelFireState;
 
-        inputManager.GetInput(EPlayerInput.zoom).performed += SetZoomState;
-        inputManager.GetInput(EPlayerInput.zoom).canceled += SetZoomState;
+        inputManager.GetInput(EPlayerInput.zoom).started += StartZoomState;
+        inputManager.GetInput(EPlayerInput.zoom).canceled += CancelZoomState;
 
-        inputManager.GetInput(EPlayerInput.reload).performed += TriggerReload;
+        inputManager.GetInput(EPlayerInput.reload).started += StartReloadState;
+        inputManager.GetInput(EPlayerInput.reload).canceled += CancelReloadState;
 
-        inputManager.GetInput(EPlayerInput.interaction).performed += TriggerInteraction;
+        inputManager.GetInput(EPlayerInput.interaction).started += StartInteraction;
+        inputManager.GetInput(EPlayerInput.interaction).canceled += CancelInteraction;
 
-        inputManager.GetInput(EPlayerInput.useItem).performed += TriggerUseItem;
+        inputManager.GetInput(EPlayerInput.useItem).started += StartUseItem;
+        inputManager.GetInput(EPlayerInput.useItem).canceled += CancelUseItem;
 
-        inputManager.GetInput(EPlayerInput.run).performed += SetRunState;
-        inputManager.GetInput(EPlayerInput.run).canceled += SetRunState;
+        inputManager.GetInput(EPlayerInput.run).started += StartRunState;
+        inputManager.GetInput(EPlayerInput.run).canceled += CancelRunState;
 
-        inputManager.GetInput(EPlayerInput.sit).performed += SetSitState;
-        inputManager.GetInput(EPlayerInput.sit).canceled += SetSitState;
+        inputManager.GetInput(EPlayerInput.sit).started += StartSitState;
+        inputManager.GetInput(EPlayerInput.sit).canceled += CancelSitState;
 
-        inputManager.GetInput(EPlayerInput.scoreboard).performed += OpenScoreboard;
+        inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
         inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
 
     }
 
     private void OnDisable()
     {
-        inputManager.GetInput(EPlayerInput.move).performed -= SetMoveInput;
+        inputManager.GetInput(EPlayerInput.move).started -= SetMoveInput;
         inputManager.GetInput(EPlayerInput.move).canceled -= SetMoveInput;
 
-        inputManager.GetInput(EPlayerInput.look).performed -= SetLookInput;
+        inputManager.GetInput(EPlayerInput.look).started -= SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled -= SetLookInput;
 
         inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
 
-        inputManager.GetInput(EPlayerInput.fire).started -= SetOnFireState;
-        inputManager.GetInput(EPlayerInput.fire).performed -= SetFireState;
-        inputManager.GetInput(EPlayerInput.fire).canceled -= SetFireState;
+        inputManager.GetInput(EPlayerInput.fire).started -= StartFireState;
+        inputManager.GetInput(EPlayerInput.fire).canceled -= CancelFireState;
 
-        inputManager.GetInput(EPlayerInput.zoom).performed -= SetZoomState;
-        inputManager.GetInput(EPlayerInput.zoom).canceled -= SetZoomState;
+        inputManager.GetInput(EPlayerInput.zoom).started -= StartZoomState;
+        inputManager.GetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
 
-        inputManager.GetInput(EPlayerInput.reload).performed -= TriggerReload;
+        inputManager.GetInput(EPlayerInput.reload).started -= StartReloadState;
+        inputManager.GetInput(EPlayerInput.reload).canceled -= CancelReloadState;
 
-        inputManager.GetInput(EPlayerInput.interaction).performed -= TriggerInteraction;
+        inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
+        inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
 
-        inputManager.GetInput(EPlayerInput.useItem).performed -= TriggerUseItem;
+        inputManager.GetInput(EPlayerInput.useItem).started -= StartUseItem;
+        inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelUseItem;
 
-        inputManager.GetInput(EPlayerInput.run).performed -= SetRunState;
-        inputManager.GetInput(EPlayerInput.run).canceled -= SetRunState;
+        inputManager.GetInput(EPlayerInput.run).started -= StartRunState;
+        inputManager.GetInput(EPlayerInput.run).canceled -= CancelRunState;
 
-        inputManager.GetInput(EPlayerInput.sit).performed -= SetSitState;
-        inputManager.GetInput(EPlayerInput.sit).canceled -= SetSitState;
+        inputManager.GetInput(EPlayerInput.sit).started -= StartSitState;
+        inputManager.GetInput(EPlayerInput.sit).canceled -= CancelSitState;
 
-        inputManager.GetInput(EPlayerInput.scoreboard).performed -= OpenScoreboard;
+        inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
         inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
     }
 
     // 외부에서 호출하는 저장용 메서드들
+    /// SetBool
+    /// 상태 지속형 동작에 적합(예: 달리기/앉기/조준 상태)
+    /// 명확한 상태 전환 표현(true/false 직접 설정)
+    /// 애니메이터 파라미터와 1:1 매칭 가능
+    /// 
+    /// Trigger      
+    /// 단발성 이벤트에 적합(예: 재장전/아이템 사용)
+    /// 일회성 신호 전달
+    /// 목적애니메이션 트리거와 연동 시 유용 
+    /// 
     /// <summary>
     /// SetXXXInput → 입력값을 저장하는 경우
     /// UpdateXXXState / SetXXXState → Boolean 상태 토글
     /// TriggerXXX / FireXXX → 단발성 이벤트(ex.reload, use item)
     /// </summary>
     /// <param name="context"></param>
+    
+    #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
         Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
         Vector2 moveInput = context.ReadValue<Vector2>();
         MoveInput = new Vector3(moveInput.x, 0f, moveInput.y);
     }
+    #endregion
 
+    #region Look   
     private void SetLookInput(InputAction.CallbackContext context)
     {
         Vector2 look = context.ReadValue<Vector2>();
@@ -164,89 +172,113 @@ public class PlayerInputHandler : NetworkBehaviour
         RotationX = look.x;
         RotationY = look.y;
     }
+    #endregion
 
+    #region Jump
     private void StartJumpInput(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] StartJumpInput - Jump started");
         _isJumping = true;
-    }
-
+    }   
     private void CancelJumpInput(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] CancelJumpInput - Jump canceled");
         _isJumping = false;
     }
-
-    private void SetFireState(InputAction.CallbackContext context)
+    #endregion
+    #region Fire
+    private void StartFireState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetFireState - Fire: {context.performed}");
-        _isFiring = context.performed;
+        Debug.Log($"[Input] SetFireState - Fire started");
+        _isFiring = true;
+    }
+    private void CancelFireState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetFireState - Fire canceled");
+        _isFiring = false;
+    }
+    #endregion
+    #region Zoom
+    private void StartZoomState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] StartZoomState - Zoom Started");
+        _isZooming = true;
     }
 
-    private void SetOnFireState(InputAction.CallbackContext context)
+    private void CancelZoomState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetFireState - Fire: {context.performed}");
-        _isOnFiring = context.started;
+        Debug.Log($"[Input] CancelZoomState - Zoom Canceled");
+        _isZooming = false;
     }
-
-    private void SetZoomState(InputAction.CallbackContext context)
-    {
-        Debug.Log($"[Input] SetZoomState - Zoom: {context.performed}");
-        _isZooming = context.performed;
-        _isOnZoom = context.canceled;
-    }
-
-    private void TriggerReload(InputAction.CallbackContext context)
+    #endregion
+    #region Reload
+    private void StartReloadState(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] TriggerReload - Reload triggered");
         _isReloading = true;
-        Invoke(nameof(ResetReloadState), 0.1f);
+        /// 방식 참고해서 나중에 State Machine에서 구현한다
+        //Invoke(nameof(CancelReloadState), 0.1f);    // CancelReloadState를 0.1초 뒤에 호출하는 방식
     }
-
-    private void ResetReloadState()
+    private void CancelReloadState(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] ResetReloadState - Reload reset");
         _isReloading = false;
     }
-
-    private void TriggerInteraction(InputAction.CallbackContext context)
+    #endregion
+    #region Interaction
+    private void StartInteraction(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] TriggerInteraction - Interaction triggered");
         _isInteracting = true;
-        Invoke(nameof(ResetInteractionState), 0.1f);
+        Invoke(nameof(CancelInteraction), 0.1f);
     }
 
-    private void ResetInteractionState()
+    private void CancelInteraction(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] ResetInteractionState - Interaction reset");
         _isInteracting = false;
     }
-
-    private void TriggerUseItem(InputAction.CallbackContext context)
+    #endregion
+    #region UseItem
+    private void StartUseItem(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] TriggerUseItem - Use item triggered");
         _isUsingItem = true;
-        Invoke(nameof(ResetUseItemState), 0.1f);
+        //Invoke(nameof(CancelUseItem), 0.1f);
     }
 
-    private void ResetUseItemState()
+    private void CancelUseItem(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] ResetUseItemState - Use item reset");
         _isUsingItem = false;
     }
-
-    private void SetRunState(InputAction.CallbackContext context)
+    #endregion
+    #region Run
+    private void StartRunState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetRunState - Running: {context.performed}");
-        _isRunning = context.performed;
+        Debug.Log($"[Input] StartRunState - Running Started");
+        _isRunning = true;
+    }
+    private void CancelRunState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] CancelRunState - Running Canceled");
+        _isRunning = false;
+    }
+    #endregion
+    #region Sit
+    private void StartSitState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] StartSitState - Sitting Started");
+        _isSitting = true;
     }
 
-    private void SetSitState(InputAction.CallbackContext context)
+    private void CancelSitState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetSitState - Sitting: {context.performed}");
-        _isSitting = context.performed;
+        Debug.Log($"[Input] CancelSitState - Sitting Canceled");
+        _isSitting = false;
     }
-
+    #endregion
+    #region Scoreboard
     private void OpenScoreboard(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
@@ -258,7 +290,7 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
         _isScoreBoardPopup = false;
     }
-
+    #endregion
 
     /// <summary>
     /// 네트워크 입력 만들기
@@ -270,14 +302,11 @@ public class PlayerInputHandler : NetworkBehaviour
         if (MoveInput == Vector3.zero &&
             !_isJumping && !_isFiring && !_isReloading &&
             !_isZooming && !_isInteracting && !_isUsingItem &&
-            !_isRunning && !_isSitting && !_isScoreBoardPopup &&
-            !_isOnFiring && !_isOnZoom)
+            !_isRunning && !_isSitting && !_isScoreBoardPopup)
         {
             return null;
         }
         //Debug.Log("입력 받았다");
-
-
         var data = new NetworkInputData
         {
             direction = MoveInput,
