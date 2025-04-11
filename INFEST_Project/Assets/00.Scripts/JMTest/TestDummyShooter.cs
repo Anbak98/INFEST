@@ -52,18 +52,12 @@ public class TestDummyShooter : NetworkBehaviour
         }
 
         // 연출용 총알
-        //RPCSpawnDummyProjectile(origin, direction, hitPosition, hitNormal, showHitEffect);
-
-        //테스트용
-        var projectile = DummyProjectilePool.Instance.Get();
-        projectile.transform.position = origin;
-        projectile.transform.rotation = Quaternion.LookRotation(direction);
-        projectile.SetHit(hitPosition, hitNormal, showHitEffect);
+        RPCSpawnDummyProjectile(origin, direction, hitPosition, hitNormal, showHitEffect);        
 
         // 실제 네트워크 발사체
-        //Runner.Spawn(_realProjectilePrefab, origin,
-        //    Quaternion.LookRotation(direction), Object.InputAuthority,
-        //   (runner, obj) => { obj.GetComponent<RealProjectile>().Init(direction); });
+        Runner.Spawn(_realProjectilePrefab, origin,
+            Quaternion.LookRotation(direction), Object.InputAuthority,
+           (runner, obj) => { obj.GetComponent<RealProjectile>().Init(direction); });
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
