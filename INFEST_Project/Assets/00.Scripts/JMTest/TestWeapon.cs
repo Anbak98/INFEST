@@ -60,8 +60,11 @@ public class TestWeapon : NetworkBehaviour
             {
                 IsReloading = false;
 
-                curClip = Mathf.Min(startClip, possessionAmmo);
-                possessionAmmo -= Mathf.Min(startClip, possessionAmmo);
+                int neededAmmo = startClip - curClip;
+                int ammoToLoad = Mathf.Min(neededAmmo, possessionAmmo);
+
+                curClip += ammoToLoad;
+                possessionAmmo -= ammoToLoad;
                 Debug.Log("장전");
                 _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
             }
@@ -72,8 +75,8 @@ public class TestWeapon : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            possessionAmmo = 29;
-            curClip = Mathf.Clamp(curClip, 0, startClip);
+            possessionAmmo = maxAmmo;
+            curClip = startClip;
         }
 
         _visibleFireCount = _fireCount;
@@ -91,16 +94,7 @@ public class TestWeapon : NetworkBehaviour
         if (_visibleFireCount < _fireCount)
         {
             PlayFireEffect();
-        }
-
-        for (int i = _visibleFireCount; i < _fireCount; i++)
-        {
-            var data = _projectileData[i % _projectileData.Length];
-            var muzzleTransform = HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform;
-
-            var dummyprojectile = Instantiate(dummyProjectilePrefab, muzzleTransform.position, muzzleTransform.rotation);
-            dummyProjectilePrefab.SetHit(data.hitPosition, data.hitNormal, data.showHitEffect);
-        }
+        }        
 
         _visibleFireCount = _fireCount;
 
@@ -176,7 +170,7 @@ public class TestWeapon : NetworkBehaviour
 
                 if (hit.Hitbox != null)
                 {
-                    //ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
                 }
                 else
                 {
@@ -191,31 +185,7 @@ public class TestWeapon : NetworkBehaviour
             }
         }
 
-        //if (Physics.Raycast(origin, direction, out RaycastHit hitInfo, maxHitDistance, HitMask))
-        //{
-        //    projectileData.hitPosition = hitInfo.point;
-        //    projectileData.hitNormal = hitInfo.normal;
-
-        //    // 피격된 오브젝트 로그 출력
-        //    Debug.Log($"Hit: {hitInfo.collider.gameObject.name}");
-
-        //    // Rigidbody가 있으면 밀기
-        //    var rb = hitInfo.collider.attachedRigidbody;
-        //    rb.AddForce(direction * 10f, ForceMode.Impulse);
-
-        //    projectileData.showHitEffect = true;
-        //}
-        //else
-        //{
-        //    projectileData.hitPosition = origin + direction * maxHitDistance;
-        //    projectileData.hitNormal = -direction;
-        //    projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
-        //}
-
-        var projectile = DummyProjectilePool.Instance.Get();
-        projectile.transform.position = origin;
-        projectile.transform.rotation = Quaternion.LookRotation(direction);
-        projectile.SetHit(projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+        Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
 
         if (HasStateAuthority)
         {
@@ -233,29 +203,31 @@ public class TestWeapon : NetworkBehaviour
         Debug.Log("총쏜다");
     }
 
-    //private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
-    //{
-    //    var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
-    //    if (enemyHealth == null || enemyHealth.isAlive == false)
-    //        return;
+    private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
+    {
+        if (enemyHitbox == null) return;
 
-    //    float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
-    //    bool isCriticalHit = damageMultiplier > 1f;
+        var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
+        if (enemyHealth == null || enemyHealth.isAlive == false)
+            return;
 
-    //    float hitdamage = damage * damageMultiplier;
-    //    if (_sceneObjects.Gameplay.DoubleDamageActive)
-    //    {
-    //        damage *= 2f;
-    //    }
+        float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
+        bool isCriticalHit = damageMultiplier > 1f;
 
-    //    if (enemyHealth.ApplyDamage(Object.InputAuthority, damage, pos, dir, Type, isCriticalHit) == false)
-    //        return;
+        float hitdamage = damage * damageMultiplier;
+        //if (_sceneObjects.Gameplay.DoubleDamageActive)
+        //{
+        //    damage *= 2f;
+        //}
 
-    //    if (HasInputAuthority && Runner.IsForward)
-    //    {
-    //        _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
-    //    }
-    //}
+        if (enemyHealth.ApplyDamage(Object.InputAuthority, damage, pos, dir, Type, isCriticalHit) == false)
+            return;
+
+        //if (HasInputAuthority && Runner.IsForward)
+        //{
+        //    _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
+        //}
+    }
 
     /// <summary>
     /// 재장전
@@ -282,6 +254,15 @@ public class TestWeapon : NetworkBehaviour
     public void Aiming()
     {
 
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void Rpc_SpawnDummyProjectile(Vector3 pos, Vector3 dir, Vector3 hitPos, Vector3 hitNormal, bool showHitEffect)
+    {
+        var dummy = DummyProjectilePool.Instance.Get();
+        dummy.transform.position = pos;
+        dummy.transform.rotation = Quaternion.LookRotation(dir);
+        dummy.SetHit(hitPos, hitNormal, showHitEffect);
     }
 
     private struct ProjectileData : INetworkStruct
