@@ -94,16 +94,7 @@ public class TestWeapon : NetworkBehaviour
         if (_visibleFireCount < _fireCount)
         {
             PlayFireEffect();
-        }
-
-        for (int i = _visibleFireCount; i < _fireCount; i++)
-        {
-            var data = _projectileData[i % _projectileData.Length];
-            var muzzleTransform = HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform;
-
-            var dummyprojectile = Instantiate(dummyProjectilePrefab, muzzleTransform.position, muzzleTransform.rotation);
-            dummyProjectilePrefab.SetHit(data.hitPosition, data.hitNormal, data.showHitEffect);
-        }
+        }        
 
         _visibleFireCount = _fireCount;
 
@@ -192,12 +183,9 @@ public class TestWeapon : NetworkBehaviour
                 projectileData.hitNormal = -direction;
                 projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
             }
-        }       
+        }
 
-        var projectile = DummyProjectilePool.Instance.Get();
-        projectile.transform.position = origin;
-        projectile.transform.rotation = Quaternion.LookRotation(direction);
-        projectile.SetHit(projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+        Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
 
         if (HasStateAuthority)
         {
@@ -264,6 +252,15 @@ public class TestWeapon : NetworkBehaviour
     public void Aiming()
     {
 
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void Rpc_SpawnDummyProjectile(Vector3 pos, Vector3 dir, Vector3 hitPos, Vector3 hitNormal, bool showHitEffect)
+    {
+        var dummy = DummyProjectilePool.Instance.Get();
+        dummy.transform.position = pos;
+        dummy.transform.rotation = Quaternion.LookRotation(dir);
+        dummy.SetHit(hitPos, hitNormal, showHitEffect);
     }
 
     private struct ProjectileData : INetworkStruct
