@@ -52,7 +52,8 @@ public class PlayerInputHandler : NetworkBehaviour
     private bool _isRunning;
     private bool _isSitting;
     private bool _isScoreBoardPopup;
-
+    //
+    private bool _isOnFiring;
 
     // 임시(동적연결)
     public InputManager inputManager;
@@ -74,6 +75,12 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.look).performed += SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
 
+        // 계속 누르고 있는 경우
+        _isOnFiring = inputManager.GetInput(EPlayerInput.fire).IsPressed();
+
+
+        /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
+        /// 
         inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
@@ -257,7 +264,7 @@ public class PlayerInputHandler : NetworkBehaviour
         {
             return null;
         }
-        Debug.Log("입력 받았다");
+        //Debug.Log("입력 받았다");
 
 
         var data = new NetworkInputData
@@ -275,7 +282,9 @@ public class PlayerInputHandler : NetworkBehaviour
         if (_isUsingItem) data.buttons.Set(NetworkInputData.BUTTON_USEITEM, true);
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
-
+        if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
+        //
+        if (_isOnFiring) data.buttons.Set(NetworkInputData.BUTTON_ONPRESSED, true); 
         return data;
     }
 }
