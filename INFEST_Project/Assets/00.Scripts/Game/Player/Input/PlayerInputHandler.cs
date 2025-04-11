@@ -142,7 +142,7 @@ public class PlayerInputHandler : NetworkBehaviour
     /// <param name="context"></param>
     private void SetMoveInput(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
+        //Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
         Vector2 moveInput = context.ReadValue<Vector2>();
         MoveInput = new Vector3(moveInput.x, 0f, moveInput.y);
     }
@@ -150,95 +150,95 @@ public class PlayerInputHandler : NetworkBehaviour
     private void SetLookInput(InputAction.CallbackContext context)
     {
         Vector2 look = context.ReadValue<Vector2>();
-        Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
+        //Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
         RotationX = look.x;
         RotationY = look.y;
     }
 
     private void StartJumpInput(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] StartJumpInput - Jump started");
+        //Debug.Log("[Input] StartJumpInput - Jump started");
         _isJumping = true;
     }
 
     private void CancelJumpInput(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] CancelJumpInput - Jump canceled");
+        //Debug.Log("[Input] CancelJumpInput - Jump canceled");
         _isJumping = false;
     }
 
     private void SetFireState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetFireState - Fire: {context.performed}");
+        //Debug.Log($"[Input] SetFireState - Fire: {context.performed}");
         _isFiring = context.performed;
     }
 
     private void SetZoomState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetZoomState - Zoom: {context.performed}");
+        //Debug.Log($"[Input] SetZoomState - Zoom: {context.performed}");
         _isZooming = context.performed;
     }
 
     private void TriggerReload(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] TriggerReload - Reload triggered");
+        //Debug.Log("[Input] TriggerReload - Reload triggered");
         _isReloading = true;
         Invoke(nameof(ResetReloadState), 0.1f);
     }
 
     private void ResetReloadState()
     {
-        Debug.Log("[Input] ResetReloadState - Reload reset");
+        //Debug.Log("[Input] ResetReloadState - Reload reset");
         _isReloading = false;
     }
 
     private void TriggerInteraction(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] TriggerInteraction - Interaction triggered");
+        //Debug.Log("[Input] TriggerInteraction - Interaction triggered");
         _isInteracting = true;
         Invoke(nameof(ResetInteractionState), 0.1f);
     }
 
     private void ResetInteractionState()
     {
-        Debug.Log("[Input] ResetInteractionState - Interaction reset");
+        //Debug.Log("[Input] ResetInteractionState - Interaction reset");
         _isInteracting = false;
     }
 
     private void TriggerUseItem(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] TriggerUseItem - Use item triggered");
+        //Debug.Log("[Input] TriggerUseItem - Use item triggered");
         _isUsingItem = true;
         Invoke(nameof(ResetUseItemState), 0.1f);
     }
 
     private void ResetUseItemState()
     {
-        Debug.Log("[Input] ResetUseItemState - Use item reset");
+        //Debug.Log("[Input] ResetUseItemState - Use item reset");
         _isUsingItem = false;
     }
 
     private void SetRunState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetRunState - Running: {context.performed}");
+        //Debug.Log($"[Input] SetRunState - Running: {context.performed}");
         _isRunning = context.performed;
     }
 
     private void SetSitState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetSitState - Sitting: {context.performed}");
+        //Debug.Log($"[Input] SetSitState - Sitting: {context.performed}");
         _isSitting = context.performed;
     }
 
     private void OpenScoreboard(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
+        //Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
         _isScoreBoardPopup = true;
     }
 
     private void CloseScoreboard(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
+        //Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
         _isScoreBoardPopup = false;
     }
 
@@ -275,6 +275,11 @@ public class PlayerInputHandler : NetworkBehaviour
         if (_isUsingItem) data.buttons.Set(NetworkInputData.BUTTON_USEITEM, true);
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
+
+       
+        data.isFiringHeld = Input.GetMouseButton(NetworkInputData.BUTTON_FIRE);// SY
+        data.isZoom = Input.GetMouseButtonUp(NetworkInputData.BUTTON_ZOOM);// SY
+
 
         return data;
     }

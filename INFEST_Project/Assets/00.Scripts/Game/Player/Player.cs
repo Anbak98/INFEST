@@ -16,6 +16,7 @@ public class Player : NetworkBehaviour
     // 
     private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
+    private Weapons _weapons;// SY
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -35,6 +36,7 @@ public class Player : NetworkBehaviour
     public GameObject FirstPersonRoot;
     public GameObject ThirdPersonRoot;
     //public NetworkObject SprayPrefab;
+
 
 
     //[SerializeField] private PhysxBall _prefabPhysxBall;
@@ -60,7 +62,7 @@ public class Player : NetworkBehaviour
     {
         _cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
-
+        _weapons = GetComponent<Weapons>(); // SY
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
@@ -91,7 +93,9 @@ public class Player : NetworkBehaviour
                 // 마우스 좌클릭(공격)
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
                 {
-                    Debug.Log("공격");
+                    //Debug.Log("공격");
+
+                    _weapons.Fire(data.isFiringHeld);
 
                     //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
                     //Runner.Spawn(_prefabBall,
@@ -105,12 +109,13 @@ public class Player : NetworkBehaviour
                     //spawnedProjectile = !spawnedProjectile;
                 }
                 // PhyscBall.Init() 메소드를 사용하여 스폰을 호출하고 속도(마지막 순방향에 곱한 상수)를 설정
-                
-                // 마우스 우클릭(ZOOM)
-                else if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
-                {
-                    Debug.Log("조준");
 
+                // 마우스 우클릭(ZOOM)
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                {
+                    //Debug.Log("조준");
+
+                    _weapons.Aiming();
                     //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
                     //Runner.Spawn(_prefabPhysxBall,
                     //  transform.position + _forward,
@@ -124,6 +129,21 @@ public class Player : NetworkBehaviour
                 }
                 // Runner.Spawn()을 호출한 후 spawnedProjectile 속성을 토글 하여 콜백을 트리거
                 //spawnedProjectile = !spawnedProjectile;
+
+                if (data.isZoom)
+                {
+                    Debug.Log("조준 해제");
+
+                    _weapons.StopAiming();
+                }
+
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_RELOAD))
+                {
+                    //Debug.Log("장전");
+
+                    _weapons.Reload();
+
+                }
             }
         }
 
@@ -214,6 +234,6 @@ public class Player : NetworkBehaviour
             message = $"Some other player said: {message}\n";
         }
 
-        _messages.text += message;
+        //_messages.text += message;
     }
 }
