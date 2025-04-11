@@ -54,6 +54,7 @@ public class PlayerInputHandler : NetworkBehaviour
     private bool _isScoreBoardPopup;
     //
     private bool _isOnFiring;
+    private bool _isOnZoom;
 
     // 임시(동적연결)
     public InputManager inputManager;
@@ -75,8 +76,8 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.look).performed += SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
 
-        // 계속 누르고 있는 경우
-        _isOnFiring = inputManager.GetInput(EPlayerInput.fire).IsPressed();
+        // 계속 누르고 있는 경우 
+        //_isOnFiring = !inputManager.GetInput(EPlayerInput.fire).IsPressed();
 
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
@@ -84,6 +85,7 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
+        inputManager.GetInput(EPlayerInput.fire).started += SetOnFireState;
         inputManager.GetInput(EPlayerInput.fire).performed += SetFireState;
         inputManager.GetInput(EPlayerInput.fire).canceled += SetFireState;
 
@@ -118,6 +120,7 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
 
+        inputManager.GetInput(EPlayerInput.fire).started -= SetOnFireState;
         inputManager.GetInput(EPlayerInput.fire).performed -= SetFireState;
         inputManager.GetInput(EPlayerInput.fire).canceled -= SetFireState;
 
@@ -180,10 +183,17 @@ public class PlayerInputHandler : NetworkBehaviour
         _isFiring = context.performed;
     }
 
+    private void SetOnFireState(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetFireState - Fire: {context.performed}");
+        _isOnFiring = context.started;
+    }
+
     private void SetZoomState(InputAction.CallbackContext context)
     {
         Debug.Log($"[Input] SetZoomState - Zoom: {context.performed}");
         _isZooming = context.performed;
+        _isOnZoom = context.canceled;
     }
 
     private void TriggerReload(InputAction.CallbackContext context)
@@ -260,7 +270,8 @@ public class PlayerInputHandler : NetworkBehaviour
         if (MoveInput == Vector3.zero &&
             !_isJumping && !_isFiring && !_isReloading &&
             !_isZooming && !_isInteracting && !_isUsingItem &&
-            !_isRunning && !_isSitting && !_isScoreBoardPopup)
+            !_isRunning && !_isSitting && !_isScoreBoardPopup &&
+            !_isOnFiring && !_isOnZoom)
         {
             return null;
         }
@@ -284,7 +295,11 @@ public class PlayerInputHandler : NetworkBehaviour
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         //
-        if (_isOnFiring) data.buttons.Set(NetworkInputData.BUTTON_ONPRESSED, true); 
+        if (_isOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);
+        if (_isOnZoom) data.buttons.Set(NetworkInputData.BUTTON_ZOOMPRESSED, true);
+        _isOnFiring = false;
+        _isOnZoom = false;
+
         return data;
     }
 }

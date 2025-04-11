@@ -91,10 +91,10 @@ public class Player : NetworkBehaviour
             if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
             {
                 // 마우스 좌클릭(공격)
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE) || data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED))
                 {
                     //Debug.Log("공격");
-                    _weapons.Fire(true);
+                    _weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
                     //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
                     //Runner.Spawn(_prefabBall,
@@ -129,7 +129,7 @@ public class Player : NetworkBehaviour
                 // Runner.Spawn()을 호출한 후 spawnedProjectile 속성을 토글 하여 콜백을 트리거
                 //spawnedProjectile = !spawnedProjectile;
                 
-                if (!data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
                 {
                     Debug.Log("조준 해제");
 

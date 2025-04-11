@@ -173,7 +173,7 @@ public class Weapon : NetworkBehaviour
     public void Fire(Vector3 pos, Vector3 dir, bool holdingPressed)
     {
         if (!IsCollected) return;
-        if (holdingPressed && !isAutomatic) return;
+        if (!holdingPressed && !isAutomatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curClip == 0) return;
         if (IsReloading) return;
