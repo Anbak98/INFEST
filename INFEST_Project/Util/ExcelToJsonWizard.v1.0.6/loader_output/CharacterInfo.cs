@@ -1,0 +1,109 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+[Serializable]
+public class CharacterInfo
+{
+    /// <summary>
+    /// ID
+    /// </summary>
+    public int key;
+
+    /// <summary>
+    /// 이름
+    /// </summary>
+    public string Name;
+
+    /// <summary>
+    /// 체력
+    /// </summary>
+    public int Health;
+
+    /// <summary>
+    /// 방어구 체력
+    /// </summary>
+    public int DefGear;
+
+    /// <summary>
+    /// 방어력
+    /// </summary>
+    public int Def;
+
+    /// <summary>
+    /// 이동속도
+    /// </summary>
+    public int SpeedMove;
+
+    /// <summary>
+    /// 시작 골드
+    /// </summary>
+    public int StartGold;
+
+    /// <summary>
+    /// 시작 시 팀코인
+    /// </summary>
+    public int StartTeamCoin;
+
+    /// <summary>
+    /// 상태
+    /// </summary>
+    public int State;
+
+    /// <summary>
+    /// 무기1 ID
+    /// </summary>
+    public int StartWeapon1;
+
+    /// <summary>
+    /// 보조무기 ID
+    /// </summary>
+    public int StartAuxiliaryWeapon;
+
+    /// <summary>
+    /// 소비아이템1 ID
+    /// </summary>
+    public int StartConsumeItem1;
+
+}
+public class CharacterInfoLoader
+{
+    public List<CharacterInfo> ItemsList { get; private set; }
+    public Dictionary<int, CharacterInfo> ItemsDict { get; private set; }
+
+    public CharacterInfoLoader(string path = "JSON/CharacterInfo")
+    {
+        string jsonData;
+        jsonData = Resources.Load<TextAsset>(path).text;
+        ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
+        ItemsDict = new Dictionary<int, CharacterInfo>();
+        foreach (var item in ItemsList)
+        {
+            ItemsDict.Add(item.key, item);
+        }
+    }
+
+    [Serializable]
+    private class Wrapper
+    {
+        public List<CharacterInfo> Items;
+    }
+
+    public CharacterInfo GetByKey(int key)
+    {
+        if (ItemsDict.ContainsKey(key))
+        {
+            return ItemsDict[key];
+        }
+        return null;
+    }
+    public CharacterInfo GetByIndex(int index)
+    {
+        if (index >= 0 && index < ItemsList.Count)
+        {
+            return ItemsList[index];
+        }
+        return null;
+    }
+}

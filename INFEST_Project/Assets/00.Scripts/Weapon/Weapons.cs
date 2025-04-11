@@ -89,17 +89,13 @@ public class Weapons : NetworkBehaviour
             }
         }
 
-        if (scrollWheelValue > 0 && CurrentWeapon.IsCollected) // 스크롤 업
+        if (scrollWheelValue > 0) // 스크롤 업
         {
             if (CurrentWeapon == AllWeapons[AllWeapons.Length - 1])
-            {
-                CurrentWeapon = AllWeapons[0].IsCollected ? AllWeapons[0] : CurrentWeapon;
-            }
+                CurrentWeapon = AllWeapons[0];
             else
-            {
-                CurrentWeapon = AllWeapons[_weaponIdx + 1].IsCollected ? All;
-            }
-                
+                CurrentWeapon = AllWeapons[_weaponIdx + 1];
+
             CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
         }
         else if(scrollWheelValue < 0) // 스크롤 다운
