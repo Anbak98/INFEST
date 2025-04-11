@@ -1,4 +1,3 @@
-using System.IO.Pipes;
 using Cinemachine;
 using Fusion;
 using UnityEngine;
@@ -10,8 +9,6 @@ public enum EWeaponType
     Sniper,
     Shotgun,
 }
-
-
 
 public class Weapon : NetworkBehaviour
 {
@@ -122,7 +119,9 @@ public class Weapon : NetworkBehaviour
         if (HasStateAuthority)
         {
             _basicDispersion = Dispersion;
-            curClip = Mathf.Clamp(curClip, 0, startClip);
+            //curClip = Mathf.Clamp(curClip, 0, startClip);
+            possessionAmmo = maxAmmo;
+            curClip = startClip;
         }
 
         _visibleFireCount = _fireCount;
@@ -177,6 +176,7 @@ public class Weapon : NetworkBehaviour
         if (holdingPressed && !isAutomatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curClip == 0) return;
+        if (IsReloading) return;
 
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // ·£´ý°ª °íÁ¤
 
