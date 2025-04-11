@@ -22,7 +22,7 @@ public struct CombinedPlayerInputs : INetworkInput
     public PlayerInputs PlayerD;
 
     // Example indexer for easier access to nested player structs
-    public PlayerInputs this[int i]
+    public PlayerInputs this[int i] // 배열처럼 접근하기 위한 인덱서
     {
         get
         {
