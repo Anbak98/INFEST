@@ -23,8 +23,4 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_RUN = 6;       // lShift
     public const byte BUTTON_SIT = 7;       // lCtrl
     public const byte BUTTON_SCOREBOARD = 8;    // Tab
-
-    //SY
-    public bool isFiringHeld;
-    public bool isZoom;
 }

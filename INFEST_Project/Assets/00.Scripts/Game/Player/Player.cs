@@ -94,8 +94,7 @@ public class Player : NetworkBehaviour
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
                 {
                     //Debug.Log("공격");
-
-                    _weapons.Fire(data.isFiringHeld);
+                    _weapons.Fire(true);
 
                     //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
                     //Runner.Spawn(_prefabBall,
@@ -129,8 +128,8 @@ public class Player : NetworkBehaviour
                 }
                 // Runner.Spawn()을 호출한 후 spawnedProjectile 속성을 토글 하여 콜백을 트리거
                 //spawnedProjectile = !spawnedProjectile;
-
-                if (data.isZoom)
+                
+                if (!data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
                 {
                     Debug.Log("조준 해제");
 
@@ -234,6 +233,6 @@ public class Player : NetworkBehaviour
             message = $"Some other player said: {message}\n";
         }
 
-        //_messages.text += message;
+        _messages.text += message;
     }
 }

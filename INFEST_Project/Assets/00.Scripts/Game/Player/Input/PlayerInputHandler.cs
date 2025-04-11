@@ -276,10 +276,6 @@ public class PlayerInputHandler : NetworkBehaviour
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
 
-       
-        data.isFiringHeld = Input.GetMouseButton(NetworkInputData.BUTTON_FIRE);// SY
-        data.isZoom = Input.GetMouseButtonUp(NetworkInputData.BUTTON_ZOOM);// SY
-
 
         return data;
     }
