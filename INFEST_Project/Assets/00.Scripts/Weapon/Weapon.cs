@@ -197,8 +197,8 @@ public class Weapon : NetworkBehaviour
     {
         if (!IsCollected) return; // 보유중이지 않으면
         if (curClip <= 0) return; // 현재 탄창에 탄약이 없으면
-        if (IsAiming) return;
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
+        if (IsAiming) return; // 조준중인가?
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동중인가?
 
         gunRecoil.ChangePosition(_targetPosition);
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.5f);
@@ -210,8 +210,8 @@ public class Weapon : NetworkBehaviour
     public void StopAiming()
     {
         if (!IsCollected) return; // 보유중이지 않으면
-        if (!IsAiming) return;
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
+        if (!IsAiming) return; //조준중이 아닌가?
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동중인가?
 
         gunRecoil.ChangePosition(_startPosition);
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);

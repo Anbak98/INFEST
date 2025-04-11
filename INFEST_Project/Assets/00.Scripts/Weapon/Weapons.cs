@@ -89,17 +89,20 @@ public class Weapons : NetworkBehaviour
             }
         }
 
-        if (scrollWheelValue > 0)
+        if (scrollWheelValue > 0 && CurrentWeapon.IsCollected) // 스크롤 업
         {
-            if(CurrentWeapon == AllWeapons[AllWeapons.Length - 1])
-                CurrentWeapon = AllWeapons[0];
+            if (CurrentWeapon == AllWeapons[AllWeapons.Length - 1])
+            {
+                CurrentWeapon = AllWeapons[0].IsCollected ? AllWeapons[0] : CurrentWeapon;
+            }
             else
-                CurrentWeapon = AllWeapons[_weaponIdx + 1];
-
+            {
+                CurrentWeapon = AllWeapons[_weaponIdx + 1].IsCollected ? All;
+            }
+                
             CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
-            Debug.Log("스크롤 업");
         }
-        else if(scrollWheelValue < 0)
+        else if(scrollWheelValue < 0) // 스크롤 다운
         {
             if (CurrentWeapon == AllWeapons[0])
                 CurrentWeapon = AllWeapons[AllWeapons.Length - 1];
@@ -107,7 +110,13 @@ public class Weapons : NetworkBehaviour
                 CurrentWeapon = AllWeapons[_weaponIdx - 1];
 
             CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
-            Debug.Log("스크롤 다운");
         }
+        else
+        {
+            CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
+
+            Debug.Log("스크롤버튼 클릭");
+        }
+
     }
 }
