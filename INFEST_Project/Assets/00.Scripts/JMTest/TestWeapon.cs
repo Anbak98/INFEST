@@ -40,7 +40,7 @@ public class TestWeapon : NetworkBehaviour
     public Transform firstPersonMuzzleTransform;
     public Transform thirdPersonMuzzleTransform;
     public DummyProjectile dummyProjectilePrefab; // 총알 프리팹
-    private DummyProjectile dummyProjectile; // 
+    private DummyProjectile dummyProjectile; // 총알 인스턴스
     private bool _reloadingVisible; // 보이는 리로딩 상태
     [SerializeField] private Transform _fireTransform; // 총구 위치
     [SerializeField] private NetworkPrefabRef _realProjectilePrefab;

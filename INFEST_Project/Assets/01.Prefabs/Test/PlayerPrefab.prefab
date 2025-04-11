@@ -262,7 +262,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3611263233600165701}
-  bullet: {fileID: 3384246889869538910, guid: f5e26f10799429c459416a04709d8c26, type: 3}
   camRecoil: {fileID: 2976252310099922351}
   gunRecoil: {fileID: 490185478735285077}
   Type: 1
@@ -275,9 +274,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   startClip: 30
-  curClip: 30
+  _curClip: 0
+  _possessionAmmo: 0
   maxAmmo: 360
-  possessionAmmo: 60
   reloadTime: 2
   ProjectilesPerShot: 1
   weaponPrice: 0
@@ -288,6 +287,13 @@ MonoBehaviour:
     _value: 0
   _IsAiming:
     _value: 0
+  firstPersonMuzzleTransform: {fileID: 8629170171379393642}
+  thirdPersonMuzzleTransform: {fileID: 8629170171379393642}
+  dummyProjectilePrefab: {fileID: 2676864090333110528, guid: 810d722e367026c4a8e8cf2048e6cb7a,
+    type: 3}
+  _fireTransform: {fileID: 8629170171379393642}
+  _realProjectilePrefab:
+    RawGuidValue: 7affb485456bc0046a3e42266340171b
 --- !u!114 &490185478735285077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +659,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8486261682605587139}
-  bullet: {fileID: 3384246889869538910, guid: f5e26f10799429c459416a04709d8c26, type: 3}
   camRecoil: {fileID: 2976252310099922351}
   gunRecoil: {fileID: 2256413488854573870}
   Type: 3
@@ -666,9 +671,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   startClip: 8
-  curClip: 8
+  _curClip: 0
+  _possessionAmmo: 0
   maxAmmo: 360
-  possessionAmmo: 16
   reloadTime: 0.5
   ProjectilesPerShot: 10
   weaponPrice: 0
@@ -679,6 +684,13 @@ MonoBehaviour:
     _value: 0
   _IsAiming:
     _value: 0
+  firstPersonMuzzleTransform: {fileID: 2444340691112934886}
+  thirdPersonMuzzleTransform: {fileID: 2444340691112934886}
+  dummyProjectilePrefab: {fileID: 2676864090333110528, guid: 810d722e367026c4a8e8cf2048e6cb7a,
+    type: 3}
+  _fireTransform: {fileID: 2444340691112934886}
+  _realProjectilePrefab:
+    RawGuidValue: 7affb485456bc0046a3e42266340171b
 --- !u!114 &2256413488854573870
 MonoBehaviour:
   m_ObjectHideFlags: 0
