@@ -205,6 +205,8 @@ public class TestWeapon : NetworkBehaviour
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
     {
+        if (enemyHitbox == null) return;
+
         var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
         if (enemyHealth == null || enemyHealth.isAlive == false)
             return;
