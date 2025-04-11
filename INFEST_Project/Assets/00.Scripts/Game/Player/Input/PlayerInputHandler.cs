@@ -66,8 +66,8 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
 
-        // 계속 누르고 있는 경우 
-        //_isOnFiring = !inputManager.GetInput(EPlayerInput.fire).IsPressed();
+        // 계속 누르고 있는 경우
+        //_isOnFiring = inputManager.GetInput(EPlayerInput.fire).IsPressed();
 
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
@@ -154,7 +154,7 @@ public class PlayerInputHandler : NetworkBehaviour
     /// TriggerXXX / FireXXX → 단발성 이벤트(ex.reload, use item)
     /// </summary>
     /// <param name="context"></param>
-    
+
     #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
@@ -179,7 +179,7 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         Debug.Log("[Input] StartJumpInput - Jump started");
         _isJumping = true;
-    }   
+    }
     private void CancelJumpInput(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] CancelJumpInput - Jump canceled");
@@ -191,6 +191,7 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         Debug.Log($"[Input] SetFireState - Fire started");
         _isFiring = true;
+        _isOnFiring = true;
     }
     private void CancelFireState(InputAction.CallbackContext context)
     {
@@ -209,6 +210,7 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         Debug.Log($"[Input] CancelZoomState - Zoom Canceled");
         _isZooming = false;
+        _isOnZoom = true;
     }
     #endregion
     #region Reload
@@ -302,7 +304,8 @@ public class PlayerInputHandler : NetworkBehaviour
         if (MoveInput == Vector3.zero &&
             !_isJumping && !_isFiring && !_isReloading &&
             !_isZooming && !_isInteracting && !_isUsingItem &&
-            !_isRunning && !_isSitting && !_isScoreBoardPopup)
+            !_isRunning && !_isSitting && !_isScoreBoardPopup &&
+            !_isOnFiring && !_isOnZoom)
         {
             return null;
         }

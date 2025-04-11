@@ -91,7 +91,7 @@ public class Player : NetworkBehaviour
             if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
             {
                 // 마우스 좌클릭(공격)
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE) || data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
                 {
                     //Debug.Log("공격");
                     _weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
