@@ -17,7 +17,8 @@ public enum EPlayerInput
     useItem,
     run,
     sit,
-    scoreboard
+    scoreboard,
+    swap
 }
 
 /// <summary>
@@ -86,6 +87,7 @@ public class InputManager : MonoBehaviour
             EPlayerInput.run => PlayerAction.Player.Run,
             EPlayerInput.sit => PlayerAction.Player.Sit,
             EPlayerInput.scoreboard => PlayerAction.Player.ScoreBoard,
+            EPlayerInput.swap => PlayerAction.Player.Swap,
             _ => null
         };
     }

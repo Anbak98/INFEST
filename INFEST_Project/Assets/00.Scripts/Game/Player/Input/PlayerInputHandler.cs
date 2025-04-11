@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.UI;
 using static UnityEngine.EventSystems.StandaloneInputModule;
 
 
@@ -32,6 +33,7 @@ public class PlayerInputHandler : NetworkBehaviour
 
     public float RotationX { get; private set; } = 0f;       // 마우스 X 회전 (pitch)
     public float RotationY { get; private set; } = 0f;       // 마우스 Y 회전 (yaw)
+    private Vector2 _isSwapVelue;
 
     private bool _isJumping;
     private bool _isReloading;
@@ -66,8 +68,8 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
 
-        // 계속 누르고 있는 경우
-        //_isOnFiring = inputManager.GetInput(EPlayerInput.fire).IsPressed();
+        inputManager.GetInput(EPlayerInput.swap).performed += SetSwapInput;
+        inputManager.GetInput(EPlayerInput.swap).canceled += SetSwapInput;
 
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
@@ -108,6 +110,9 @@ public class PlayerInputHandler : NetworkBehaviour
 
         inputManager.GetInput(EPlayerInput.look).started -= SetLookInput;
         inputManager.GetInput(EPlayerInput.look).canceled -= SetLookInput;
+
+        inputManager.GetInput(EPlayerInput.swap).performed -= SetSwapInput;
+        inputManager.GetInput(EPlayerInput.swap).canceled -= SetSwapInput;
 
         inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
@@ -163,7 +168,6 @@ public class PlayerInputHandler : NetworkBehaviour
         MoveInput = new Vector3(moveInput.x, 0f, moveInput.y);
     }
     #endregion
-
     #region Look   
     private void SetLookInput(InputAction.CallbackContext context)
     {
@@ -173,7 +177,13 @@ public class PlayerInputHandler : NetworkBehaviour
         RotationY = look.y;
     }
     #endregion
-
+    #region Swap
+    private void SetSwapInput(InputAction.CallbackContext context)
+    {
+        Debug.Log($"[Input] SetSwapInput - Velue: {context.ReadValue<Vector2>().y}, Phase: {context.phase}");
+        _isSwapVelue = context.ReadValue<Vector2>();
+    }
+    #endregion
     #region Jump
     private void StartJumpInput(InputAction.CallbackContext context)
     {
@@ -293,7 +303,7 @@ public class PlayerInputHandler : NetworkBehaviour
         _isScoreBoardPopup = false;
     }
     #endregion
-
+   
     /// <summary>
     /// 네트워크 입력 만들기
     /// PlayerInputSender에서 호출하여 저장된 입력을 서버로 전송한다
@@ -302,6 +312,7 @@ public class PlayerInputHandler : NetworkBehaviour
     public NetworkInputData? GetNetworkInput()
     {
         if (MoveInput == Vector3.zero &&
+            _isSwapVelue.y == 0 &&
             !_isJumping && !_isFiring && !_isReloading &&
             !_isZooming && !_isInteracting && !_isUsingItem &&
             !_isRunning && !_isSitting && !_isScoreBoardPopup &&
@@ -314,6 +325,7 @@ public class PlayerInputHandler : NetworkBehaviour
         {
             direction = MoveInput,
             lookDelta = new Vector2(RotationX, RotationY),
+            scrollValue = _isSwapVelue
         };
 
         if (_isRunning) data.buttons.Set(NetworkInputData.BUTTON_RUN, true);

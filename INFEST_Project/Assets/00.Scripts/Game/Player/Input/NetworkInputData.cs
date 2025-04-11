@@ -8,25 +8,27 @@ using UnityEngine;
 public struct NetworkInputData : INetworkInput
 {
     public Vector3 direction;           // 이동방향(wasd)
-    public Vector2 lookDelta;             // 마우스 움직임(시점 회전)
+    public Vector2 lookDelta;           // 마우스 움직임(시점 회전)
     public NetworkButtons buttons;      // 버튼 상태
+    public Vector2 scrollValue;           // 마우스 휠 값;
 
     // 마우스
     public const byte BUTTON_FIRE = 0;      // 마우스 왼쪽
     public const byte BUTTON_ZOOM = 1;      // 마우스 오른쪽
+    public const byte BUTTON_SWAP = 2;      // 마우스 휠
+
 
     // 키보드
-    public const byte BUTTON_JUMP = 2;      // space
-    public const byte BUTTON_RELOAD = 3;    // R
-    public const byte BUTTON_INTERACT = 4;  // F
-    public const byte BUTTON_USEITEM = 5;   // E
-    public const byte BUTTON_RUN = 6;       // lShift
-    public const byte BUTTON_SIT = 7;       // lCtrl
-    public const byte BUTTON_SCOREBOARD = 8;    // Tab
+    public const byte BUTTON_JUMP = 3;      // space
+    public const byte BUTTON_RELOAD = 4;    // R
+    public const byte BUTTON_INTERACT = 5;  // F
+    public const byte BUTTON_USEITEM = 6;   // E
+    public const byte BUTTON_RUN = 7;       // lShift
+    public const byte BUTTON_SIT = 8;       // lCtrl
+    public const byte BUTTON_SCOREBOARD = 9;    // Tab
 
     // 내부에서 사용하는 변수
-    public const byte BUTTON_FIREPRESSED = 9;    // 마우스 왼쪽클릭 지속
-    public const byte BUTTON_ZOOMPRESSED = 10;    // 마우스 오른쪽클릭 지속
-
+    public const byte BUTTON_FIREPRESSED = 10;    // 마우스 왼쪽클릭 지속
+    public const byte BUTTON_ZOOMPRESSED = 11;    // 마우스 오른쪽클릭 지속
 
 }

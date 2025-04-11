@@ -125,6 +125,15 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Swap"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""949acaed-9161-4d15-a0b5-d852aace6b69"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -292,6 +301,17 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f558876-f942-4775-983d-efc2da074197"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -311,6 +331,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Sit = m_Player.FindAction("Sit", throwIfNotFound: true);
         m_Player_ScoreBoard = m_Player.FindAction("ScoreBoard", throwIfNotFound: true);
+        m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -383,6 +404,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Sit;
     private readonly InputAction m_Player_ScoreBoard;
+    private readonly InputAction m_Player_Swap;
     public struct PlayerActions
     {
         private @PlayerActionMap m_Wrapper;
@@ -398,6 +420,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Sit => m_Wrapper.m_Player_Sit;
         public InputAction @ScoreBoard => m_Wrapper.m_Player_ScoreBoard;
+        public InputAction @Swap => m_Wrapper.m_Player_Swap;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -440,6 +463,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @ScoreBoard.started += instance.OnScoreBoard;
             @ScoreBoard.performed += instance.OnScoreBoard;
             @ScoreBoard.canceled += instance.OnScoreBoard;
+            @Swap.started += instance.OnSwap;
+            @Swap.performed += instance.OnSwap;
+            @Swap.canceled += instance.OnSwap;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -477,6 +503,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @ScoreBoard.started -= instance.OnScoreBoard;
             @ScoreBoard.performed -= instance.OnScoreBoard;
             @ScoreBoard.canceled -= instance.OnScoreBoard;
+            @Swap.started -= instance.OnSwap;
+            @Swap.performed -= instance.OnSwap;
+            @Swap.canceled -= instance.OnSwap;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -507,5 +536,6 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnSit(InputAction.CallbackContext context);
         void OnScoreBoard(InputAction.CallbackContext context);
+        void OnSwap(InputAction.CallbackContext context);
     }
 }

@@ -143,6 +143,13 @@ public class Player : NetworkBehaviour
                     _weapons.Reload();
 
                 }
+
+                if (data.scrollValue.y != 0)
+                {
+                    Debug.Log("½º¿Ò");
+
+                    _weapons.Swap(data.scrollValue.y);
+                }
             }
         }
 
