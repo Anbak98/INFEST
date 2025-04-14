@@ -37,6 +37,8 @@ public class Player : NetworkBehaviour
     public GameObject ThirdPersonRoot;
     //public NetworkObject SprayPrefab;
 
+    // isGround를 사용하기 위해
+    public CharacterController Controller { get; private set; }
 
 
     //[SerializeField] private PhysxBall _prefabPhysxBall;
@@ -60,6 +62,8 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
+        Controller = GetComponent<CharacterController>();
+
         _cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
