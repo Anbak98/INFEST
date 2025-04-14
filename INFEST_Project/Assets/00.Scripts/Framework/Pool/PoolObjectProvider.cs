@@ -16,7 +16,7 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
     /// <summary>
     /// How many objects are going to be kept on the pools, 0 or negative means to pool all released objects.
     /// </summary>
-    private int _maxPoolCount = 0;
+    private int _maxPoolCount = 10000;
 
     /// The base <see cref="NetworkObjectProviderDefault"/> by default simply instantiate a new game object.
     /// Let's create a method to use a custom logic that will pool objects.
