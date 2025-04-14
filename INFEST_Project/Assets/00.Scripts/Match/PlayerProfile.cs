@@ -1,4 +1,5 @@
 using Fusion;
+using System;
 using UnityEngine;
 
 public enum JOB
@@ -8,7 +9,7 @@ public enum JOB
     SWAT,
     Demolator
 }
-
+[Serializable]
 public struct Profile: INetworkStruct
 {
     public NetworkString<_16> NickName;
@@ -17,28 +18,49 @@ public struct Profile: INetworkStruct
 
 public class PlayerProfile : NetworkBehaviour
 {
-    [Networked]
+    [Networked, SerializeField]
     public Profile Info { get; set; }
 
     public override void Spawned()
     {
         base.Spawned();
-
-        if(Object.HasStateAuthority)
+        if (HasInputAuthority)
         {
-            Profile profile = Info;
-            profile.NickName = PlayerPrefs.GetString("Nickname");
-            profile.Job = JOB.Medic;
-            Info = profile;
+            Profile profile = new Profile()
+            {
+                NickName = PlayerPrefs.GetString("Nickname"),
+                Job = JOB.Medic
+            };
+
+            RPC_SetInfo(profile);
         }
 
-        Debug.Log($"[Room] Player joined: {Runner.TryGetNetworkedBehaviourId(this)}");
+        var Room = FindObjectOfType<Room>();
+        Debug.Log($"[Profile] Player joined: {Runner.TryGetNetworkedBehaviourId(this)}");
+        Room.RPC_SendProfileToAll(this);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
-        base.Despawned(runner, hasState);
+        if (HasInputAuthority)
+        {
+
+            foreach (var profile in MatchManager.Instance.uiProfils)
+            {
+                profile.NickName.text = "";
+            }
+        }
+
 
         Debug.Log($"[Room] Player left: {Runner.TryGetNetworkedBehaviourId(this)}");
+        var Room = FindObjectOfType<Room>();
+        Room.RPC_RemoveProfileToAll(this);
+        base.Despawned(runner, hasState);
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void RPC_SetInfo(Profile profile)
+    {
+        Info = profile;
     }
 }

@@ -7,8 +7,42 @@ public class LocalPlayerProfile : MonoBehaviour
     public NetworkRunner Runner;
     [SerializeField] private NetworkPrefabRef _roomPrefab;
 
+    [Header("User Info")]
+    public string userId;
+    public string nickName;
+    public JOB JOB;
+
+    [Header("Input Field")]
+    public TMPro.TMP_InputField nickNameInput;
+    public TMPro.TMP_InputField JobInput;
+
+    public void Start()
+    {
+        userId = Runner.UserId;
+        nickName = PlayerPrefs.GetString("Nickname");
+        JOB = (JOB)PlayerPrefs.GetInt("Job");
+    }
+
+    public void Set()
+    {
+        PlayerPrefs.SetString("Nickname", nickNameInput.text);
+    }
+
+    public void JoinPrivateRoom()
+    {
+        Runner = gameObject.AddGetComponent<NetworkRunner>();
+        Runner.StartGame(new StartGameArgs()
+        {
+            GameMode = GameMode.Shared,
+            SessionName = "Private",
+            SceneManager = gameObject.AddGetComponent<NetworkSceneManagerDefault>(),
+            IsOpen = false,
+        });
+    }
+
     public async Task QuickMatch()
     {
+        Runner = gameObject.AddGetComponent<NetworkRunner>();
         await Runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Shared,
@@ -26,9 +60,9 @@ public class LocalPlayerProfile : MonoBehaviour
         });
     }
 
-    public async void ExitRoom()
+    public void ExitRoom()
     {
-        await Runner.Shutdown();
+        JoinPrivateRoom();
     }
 
     public async void OnPressedEnterRoomButton()
