@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 
+
 /// <summary>
 /// 플레이어의 입력 데이터를 네트워크로 동기화하기 위해 사용하는 구조체
 /// 플레이어의 입력 상태를 네트워크를 통해 전달
@@ -12,11 +13,12 @@ public struct NetworkInputData : INetworkInput
     public NetworkButtons buttons;      // 버튼 상태
     public Vector2 scrollValue;           // 마우스 휠 값;
 
+    public bool isGrounded;             // 지면에 닿았는지 여부
+
     // 마우스
     public const byte BUTTON_FIRE = 0;      // 마우스 왼쪽
     public const byte BUTTON_ZOOM = 1;      // 마우스 오른쪽
     public const byte BUTTON_SWAP = 2;      // 마우스 휠
-
 
     // 키보드
     public const byte BUTTON_JUMP = 3;      // space
@@ -30,5 +32,10 @@ public struct NetworkInputData : INetworkInput
     // 내부에서 사용하는 변수
     public const byte BUTTON_FIREPRESSED = 10;    // 마우스 왼쪽클릭 지속
     public const byte BUTTON_ZOOMPRESSED = 11;    // 마우스 오른쪽클릭 지속
+    
 
+    /// 플레이어의 상태를 여기에 포함해서 보내야 한다
+    /// 초기값에 Idle을 넣을 것이므로 
+    /// 플레이어의 상태가 null인 채로 전송되지는 않는다
+    
 }
