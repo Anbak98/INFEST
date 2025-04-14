@@ -12,34 +12,34 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
     public NetworkRunner _runner;
 
-    public UIPlayerProfile[] uiPlayerInfos;
-    private List<PlayerProfile> _playerProfiles = new();
-    private PlayerProfile _playerProfile;
+    [SerializeField]
+    private List<PlayerProfile> _playerProfiles;
 
     public override void Spawned()
     {
         _runner = Runner;
         _runner.AddCallbacks(this);
-        NetworkObject profile = _runner.Spawn(_profilePrefab);
-        uiPlayerInfos = FindObjectsOfType<UIPlayerProfile>();
+
         if (HostPlayer == PlayerRef.None)
         {
             // 첫 번째 플레이어를 방장으로 설정
             HostPlayer = Runner.LocalPlayer;
             Debug.Log($"[Room] Host assigned to {Runner.LocalPlayer}");
         }
-        _playerProfile = profile.GetComponent<PlayerProfile>();
+
+        var obj = Runner.Spawn(_profilePrefab, inputAuthority: Runner.LocalPlayer);
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+
         // 방장이 없고, 현재 내가 StateAuthority면 새로 지정
         if (HostPlayer == PlayerRef.None)
         {
             HostPlayer = player;
             Debug.Log($"[Room] Host reassigned to {player}");
         }
-        RPC_SendProfileToAll(_playerProfile);
+
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -65,8 +65,6 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
                 Debug.Log($"[Room] No players left, host cleared.");
             }
         }
-
-        RPC_SendProfileToAll(_playerProfile);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -78,12 +76,16 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
         }
 
         int i = 0;
-        foreach (var item in _playerProfiles)
+
+        foreach (var profile in MatchManager.Instance.uiProfils)
         {
-            uiPlayerInfos[i++].NickName.text = item.Runner.GetPlayerUserId();
+            profile.NickName.text = "";
         }
 
-        Debug.Log(i);
+        foreach (var item in _playerProfiles)
+        {
+            MatchManager.Instance.uiProfils[i++].NickName.text = item.Info.NickName.ToString();
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -94,6 +96,11 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             _playerProfiles.Remove(playerProfile);
         }
 
+        foreach (var profile in MatchManager.Instance.uiProfils)
+        {
+            profile.NickName.text = "";
+        }
+
         int i = 0;
         foreach (var item in _playerProfiles)
         {
@@ -101,9 +108,9 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             {
                 Debug.LogError("s");
             }
-            uiPlayerInfos[i++].NickName.text = item.Runner.GetPlayerUserId();
+            Debug.Log("HGI");
+            MatchManager.Instance.uiProfils[i++].NickName.text = item.Info.NickName.ToString();
         }
-        Debug.Log(i);
     }
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
