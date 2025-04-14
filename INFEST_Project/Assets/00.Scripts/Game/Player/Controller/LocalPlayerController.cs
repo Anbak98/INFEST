@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 /// <summary>
 /// 1인칭 프리팹에 붙어서 애니메이션 관리
 /// </summary>
