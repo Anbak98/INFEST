@@ -37,7 +37,6 @@ public class PlayerInputHandler : NetworkBehaviour
     public float RotationY { get; private set; } = 0f;       // 마우스 Y 회전 (yaw)
     private Vector2 _isSwapVelue;
 
-
     // InputAction과 연결
     private bool _isJumping;
     private bool _isReloading;
@@ -50,7 +49,6 @@ public class PlayerInputHandler : NetworkBehaviour
     private bool _isScoreBoardPopup;
 
     // 내부 변수(Input Action과 연결X)
-    private bool _isOnGrounded; // 지면에 닿았는가
     private bool _isShotgunOnFiring;
     private bool _isOnZoom;
 
@@ -61,6 +59,9 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         if (inputManager == null)
             inputManager = FindObjectOfType<InputManager>();
+    }
+    private void Start()
+    {
     }
 
     private void OnEnable()
@@ -147,25 +148,7 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
     }
 
-    // 외부에서 호출하는 저장용 메서드들
-    /// SetBool
-    /// 상태 지속형 동작에 적합(예: 달리기/앉기/조준 상태)
-    /// 명확한 상태 전환 표현(true/false 직접 설정)
-    /// 애니메이터 파라미터와 1:1 매칭 가능
-    /// 
-    /// Trigger      
-    /// 단발성 이벤트에 적합(예: 재장전/아이템 사용)
-    /// 일회성 신호 전달
-    /// 목적애니메이션 트리거와 연동 시 유용 
-    /// 
-    /// <summary>
-    /// SetXXXInput → 입력값을 저장하는 경우
-    /// UpdateXXXState / SetXXXState → Boolean 상태 토글
-    /// TriggerXXX / FireXXX → 단발성 이벤트(ex.reload, use item)
-    /// </summary>
-    /// <param name="context"></param>
-
-
+    #region 값 저장
     #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
@@ -204,10 +187,6 @@ public class PlayerInputHandler : NetworkBehaviour
     }
     public bool GetIsJumping() => _isJumping;
     #endregion
-    #region Grounded(입력이 아니다, 땅에 붙으면 true)
-    //private void 
-
-    #endregion
 
     #region Fire
     private void StartFireState(InputAction.CallbackContext context)
@@ -222,7 +201,7 @@ public class PlayerInputHandler : NetworkBehaviour
         _isFiring = false;
     }
     public bool GetIsFiring() => _isFiring;
-    public bool GetIsOnFiring() => _isShotgunOnFiring;
+    public bool GetShotgunIsOnFiring() => _isShotgunOnFiring;
     #endregion
     #region Zoom
     private void StartZoomState(InputAction.CallbackContext context)
@@ -325,6 +304,7 @@ public class PlayerInputHandler : NetworkBehaviour
         _isScoreBoardPopup = false;
     }
     public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
+    #endregion
     #endregion
 
     /// <summary>
