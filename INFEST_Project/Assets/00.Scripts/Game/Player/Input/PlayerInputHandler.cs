@@ -161,7 +161,7 @@ public class PlayerInputHandler : NetworkBehaviour
     private void SetLookInput(InputAction.CallbackContext context)
     {
         Vector2 look = context.ReadValue<Vector2>();
-        Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
+        //Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
         RotationX = look.x;
         RotationY = look.y;
     }
@@ -169,7 +169,7 @@ public class PlayerInputHandler : NetworkBehaviour
     #region Swap
     private void SetSwapInput(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetSwapInput - Velue: {context.ReadValue<Vector2>().y}, Phase: {context.phase}");
+        //Debug.Log($"[Input] SetSwapInput - Velue: {context.ReadValue<Vector2>().y}, Phase: {context.phase}");
         _isSwapVelue = context.ReadValue<Vector2>();
     }
     public Vector2 GetSwapValue() => _isSwapVelue;
