@@ -18,7 +18,7 @@ public class Store : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        Debug.Log(_storeTimer.RemainingTime(Runner));
+        //Debug.Log(_storeTimer.RemainingTime(Runner));
         if (_storeTimer.ExpiredOrNotRunning(Runner))
         {
             _activeTime = true;

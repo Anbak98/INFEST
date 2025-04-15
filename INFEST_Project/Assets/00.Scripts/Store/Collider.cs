@@ -9,6 +9,8 @@ public class Collider : MonoBehaviour
 
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
+        Debug.Log("¡¢√À");
+
         if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
         var networkObj = other.GetComponent<NetworkObject>();
         if (networkObj == null) return;
@@ -24,9 +26,11 @@ public class Collider : MonoBehaviour
 
     private void OnTriggerExit(UnityEngine.Collider other)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
         Debug.Log("¡¢√À «ÿ¡¶");
+
+        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
         var networkObj = other.GetComponent<NetworkObject>();
+
         if (networkObj == null) return;
 
         if (inside.Contains(networkObj))
