@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class UIStore : UIBase
 {
-    Button button;
+    public Button button;
 
-    private void Start()
-    {
-         button = GetComponent<Button>();
-    }
 }

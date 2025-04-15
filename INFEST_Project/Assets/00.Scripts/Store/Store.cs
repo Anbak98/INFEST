@@ -1,32 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Store : NetworkBehaviour
 {
-    private LayerMask layerMask;
+    public UIStore uIStore;
     // 타이머
-    private TickTimer _storeTimer;
-    private float _newStoreTime = 300f;
-    private float _activateTime = 120f;
-    
-    
-    //public Button[] btnBuy; // 구매버튼
-    //public Button[] btnSell; // 판매버튼
-    //public TextMeshProUGUI[] itmePriceBuy; // 구매 가격
-    //public TextMeshProUGUI[] btnPriceSell; // 판매 가격
+    [Networked] private NetworkBool _activeTime { get; set; }
+    [Networked] private TickTimer _storeTimer { get; set; }
+    private float _newStoreTime = 10f;
+    private float _activateTime = 5f;
 
+    public override void Spawned()
+    {
+        ActivateTimer();
+    }
+
+
+    public override void FixedUpdateNetwork()
+    {
+        Debug.Log(_storeTimer.RemainingTime(Runner));
+        if (_storeTimer.ExpiredOrNotRunning(Runner))
+        {
+            _activeTime = true;
+            ExitShopZone();
+        }
+    }
 
     /// <summary>
     /// 상점 생성시 타이머 활성화
     /// </summary>
     public void ActivateTimer()
     {
-       // _storeTimer = TickTimer.CreateFromSeconds(Runner, _activateTime);
+        _storeTimer = TickTimer.CreateFromSeconds(Runner, _newStoreTime);
     }
 
     /// <summary>
@@ -34,29 +39,21 @@ public class Store : NetworkBehaviour
     /// </summary>
     public void NewStoreTimer()
     {
-       // _storeTimer = TickTimer.CreateFromSeconds(Runner, _newStoreTime);
+        if (_activeTime)
+        {
+            _storeTimer = TickTimer.None;
+            _storeTimer = TickTimer.CreateFromSeconds(Runner, _activateTime);
+            _activeTime = false;
+        }
     }
 
-    /// <summary>
-    /// 트리거 접촉시
-    /// </summary>
-    /// <param name="other"></param>
-    public void OnTriggerEnter(Collider other)
+    public void EnterShopZone()
     {
-        Debug.Log("트리거 IN");
-        Global.Instance.UIManager.Show<UIStore>().gameObject.SetActive(true);
+        uIStore.button.gameObject.SetActive(true);
     }
 
-    /// <summary>
-    /// 트리거 나갈시
-    /// </summary>
-    /// <param name="other"></param>
-    public void OnTriggerExit(Collider other)
+    public void ExitShopZone()
     {
-
-        Debug.Log("트리거 OUT");
-        //if (other.tag == "Player") 
-        //Global.Instance.UIManager.Show<UIStore>.gameObject.SetActive(false);
+        uIStore.button.gameObject.SetActive(false);
     }
-
 }
