@@ -8,6 +8,7 @@ using UnityEngine.Rendering.UI;
 using static UnityEngine.EventSystems.StandaloneInputModule;
 
 
+
 /// <summary>
 /// 입력 감지 및 저장
 /// InputSystem → 상태 저장

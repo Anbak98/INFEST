@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 /// <summary>
 /// 플레이어의 기본적인 사항들
 /// </summary>

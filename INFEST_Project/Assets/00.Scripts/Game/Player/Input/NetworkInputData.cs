@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 
+
 /// <summary>
 /// 플레이어의 입력 데이터를 네트워크로 동기화하기 위해 사용하는 구조체
 /// 플레이어의 입력 상태를 네트워크를 통해 전달
