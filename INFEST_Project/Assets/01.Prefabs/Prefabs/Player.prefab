@@ -1147,7 +1147,6 @@ GameObject:
   - component: {fileID: 9031637788970361110}
   - component: {fileID: 4204658218274871571}
   - component: {fileID: 4068375233546285216}
-  - component: {fileID: 9021472864597104903}
   - component: {fileID: 6770045564643699394}
   - component: {fileID: -5511681442977026662}
   m_Layer: 6
@@ -1201,7 +1200,6 @@ MonoBehaviour:
   - {fileID: 3072078453906701333}
   - {fileID: 9031637788970361110}
   - {fileID: 4068375233546285216}
-  - {fileID: 9021472864597104903}
   - {fileID: -5511681442977026662}
   - {fileID: 724139344834979615}
   - {fileID: 1321386959695407079}
@@ -1365,22 +1363,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
---- !u!114 &9021472864597104903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13abb73a0ec0ccd4da186d828a768ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  player: {fileID: 3072078453906701333}
-  inputManager: {fileID: 0}
-  inputHandler: {fileID: 0}
 --- !u!114 &6770045564643699394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2507,10 +2489,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fef9538ea1ba18458b81d91ccb43143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  player: {fileID: 0}
-  inputManager: {fileID: 0}
   inputHandler: {fileID: 0}
+  playerId: 
+  player: {fileID: 0}
+  animator: {fileID: 0}
+  weaponHolder: {fileID: 0}
+  weaponFix: {fileID: 0}
+  model: {fileID: 0}
+  bodyCollider: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &6702231413404486571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5084344385780989346, guid: 889d24f8fc349cf45b463fb9b13b0143,

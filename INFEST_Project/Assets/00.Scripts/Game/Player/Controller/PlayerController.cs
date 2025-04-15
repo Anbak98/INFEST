@@ -31,10 +31,9 @@ using UnityEngine.Windows;
 /// 
 /// BaseController의 상속을 받는 방식으로 바꾸었다
 /// </summary>
-public class PlayerController : BaseController
+public abstract class PlayerController : BaseController
 {
     //private PlayerStateMachine stateMachine;
-    public Player player;
 
     /// <summary>
     /// 플레이어가 입력을 받으면 다음 2가지 로직을 수행(2가지 동작은 별개의 동작이다)
@@ -46,27 +45,38 @@ public class PlayerController : BaseController
     /// 
     /// PlayerInputSender에서 최종으로 확인 후 서버로 보낸다
     /// </summary>
-    public InputManager inputManager;
+    //public InputManager inputManager;
 
+    /// <summary>
+    /// 상속으로 구현한 값 가져오는 메서드들이 플레이어 프리팹의 최상위 부모에 붙어야 하므로
+    /// 나중에는 PlayerInputHandler에 옮겨야 한다
+    /// 각각 1인칭 프리팹과 3인칭 프리팹에 붙는 것들은 animator와 statemachine만 가지고 있어야한다
+    /// </summary>
     public PlayerInputHandler inputHandler;
 
-    protected CharacterController characterController;
-    
+    protected CharacterController controller;
 
-    private void Awake()
+    // FSM 상태 머신 인스턴스
+    protected float verticalVelocity;
+    protected float gravity = -9.81f;
+
+    public string playerId;
+    protected bool hitSuccess;
+    protected string hitTatgetId;
+
+    protected override void Awake()
     {
         // inputManager에 더 잘 연결하는 방법을 생각해보자
-        if (inputManager == null)
-            inputManager = FindObjectOfType<InputManager>();
+        //if (inputManager == null)
+        //    inputManager = FindObjectOfType<InputManager>();
+
+        controller = GetComponentInParent<CharacterController>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //BindInputActions();
-    }
     /// <summary>
-    /// 오직 여기에서만 네트워크로부터 플레이어의 업데이트를 받는다
+    /// 네트워크로부터 플레이어의 업데이트를 받고(위치는 조금 더 고민해보자)
+    /// 다른 플레이어들의 정보를 받아서 처리하는 곳도 있으니까
+    /// LocalPlayerController, RemoteController에서 사용한다
     /// </summary>
     public override void FixedUpdateNetwork()
     {
@@ -84,27 +94,23 @@ public class PlayerController : BaseController
     }
 
     // 네트워크에서 받은 상태를 반영한다
-    public void ApplyNetworkState()
+    public override void ApplyNetworkState(PlayerStatData data)
     {
 
     }
 
     #region 상태 변화 조건(PlayerInputHandler의 값을 가져와서 판단)
     // 1인칭 애니메이션은 LocalPlayerController 3인칭 애니메이션은 RemoteController에서 조작하지만
-    // 같은 종류의 애니메이션이어야 하므로 같은 변수를 공유한다
-    // 이동
-    public bool HasMoveInput() => inputHandler.MoveInput.sqrMagnitude > 0.01f;
-    // 점프
-    public bool IsJumpInput() => inputHandler.GetIsJumping();
-    // 사격
-    public bool IsFiring() => inputHandler.GetIsFiring();
-
-    //현재 캐릭터가 땅 위에 있는지
-    //public bool IsGrounded() => 
-
+    // 1인칭, 3인칭 공통으로 처리하는 것은 여기에서 관리    
+    public override bool HasMoveInput() => inputHandler.MoveInput.sqrMagnitude > 0.01f;
+    public override bool IsJumpInput() => inputHandler.GetIsJumping();
+    public override bool IsFiring() => inputHandler.GetIsFiring();
+    public override bool IsGrounded() => controller.isGrounded;
+    public override bool IsShotgunFiring() => inputHandler.GetShotgunIsOnFiring();
+    public override float GetVerticalVelocity() => verticalVelocity;    // 3인칭에서 따로 사용
+    public override void ApplyGravity() { } // 3인칭에서 따로 구현
     #endregion
 
-    
     // 네트워크에서 받은 값에 따라 행동하는 메서드 만든다
     public void OnMove()
     {
