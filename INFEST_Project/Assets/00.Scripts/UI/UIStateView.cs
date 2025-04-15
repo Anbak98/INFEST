@@ -12,12 +12,10 @@ public class UIStateView : UIScreen
     public override void Show()
     {
         base.Show();
-        Debug.Log("ÄÑÁü");
     }
 
     public override void Hide()
     {
         base.Hide();
-        Debug.Log("²¨Áü");
     }
 }
