@@ -12,7 +12,6 @@ public class RemotePlayerController : PlayerController
 {
     #region 플레이어 프리팹 관련
     [Header("Components")]
-    CharacterController characterController;
     public Player player;
 
     // 3인칭은 플레이어의 애니메이션만 교환한다
@@ -108,6 +107,22 @@ public class RemotePlayerController : PlayerController
     {
 
     }
+
+    public override void FixedUpdateNetwork()
+    {
+        Debug.Log("RemotePlayerController FixedUpdateNetwork 진입");
+        if (GetInput(out NetworkInputData input))
+        {
+            // 테스트용으로 플레이어를 이동시킨다
+
+            //// 입력을 현재 상태에 전달
+            //stateMachine.currentState.HandleInput(input);
+
+            //// 상태 업데이트
+            //stateMachine.currentState.UpdateLogic();
+        }
+    }
+
 
     // 3인칭에만 붙는 변수들
     public override void ApplyNetworkState(PlayerStatData data)
