@@ -6,6 +6,8 @@ using UnityEngine;
 /// <summary>
 /// 1인칭 프리팹에 붙어서 애니메이션 관리
 /// 1인칭 프리팹의 애니메이션, 회전을 관리한다
+/// 
+/// 마우스 커서 이동
 /// </summary>
 public class LocalPlayerController : PlayerController
 {
@@ -31,7 +33,24 @@ public class LocalPlayerController : PlayerController
         
     }
 
+    public override void FixedUpdateNetwork()
+    {
+        Debug.Log("LocalPlayerController FixedUpdateNetwork 진입");
+        if (GetInput(out NetworkInputData input))
+        {
+            // 테스트용으로 플레이어를 이동시킨다
+
+            //// 입력을 현재 상태에 전달
+            //stateMachine.currentState.HandleInput(input);
+
+            //// 상태 업데이트
+            //stateMachine.currentState.UpdateLogic();
+        }
+    }
+
+
     public override void PlayFireAnim() => animator?.SetTrigger("Fire");
+
 
 
     // 애니메이션 교체할때 무기도 교체한다

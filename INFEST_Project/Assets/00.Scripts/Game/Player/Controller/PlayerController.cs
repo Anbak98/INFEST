@@ -107,8 +107,8 @@ public abstract class PlayerController : BaseController
     public override bool IsFiring() => inputHandler.GetIsFiring();
     public override bool IsGrounded() => controller.isGrounded;
     public override bool IsShotgunFiring() => inputHandler.GetShotgunIsOnFiring();
-    public override float GetVerticalVelocity() => verticalVelocity;    // 3인칭에서 따로 사용
-    public override void ApplyGravity() { } // 3인칭에서 따로 구현
+    public override float GetVerticalVelocity() => verticalVelocity;    
+    public override void ApplyGravity() { } 
     #endregion
 
     // 네트워크에서 받은 값에 따라 행동하는 메서드 만든다
