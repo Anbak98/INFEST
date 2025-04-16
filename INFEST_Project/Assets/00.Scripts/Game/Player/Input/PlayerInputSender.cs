@@ -33,7 +33,7 @@ public class PlayerInputSender : MonoBehaviour, INetworkRunnerCallbacks
                 if (spawner != null)
                 {
                     runner = spawner._runner;
-                    runner.AddCallbacks(this);
+                    //runner.AddCallbacks(this);    // StandardSpawner에서 콜백에 등록했기때문에 안해도 된다
                 }
                 else
                 {

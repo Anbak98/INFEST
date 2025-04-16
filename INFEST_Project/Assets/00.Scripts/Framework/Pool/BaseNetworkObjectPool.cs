@@ -1,54 +1,54 @@
 using Fusion;
 
-public struct NetworkPoolObject<T> where T : NetworkObject
+public struct NetworkPoolObject
 {
     public bool IsPooled;
     public int index;
-    public T obj;
+    public NetworkObject obj;
 }
 
-public class BaseNetworkObjectPool<T> where T : NetworkObject
+public class BaseNetworkObjectPool
 {
     public BaseNetworkObjectPool(int poolSize)
     {
-        _pool = new NetworkPoolObject<T>[poolSize];
+        _pool = new NetworkPoolObject[poolSize];
     }
 
-    public NetworkPoolObject<T> Get()
+    public NetworkPoolObject Get()
     {
-        if(_numNotPooled < 1)
-        {
-            CrateNewObjectToPool();
-        }
-
         return GetObjWithSwap();
     }
 
-    public void Return(NetworkPoolObject<T> pooledObj)
+    public void Add(NetworkObject newObj)
+    {
+        NetworkPoolObject newPool = new NetworkPoolObject()
+        {
+            IsPooled = false,
+            index = _numObject,
+            obj = newObj
+        };
+
+        _pool[_numObject] = newPool;
+
+        ++_numObject;
+        ++_numNotPooled;
+    }
+
+    public void Return(NetworkPoolObject pooledObj)
     {
         ReturnObjWithSwap(pooledObj);
     }
 
     #region Private
-    private readonly NetworkPoolObject<T>[] _pool;
+    private readonly NetworkPoolObject[] _pool;
 
-    private int _numObject;
-    private int _numPooled;
-    private int _numNotPooled;
+    private int _numObject = 0;
+    private int _numPooled = 0;
+    private int _numNotPooled = 0; 
 
-    private void CrateNewObjectToPool()
+    private NetworkPoolObject GetObjWithSwap()
     {
-        if (_numObject < _pool.Length)
-        {
-            
-        }
-
-        _numNotPooled++;
-    }
-
-    private NetworkPoolObject<T> GetObjWithSwap()
-    {
-        NetworkPoolObject<T> poolObj = _pool[0];
+        NetworkPoolObject poolObj = _pool[0];
 
         _pool[0] = _pool[_numNotPooled - 1];
         _pool[0].index = 0;
@@ -64,7 +64,7 @@ public class BaseNetworkObjectPool<T> where T : NetworkObject
         return poolObj;
     }
 
-    private void ReturnObjWithSwap(NetworkPoolObject<T> pooledObj)
+    private void ReturnObjWithSwap(NetworkPoolObject pooledObj)
     {
         _pool[pooledObj.index] = _pool[_numNotPooled];
         _pool[pooledObj.index].index = pooledObj.index;

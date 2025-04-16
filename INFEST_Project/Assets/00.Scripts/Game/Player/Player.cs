@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 /// <summary>
 /// 플레이어의 기본적인 사항들
 /// </summary>
@@ -37,8 +38,6 @@ public class Player : NetworkBehaviour
     public GameObject ThirdPersonRoot;
     //public NetworkObject SprayPrefab;
 
-
-
     //[SerializeField] private PhysxBall _prefabPhysxBall;
 
     // 네트워크 속성을 정의할 때 Fusion은 제공된 get 및 set 스텁을 사용자 지정 코드로 대체하여 네트워크 상태에 접근
@@ -56,6 +55,10 @@ public class Player : NetworkBehaviour
     //[Networked] public Color playerColor { get; set; }
 
     private TMP_Text _messages;
+
+    /// <summary>
+    ///
+    /// </summary>
 
 
     private void Awake()

@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.UI;
 using static UnityEngine.EventSystems.StandaloneInputModule;
+
 
 
 /// <summary>
@@ -35,6 +37,7 @@ public class PlayerInputHandler : NetworkBehaviour
     public float RotationY { get; private set; } = 0f;       // 마우스 Y 회전 (yaw)
     private Vector2 _isSwapVelue;
 
+    // InputAction과 연결
     private bool _isJumping;
     private bool _isReloading;
     private bool _isFiring;
@@ -44,8 +47,9 @@ public class PlayerInputHandler : NetworkBehaviour
     private bool _isRunning;
     private bool _isSitting;
     private bool _isScoreBoardPopup;
-    //
-    private bool _isOnFiring;
+
+    // 내부 변수(Input Action과 연결X)
+    private bool _isShotgunOnFiring;
     private bool _isOnZoom;
 
     // 임시(동적연결)
@@ -56,7 +60,9 @@ public class PlayerInputHandler : NetworkBehaviour
         if (inputManager == null)
             inputManager = FindObjectOfType<InputManager>();
     }
-
+    private void Start()
+    {
+    }
 
     private void OnEnable()
     {
@@ -142,24 +148,7 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
     }
 
-    // 외부에서 호출하는 저장용 메서드들
-    /// SetBool
-    /// 상태 지속형 동작에 적합(예: 달리기/앉기/조준 상태)
-    /// 명확한 상태 전환 표현(true/false 직접 설정)
-    /// 애니메이터 파라미터와 1:1 매칭 가능
-    /// 
-    /// Trigger      
-    /// 단발성 이벤트에 적합(예: 재장전/아이템 사용)
-    /// 일회성 신호 전달
-    /// 목적애니메이션 트리거와 연동 시 유용 
-    /// 
-    /// <summary>
-    /// SetXXXInput → 입력값을 저장하는 경우
-    /// UpdateXXXState / SetXXXState → Boolean 상태 토글
-    /// TriggerXXX / FireXXX → 단발성 이벤트(ex.reload, use item)
-    /// </summary>
-    /// <param name="context"></param>
-
+    #region 값 저장
     #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
@@ -172,7 +161,7 @@ public class PlayerInputHandler : NetworkBehaviour
     private void SetLookInput(InputAction.CallbackContext context)
     {
         Vector2 look = context.ReadValue<Vector2>();
-        Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
+        //Debug.Log($"[Input] SetLookInput - Look: {look}, Phase: {context.phase}");
         RotationX = look.x;
         RotationY = look.y;
     }
@@ -180,9 +169,10 @@ public class PlayerInputHandler : NetworkBehaviour
     #region Swap
     private void SetSwapInput(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetSwapInput - Velue: {context.ReadValue<Vector2>().y}, Phase: {context.phase}");
+        //Debug.Log($"[Input] SetSwapInput - Velue: {context.ReadValue<Vector2>().y}, Phase: {context.phase}");
         _isSwapVelue = context.ReadValue<Vector2>();
     }
+    public Vector2 GetSwapValue() => _isSwapVelue;
     #endregion
     #region Jump
     private void StartJumpInput(InputAction.CallbackContext context)
@@ -195,19 +185,23 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log("[Input] CancelJumpInput - Jump canceled");
         _isJumping = false;
     }
+    public bool GetIsJumping() => _isJumping;
     #endregion
+
     #region Fire
     private void StartFireState(InputAction.CallbackContext context)
     {
         Debug.Log($"[Input] SetFireState - Fire started");
-        _isFiring = true;
-        _isOnFiring = true;
+        _isFiring = true;   // 유지 중
+        _isShotgunOnFiring = true; // 누르고 있다, 샷건의 연발 방지용(누르고 있어도 안나가야한다)
     }
     private void CancelFireState(InputAction.CallbackContext context)
     {
         Debug.Log($"[Input] SetFireState - Fire canceled");
         _isFiring = false;
     }
+    public bool GetIsFiring() => _isFiring;
+    public bool GetShotgunIsOnFiring() => _isShotgunOnFiring;
     #endregion
     #region Zoom
     private void StartZoomState(InputAction.CallbackContext context)
@@ -222,6 +216,8 @@ public class PlayerInputHandler : NetworkBehaviour
         _isZooming = false;
         _isOnZoom = true;
     }
+    public bool GetIsZooming() => _isZooming;
+    public bool GetIsOnZoom() => _isOnZoom;
     #endregion
     #region Reload
     private void StartReloadState(InputAction.CallbackContext context)
@@ -236,6 +232,7 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log("[Input] ResetReloadState - Reload reset");
         _isReloading = false;
     }
+    public bool GetIsReloading() => _isReloading;
     #endregion
     #region Interaction
     private void StartInteraction(InputAction.CallbackContext context)
@@ -250,6 +247,7 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log("[Input] ResetInteractionState - Interaction reset");
         _isInteracting = false;
     }
+    public bool GetIsInteracting() => _isInteracting;
     #endregion
     #region UseItem
     private void StartUseItem(InputAction.CallbackContext context)
@@ -264,6 +262,7 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log("[Input] ResetUseItemState - Use item reset");
         _isUsingItem = false;
     }
+    public bool GetIsUsingItem() => _isUsingItem;
     #endregion
     #region Run
     private void StartRunState(InputAction.CallbackContext context)
@@ -276,6 +275,7 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log($"[Input] CancelRunState - Running Canceled");
         _isRunning = false;
     }
+    public bool GetIsRunning() => _isRunning;
     #endregion
     #region Sit
     private void StartSitState(InputAction.CallbackContext context)
@@ -289,6 +289,7 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log($"[Input] CancelSitState - Sitting Canceled");
         _isSitting = false;
     }
+    public bool GetIsSitting() => _isSitting;
     #endregion
     #region Scoreboard
     private void OpenScoreboard(InputAction.CallbackContext context)
@@ -302,8 +303,10 @@ public class PlayerInputHandler : NetworkBehaviour
         Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
         _isScoreBoardPopup = false;
     }
+    public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
     #endregion
-   
+    #endregion
+
     /// <summary>
     /// 네트워크 입력 만들기
     /// PlayerInputSender에서 호출하여 저장된 입력을 서버로 전송한다
@@ -311,12 +314,14 @@ public class PlayerInputHandler : NetworkBehaviour
     /// <returns></returns>
     public NetworkInputData? GetNetworkInput()
     {
+        // 이건 사라져야한다. 플레이어의 상태가 추가되면
+        // 입력이 없어도 상태가 출력되어야한다
         if (MoveInput == Vector3.zero &&
             _isSwapVelue.y == 0 &&
             !_isJumping && !_isFiring && !_isReloading &&
             !_isZooming && !_isInteracting && !_isUsingItem &&
             !_isRunning && !_isSitting && !_isScoreBoardPopup &&
-            !_isOnFiring && !_isOnZoom)
+            !_isShotgunOnFiring && !_isOnZoom)
         {
             return null;
         }
@@ -338,10 +343,16 @@ public class PlayerInputHandler : NetworkBehaviour
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
-        //
-        if (_isOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);
+        // 샷건의 경우 누르고 있어도 발사가 되면 안되니까 막아놓았다
+        if (_isShotgunOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);   // 구조체의 변수를 바꾼거고
+        _isShotgunOnFiring = false;    // PlayerInputHandler의 변수를 바꾼거다
+
+        // Shotgun의 단발을 위해 false로 바꿔야한다
+        // 위의 if문이 있을 때 다른 입력이 없을 때 우클릭을 해제하면, 아무 입력도 없게 되어 return된다.
+        // _isOnZoom은 위의 if문에서 null 통과하지 않게 만들어놔서 그거 통과하려고 어쩔 수 없이 만든 변수다
+        // 하지만 플레이어의 상태를 추가한다면 입력이 없어도 null을 리턴하면 안되기 때문에
+        // 위의 if문을 삭제하든가 수정해야하고, 그렇게 되면 _isOnZoom은 없어도 되는 변수다
         if (_isOnZoom) data.buttons.Set(NetworkInputData.BUTTON_ZOOMPRESSED, true);
-        _isOnFiring = false;
         _isOnZoom = false;
 
         return data;

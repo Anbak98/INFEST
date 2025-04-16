@@ -1,0 +1,42 @@
+using System.Collections.Generic;
+using Fusion;
+using UnityEngine;
+
+public class Collider : MonoBehaviour
+{
+    private readonly HashSet<NetworkObject> inside = new HashSet<NetworkObject>();
+
+    private void OnTriggerEnter(UnityEngine.Collider other)
+    {
+        Debug.Log("¡¢√À");
+
+        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+        var networkObj = other.GetComponent<NetworkObject>();
+        if (networkObj == null) return;
+        
+
+        if (!inside.Contains(networkObj))
+        {
+            inside.Add(networkObj);
+            var store = GetComponentInParent<Store>();
+            store.EnterShopZone();
+        }
+    }
+
+    private void OnTriggerExit(UnityEngine.Collider other)
+    {
+        Debug.Log("¡¢√À «ÿ¡¶");
+
+        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+        var networkObj = other.GetComponent<NetworkObject>();
+
+        if (networkObj == null) return;
+
+        if (inside.Contains(networkObj))
+        {
+            inside.Remove(networkObj);
+            var store = GetComponentInParent<Store>();
+            store.ExitShopZone();
+        }
+    }
+}

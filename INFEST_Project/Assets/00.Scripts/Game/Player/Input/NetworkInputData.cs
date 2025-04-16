@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 
+
 /// <summary>
 /// 플레이어의 입력 데이터를 네트워크로 동기화하기 위해 사용하는 구조체
 /// 플레이어의 입력 상태를 네트워크를 통해 전달
@@ -17,7 +18,6 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_ZOOM = 1;      // 마우스 오른쪽
     public const byte BUTTON_SWAP = 2;      // 마우스 휠
 
-
     // 키보드
     public const byte BUTTON_JUMP = 3;      // space
     public const byte BUTTON_RELOAD = 4;    // R
@@ -30,5 +30,10 @@ public struct NetworkInputData : INetworkInput
     // 내부에서 사용하는 변수
     public const byte BUTTON_FIREPRESSED = 10;    // 마우스 왼쪽클릭 지속
     public const byte BUTTON_ZOOMPRESSED = 11;    // 마우스 오른쪽클릭 지속
+    
 
+    /// 플레이어의 상태를 여기에 포함해서 보내야 한다    
+    /// 애니메이션의 상태를 보내지 않는다
+    /// move, 무기 장착여부, 어떤 무기를 장착했는지 정보가 넘어오면
+    /// 그 정보를 받은 상대가 그에 맞는 애니메이션을 로컬에서 실행
 }
