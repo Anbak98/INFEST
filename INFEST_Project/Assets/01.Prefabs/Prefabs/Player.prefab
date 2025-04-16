@@ -1158,13 +1158,12 @@ GameObject:
   - component: {fileID: 3297568450549869079}
   - component: {fileID: 6370244926997209924}
   - component: {fileID: 3072078453906701333}
-  - component: {fileID: 2622159082095259490}
-  - component: {fileID: 9031637788970361110}
   - component: {fileID: 4204658218274871571}
   - component: {fileID: 4068375233546285216}
   - component: {fileID: 6770045564643699394}
   - component: {fileID: -5511681442977026662}
   - component: {fileID: 3147526191137004029}
+  - component: {fileID: -986907869193028718}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -1213,7 +1212,6 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3072078453906701333}
-  - {fileID: 9031637788970361110}
   - {fileID: 4068375233546285216}
   - {fileID: -5511681442977026662}
   - {fileID: 724139344834979615}
@@ -1269,51 +1267,6 @@ MonoBehaviour:
   ThirdPersonRoot: {fileID: 1055682366495237838}
   _spawnedProjectile: 0
   _material: {fileID: 0}
---- !u!143 &2622159082095259490
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &9031637788970361110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  gravity: -9.31
-  jumpImpulse: 5
-  acceleration: 10
-  braking: 10
-  maxSpeed: 4
-  rotationSpeed: 15
 --- !u!114 &4204658218274871571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1400,6 +1353,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c492b17e818e89345be2f617b4bbdab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &-986907869193028718
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8169286849145927954
 GameObject:
   m_ObjectHideFlags: 0
