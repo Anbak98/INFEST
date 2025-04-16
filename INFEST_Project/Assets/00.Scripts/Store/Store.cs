@@ -6,54 +6,68 @@ public class Store : NetworkBehaviour
     public UIStore uIStore;
     // 타이머
     [Networked] private NetworkBool _activeTime { get; set; }
-    [Networked] private TickTimer _storeTimer { get; set; }
-    private float _newStoreTime = 10f;
-    private float _activateTime = 5f;
+    [Networked] public TickTimer storeTimer { get; private set; }
+
+    private float _newStoreTime = 1000f;
+    private float _activateTime = 500f;
+    public bool isInteraction = false;
+    public bool inZone= false;
 
     public override void Spawned()
     {
-        ActivateTimer();
+        Activate();
     }
-
 
     public override void FixedUpdateNetwork()
     {
         //Debug.Log(_storeTimer.RemainingTime(Runner));
-        if (_storeTimer.ExpiredOrNotRunning(Runner))
+        if (storeTimer.ExpiredOrNotRunning(Runner))
         {
             _activeTime = true;
-            ExitShopZone();
+            EndShopZone();
         }
     }
 
     /// <summary>
     /// 상점 생성시 타이머 활성화
     /// </summary>
-    public void ActivateTimer()
+    public void Activate()
     {
-        _storeTimer = TickTimer.CreateFromSeconds(Runner, _newStoreTime);
+        storeTimer = TickTimer.CreateFromSeconds(Runner, _newStoreTime);
     }
 
     /// <summary>
     /// 상점 상호작용시 타이머 활성화
     /// </summary>
-    public void NewStoreTimer()
+    public void Interaction()
     {
+        isInteraction = true;
+        uIStore.panel.gameObject.SetActive(true);
+        uIStore.interactionText.gameObject.SetActive(false);
+
         if (_activeTime)
         {
-            _storeTimer = TickTimer.None;
-            _storeTimer = TickTimer.CreateFromSeconds(Runner, _activateTime);
+            storeTimer = TickTimer.None;
+            storeTimer = TickTimer.CreateFromSeconds(Runner, _activateTime);
             _activeTime = false;
         }
     }
 
-    public void EnterShopZone()
+    public void Exit()
     {
-        uIStore.button.gameObject.SetActive(true);
+        isInteraction = false;
     }
 
-    public void ExitShopZone()
+    public void EnterShopZone()
     {
-        uIStore.button.gameObject.SetActive(false);
+        uIStore.panel.gameObject.SetActive(false);
+        uIStore.interactionText.gameObject.SetActive(true);
+    }
+
+    public void EndShopZone()
+    {
+        isInteraction = false;
+        uIStore.interactionText.gameObject.SetActive(false);
+        uIStore.panel.gameObject.SetActive(false);
     }
 }
