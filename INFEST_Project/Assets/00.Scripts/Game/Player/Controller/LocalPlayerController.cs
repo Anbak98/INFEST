@@ -6,6 +6,8 @@ using UnityEngine;
 /// <summary>
 /// 1인칭 프리팹에 붙어서 애니메이션 관리
 /// 1인칭 프리팹의 애니메이션, 회전을 관리한다
+/// 
+/// 마우스 커서 이동
 /// </summary>
 public class LocalPlayerController : PlayerController
 {
@@ -25,6 +27,9 @@ public class LocalPlayerController : PlayerController
         
     }
 
+    /// <summary>
+    /// 1인칭은 나만 가지고 있는거니까 상태 변화하는건 자신의 Update에서 처리한다
+    /// </summary>
     // Update is called once per frame
     protected override void Update()
     {
@@ -32,7 +37,6 @@ public class LocalPlayerController : PlayerController
     }
 
     public override void PlayFireAnim() => animator?.SetTrigger("Fire");
-
 
     // 애니메이션 교체할때 무기도 교체한다
     public override void HandleFire(bool started)

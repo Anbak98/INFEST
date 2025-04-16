@@ -7,12 +7,14 @@ using UnityEngine;
 /// <summary>
 /// 3인칭 프리팹에 붙어서 애니메이션 관리
 /// 1인칭은 따로 관리하므로 3인칭 프리팹과 관련된 모든 것을 관리(이동, 회전, 애니메이션)
+/// 
+/// 3인칭 프리팹은 나는 볼 수 없으므로 비활성화 상태
+/// 상대방만 볼 수 있으니까 네트워크로 보여줘야한다
 /// </summary>
 public class RemotePlayerController : PlayerController
 {
     #region 플레이어 프리팹 관련
     [Header("Components")]
-    CharacterController characterController;
     public Player player;
 
     // 3인칭은 플레이어의 애니메이션만 교환한다
@@ -42,7 +44,7 @@ public class RemotePlayerController : PlayerController
     [SerializeField] private Transform model;   // 3인칭 모델
     [SerializeField] private Transform bodyCollider;  // Rigidbody + CapsuleCollider
     [SerializeField] private LayerMask groundLayer;
-    
+
     private GameObject equippedWeapon;
     #endregion
 
@@ -103,11 +105,35 @@ public class RemotePlayerController : PlayerController
 
     }
 
+    /// <summary>
+    /// 상대방의 데이터를 이용하여 애니메이션, 데미지 주고받는 연산 등을 
+    /// 상태에 따른 애니메이션 변화는 로컬에서 계산
+    /// </summary>
     // Update is called once per frame
     protected override void Update()
     {
+        // 테스트용으로 상대방 플레이어 이동시킨다
 
+        // 상대방의 입력을 현재 상태에 전달
+        //stateMachine.currentState.HandleInput(input);
+
+        // 상대방의 상태 업데이트
+        //stateMachine.currentState.UpdateLogic();
     }
+
+    /// <summary>
+    /// 상대방의 데이터를 받기만 한다
+    /// </summary>
+    public override void FixedUpdateNetwork()
+    {
+        Debug.Log("RemotePlayerController FixedUpdateNetwork 진입");
+        // 상대방의 데이터를 내려받기만 한다
+        if (GetInput(out NetworkInputData input))
+        {
+
+        }
+    }
+
 
     // 3인칭에만 붙는 변수들
     public override void ApplyNetworkState(PlayerStatData data)

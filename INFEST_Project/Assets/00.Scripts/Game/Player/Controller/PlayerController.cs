@@ -73,26 +73,6 @@ public abstract class PlayerController : BaseController
         controller = GetComponentInParent<CharacterController>();
     }
 
-    /// <summary>
-    /// 네트워크로부터 플레이어의 업데이트를 받고(위치는 조금 더 고민해보자)
-    /// 다른 플레이어들의 정보를 받아서 처리하는 곳도 있으니까
-    /// LocalPlayerController, RemoteController에서 사용한다
-    /// </summary>
-    public override void FixedUpdateNetwork()
-    {
-        Debug.Log("FixedUpdateNetwork 진입");
-        if (GetInput(out NetworkInputData input))
-        {
-            // 테스트용으로 플레이어를 이동시킨다
-
-            //// 입력을 현재 상태에 전달
-            //stateMachine.currentState.HandleInput(input);
-
-            //// 상태 업데이트
-            //stateMachine.currentState.UpdateLogic();
-        }
-    }
-
     // 네트워크에서 받은 상태를 반영한다
     public override void ApplyNetworkState(PlayerStatData data)
     {
@@ -107,8 +87,8 @@ public abstract class PlayerController : BaseController
     public override bool IsFiring() => inputHandler.GetIsFiring();
     public override bool IsGrounded() => controller.isGrounded;
     public override bool IsShotgunFiring() => inputHandler.GetShotgunIsOnFiring();
-    public override float GetVerticalVelocity() => verticalVelocity;    // 3인칭에서 따로 사용
-    public override void ApplyGravity() { } // 3인칭에서 따로 구현
+    public override float GetVerticalVelocity() => verticalVelocity;    
+    public override void ApplyGravity() { } 
     #endregion
 
     // 네트워크에서 받은 값에 따라 행동하는 메서드 만든다
