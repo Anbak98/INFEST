@@ -13,8 +13,6 @@ public struct NetworkInputData : INetworkInput
     public NetworkButtons buttons;      // 버튼 상태
     public Vector2 scrollValue;           // 마우스 휠 값;
 
-    public bool isGrounded;             // 지면에 닿았는지 여부
-
     // 마우스
     public const byte BUTTON_FIRE = 0;      // 마우스 왼쪽
     public const byte BUTTON_ZOOM = 1;      // 마우스 오른쪽
@@ -34,8 +32,8 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_ZOOMPRESSED = 11;    // 마우스 오른쪽클릭 지속
     
 
-    /// 플레이어의 상태를 여기에 포함해서 보내야 한다
-    /// 초기값에 Idle을 넣을 것이므로 
-    /// 플레이어의 상태가 null인 채로 전송되지는 않는다
-    
+    /// 플레이어의 상태를 여기에 포함해서 보내야 한다    
+    /// 애니메이션의 상태를 보내지 않는다
+    /// move, 무기 장착여부, 어떤 무기를 장착했는지 정보가 넘어오면
+    /// 그 정보를 받은 상대가 그에 맞는 애니메이션을 로컬에서 실행
 }

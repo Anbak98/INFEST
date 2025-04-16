@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class PlayerGroundState : MonoBehaviour
+public class MonsterIdleState : MonsterStateNetworkBehaviour
 {
     // Start is called before the first frame update
     void Start()
