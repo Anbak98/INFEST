@@ -360,6 +360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uIStore: {fileID: 4703040432347135728}
   isInteraction: 0
+  inZone: 0
 --- !u!135 &182983779
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1818,10 +1819,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 42159344479240347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -83.3}
-  m_SizeDelta: {x: -628, y: -413}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5494988279324752746
 MonoBehaviour:
