@@ -2496,10 +2496,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fef9538ea1ba18458b81d91ccb43143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputHandler: {fileID: 0}
+  inputHandler: {fileID: 4068375233546285216}
   playerId: 
-  player: {fileID: 0}
-  animator: {fileID: 0}
+  player: {fileID: 3072078453906701333}
+  animator: {fileID: 5984569209288009230}
   weaponHolder: {fileID: 0}
   weaponFix: {fileID: 0}
   model: {fileID: 0}
@@ -2507,6 +2507,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+--- !u!95 &5984569209288009230 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
+    type: 3}
+  m_PrefabInstance: {fileID: 1985000783179576841}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6702231413404486571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5084344385780989346, guid: 889d24f8fc349cf45b463fb9b13b0143,

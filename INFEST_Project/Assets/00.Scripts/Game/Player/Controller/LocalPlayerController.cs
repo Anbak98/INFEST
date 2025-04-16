@@ -27,31 +27,16 @@ public class LocalPlayerController : PlayerController
         
     }
 
+    /// <summary>
+    /// 1인칭은 나만 가지고 있는거니까 상태 변화하는건 자신의 Update에서 처리한다
+    /// </summary>
     // Update is called once per frame
     protected override void Update()
     {
         
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        Debug.Log("LocalPlayerController FixedUpdateNetwork 진입");
-        if (GetInput(out NetworkInputData input))
-        {
-            // 테스트용으로 플레이어를 이동시킨다
-
-            //// 입력을 현재 상태에 전달
-            //stateMachine.currentState.HandleInput(input);
-
-            //// 상태 업데이트
-            //stateMachine.currentState.UpdateLogic();
-        }
-    }
-
-
     public override void PlayFireAnim() => animator?.SetTrigger("Fire");
-
-
 
     // 애니메이션 교체할때 무기도 교체한다
     public override void HandleFire(bool started)
