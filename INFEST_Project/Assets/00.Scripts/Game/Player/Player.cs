@@ -38,10 +38,6 @@ public class Player : NetworkBehaviour
     public GameObject ThirdPersonRoot;
     //public NetworkObject SprayPrefab;
 
-    // isGround를 사용하기 위해
-    public CharacterController Controller { get; private set; }
-
-
     //[SerializeField] private PhysxBall _prefabPhysxBall;
 
     // 네트워크 속성을 정의할 때 Fusion은 제공된 get 및 set 스텁을 사용자 지정 코드로 대체하여 네트워크 상태에 접근
@@ -60,11 +56,13 @@ public class Player : NetworkBehaviour
 
     private TMP_Text _messages;
 
+    /// <summary>
+    ///
+    /// </summary>
+
 
     private void Awake()
     {
-        Controller = GetComponent<CharacterController>();
-
         _cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
