@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class PlayerData
+public class PlayerData : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -20,5 +20,7 @@ public class PlayerData
     /// 닉네임
     /// </summary>
     public string NickName;
+
+    public int Key => key;
 
 }

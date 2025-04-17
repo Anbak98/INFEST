@@ -39,7 +39,7 @@ public class WeaponInfo
     /// <summary>
     /// 최대 총알 개수
     /// </summary>
-    public int MaxMagzine;
+    public int MaxBullet;
 
     /// <summary>
     /// 반동 힘

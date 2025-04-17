@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class MonsterState
+public class MonsterState : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -21,4 +21,6 @@ public class MonsterState
     /// </summary>
     public string Discription;
 
+
+    public int Key => key;
 }

@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class WeaponInfo
+public class WeaponInfo : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -85,5 +85,7 @@ public class WeaponInfo
     /// 총알 개당 가격
     /// </summary>
     public int BulletPrice;
+
+    public int Key => key;
 
 }

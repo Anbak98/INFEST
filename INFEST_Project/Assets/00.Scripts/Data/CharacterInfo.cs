@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class CharacterInfo
+public class CharacterInfo : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -65,5 +65,8 @@ public class CharacterInfo
     /// 소비아이템1 ID
     /// </summary>
     public int StartConsumeItem1;
+
+    public int Key => key;
+
 
 }

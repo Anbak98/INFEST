@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class ConsumeItem
+public class ConsumeItem : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -30,5 +30,7 @@ public class ConsumeItem
     /// 아이템 타입
     /// </summary>
     public DesignEnums.ConsumeItemType ConsumeItemType;
+
+    public int Key => key;
 
 }

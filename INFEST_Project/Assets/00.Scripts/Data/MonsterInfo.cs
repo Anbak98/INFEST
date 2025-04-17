@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class MonsterInfo
+public class MonsterInfo : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -96,4 +96,6 @@ public class MonsterInfo
     /// </summary>
     public int DropGold;
 
+
+    public int Key => key;
 }

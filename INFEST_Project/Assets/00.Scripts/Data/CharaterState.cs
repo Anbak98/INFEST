@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class CharaterState
+public class CharaterState : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -20,5 +20,7 @@ public class CharaterState
     /// 설명
     /// </summary>
     public string Discription;
+
+    public int Key => key;
 
 }
