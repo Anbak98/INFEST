@@ -54,7 +54,7 @@ public class PlayerProfile : NetworkBehaviour
 
         Debug.Log($"[Room] Player left: {Runner.TryGetNetworkedBehaviourId(this)}");
         var Room = FindObjectOfType<Room>();
-        Room.RPC_RemoveProfileToAll(this);
+        //Room?.RPC_RemoveProfileToAll(this);
         base.Despawned(runner, hasState);
     }
 
