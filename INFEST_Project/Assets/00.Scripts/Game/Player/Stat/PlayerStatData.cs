@@ -4,34 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 플레이어의 스탯정보
-public class PlayerStatData : NetworkBehaviour
+// 플레이어의 스탯, 상태정보
+[Serializable]
+public class PlayerStatData /*: NetworkBehaviour*/
 {
-    public uint networkId;
-    public string id;              //플레이어 ID 정보
-    public string name;         //플레이어 이름 정보
-    public uint team;            //팀 정보
-    public uint maxHp;           //최대 체력
-    public uint curHp;           //현재 체력
-    public int weapon;          //들고 있는 무기 정보
+    //public uint networkId;
 
-    public uint kills;           // 킬 수
-    public uint deaths;          // 데스 수
-    public uint assists;         // 어시 수
-    public bool isAlive;        // 생존 여부
+    // 플레이어의 스탯
+    public int id;             //플레이어 ID 정보(key)
+    public string name;        //플레이어 이름 정보
+    public int team;           //팀 정보
+    public int maxHp;          //최대 체력(Health)
+    public int curHp;          //현재 체력
 
-    /// <summary>
-    /// Animator에 전달할 정보
-    /// </summary>
-    public Vector3 position;    //플레이어 현 위치
-    public Vector3 lookInput;   //어디를 보고 있는지 벡터     
-    public Vector3 moveInput;   //이동 중인 벡터
+    public int defGear;        // 방어구 체력
+    public int def;            // 방어력
 
-    public float rotationX;
-    public float rotationY;     //마우스 회전 값
+    public int speedMove;       // 이동속도
 
-    public bool isJumping;      //점프 중인지
-    public bool isFiring;       //공격 중인지
-    public bool hitSuccess;     //공격에 성공 했는지
-    public string hitTargetId;  //공격한 타겟의 ID는 무엇인지
+    public int startGold;       // 시작 골드
+    public int startTeamCoin;   // 시작시 팀코인
+
+    public int playerState;     // 플레이어의 상태: 100~112까지
+
+    public int startWeapon1Id;          // 무기1 ID
+    public int startAuxiliaryId;          // 보조무기 ID
+
+    public int startConsumeItem1Id;          // 소비아이템1 ID            
 }

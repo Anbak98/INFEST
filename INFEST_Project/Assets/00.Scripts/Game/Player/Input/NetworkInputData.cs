@@ -36,4 +36,6 @@ public struct NetworkInputData : INetworkInput
     /// 애니메이션의 상태를 보내지 않는다
     /// move, 무기 장착여부, 어떤 무기를 장착했는지 정보가 넘어오면
     /// 그 정보를 받은 상대가 그에 맞는 애니메이션을 로컬에서 실행
+    /// 
+    /// PlayerStatHandler의 정보를 가져와야한다
 }
