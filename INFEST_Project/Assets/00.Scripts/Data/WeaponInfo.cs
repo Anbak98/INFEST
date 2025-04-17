@@ -17,6 +17,11 @@ public class WeaponInfo
     public string Name;
 
     /// <summary>
+    /// 무기 종류
+    /// </summary>
+    public DesignEnums.EWeaponType WeaponType;
+
+    /// <summary>
     /// 공격력
     /// </summary>
     public int Atk;
@@ -34,7 +39,7 @@ public class WeaponInfo
     /// <summary>
     /// 최대 총알 개수
     /// </summary>
-    public int MaxBullet;
+    public int MaxMagzine;
 
     /// <summary>
     /// 반동 힘
@@ -56,44 +61,29 @@ public class WeaponInfo
     /// </summary>
     public float Splash;
 
-}
-public class WeaponInfoLoader
-{
-    public List<WeaponInfo> ItemsList { get; private set; }
-    public Dictionary<int, WeaponInfo> ItemsDict { get; private set; }
+    /// <summary>
+    /// 사격 방식 (T: 자동, F: 단발)
+    /// </summary>
+    public bool IsAutpmatic;
 
-    public WeaponInfoLoader(string path = "JSON/WeaponInfo")
-    {
-        string jsonData;
-        jsonData = Resources.Load<TextAsset>(path).text;
-        ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
-        ItemsDict = new Dictionary<int, WeaponInfo>();
-        foreach (var item in ItemsList)
-        {
-            ItemsDict.Add(item.key, item);
-        }
-    }
+    /// <summary>
+    /// 총알 속도
+    /// </summary>
+    public float FireRate;
 
-    [Serializable]
-    private class Wrapper
-    {
-        public List<WeaponInfo> Items;
-    }
+    /// <summary>
+    /// 사격당 나가는 탄환 개수
+    /// </summary>
+    public int ProjectilesPerShot;
 
-    public WeaponInfo GetByKey(int key)
-    {
-        if (ItemsDict.ContainsKey(key))
-        {
-            return ItemsDict[key];
-        }
-        return null;
-    }
-    public WeaponInfo GetByIndex(int index)
-    {
-        if (index >= 0 && index < ItemsList.Count)
-        {
-            return ItemsList[index];
-        }
-        return null;
-    }
+    /// <summary>
+    /// 총 가격
+    /// </summary>
+    public int Price;
+
+    /// <summary>
+    /// 총알 개당 가격
+    /// </summary>
+    public int BulletPrice;
+
 }
