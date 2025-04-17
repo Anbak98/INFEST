@@ -14,4 +14,13 @@ public static class DesignEnums
         Heal = 1,
         Shield = 2,
     }
+    public enum EWeaponType
+    {
+        Pistol = 0,
+        Rifle = 1,
+        Shotgun = 2,
+        Sniper = 3,
+        Machinegun = 4,
+        Launcher = 5,
+    }
 }

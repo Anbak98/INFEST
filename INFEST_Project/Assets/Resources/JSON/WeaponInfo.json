@@ -3,6 +3,7 @@
     {
       "key": 10101,
       "Name": "Kolibri",
+      "WeaponType": 0,
       "Atk": 5,
       "WeaponRange": 10,
       "MagazineBullet": 8,
@@ -10,11 +11,17 @@
       "RecoilForce": 0.8,
       "RecoilReturnTime": 0.5,
       "Concentration": 2,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 1,
+      "ProjectilesPerShot": 1,
+      "Price": 150,
+      "BulletPrice": 0
     },
     {
       "key": 10102,
       "Name": "M1911",
+      "WeaponType": 0,
       "Atk": 50,
       "WeaponRange": 40,
       "MagazineBullet": 15,
@@ -22,11 +29,17 @@
       "RecoilForce": 0.75,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.9,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 1.2,
+      "ProjectilesPerShot": 1,
+      "Price": 250,
+      "BulletPrice": 2
     },
     {
       "key": 10103,
       "Name": "DGL-50",
+      "WeaponType": 0,
       "Atk": 60,
       "WeaponRange": 45,
       "MagazineBullet": 20,
@@ -34,11 +47,17 @@
       "RecoilForce": 0.6,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.8,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 1.4,
+      "ProjectilesPerShot": 1,
+      "Price": 300,
+      "BulletPrice": 2
     },
     {
       "key": 10104,
       "Name": "X18",
+      "WeaponType": 0,
       "Atk": 65,
       "WeaponRange": 50,
       "MagazineBullet": 25,
@@ -46,11 +65,17 @@
       "RecoilForce": 0.55,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.7,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 1.8,
+      "ProjectilesPerShot": 1,
+      "Price": 400,
+      "BulletPrice": 2
     },
     {
       "key": 10201,
       "Name": "ASVal",
+      "WeaponType": 1,
       "Atk": 100,
       "WeaponRange": 100,
       "MagazineBullet": 30,
@@ -58,11 +83,17 @@
       "RecoilForce": 0.55,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.7,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 1000,
+      "BulletPrice": 2
     },
     {
       "key": 10202,
       "Name": "MX16A4",
+      "WeaponType": 1,
       "Atk": 120,
       "WeaponRange": 100,
       "MagazineBullet": 30,
@@ -70,11 +101,17 @@
       "RecoilForce": 0.5,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.65,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 1200,
+      "BulletPrice": 2
     },
     {
       "key": 10203,
       "Name": "AKX200",
+      "WeaponType": 1,
       "Atk": 125,
       "WeaponRange": 100,
       "MagazineBullet": 30,
@@ -82,11 +119,17 @@
       "RecoilForce": 0.8,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.5,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 1400,
+      "BulletPrice": 2
     },
     {
       "key": 10204,
       "Name": "G3",
+      "WeaponType": 1,
       "Atk": 130,
       "WeaponRange": 100,
       "MagazineBullet": 35,
@@ -94,11 +137,17 @@
       "RecoilForce": 0.75,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.5,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 1500,
+      "BulletPrice": 2
     },
     {
       "key": 10205,
       "Name": "SVD",
+      "WeaponType": 1,
       "Atk": 140,
       "WeaponRange": 120,
       "MagazineBullet": 35,
@@ -106,11 +155,17 @@
       "RecoilForce": 0.7,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.45,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 1600,
+      "BulletPrice": 2
     },
     {
       "key": 10206,
       "Name": "MPS5",
+      "WeaponType": 1,
       "Atk": 150,
       "WeaponRange": 150,
       "MagazineBullet": 40,
@@ -118,11 +173,17 @@
       "RecoilForce": 0.9,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.6,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 1800,
+      "BulletPrice": 3
     },
     {
       "key": 10207,
       "Name": "Striker-V",
+      "WeaponType": 1,
       "Atk": 170,
       "WeaponRange": 150,
       "MagazineBullet": 40,
@@ -130,35 +191,53 @@
       "RecoilForce": 0.85,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.5,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2,
+      "ProjectilesPerShot": 1,
+      "Price": 2200,
+      "BulletPrice": 3
     },
     {
       "key": 10303,
       "Name": "Drake-12",
-      "Atk": 35,
+      "WeaponType": 2,
+      "Atk": 20,
       "WeaponRange": 20,
       "MagazineBullet": 2,
-      "MaxBullet": 50,
+      "MaxBullet": 80,
       "RecoilForce": 0.8,
       "RecoilReturnTime": 0.5,
       "Concentration": 5,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 1.5,
+      "ProjectilesPerShot": 8,
+      "Price": 1300,
+      "BulletPrice": 4
     },
     {
       "key": 10304,
       "Name": "KXG12",
-      "Atk": 30,
+      "WeaponType": 2,
+      "Atk": 20,
       "WeaponRange": 30,
       "MagazineBullet": 7,
       "MaxBullet": 140,
       "RecoilForce": 0.75,
       "RecoilReturnTime": 0.5,
       "Concentration": 3,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 1.7,
+      "ProjectilesPerShot": 10,
+      "Price": 2500,
+      "BulletPrice": 5
     },
     {
       "key": 10401,
       "Name": "Kar98k",
+      "WeaponType": 3,
       "Atk": 300,
       "WeaponRange": 200,
       "MagazineBullet": 5,
@@ -166,11 +245,17 @@
       "RecoilForce": 0.9,
       "RecoilReturnTime": 0.5,
       "Concentration": 0,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 3,
+      "ProjectilesPerShot": 1,
+      "Price": 1600,
+      "BulletPrice": 5
     },
     {
       "key": 10402,
       "Name": "L96X",
+      "WeaponType": 3,
       "Atk": 400,
       "WeaponRange": 200,
       "MagazineBullet": 7,
@@ -178,11 +263,17 @@
       "RecoilForce": 0.85,
       "RecoilReturnTime": 0.5,
       "Concentration": 0,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": false,
+      "FireRate": 3,
+      "ProjectilesPerShot": 1,
+      "Price": 2300,
+      "BulletPrice": 6
     },
     {
       "key": 10501,
       "Name": "MGX5",
+      "WeaponType": 4,
       "Atk": 200,
       "WeaponRange": 100,
       "MagazineBullet": 100,
@@ -190,11 +281,17 @@
       "RecoilForce": 0.7,
       "RecoilReturnTime": 0.5,
       "Concentration": 0.65,
-      "Splash": 0
+      "Splash": 0,
+      "IsAutpmatic": true,
+      "FireRate": 2.3,
+      "ProjectilesPerShot": 1,
+      "Price": 2500,
+      "BulletPrice": 3
     },
     {
       "key": 10502,
       "Name": "RPG7",
+      "WeaponType": 5,
       "Atk": 800,
       "WeaponRange": 250,
       "MagazineBullet": 1,
@@ -202,7 +299,12 @@
       "RecoilForce": 0.6,
       "RecoilReturnTime": 0.5,
       "Concentration": 0,
-      "Splash": 10
+      "Splash": 10,
+      "IsAutpmatic": false,
+      "FireRate": 1.3,
+      "ProjectilesPerShot": 1,
+      "Price": 2500,
+      "BulletPrice": 30
     }
   ]
 }

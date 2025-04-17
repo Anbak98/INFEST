@@ -17,6 +17,11 @@ public class WeaponInfo
     public string Name;
 
     /// <summary>
+    /// 무기 종류
+    /// </summary>
+    public DesignEnums.EWeaponType WeaponType;
+
+    /// <summary>
     /// 공격력
     /// </summary>
     public int Atk;
@@ -55,5 +60,30 @@ public class WeaponInfo
     /// 광역 데미지
     /// </summary>
     public float Splash;
+
+    /// <summary>
+    /// 사격 방식 (T: 자동, F: 단발)
+    /// </summary>
+    public bool IsAutpmatic;
+
+    /// <summary>
+    /// 총알 속도
+    /// </summary>
+    public float FireRate;
+
+    /// <summary>
+    /// 사격당 나가는 탄환 개수
+    /// </summary>
+    public int ProjectilesPerShot;
+
+    /// <summary>
+    /// 총 가격
+    /// </summary>
+    public int Price;
+
+    /// <summary>
+    /// 총알 개당 가격
+    /// </summary>
+    public int BulletPrice;
 
 }
