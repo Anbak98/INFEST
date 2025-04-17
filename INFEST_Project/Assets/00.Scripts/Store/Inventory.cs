@@ -1,39 +1,50 @@
 using Fusion;
 
-public class Inventory : NetworkBehaviour
+public class Inventory
 {
-    public int[] inventoryItme = new int[6];
-    
+
+    public int[] weapon = new int[2];
+    public int[] auxiliaryWeapon = new int[1];
+    public int[] consume = new int[3];
+    public int[] inventoryItem = new int[3];
+
     public void AddWeponItme(WeaponInstance item)
     {
         if (item.data.key % 10000 > 200)
         {
-            if (inventoryItme[0] == 0)
-                inventoryItme[0] = item.data.key;
+            if (weapon[0] == 0)
+                weapon[0] = item.data.key;
 
             else
-                inventoryItme[1] = item.data.key;
+                weapon[1] = item.data.key;
         }
         else
         {
-            inventoryItme[2] = item.data.key;
+            auxiliaryWeapon[0] = item.data.key;
         }
     }
 
     public void AddConsumeItme(ConsumeInstance item)
     {
         if (item.data.key % 10000 < 800)
-            inventoryItme[3] = item.data.key;
+            consume[0] = item.data.key;
 
         else if (item.data.key % 10000 < 900)
-            inventoryItme[4] = item.data.key;
+            consume[1] = item.data.key;
 
         else
-            inventoryItme[5] = item.data.key;
+            consume[2] = item.data.key;
     }
 
-    public void RemoveItem(int index)
+    public void RemoveWeapon(WeaponInstance item, int index)
     {
-        inventoryItme[index] = 0;
+        if (item.data.key % 10000 > 200)
+            weapon[index] = 0;
+        else
+            auxiliaryWeapon[0] = 0;
+    }
+    public void RemoveConsume(int index)
+    {
+        consume[index] = 0;
     }
 }

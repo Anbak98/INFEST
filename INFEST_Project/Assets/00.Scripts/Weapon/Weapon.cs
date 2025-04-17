@@ -5,13 +5,18 @@ using UnityEngine;
 public enum EWeaponType
 {
     None,
+    Pistol,
     Rifle,
     Sniper,
     Shotgun,
+    Special
 }
 
 public class Weapon : NetworkBehaviour
 {
+    public int key;
+    public WeaponInstance instance;
+
     public Animator animator;
     private CinemachineVirtualCamera _cam;
     //public Bullet bullet;

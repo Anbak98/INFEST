@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
 
 
 /// <summary>
@@ -38,6 +39,7 @@ public class Player : NetworkBehaviour
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
     private Weapons _weapons;// SY
+    private Store stores;
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -87,6 +89,7 @@ public class Player : NetworkBehaviour
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
+        stores = FindObjectOfType<Store>();
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
 
@@ -181,6 +184,16 @@ public class Player : NetworkBehaviour
     //        }
     //    }
     //}
+
+    //private void Update()
+    //{
+    //    // Object.HasInputAuthority를 확인한다: 모든 클라이언트에서 실행되지만 이 플레이어를 제어하는 클라이언트만 RPC를 호출해야 하기 때문
+    //    if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
+    //    {
+    //        RPC_SendMessage("Hey Mate!");
+    //    }
+    //}
+
 
     //private void Update()
     //{
