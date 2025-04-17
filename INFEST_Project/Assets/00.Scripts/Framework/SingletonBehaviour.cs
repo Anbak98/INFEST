@@ -34,6 +34,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         if (_instance == null)
         {
             Debug.LogError($"[Singleton] Instance of {typeof(T).Name} not found in the scene.");
+            return;
         }
 
         for (int i = 1; i < instances.Length; i++)
