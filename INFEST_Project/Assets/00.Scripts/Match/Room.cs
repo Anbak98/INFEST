@@ -1,9 +1,11 @@
 using Fusion;
 using Fusion.Sockets;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 {
@@ -96,6 +98,9 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             _playerProfiles.Remove(playerProfile);
         }
 
+        if (MatchManager.Instance == null)
+            return;
+
         foreach (var profile in MatchManager.Instance.uiProfils)
         {
             profile.NickName.text = "";
@@ -111,6 +116,12 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             Debug.Log("HGI");
             MatchManager.Instance.uiProfils[i++].NickName.text = item.Info.NickName.ToString();
         }
+    }
+
+    [Rpc( RpcSources.All, RpcTargets.All)]
+    public void RPC_Foo()
+    {
+        FindAnyObjectByType<LocalPlayerProfile>().IsStarted = true;
     }
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
