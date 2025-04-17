@@ -6,6 +6,8 @@ public class TestGameUI : MonoBehaviour
     public TestPlay testPlay;
     public NetworkRunner runner;
     [SerializeField] private UIScoreboardView scoreboardView;
+    [SerializeField] private UIMenuView menuView;
+    [SerializeField] private UISetView setView;
 
 
     private void Update()
@@ -19,6 +21,24 @@ public class TestGameUI : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
             scoreboardView.Hide();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (menuView.gameObject.activeSelf)
+            {
+                if (setView.gameObject.activeSelf)
+                {
+                    setView.Hide();
+                }
+                else
+                {
+                    menuView.Hide();
+                }
+            }
+            else
+            {
+                menuView.Show();
+            }
         }
     }
 }

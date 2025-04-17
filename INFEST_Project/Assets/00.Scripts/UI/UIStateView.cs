@@ -7,12 +7,11 @@ public class UIStateView : UIScreen
     public TextMeshProUGUI defText;
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI bulletText;
-    public Image jobIcon;
-    public Image weaponIcon;
+    public Image[] jobIcon;
+    public Image[] weaponIcon;
 
     private CharacterInfo _characterInfo;
     private WeaponInfo _weaponInfo;
-    private Weapon _weapon;
 
     public override void Awake()
     {
@@ -46,7 +45,7 @@ public class UIStateView : UIScreen
         hpText.text = _characterInfo.Health.ToString();
         defText.text = _characterInfo.Def.ToString();
         goldText.text = _characterInfo.StartGold.ToString("N0");
-        bulletText.text = _weaponInfo.MagazineBullet.ToString() + "/" + _weaponInfo.MaxBullet.ToString();
+        bulletText.text = _weaponInfo.MagazineBullet.ToString() + "/" + _weaponInfo.MaxBullet.ToString();        
     }
 
     public void UpdatePlayerState(Player player, CharacterInfo playerData, WeaponInfo weaponInfo)
@@ -54,24 +53,16 @@ public class UIStateView : UIScreen
         hpText.text = playerData.Health.ToString();
         defText.text = playerData.Def.ToString();
         goldText.text = playerData.StartGold.ToString("N0");
-        bulletText.text = weaponInfo.MagazineBullet.ToString() + "/" + weaponInfo.MaxBullet.ToString();
+        bulletText.text = $"{weaponInfo.MagazineBullet}/{weaponInfo.MaxBullet}";
     }
 
-    public void UpdateWeapon(Weapons weapons)
+    public void UpdateJobIcon()
     {
-        SetWeapon(weapons.CurrentWeapon);
-
-        for (int i = 0; i < weapons.AllWeapons.Length; i++)
-        {
-            var weapon = weapons.AllWeapons[i];            
-        }
-
-        if (_weapon == null)
-            return;
+        //직업에 따라 아이콘 변경
     }
 
-    private void SetWeapon(Weapon weapon)
+    public void UpdateWeaponIcon()
     {
-        
+        //무기에 따라 아이콘 변경
     }
 }
