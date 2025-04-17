@@ -1096,18 +1096,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1808913772 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5688608783600830290, guid: b9b8a5472877d17459132e4c2cf0cf18,
-    type: 3}
-  m_PrefabInstance: {fileID: 5697120949572665896}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1836262483 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2470346341868917430, guid: 40d4ba762c3eb1647ae91a4e9a52260c,
@@ -1769,26 +1757,6 @@ PrefabInstance:
       propertyPath: brightImage
       value: 
       objectReference: {fileID: 1782778689}
-    - target: {fileID: 5406325409729837911, guid: b9b8a5472877d17459132e4c2cf0cf18,
-        type: 3}
-      propertyPath: brightSlider
-      value: 
-      objectReference: {fileID: 1808913772}
-    - target: {fileID: 5688608783600830290, guid: b9b8a5472877d17459132e4c2cf0cf18,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5688608783600830290, guid: b9b8a5472877d17459132e4c2cf0cf18,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5688608783600830290, guid: b9b8a5472877d17459132e4c2cf0cf18,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6631571314841570404, guid: b9b8a5472877d17459132e4c2cf0cf18,
         type: 3}
       propertyPath: m_AnchorMax.x

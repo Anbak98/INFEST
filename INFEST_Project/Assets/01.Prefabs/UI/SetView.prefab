@@ -2424,7 +2424,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Graphic
+  m_text: Display
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c08c0e2efac6aa546af75818fda116b9, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: c08c0e2efac6aa546af75818fda116b9, type: 2}
@@ -2836,6 +2836,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isModal: 0
   _plugins: []
+  brightSlider: {fileID: 5688608783600830290}
+  brightImage: {fileID: 0}
+  brightText: {fileID: 6239119157196745241}
+  screenrate: {fileID: 7463790714223384013}
+  resolution: {fileID: 6315674240298382792}
+  graphic: {fileID: 7587185331820339671}
+  display: {fileID: 3001585927251921347}
 --- !u!1 &2835830409186821070
 GameObject:
   m_ObjectHideFlags: 0
@@ -8300,9 +8307,9 @@ MonoBehaviour:
     m_Options:
     - m_Text: Ultra
       m_Image: {fileID: 0}
-    - m_Text: Normal
+    - m_Text: Medium
       m_Image: {fileID: 0}
-    - m_Text: Low
+    - m_Text: Very Low
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9168,9 +9175,9 @@ MonoBehaviour:
     m_Options:
     - m_Text: 1920x1080
       m_Image: {fileID: 0}
-    - m_Text: 1600x1024
+    - m_Text: 1600x900
       m_Image: {fileID: 0}
-    - m_Text: 1280x1024
+    - m_Text: 1280x720
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
