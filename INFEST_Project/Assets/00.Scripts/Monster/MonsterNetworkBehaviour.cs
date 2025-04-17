@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster : NetworkBehaviour
+public class MonsterNetworkBehaviour : NetworkBehaviour
 {
     /// <summary>
     /// The networked amount of health that monster has
@@ -12,6 +12,9 @@ public class Monster : NetworkBehaviour
 
     [Networked, Tooltip("The networked amount of health that monster has")]
     public float MovementSpeed { get; set; } = 0.0f;
+
+    [Networked]
+    public bool IsAttack { get; set; } = false;
 
     [Tooltip("Reference to the enemy's FSM.")]
     public MonsterFSM FSM;
@@ -29,8 +32,18 @@ public class Monster : NetworkBehaviour
         target = FindAnyObjectByType<MonsterTest>().transform;
     }
 
-    public void Update()
+    protected virtual void Update()
+    {
+    }
+
+    public override void Render()
     {
         animator.SetFloat("MovementSpeed", MovementSpeed);
+        animator.SetBool("IsAttack", IsAttack);
+        AIPathing.speed = MovementSpeed;
+    }
+
+    public virtual void PlayerDetectedListnerByPlayer()
+    {
     }
 }
