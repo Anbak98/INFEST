@@ -8,14 +8,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         get
         {
             if (_instance == null)
-            {
-                _instance = FindObjectOfType<T>();
-
-                if (_instance == null)
-                {
-                    Debug.LogError($"[Singleton] Instance of {typeof(T).Name} not found in the scene.");
-                }
-            }
+                CreateInstance();
 
             return _instance;
         }
@@ -32,5 +25,22 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
             Debug.LogWarning($"[Singleton] Duplicate instance of {typeof(T).Name} found. Destroying duplicate.");
             Destroy(gameObject);
         }
+    }
+
+    private static void CreateInstance()
+    {
+        T[] instances = FindObjectsOfType<T>();
+
+        if (_instance == null)
+        {
+            Debug.LogError($"[Singleton] Instance of {typeof(T).Name} not found in the scene.");
+        }
+
+        for (int i = 1; i < instances.Length; i++)
+        {
+            Destroy(instances[i]);
+        }
+
+        _instance = instances[0];
     }
 }

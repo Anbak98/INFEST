@@ -31,7 +31,7 @@ public class PlayerInputHandler : NetworkBehaviour
     /// <summary>
     /// 속성(Property)은 참조(ref)로 전달할 수 없으므로, ref 전달 하려면 필드로 바꿔라
     /// </summary>
-    public Vector3 MoveInput { get; private set; } = Vector3.zero;      // 이동 방향 (Vector3)
+    public Vector2 MoveInput { get; private set; } = Vector2.zero;      // 이동 방향 (Vector3)
 
     public float RotationX { get; private set; } = 0f;       // 마우스 X 회전 (pitch)
     public float RotationY { get; private set; } = 0f;       // 마우스 Y 회전 (yaw)
@@ -54,6 +54,14 @@ public class PlayerInputHandler : NetworkBehaviour
 
     // 임시(동적연결)
     public InputManager inputManager;
+
+    // 임시방편(리팩토링할때 사라져야하는 메서드)
+    public InputManager GetInputManager()
+    {
+        if (inputManager == null)
+            inputManager = FindObjectOfType<InputManager>();
+        return inputManager;
+    }
 
     private void Awake()
     {
@@ -148,14 +156,16 @@ public class PlayerInputHandler : NetworkBehaviour
         inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
     }
 
-    #region 값 저장
+    #region Get, Set
     #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
-        Vector2 moveInput = context.ReadValue<Vector2>();
-        MoveInput = new Vector3(moveInput.x, 0f, moveInput.y);
+        //Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
+        MoveInput = context.ReadValue<Vector2>();
+        //MoveInput = new Vector3(moveInput.x, 0f, moveInput.y);
     }
+    public Vector2 GetMoveInput() => MoveInput;
+
     #endregion
     #region Look   
     private void SetLookInput(InputAction.CallbackContext context)
@@ -165,6 +175,8 @@ public class PlayerInputHandler : NetworkBehaviour
         RotationX = look.x;
         RotationY = look.y;
     }
+    public float GetRotationX() => RotationX;
+    public float GetRotationY() => RotationY;
     #endregion
     #region Swap
     private void SetSwapInput(InputAction.CallbackContext context)
@@ -316,7 +328,7 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         // 이건 사라져야한다. 플레이어의 상태가 추가되면
         // 입력이 없어도 상태가 출력되어야한다
-        if (MoveInput == Vector3.zero &&
+        if (MoveInput == Vector2.zero &&
             _isSwapVelue.y == 0 &&
             !_isJumping && !_isFiring && !_isReloading &&
             !_isZooming && !_isInteracting && !_isUsingItem &&

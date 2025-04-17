@@ -6,54 +6,127 @@ public class Store : NetworkBehaviour
     public UIStore uIStore;
     // 타이머
     [Networked] private NetworkBool _activeTime { get; set; }
-    [Networked] private TickTimer _storeTimer { get; set; }
-    private float _newStoreTime = 10f;
-    private float _activateTime = 5f;
+    [Networked] public TickTimer storeTimer { get; private set; }
+    [Networked] public NetworkBool isInteraction { get; set; } = false;
+
+
+    private float _newStoreTime = 120f;
+    private float _activateTime = 60f;
 
     public override void Spawned()
     {
-        ActivateTimer();
+        Activate();
+        _activeTime = true;
     }
-
 
     public override void FixedUpdateNetwork()
     {
-        //Debug.Log(_storeTimer.RemainingTime(Runner));
-        if (_storeTimer.ExpiredOrNotRunning(Runner))
+        if (storeTimer.ExpiredOrNotRunning(Runner))
         {
             _activeTime = true;
-            ExitShopZone();
+            RPC_EndTImer();
         }
     }
 
     /// <summary>
     /// 상점 생성시 타이머 활성화
     /// </summary>
-    public void ActivateTimer()
+    public void Activate()
     {
-        _storeTimer = TickTimer.CreateFromSeconds(Runner, _newStoreTime);
-    }
-
-    /// <summary>
-    /// 상점 상호작용시 타이머 활성화
-    /// </summary>
-    public void NewStoreTimer()
-    {
-        if (_activeTime)
+        if (HasStateAuthority)
         {
-            _storeTimer = TickTimer.None;
-            _storeTimer = TickTimer.CreateFromSeconds(Runner, _activateTime);
-            _activeTime = false;
+            storeTimer = TickTimer.CreateFromSeconds(Runner, _newStoreTime);
+            Debug.Log(storeTimer.RemainingTime(Runner));
         }
     }
 
-    public void EnterShopZone()
+    /// <summary>
+    /// 상호작용시 요청하는 메소드
+    /// </summary>
+    /// <param name="_player"></param>
+    /// <param name="_playerRef"></param>
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_RequestInteraction(NetworkObject _player, PlayerRef _playerRef)
     {
-        uIStore.button.gameObject.SetActive(true);
+        RPC_Interaction(_player, _playerRef);
     }
 
-    public void ExitShopZone()
+    /// <summary>
+    /// 상호작용 로직
+    /// </summary>
+    /// 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_Interaction(NetworkObject _player, [RpcTarget] PlayerRef _playerRef)
     {
-        uIStore.button.gameObject.SetActive(false);
+        // if (_playerRef != _player.Runner.LocalPlayer) return;
+
+        uIStore = _player.GetComponentInChildren<UIStore>();
+        if (uIStore == null) return;
+
+        isInteraction = false;
+        uIStore.panel.gameObject.SetActive(true);
+        uIStore.interactionText.gameObject.SetActive(false);
+        if (_activeTime)
+        {
+            storeTimer = TickTimer.CreateFromSeconds(Runner, _activateTime);
+            _activeTime = false;
+        }
+
+    }
+
+    /// <summary>
+    /// 상점의 영역에 들어갔을때 요청하는 메소드
+    /// </summary>
+    /// <param name="_player"></param>
+    /// <param name="_playerRef"></param>
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_RequestEnterShopZone(NetworkObject _player, PlayerRef _playerRef)
+    {
+        RPC_EnterShopZone(_player, _playerRef);
+        Debug.Log(_playerRef);
+
+    }
+
+    /// <summary>
+    /// 상점 영역 로직
+    /// </summary>
+    /// <param name="_player"></param>
+    /// <param name="_playerRef"></param>
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_EnterShopZone(NetworkObject _player, [RpcTarget] PlayerRef _playerRef)
+    {
+        //if (_playerRef != _player.Runner.LocalPlayer) return;
+
+        uIStore = _player.GetComponentInChildren<UIStore>();
+        Debug.Log(uIStore);
+        if (uIStore == null) return;
+
+        uIStore.panel.gameObject.SetActive(false);
+        uIStore.interactionText.gameObject.SetActive(true);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_RequestLeaveShopZone(NetworkObject _player, PlayerRef _playerRef)
+    {
+        RPC_LeaveShopZone(_player, _playerRef);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_LeaveShopZone(NetworkObject _player, [RpcTarget] PlayerRef _playerRef)
+    {
+        //if (Runner.LocalPlayer != _playerRef) return;
+
+        uIStore = _player.GetComponentInChildren<UIStore>();
+        if (uIStore == null) return;
+
+        uIStore.interactionText.gameObject.SetActive(false);
+        uIStore.panel.gameObject.SetActive(false);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_EndTImer()
+    {
+        uIStore.interactionText.gameObject.SetActive(false);
+        uIStore.panel.gameObject.SetActive(false);
     }
 }

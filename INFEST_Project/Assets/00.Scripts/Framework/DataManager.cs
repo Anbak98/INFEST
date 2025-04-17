@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class DataManager : SingletonBehaviour<DataManager>
 {
-    public CharacterInfoLoader CharacterInfoLoader {  get; private set; }
-    public CharaterStateLoader CharaterStateLoader { get; private set; }
-    public ConsumeItemLoader ConsumeItemLoader { get; private set; }
-    public MonsterInfoLoader MonsterInfoLoader { get; private set; }
-    public MonsterStateLoader MonsterStateLoader { get; private set; }
-    public WeaponInfoLoader WeaponInfoLoader { get; private set; }
-    public PlayerDataLoader PlayerDataLoader { get; private set; }
+    public DataLoader<CharacterInfo> CharacterInfoLoader {  get; private set; }
+    public DataLoader<CharaterState> CharaterStateLoader { get; private set; }
+    public DataLoader<ConsumeItem> ConsumeItemLoader { get; private set; }
+    public DataLoader<MonsterInfo> MonsterInfoLoader { get; private set; }
+    public DataLoader<MonsterState> MonsterStateLoader { get; private set; }
+    public DataLoader<WeaponInfo> WeaponInfoLoader { get; private set; }
+    public DataLoader<PlayerData> PlayerDataLoader { get; private set; }
 
 
     public void Initialize()
     {
-        CharacterInfoLoader = new CharacterInfoLoader();
-        CharaterStateLoader = new CharaterStateLoader();
-        ConsumeItemLoader = new ConsumeItemLoader();
-        MonsterInfoLoader = new MonsterInfoLoader();
-        MonsterStateLoader = new MonsterStateLoader();
-        WeaponInfoLoader = new WeaponInfoLoader();
-        PlayerDataLoader = new PlayerDataLoader();
+        CharacterInfoLoader = new DataLoader<CharacterInfo>("JSON/CharacterInfo");
+        CharaterStateLoader = new DataLoader<CharaterState>("JSON/CharaterState");
+        ConsumeItemLoader = new DataLoader<ConsumeItem>("JSON/ConsumeItem");
+        MonsterInfoLoader = new DataLoader<MonsterInfo>("JSON/MonsterInfo");
+        MonsterStateLoader = new DataLoader<MonsterState>("JSON/MonsterState");
+        WeaponInfoLoader = new DataLoader<WeaponInfo>("JSON/WeaponInfo");
+        PlayerDataLoader = new DataLoader<PlayerData>("JSON/PlayerData");
     }
 }

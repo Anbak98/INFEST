@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 /// <summary>
@@ -33,7 +34,7 @@ using UnityEngine.Windows;
 /// </summary>
 public abstract class PlayerController : BaseController
 {
-    //private PlayerStateMachine stateMachine;
+    public Player player;
 
     /// <summary>
     /// 플레이어가 입력을 받으면 다음 2가지 로직을 수행(2가지 동작은 별개의 동작이다)
@@ -45,7 +46,6 @@ public abstract class PlayerController : BaseController
     /// 
     /// PlayerInputSender에서 최종으로 확인 후 서버로 보낸다
     /// </summary>
-    //public InputManager inputManager;
 
     /// <summary>
     /// 상속으로 구현한 값 가져오는 메서드들이 플레이어 프리팹의 최상위 부모에 붙어야 하므로
@@ -54,7 +54,11 @@ public abstract class PlayerController : BaseController
     /// </summary>
     public PlayerInputHandler inputHandler;
 
-    protected CharacterController controller;
+    public Transform MainCameraTransform { get; set; } 
+
+
+
+    //protected CharacterController controller;
 
     // FSM 상태 머신 인스턴스
     protected float verticalVelocity;
@@ -64,39 +68,85 @@ public abstract class PlayerController : BaseController
     protected bool hitSuccess;
     protected string hitTatgetId;
 
-    protected override void Awake()
+    public override void Awake()
     {
+        player = GetComponentInParent<Player>();
+        inputHandler = player.Input;
         // inputManager에 더 잘 연결하는 방법을 생각해보자
         //if (inputManager == null)
         //    inputManager = FindObjectOfType<InputManager>();
 
-        controller = GetComponentInParent<CharacterController>();
+        //controller = GetComponentInParent<CharacterController>();
+
+        stateMachine = new PlayerStateMachine(player, this);
+
+        MainCameraTransform = Camera.main.transform;
     }
 
-    /// <summary>
-    /// 네트워크로부터 플레이어의 업데이트를 받고(위치는 조금 더 고민해보자)
-    /// 다른 플레이어들의 정보를 받아서 처리하는 곳도 있으니까
-    /// LocalPlayerController, RemoteController에서 사용한다
-    /// </summary>
-    public override void FixedUpdateNetwork()
+    public override void Update()
     {
-        Debug.Log("FixedUpdateNetwork 진입");
-        if (GetInput(out NetworkInputData input))
+        // 상태머신 
+        stateMachine.HandleInput();
+        stateMachine.Update();
+        // 이동
+        PlayerMove();
+    }
+
+    #region 이동
+    // 이동
+    private void PlayerMove()
+    {
+        Vector3 movementDir = GetMovementDir();
+        Move(movementDir);
+        Rotate(movementDir);
+    }
+    private Vector3 GetMovementDir()
+    {
+        // 메인 카메라가 바라보는 방향 = 플레이어가 바라보는 방향
+        Transform mainCameraTr = MainCameraTransform.transform;
+        Vector3 forward = mainCameraTr.forward;
+        Vector3 right = mainCameraTr.right;
+
+        forward.y = 0;
+        right.y = 0;
+
+        forward.Normalize();
+        right.Normalize();
+
+        return forward * inputHandler.GetMoveInput().y + right * inputHandler.GetMoveInput().x;
+    }
+    private void Move(Vector3 dir)
+    {
+        int movementSpeed = GetMovementSpeed();
+        player.characterController.Move((dir * movementSpeed) * Time.deltaTime);
+    }
+    // 이동속도 가져오기  
+    private int GetMovementSpeed()
+    {
+        player.stateMachine.StatHandler.MoveSpeedModifier = 2;  // 나중에 리팩토링때 제거
+
+        //int moveSpeed = GetStateMachine<PlayerStateMachine>().StatHandler.MoveSpeed * GetStateMachine<PlayerStateMachine>().StatHandler.MoveSpeedModifier;
+        int moveSpeed = player.stateMachine.StatHandler.MoveSpeed * player.stateMachine.StatHandler.MoveSpeedModifier;
+        return moveSpeed;
+    }
+    #endregion
+    #region 회전
+    private void Rotate(Vector3 dir)
+    {
+        if (dir != Vector3.zero)
         {
-            // 테스트용으로 플레이어를 이동시킨다
-
-            //// 입력을 현재 상태에 전달
-            //stateMachine.currentState.HandleInput(input);
-
-            //// 상태 업데이트
-            //stateMachine.currentState.UpdateLogic();
+            Transform playerTr = player.transform;
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+            playerTr.rotation = Quaternion.Slerp(playerTr.rotation, targetRotation, player.statHandler.RotationDamping * Time.deltaTime);
         }
     }
+    #endregion
+
+
 
     // 네트워크에서 받은 상태를 반영한다
     public override void ApplyNetworkState(PlayerStatData data)
     {
-
     }
 
     #region 상태 변화 조건(PlayerInputHandler의 값을 가져와서 판단)
@@ -105,10 +155,10 @@ public abstract class PlayerController : BaseController
     public override bool HasMoveInput() => inputHandler.MoveInput.sqrMagnitude > 0.01f;
     public override bool IsJumpInput() => inputHandler.GetIsJumping();
     public override bool IsFiring() => inputHandler.GetIsFiring();
-    public override bool IsGrounded() => controller.isGrounded;
+    //public override bool IsGrounded() => controller.isGrounded;
     public override bool IsShotgunFiring() => inputHandler.GetShotgunIsOnFiring();
-    public override float GetVerticalVelocity() => verticalVelocity;    // 3인칭에서 따로 사용
-    public override void ApplyGravity() { } // 3인칭에서 따로 구현
+    public override float GetVerticalVelocity() => verticalVelocity;
+    public override void ApplyGravity() { }
     #endregion
 
     // 네트워크에서 받은 값에 따라 행동하는 메서드 만든다

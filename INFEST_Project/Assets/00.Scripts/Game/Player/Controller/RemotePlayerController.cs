@@ -6,19 +6,17 @@ using UnityEngine;
 
 /// <summary>
 /// 3인칭 프리팹에 붙어서 애니메이션 관리
-/// 1인칭은 따로 관리하므로 3인칭 프리팹과 관련된 모든 것을 관리(이동, 회전, 애니메이션)
+/// 1인칭은 따로 관리하므로 3인칭 프리팹과 관련된 모든 것을 관리(회전, 애니메이션)
+/// 플레이어의 회전
+/// 
+/// 3인칭 프리팹은 나는 볼 수 없으므로 비활성화 상태
+/// 상대방만 볼 수 있으니까 네트워크로 보여줘야한다
+/// 
 /// </summary>
 public class RemotePlayerController : PlayerController
 {
     #region 플레이어 프리팹 관련
     [Header("Components")]
-    CharacterController characterController;
-    public Player player;
-
-    // 3인칭은 플레이어의 애니메이션만 교환한다
-    public Animator animator;
-    // collider는 CharacterController에 내재되어있다
-    //public CharacterController controller;    // 부모인 PlayerController에 선언되어있다
 
     private PlayerStatData _networkData;   //서버로부터 받을 적의 데이터
     //private DummyGunController _dummyGunController;
@@ -30,7 +28,7 @@ public class RemotePlayerController : PlayerController
 
     private Quaternion _networkRotation;
 
-    private PlayerStatHandler _statHandler;
+    private PlayerStatHandler _statHandler; // 다른 플레이어의 정보를 네트워크로 받는 값으로 갱신한다
 
     // 필요한가?
     [SerializeField] private Transform weaponHolder; // 손에 붙이는 슬롯
@@ -40,9 +38,9 @@ public class RemotePlayerController : PlayerController
     //[SerializeField] public PlayerNameTag nameTag;
 
     [SerializeField] private Transform model;   // 3인칭 모델
-    [SerializeField] private Transform bodyCollider;  // Rigidbody + CapsuleCollider
+    //[SerializeField] private Transform bodyCollider;  // Player의 Capsule Collider
     [SerializeField] private LayerMask groundLayer;
-    
+
     private GameObject equippedWeapon;
     #endregion
 
@@ -76,45 +74,68 @@ public class RemotePlayerController : PlayerController
     //public DummyGunController DummyGunController => _dummyGunController;
 
     private Vector3 _velocity = Vector3.zero;
-
-    //public PlayerStat
     #endregion
 
 
-    protected override void Awake()
+    public override void Awake()
     {
         base.Awake();
 
         // animator이 있는 곳에 추가했다(1인칭, 3인칭 각각)
-        animator = GetComponent<Animator>();
+
+
         _rb = GetComponentInParent<Rigidbody>();
         _statHandler = GetComponentInParent<PlayerStatHandler>();
 
-        _jumpHeight = _statHandler.JumpPower;
-        _rb.interpolation = RigidbodyInterpolation.Interpolate;
-        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        GetComponentInParent<PlayerStatHandler>().OnDeath += OnDeath;
+        if (_statHandler != null)
+        {
+            _jumpHeight = _statHandler.JumpPower;
+            _rb.interpolation = RigidbodyInterpolation.Interpolate;
+            _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+            _statHandler.OnDeath += OnDeath;
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
+    /// <summary>
+    /// 상대방의 데이터를 이용하여 애니메이션, 데미지 주고받는 연산 등을 
+    /// 상태에 따른 애니메이션 변화는 로컬에서 계산
+    /// </summary>
     // Update is called once per frame
-    protected override void Update()
+    public override void Update()
     {
-
+        base.Update();
+        // RemotePlayerController만의 로직은 아래에 추가
+        
     }
+
+    /// <summary>
+    /// 상대방의 데이터를 받기만 한다
+    /// </summary>
+    public override void FixedUpdateNetwork()
+    {
+        Debug.Log("RemotePlayerController FixedUpdateNetwork 진입");
+        // 상대방의 데이터를 내려받기만 한다
+        if (GetInput(out NetworkInputData input))
+        {
+
+        }
+    }
+
 
     // 3인칭에만 붙는 변수들
     public override void ApplyNetworkState(PlayerStatData data)
     {
 
     }
-    public override void PlayFireAnim() => animator?.SetTrigger("Fire");
+    //public override void PlayFireAnim() => player.thirdPersonAnimator?.SetTrigger("Fire");
+    public override void PlayFireAnim() => player.playerAnimator?.SetTrigger("Fire");
 
     public override void StartJump()
     {
@@ -130,7 +151,7 @@ public class RemotePlayerController : PlayerController
     private void OnDeath()
     {
         //_statHandler.OnDeath(_networkData.networkId);
-        Debug.Log($"RemotePlayerController OnDeath : {_networkData.networkId}");
+        Debug.Log($"RemotePlayerController OnDeath : {_networkData.id}");
     }
     private void HandleJump()
     {
@@ -159,11 +180,11 @@ public class RemotePlayerController : PlayerController
         }
     }
 
-    public override bool IsGrounded()
-    {
-        Vector3 origin = bodyCollider.position + Vector3.up * 0.1f;
-        return Physics.Raycast(origin, Vector3.down, 1.0f, groundLayer);
-    }
+    //public override bool IsGrounded()
+    //{
+    //    //Vector3 origin = bodyCollider.position + Vector3.up * 0.1f;
+    //    //return Physics.Raycast(origin, Vector3.down, 1.0f, groundLayer);
+    //}
 
 }
 

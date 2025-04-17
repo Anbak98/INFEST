@@ -9,14 +9,17 @@ public abstract class BaseController : NetworkBehaviour
 {
     public StateMachine stateMachine;
 
-    protected virtual void Awake()
+    public virtual void Awake()
     {
     }
 
-    protected virtual void Update()
+    public virtual void Update()
     {
-        stateMachine?.Update();
     }
+
+    // 쓸때마다 null 나오는데...?
+    public T GetStateMachine<T>() where T : StateMachine => stateMachine as T;
+    
 
     // 상태 관련 함수
     public abstract void PlayFireAnim();
