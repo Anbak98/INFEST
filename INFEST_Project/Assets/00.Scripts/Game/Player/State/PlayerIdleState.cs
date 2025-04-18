@@ -15,13 +15,15 @@ public class PlayerIdleState : PlayerBaseState
         stateMachine.StatHandler.MoveSpeedModifier = 0;
         Debug.Log("Idle상태 진입");
         base.Enter();
-        StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+
+        // Blend Tree의 중심 (0, 0)으로 애니메이션을 전환함
+        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
+        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
     public override void PhysicsUpdate()
     {
@@ -30,7 +32,8 @@ public class PlayerIdleState : PlayerBaseState
     public override void Update()
     {
         base.Update();
-        if (stateMachine.InputHandler.GetMoveInput() != Vector2.zero)
+        // 입력값이 있다면 MoveState로 전환
+        if (stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
             return;

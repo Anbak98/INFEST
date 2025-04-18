@@ -88,14 +88,14 @@ public class RemotePlayerController : PlayerController
         _statHandler = GetComponentInParent<PlayerStatHandler>();
 
 
-        if (_statHandler != null)
-        {
-            _jumpHeight = _statHandler.JumpPower;
-            _rb.interpolation = RigidbodyInterpolation.Interpolate;
-            _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        //if (_statHandler != null)
+        //{
+        //    _jumpHeight = _statHandler.JumpPower;
+        //    _rb.interpolation = RigidbodyInterpolation.Interpolate;
+        //    _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-            _statHandler.OnDeath += OnDeath;
-        }
+        //    _statHandler.OnDeath += OnDeath;
+        //}
     }
 
     // Start is called before the first frame update
@@ -128,63 +128,50 @@ public class RemotePlayerController : PlayerController
         }
     }
 
-
-    // 3인칭에만 붙는 변수들
-    public override void ApplyNetworkState(PlayerStatData data)
+    // Remote 플레이어는 직접 이동하지 않는다 (서버로부터 받는 정보를 신뢰)
+    public override void HandleMovement()
     {
-
+        // TODO
     }
-    //public override void PlayFireAnim() => player.thirdPersonAnimator?.SetTrigger("Fire");
-    public override void PlayFireAnim() => player.playerAnimator?.SetTrigger("Fire");
-
-    public override void StartJump()
+    public override void ApplyGravity()
     {
-        Debug.Log("점프 시작");
-    }
-
-    public override void HandleFire(bool started)
-    {
-        Debug.Log("Fire 시작");
+        // TODO
     }
 
 
-    private void OnDeath()
-    {
-        //_statHandler.OnDeath(_networkData.networkId);
-        Debug.Log($"RemotePlayerController OnDeath : {_networkData.id}");
-    }
-    private void HandleJump()
-    {
-        _jumpElapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(_jumpElapsed / _jumpDuration);
-        float height = Mathf.SmoothStep(0f, _jumpHeight, t);
-        Vector3 pos = _jumpStartPos;
-        pos.y += height;
-        transform.position = pos;
-
-        if (t >= 1f)
-            _isJumpingUp = false;
-    }
-
-
-    private void ApplyCorrection()
-    {
-        if (_isInAir || _isJumpingUp) return;
-
-        float dist = Vector3.Distance(transform.position, _correctedPosition);
-
-        if (dist > 0.01f)
-        {
-            float lerpFactor = Mathf.Clamp01(_correctionSpeed * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, _correctedPosition, lerpFactor);
-        }
-    }
-
-    //public override bool IsGrounded()
+    //private void OnDeath()
     //{
-    //    //Vector3 origin = bodyCollider.position + Vector3.up * 0.1f;
-    //    //return Physics.Raycast(origin, Vector3.down, 1.0f, groundLayer);
+    //    //_statHandler.OnDeath(_networkData.networkId);
+    //    Debug.Log($"RemotePlayerController OnDeath : {_networkData.id}");
     //}
+    //private void HandleJump()
+    //{
+    //    _jumpElapsed += Time.deltaTime;
+    //    float t = Mathf.Clamp01(_jumpElapsed / _jumpDuration);
+    //    float height = Mathf.SmoothStep(0f, _jumpHeight, t);
+    //    Vector3 pos = _jumpStartPos;
+    //    pos.y += height;
+    //    transform.position = pos;
+
+    //    if (t >= 1f)
+    //        _isJumpingUp = false;
+    //}
+
+
+    //private void ApplyCorrection()
+    //{
+    //    if (_isInAir || _isJumpingUp) return;
+
+    //    float dist = Vector3.Distance(transform.position, _correctedPosition);
+
+    //    if (dist > 0.01f)
+    //    {
+    //        float lerpFactor = Mathf.Clamp01(_correctionSpeed * Time.deltaTime);
+    //        transform.position = Vector3.Lerp(transform.position, _correctedPosition, lerpFactor);
+    //    }
+    //}
+
+
 
 }
 

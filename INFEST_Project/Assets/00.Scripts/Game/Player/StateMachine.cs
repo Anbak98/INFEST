@@ -12,7 +12,7 @@ public abstract class StateMachine
     protected BaseController controller;
 
     // 확장성과 형변환 사이에서 고민한 결과 제네릭을 사용하기로 결정
-    public T GetController<T>() where T : BaseController => controller as T;
+    //public T GetController<T>() where T : BaseController => controller as T;
 
     // 현재의 상태를 종료하고 새로운 상태를 실행
     public void ChangeState(IState newState)
@@ -28,11 +28,6 @@ public abstract class StateMachine
     /// <summary>
     /// 현재 상태, 입력값, 조건에 따라 다른 상태를 판단
     /// </summary>
-    protected virtual void UpdateStateTransition()
-    {
-        // StateMachine을 상속받은 각각의 StateMachine에서 정의한다
-    }
-
     public void HandleInput()
     {
         currentState?.HandleInput();
@@ -41,7 +36,6 @@ public abstract class StateMachine
     // 생명주기함수 아니다
     public void Update()
     {
-        UpdateStateTransition();
         currentState?.Update();
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
 
 
@@ -32,33 +33,26 @@ public class LocalPlayerController : PlayerController
     {
         base.Update();
         // LocalPlayerController만의 로직은 아래에 추가
-
     }
-
-    //public override void PlayFireAnim() => player.firstPersonAnimator?.SetTrigger("Fire");
-    public override void PlayFireAnim() => player.playerAnimator?.SetTrigger("Fire");
-
-    // 플레이어의 입력
+    // 플레이어의 이동(방향은 CameraHandler에서 설정)
     public override void HandleMovement()
     {
-        base.HandleMovement();
+        Vector3 input = player.Input.MoveInput;
 
-        player = GetComponentInParent<Player>();
+        /*Vector3 move = head.right * input.x + head.forward * input.z;
+        _controller.Move(move * _statHandler.MoveSpeed * Time.deltaTime);*/
 
-        //Vector3 input = _input.MoveInput;
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
+
+        Vector3 move = right * input.x + forward * input.z;
+        move.y = 0f; // 수직 방향 제거
+        player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * Time.deltaTime);
     }
 
-
-
-    // 애니메이션 교체할때 무기도 교체한다
-    public override void HandleFire(bool started)
+    public override void ApplyGravity()
     {
-        throw new System.NotImplementedException();
-    }
 
-    public override void StartJump()
-    {
-        throw new System.NotImplementedException();
     }
     // 앉는 동작은 Local과 Remote가 다르다
 }
