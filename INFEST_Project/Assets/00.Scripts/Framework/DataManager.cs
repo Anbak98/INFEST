@@ -3,16 +3,22 @@ using System.Collections.Generic;
 
 public class DataManager : SingletonBehaviour<DataManager>
 {
-    private Dictionary<Type, IDataLoader> _dataLoaderMap = new()
+    private Dictionary<Type, IDataLoader> _dataLoaderMap;
+
+    protected override void Awake()
     {
-        {typeof(CharacterInfo), new DataLoader<CharacterInfo>("JSON/CharacterInfo") },
-        {typeof(CharaterState), new DataLoader<CharaterState>("JSON/CharaterState") },
-        {typeof(ConsumeItem), new DataLoader<ConsumeItem>("JSON/ConsumeItem") },
-        {typeof(MonsterInfo), new DataLoader<MonsterInfo>("JSON/MonsterInfo") },
-        {typeof(MonsterState), new DataLoader<MonsterState>("JSON/MonsterState") },
-        {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
-        {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
-    };
+        base.Awake();
+        _dataLoaderMap = new()
+        {
+            {typeof(CharacterInfo), new DataLoader<CharacterInfo>("JSON/CharacterInfo") },
+            {typeof(CharaterState), new DataLoader<CharaterState>("JSON/CharaterState") },
+            {typeof(ConsumeItem), new DataLoader<ConsumeItem>("JSON/ConsumeItem") },
+            {typeof(MonsterInfo), new DataLoader<MonsterInfo>("JSON/MonsterInfo") },
+            {typeof(MonsterState), new DataLoader<MonsterState>("JSON/MonsterState") },
+            {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
+            {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
+        };
+    }
 
     public T GetByKey<T>(int key) where T : IKeyedItem
     {
