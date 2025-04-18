@@ -6,7 +6,7 @@ public class ConsumeInstance
 
     public ConsumeInstance(int key)
     {
-        data = DataManager.Instance.ConsumeItemLoader.GetByKey(key);
+        data = DataManager.Instance.GetByKey<ConsumeItem>(key);
     }
 
     public float curNum { get; private set; } = 0;                              // 현재 아이템 갯수

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class UIScreen : MonoBehaviour
+public abstract class UIScreen : UIBase
 {
     protected static readonly int HideAnimHash = Animator.StringToHash("Hide");
     protected static readonly int ShowAnimHash = Animator.StringToHash("Show");

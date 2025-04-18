@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataLoader<T> where T : IKeyedItem
+public interface IDataLoader
+{
+}
+
+public class DataLoader<T> : IDataLoader where T : IKeyedItem
 {
     public List<T> ItemsList { get; private set; }
     public Dictionary<int, T> ItemsDict { get; private set; }

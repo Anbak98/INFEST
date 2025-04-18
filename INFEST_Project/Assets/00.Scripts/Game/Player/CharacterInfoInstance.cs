@@ -6,7 +6,7 @@ public class CharacterInfoInstance
 
     public CharacterInfoInstance(int key)
     {
-        data = DataManager.Instance.CharacterInfoLoader.GetByKey(key);
+        data = DataManager.Instance.GetByKey<CharacterInfo>(key);
     }
 
     public int health => data.Health;                           // Ã¼·Â
