@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  inputHandler: {fileID: 0}
+  cameraHandler: {fileID: 0}
   playerId: 
 --- !u!1 &4300107019633739238
 GameObject:
@@ -1164,6 +1164,7 @@ GameObject:
   - component: {fileID: -5511681442977026662}
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 7081860901902442314}
+  - component: {fileID: 6335743027364179064}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -1278,6 +1279,7 @@ MonoBehaviour:
   playerController: {fileID: 0}
   statHandler: {fileID: 3147526191137004029}
   characterController: {fileID: 7081860901902442314}
+  cameraHandler: {fileID: 0}
   MoveSpeed: 6
   JumpForce: 10
   CameraHandle: {fileID: 5072942232072495766}
@@ -1379,7 +1381,7 @@ MonoBehaviour:
     curHp: 0
     defGear: 0
     def: 0
-    speedMove: 0
+    speedMove: 1
     startGold: 0
     startTeamCoin: 0
     playerState: 0
@@ -1412,6 +1414,21 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6335743027364179064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d114a27dd5723a0479e482c0e1f0d6fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scopeCam: {fileID: 0}
+  _cameraHolder: {fileID: 5072942232072495766}
+  _sensitivity: 5
 --- !u!1 &8169286849145927954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2509,7 +2526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3072078453906701333}
-  inputHandler: {fileID: 4068375233546285216}
+  cameraHandler: {fileID: 0}
   playerId: 
   weaponHolder: {fileID: 0}
   weaponFix: {fileID: 0}
@@ -4268,6 +4285,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3834324505224384244}
     m_Modifications:
+    - target: {fileID: 1218443210871367476, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1466275903458887125, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4366,6 +4388,11 @@ PrefabInstance:
     - target: {fileID: 1466275903458887125, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874234957850327549, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4049729650790982361, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,

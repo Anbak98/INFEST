@@ -8,6 +8,7 @@ using UnityEngine;
 public class TestEnterStage : NetworkBehaviour, INetworkRunnerCallbacks
 {    
     [SerializeField] private NetworkPrefabRef _playerPrefab;
+    [SerializeField] private NetworkPrefabRef _monster_pj_hi;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     public override void Spawned()
@@ -26,6 +27,9 @@ public class TestEnterStage : NetworkBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
             _spawnedCharacters.Add(player, networkPlayerObject);
+
+            for (int i = 0; i < 50; ++i)
+                runner.Spawn(_monster_pj_hi);
         }
     }
 

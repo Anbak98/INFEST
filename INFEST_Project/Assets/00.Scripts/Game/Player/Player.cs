@@ -33,6 +33,7 @@ public class Player : NetworkBehaviour
     public PlayerStatHandler statHandler;
     public CharacterController characterController; // collider, rigidbody 등 내장되어있다
     public PlayerStateMachine stateMachine;
+    public PlayerCameraHandler cameraHandler;
 
 
     #region 기존의 데이터
@@ -84,6 +85,7 @@ public class Player : NetworkBehaviour
         AnimationData.Initialize();
         Input = GetComponent<PlayerInputHandler>();
         statHandler = GetComponent<PlayerStatHandler>();
+        cameraHandler = GetComponent<PlayerCameraHandler>();
 
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
@@ -92,13 +94,12 @@ public class Player : NetworkBehaviour
         stores = FindObjectOfType<Store>();
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
-
     }
     private void Start()
     {
         stateMachine = new PlayerStateMachine(this, playerController);
         stateMachine.ChangeState(stateMachine.IdleState);
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
     public void Update()
     {
@@ -223,7 +224,7 @@ public class Player : NetworkBehaviour
             }
         }
         /// 디버그용
-        statHandler.Init(200, 10, 2, 5, 8, 50, 60);
+        statHandler.Init(200, 3, 2, 5, 8, 50, 60);
         Debug.LogFormat($"플레이어 hp = {statHandler.CurrentHealth}");
         Debug.LogFormat($"플레이어 speed = {statHandler.MoveSpeed}");
         Debug.LogFormat($"플레이어 speedModifier = {statHandler.MoveSpeedModifier}");

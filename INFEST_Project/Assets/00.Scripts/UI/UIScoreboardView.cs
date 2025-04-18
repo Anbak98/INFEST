@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class UIScoreboardView : UIScreen
 {

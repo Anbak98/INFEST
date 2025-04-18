@@ -5,15 +5,16 @@ using UnityEngine.InputSystem;
 
 
 /// <summary>
-/// 메인카메라의 이동 회전을 다룬다
-/// scope카메라를 저장한다
+/// 카메라의 이동 회전을 다룬다
+/// 회전은 상태 변화에 영향을 미치지 않으므로 StateMachine으로부터 독립적으로 작성
 /// </summary>
 public class PlayerCameraHandler : MonoBehaviour
 {
     [SerializeField] private Camera _scopeCam;          // scope 전용 카메라
-    [SerializeField] private Transform cameraHolder;    // 카메라 부모 (X축 회전만 담당)
+    [SerializeField] private Transform _cameraHolder;    // 카메라 부모 (X축 회전만 담당)
     [SerializeField] private float _sensitivity = 5f;   // 이동에 적용할 민감도
 
+    // 마우스의 회전값
     public float xRotation { get; set; } = 0f;
     public float yRotation { get; set; } = 0f;
 
@@ -60,6 +61,6 @@ public class PlayerCameraHandler : MonoBehaviour
         // 상하 회전 (카메라 홀더)
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
-        cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 }
