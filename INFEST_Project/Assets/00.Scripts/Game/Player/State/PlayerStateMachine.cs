@@ -57,33 +57,23 @@ public class PlayerStateMachine : StateMachine
         this.Player = player;
 
         StatHandler = player.statHandler;
-
-        // StateMachine에서 BaseController타입을 사용하므로, 이를 전달받는 곳에서 사용하려면 형변환 필요
-        // 제네릭으로 안전하게 캐스팅
-        var playerController = GetController<PlayerController>();
+        InputHandler = player.Input;
 
         // 수정사항
-        IdleState = new PlayerIdleState(playerController, this);
-        MoveState = new PlayerMoveState(playerController, this);
-        RunState = new PlayerRunState(playerController, this);
+        IdleState = new PlayerIdleState(controller, this);
+        MoveState = new PlayerMoveState(controller, this);
+        RunState = new PlayerRunState(controller, this);
 
-        AttackState = new PlayerAttackState(playerController, this);
-        ReloadState = new PlayerReloadState(playerController, this);
+        AttackState = new PlayerAttackState(controller, this);
+        ReloadState = new PlayerReloadState(controller, this);
 
-        JumpState = new PlayerJumpState(playerController, this);
-        FallState = new PlayerFallState(playerController, this);
+        JumpState = new PlayerJumpState(controller, this);
+        FallState = new PlayerFallState(controller, this);
 
-        SitState = new PlayerSitState(playerController, this);
+        SitState = new PlayerSitState(controller, this);
 
+        // 처음에는 IdleState시작
+        currentState = IdleState; // 파라미터가 없어서 명시적으로 지정
     }
-    //// ChangeState, Update 등의 메서드는 부모인 StateMachine에 정의한 것을 사용한다
-    //protected override void UpdateStateTransition()
-    //{
-    //    // 입력값에 따른 상태 전이
-
-
-    //}
-    //// 상태 전이 함수들
-
 }
 

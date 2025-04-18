@@ -20,6 +20,7 @@ public class PlayerAnimationData
 
     // 떨어지는 상태는 jump상태와 분명히 다르다
     // isGround가 false && isjumping이 false인 것으로 표현할 수 있어서 파라미터는 없어도 된다
+    // 문제는 parameter가 없을때 idle과 구분해야한다는거
     //[SerializeField] private string _fallParameterName = "Fall";    
 
     [SerializeField] private string _sitParameterName = "Sit";
