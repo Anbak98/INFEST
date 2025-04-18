@@ -1,26 +1,27 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class DataManager : SingletonBehaviour<DataManager>
 {
-    public DataLoader<CharacterInfo> CharacterInfoLoader {  get; private set; }
-    public DataLoader<CharaterState> CharaterStateLoader { get; private set; }
-    public DataLoader<ConsumeItem> ConsumeItemLoader { get; private set; }
-    public DataLoader<MonsterInfo> MonsterInfoLoader { get; private set; }
-    public DataLoader<MonsterState> MonsterStateLoader { get; private set; }
-    public DataLoader<WeaponInfo> WeaponInfoLoader { get; private set; }
-    public DataLoader<PlayerData> PlayerDataLoader { get; private set; }
-
-
-    public void Initialize()
+    private Dictionary<Type, IDataLoader> _dataLoaderMap = new()
     {
-        CharacterInfoLoader = new DataLoader<CharacterInfo>("JSON/CharacterInfo");
-        CharaterStateLoader = new DataLoader<CharaterState>("JSON/CharaterState");
-        ConsumeItemLoader = new DataLoader<ConsumeItem>("JSON/ConsumeItem");
-        MonsterInfoLoader = new DataLoader<MonsterInfo>("JSON/MonsterInfo");
-        MonsterStateLoader = new DataLoader<MonsterState>("JSON/MonsterState");
-        WeaponInfoLoader = new DataLoader<WeaponInfo>("JSON/WeaponInfo");
-        PlayerDataLoader = new DataLoader<PlayerData>("JSON/PlayerData");
+        {typeof(CharacterInfo), new DataLoader<CharacterInfo>("JSON/CharacterInfo") },
+        {typeof(CharaterState), new DataLoader<CharaterState>("JSON/CharaterState") },
+        {typeof(ConsumeItem), new DataLoader<ConsumeItem>("JSON/ConsumeItem") },
+        {typeof(MonsterInfo), new DataLoader<MonsterInfo>("JSON/MonsterInfo") },
+        {typeof(MonsterState), new DataLoader<MonsterState>("JSON/MonsterState") },
+        {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
+        {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
+    };
+
+    public T GetByKey<T>(int key) where T : IKeyedItem
+    {
+        if (_dataLoaderMap.TryGetValue(typeof(T), out var dataLoader))
+        {
+            DataLoader<T> loader = dataLoader as DataLoader<T>;
+            return loader.GetByKey(key);
+        }
+
+        return default;
     }
 }

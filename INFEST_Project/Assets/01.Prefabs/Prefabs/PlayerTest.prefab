@@ -1164,9 +1164,9 @@ GameObject:
   - component: {fileID: -5511681442977026662}
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 7081860901902442314}
-  - component: {fileID: 6335743027364179064}
+  - component: {fileID: 1139099963600576956}
   m_Layer: 6
-  m_Name: Player
+  m_Name: PlayerTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1208,7 +1208,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3617898819
+  SortKey: 1728355062
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -1381,7 +1381,7 @@ MonoBehaviour:
     curHp: 0
     defGear: 0
     def: 0
-    speedMove: 1
+    speedMove: 0
     startGold: 0
     startTeamCoin: 0
     playerState: 0
@@ -1414,7 +1414,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6335743027364179064
+--- !u!114 &1139099963600576956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1763,7 +1763,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: a97c08e4a95434b13970211c1e2cdc87, type: 2}
+      objectReference: {fileID: 9100000, guid: 769ef2c328bc65c41859b720c938f746, type: 2}
     - target: {fileID: 137117042324385628, guid: 2ad5c36edd0559141b78e7b2213712e6,
         type: 3}
       propertyPath: m_RenderingLayerMask
@@ -2288,7 +2288,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: a5b739106ef653745a8f073cf2408ba8, type: 2}
+      objectReference: {fileID: 9100000, guid: 7502e2c60225dd7499c294d4c0ec948d, type: 2}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_ApplyRootMotion
@@ -2730,12 +2730,6 @@ PrefabInstance:
       objectReference: {fileID: 4742838933017268266}
     - target: {fileID: 2842381568767903673, guid: 43ee4ff4a81ba5e4ebe9eb07b19674f0,
         type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 21300000, guid: 6fda819836ba343469894117cb6c4826,
-        type: 3}
-    - target: {fileID: 2842381568767903673, guid: 43ee4ff4a81ba5e4ebe9eb07b19674f0,
-        type: 3}
       propertyPath: camRecoil
       value: 
       objectReference: {fileID: 4793326487518545712}
@@ -2805,12 +2799,6 @@ PrefabInstance:
       propertyPath: _cam
       value: 
       objectReference: {fileID: 4742838933017268266}
-    - target: {fileID: 3647047511641280256, guid: ea21ef3716813f041af43933d8e71f90,
-        type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 21300000, guid: 02e8ade0ffca705409493fdd2537e1f6,
-        type: 3}
     - target: {fileID: 3647047511641280256, guid: ea21ef3716813f041af43933d8e71f90,
         type: 3}
       propertyPath: camRecoil
@@ -4297,11 +4285,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3834324505224384244}
     m_Modifications:
-    - target: {fileID: 1218443210871367476, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1466275903458887125, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4400,11 +4383,6 @@ PrefabInstance:
     - target: {fileID: 1466275903458887125, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2874234957850327549, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4049729650790982361, guid: c2a6a0c67b66d8d4c9b9a22b80b642ae,
