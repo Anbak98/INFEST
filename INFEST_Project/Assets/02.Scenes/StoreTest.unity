@@ -123,6 +123,76 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &21673563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 21673565}
+  - component: {fileID: 21673564}
+  - component: {fileID: 21673566}
+  m_Layer: 0
+  m_Name: StoreMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &21673564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21673563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3cb51a95ddbc224d8a1e19726b9e6c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _activeTime:
+    _value: 0
+  newStoreTime: 120
+  activateTime: 60
+--- !u!4 &21673565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21673563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.084064, y: 2.0411606, z: -3.0075855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3513414962055513883}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &21673566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21673563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2607258697
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects:
+  - {fileID: 7860123675855042760}
+  NetworkedBehaviours:
+  - {fileID: 21673564}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &152918205
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1478471089}
+  - component: {fileID: 1478471090}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -532,6 +603,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1478471090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478471088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8fdcf3397281047abc2d3b2c861389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1605223308
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7dbc74f399ea2843ac9cd339ef528b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _storeController: {fileID: 21673564}
+  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
   uIStore: {fileID: 0}
   _isInteraction:
     _value: 0
@@ -822,13 +907,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5081147220389407047}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.4, y: 0, z: 12}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.6840634, y: -2.0411606, z: 15.007586}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4431038602306836862}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 21673565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &3591304871738239620
 MeshRenderer:
@@ -985,6 +1070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _store: {fileID: 754427079492385630}
+  _storeController: {fileID: 21673564}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -997,5 +1084,5 @@ SceneRoots:
   - {fileID: 771775653}
   - {fileID: 1605223310}
   - {fileID: 234393902}
-  - {fileID: 3513414962055513883}
   - {fileID: 330408305}
+  - {fileID: 21673565}

@@ -4,9 +4,8 @@ public class Inventory
 {
 
     public int[] weapon = new int[2];
-    public int[] auxiliaryWeapon = new int[1];
+    public int auxiliaryWeapon;
     public int[] consume = new int[3];
-    public int[] inventoryItem = new int[3];
 
     public void AddWeponItme(WeaponInstance item)
     {
@@ -20,7 +19,7 @@ public class Inventory
         }
         else
         {
-            auxiliaryWeapon[0] = item.data.key;
+            auxiliaryWeapon = item.data.key;
         }
     }
 
@@ -36,14 +35,15 @@ public class Inventory
             consume[2] = item.data.key;
     }
 
-    public void RemoveWeapon(WeaponInstance item, int index)
+    public void RemoveWeaponItem(int key, int index)
     {
-        if (item.data.key % 10000 > 200)
+        if (key % 10000 > 200)
             weapon[index] = 0;
         else
-            auxiliaryWeapon[0] = 0;
+            auxiliaryWeapon = 0;
     }
-    public void RemoveConsume(int index)
+
+    public void RemoveConsumeItem(int key, int index)
     {
         consume[index] = 0;
     }

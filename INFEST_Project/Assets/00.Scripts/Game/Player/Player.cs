@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 /// <summary>
@@ -35,6 +36,9 @@ public class Player : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
+    public Store store;
+    public Inventory inventory = new();
+    public int gold = 5000;
 
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
@@ -86,6 +90,7 @@ public class Player : NetworkBehaviour
         Input = GetComponent<PlayerInputHandler>();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
+        store = FindFirstObjectByType<Store>();
 
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
@@ -105,6 +110,18 @@ public class Player : NetworkBehaviour
     {
         playerController.Update();
     }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (GetInput(out NetworkInputData data))
+        {
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT))
+            {
+                store.isInteraction = true;
+            }
+        }
+    }
+
     /// <summary>
     /// FixedUpdateNetwork를 PlayerController로 옮기는 건?
     /// </summary>
