@@ -212,16 +212,4 @@ public abstract class PlayerBaseState : IState
     //    return moveSpeed;
     //}
     #endregion
-    //#region È¸Àü
-    //private void Rotate(Vector3 dir)
-    //{
-    //    if (dir != Vector3.zero)
-    //    {
-    //        Transform playerTr = player.transform;
-    //        Quaternion targetRotation = Quaternion.LookRotation(dir);
-    //        playerTr.rotation = Quaternion.Slerp(playerTr.rotation, targetRotation, player.statHandler.RotationDamping * Time.deltaTime);
-    //    }
-    //}
-    //#endregion
-
 }
