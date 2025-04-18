@@ -48,6 +48,7 @@ public class PlayerInputHandler : NetworkBehaviour
     private bool _isRunning;
     private bool _isSitting;
     private bool _isScoreBoardPopup;
+    private bool _isMenuPopup;
 
     // 내부 변수(Input Action과 연결X)
     private bool _isShotgunOnFiring;
@@ -330,6 +331,21 @@ public class PlayerInputHandler : NetworkBehaviour
         _isScoreBoardPopup = false;
     }
     public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
+    #endregion
+    #region Menu
+    private void OpenMenu(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
+        _isMenuPopup = true;
+    }
+
+    private void CloseMenu(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
+        _isMenuPopup = false;
+    }
+    public bool GetIsMenuPopup() => _isMenuPopup;
+
     #endregion
     #endregion
 

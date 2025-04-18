@@ -134,6 +134,15 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7e365d5-38b6-4c37-83d1-f76830792079"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -312,6 +321,17 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""action"": ""Swap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a35a066d-d2dc-41fe-a783-369bfc81cd22"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -332,6 +352,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         m_Player_Sit = m_Player.FindAction("Sit", throwIfNotFound: true);
         m_Player_ScoreBoard = m_Player.FindAction("ScoreBoard", throwIfNotFound: true);
         m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
+        m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -405,6 +426,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sit;
     private readonly InputAction m_Player_ScoreBoard;
     private readonly InputAction m_Player_Swap;
+    private readonly InputAction m_Player_Menu;
     public struct PlayerActions
     {
         private @PlayerActionMap m_Wrapper;
@@ -421,6 +443,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         public InputAction @Sit => m_Wrapper.m_Player_Sit;
         public InputAction @ScoreBoard => m_Wrapper.m_Player_ScoreBoard;
         public InputAction @Swap => m_Wrapper.m_Player_Swap;
+        public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -466,6 +489,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Swap.started += instance.OnSwap;
             @Swap.performed += instance.OnSwap;
             @Swap.canceled += instance.OnSwap;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -506,6 +532,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Swap.started -= instance.OnSwap;
             @Swap.performed -= instance.OnSwap;
             @Swap.canceled -= instance.OnSwap;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -537,5 +566,6 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         void OnSit(InputAction.CallbackContext context);
         void OnScoreBoard(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
 }
