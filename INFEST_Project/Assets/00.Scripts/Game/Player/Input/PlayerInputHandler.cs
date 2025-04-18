@@ -78,6 +78,7 @@ public class PlayerInputHandler : NetworkBehaviour
         /// performed: 키가 눌렸을 때 호출된다
         /// canceled: 키가 뗴졌을 때 호출
         inputManager.GetInput(EPlayerInput.move).started += SetMoveInput;
+        inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput; // 여러 방향키 동시입력을 위해 추가
         inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
 
         inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
@@ -121,6 +122,7 @@ public class PlayerInputHandler : NetworkBehaviour
     private void OnDisable()
     {
         inputManager.GetInput(EPlayerInput.move).started -= SetMoveInput;
+        inputManager.GetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
         inputManager.GetInput(EPlayerInput.move).canceled -= SetMoveInput;
 
         inputManager.GetInput(EPlayerInput.look).started -= SetLookInput;
@@ -161,7 +163,7 @@ public class PlayerInputHandler : NetworkBehaviour
     #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
-        //Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
+        Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
         Vector2 moveInput = context.ReadValue<Vector2>();
         if (moveInput.sqrMagnitude < 0.01f)
         {
