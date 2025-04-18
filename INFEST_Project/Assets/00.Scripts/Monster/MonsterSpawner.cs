@@ -16,7 +16,6 @@ public class MonsterSpawner : NetworkBehaviour
 
     public void ActivatedCallBySpawnPoint(MonsterSpawnPoint spawnPoint)
     {
-       
     }
 
     public void DeactivatedCallBySpawnPoint(MonsterSpawnPoint spawnPoint)

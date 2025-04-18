@@ -7,7 +7,7 @@ public class WeaponInstance
 
     public WeaponInstance(int key)
     {
-        data = DataManager.Instance.WeaponInfoLoader.GetByKey(key);
+        data = DataManager.Instance.GetByKey<WeaponInfo>(key);
         curMagazineBullet = data.MagazineBullet;
         curBullet = data.MaxBullet;
         RecoilForce= data.RecoilForce;
