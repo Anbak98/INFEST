@@ -8,10 +8,11 @@ public class UIStateView : UIScreen
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI bulletText;
     public Image[] jobIcon;
-    public Image[] weaponIcon;
+    public Image weaponIcon;
 
     private CharacterInfo _characterInfo;
     private WeaponInfo _weaponInfo;
+    private Weapon _weapon;
 
     public override void Awake()
     {
@@ -61,8 +62,27 @@ public class UIStateView : UIScreen
         //직업에 따라 아이콘 변경
     }
 
-    public void UpdateWeaponIcon()
+    private void SetJob()
     {
-        //무기에 따라 아이콘 변경
+    }
+
+    public void UpdateWeapon(Weapons weapons)
+    {
+        SetWeapon(weapons.CurrentWeapon);
+
+        if (_weapon == null) return;
+
+        bulletText.text = $"{_weapon.curClip}/{_weapon.possessionAmmo}";
+    }
+
+    private void SetWeapon(Weapon weapon)
+    {
+        if (weapon == _weapon) return;
+
+        _weapon = weapon;
+
+        if(weapon == null) return;
+
+        weaponIcon.sprite = weapon.icon;
     }
 }
