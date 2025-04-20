@@ -21,17 +21,26 @@ public abstract class BaseController : NetworkBehaviour
     //public T GetStateMachine<T>() where T : StateMachine => stateMachine as T;
 
 
-    //// 상태 관련 함수(Local과 Remote 따로 정의)
+    // 상태 관련 함수(Local과 Remote 따로 정의)
+    // 
     //public abstract void PlayFireAnim();
     //public virtual bool HasMoveInput() => false;
-    //public virtual bool IsGrounded() => true;
-    //public virtual bool IsJumpInput() => false;
+    public virtual bool IsGrounded() => true;
+    public virtual bool IsJumpInput() => false;
+    public virtual bool IsSitInput() => false;
+
     //public virtual bool IsFiring() => false;
     //public virtual bool IsShotgunFiring() => false;
     public abstract void HandleMovement();
     public abstract void ApplyGravity();
-    //public abstract void StartJump();
-    //public abstract void HandleFire(bool started);
-    //public virtual float GetVerticalVelocity() => 0f;
+    public abstract void StartJump();
+    public abstract void HandleFire();
+    public virtual float GetVerticalVelocity() => 0f;
+
     //public virtual Vector3 GetMoveInput() => Vector3.zero;
+
+    public abstract void StartSit();
+    public abstract void StartStand();
+
+
 }

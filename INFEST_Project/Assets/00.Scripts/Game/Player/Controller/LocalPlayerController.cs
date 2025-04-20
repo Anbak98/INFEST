@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
@@ -34,25 +35,75 @@ public class LocalPlayerController : PlayerController
         base.Update();
         // LocalPlayerController만의 로직은 아래에 추가
     }
-    // 플레이어의 이동(방향은 CameraHandler에서 설정)
+
+    // 점프 눌렸나
+    public override bool IsJumpInput() => player.Input.GetIsJumping();
+    public override bool IsSitInput() => player.Input.GetIsSitting();
+
+    // 플레이어가 땅 위에 있는지?
+    public override bool IsGrounded() => player.characterController.isGrounded;
+    public override float GetVerticalVelocity() => verticalVelocity;
+
+
+
+    // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리
     public override void HandleMovement()
     {
         Vector3 input = player.Input.MoveInput;
-
-        /*Vector3 move = head.right * input.x + head.forward * input.z;
-        _controller.Move(move * _statHandler.MoveSpeed * Time.deltaTime);*/
 
         Vector3 forward = transform.forward;
         Vector3 right = transform.right;
 
         Vector3 move = right * input.x + forward * input.z;
         move.y = 0f; // 수직 방향 제거
-        player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * Time.deltaTime);
+        player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
     }
-
     public override void ApplyGravity()
     {
-
+        // TODO
+        if (IsGrounded() && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        Vector3 gravityMove = new Vector3(0f, verticalVelocity, 0f);
+        player.characterController.Move(gravityMove * Time.deltaTime);
     }
-    // 앉는 동작은 Local과 Remote가 다르다
+    /// <summary>
+    /// 점프 시작 시 수직 속도 계산
+    /// </summary>
+    public override void StartJump()
+    {
+        verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+    }
+
+    // 앉는다
+    public override void StartSit()
+    {
+        // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
+        float playerYpos = player.transform.position.y;
+        playerYpos /= 2;
+        player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    }
+    // 일어난다
+    public override void StartStand()
+    {
+        // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
+        float playerYpos = player.transform.position.y;
+        playerYpos *= 2;
+        player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    }
+
+
+    public override void HandleFire()
+    {
+        bool input = player.Input.GetIsFiring();
+        if (input)
+        {
+            // TODO
+        }
+    }
 }

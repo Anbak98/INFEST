@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-public class PlayerMoveState : PlayerBaseState
+public class PlayerMoveState : PlayerGroundState
 {
     public PlayerMoveState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
@@ -15,6 +15,7 @@ public class PlayerMoveState : PlayerBaseState
         stateMachine.StatHandler.MoveSpeedModifier = 2;
         Debug.Log("Move상태 진입");
         base.Enter();
+
 
         /// blend tree 애니메이션에 적용
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
@@ -28,7 +29,6 @@ public class PlayerMoveState : PlayerBaseState
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
-
     public override void Update()
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
@@ -40,33 +40,92 @@ public class PlayerMoveState : PlayerBaseState
 
         // 플레이어 이동
         PlayerMove();
+        controller.ApplyGravity();  // 중력
 
 
-        // 이동 입력이 없으면 Idle 상태로
-        if (moveInput == Vector2.zero)
-        {
-            stateMachine.ChangeState(stateMachine.IdleState);
-        }
+        //// 이동 입력이 없으면 Idle 상태로
+        //if (moveInput == Vector2.zero)
+        //{
+        //    stateMachine.ChangeState(stateMachine.IdleState);
+        //}
+        //// run 눌렀다면 달리기(지금은 1번 눌러서 bool값을 설정하면 다시 누르기 전까지 계속 달리기 모드)
+        //else if (stateMachine.InputHandler.GetIsRunning())
+        //{
+        //    stateMachine.ChangeState(stateMachine.RunState);
+        //}
+        //// 무기를 가진 상태에서 공격버튼 눌렀다면 공격상태
+        //else if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsFiring())
+        //{
+        //}
+        //// 무기를 가진 상태에서 입력이 있으면 Reload 상태로
+        //else if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsReloading())
+        //{
+        //    stateMachine.ChangeState(stateMachine.RunState);
+        //}
+        //// jump 눌렀다면 점프
+        //else if (stateMachine.InputHandler.GetIsJumping())
+        //{
+        //    stateMachine.ChangeState(stateMachine.JumpState);
+        //}
+        //// 앉기로 전환
+        //else if (stateMachine.InputHandler.GetIsSitting())
+        //{
+        //    stateMachine.ChangeState(stateMachine.SitIdleState);
+        //}
     }
-    
-    // 이동로직은 상태에서 작성한다
 
-
-    protected override void OnMovementCanceled(InputAction.CallbackContext context)
+    // Move에서 사용할 이벤트는 
+    protected override void AddInputActionsCallbacks()
     {
-
+        inputManager.GetInput(EPlayerInput.run).started += OnRunStarted;    
+        inputManager.GetInput(EPlayerInput.fire).started += OnAttack;
+        inputManager.GetInput(EPlayerInput.reload).started += OnReload;
+        inputManager.GetInput(EPlayerInput.sit).started += OnSitStarted;
+        inputManager.GetInput(EPlayerInput.jump).started += OnJumpStarted;
     }
+    protected override void RemoveInputActionsCallbacks()
+    {
+        //inputManager.GetInput(EPlayerInput.run).canceled += OnRunStarted;
+        //inputManager.GetInput(EPlayerInput.fire).canceled += OnAttack;
+        //inputManager.GetInput(EPlayerInput.reload).canceled += OnReload;
+        //inputManager.GetInput(EPlayerInput.sit).canceled += OnSitStarted;
+        //inputManager.GetInput(EPlayerInput.jump).canceled += OnJumpStarted;
+        inputManager.GetInput(EPlayerInput.run).started -= OnRunStarted;
+        inputManager.GetInput(EPlayerInput.fire).started -= OnAttack;
+        inputManager.GetInput(EPlayerInput.reload).started -= OnReload;
+        inputManager.GetInput(EPlayerInput.sit).started -= OnSitStarted;
+        inputManager.GetInput(EPlayerInput.jump).started -= OnJumpStarted;
+    }
+
+
+
+
+
+    // Move에서는 Idle, Run, Attack, Reload, Jump, Sit으로 상태전환 가능하다
     protected override void OnRunStarted(InputAction.CallbackContext context)
     {
         base.OnRunStarted(context);
         stateMachine.ChangeState(stateMachine.RunState);
     }
-
-
-
-
-
-
-
+    protected override void OnAttack(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.AttackState);
+    }
+    protected override void OnReload(InputAction.CallbackContext context)
+    {
+        base.OnReload(context);
+        stateMachine.ChangeState(stateMachine.ReloadState);
+    }
+    protected override void OnJumpStarted(InputAction.CallbackContext context)
+    {
+        base.OnJumpStarted(context);
+        stateMachine.ChangeState(stateMachine.JumpState);
+    }
+    protected override void OnSitStarted(InputAction.CallbackContext context)
+    {
+        base.OnSitStarted(context);
+        stateMachine.ChangeState(stateMachine.SitIdleState);
+    }
 
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState
+public class PlayerJumpState : PlayerAirState
 {
     public PlayerJumpState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
@@ -10,22 +10,32 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void Enter()
     {
-        
+        Debug.Log("Jump상태 진입");
         base.Enter();
         StartAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
+        // 점프는 한번만
+        PlayerJump();
     }
     public override void Update()
     {
-        // 점프(y방향 속도가 0보다 클때까지는 JumpState)
+        // 플레이어 이동
+        PlayerMove();
+        controller.ApplyGravity();  // 중력
 
-        // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다
+        // y방향 속도가 작으면 fallstate로 바꿔야한다
+        // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다        
 
+        if (controller.IsGrounded())
+        {            
+            stateMachine.ChangeState(stateMachine.IdleState);
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
         StopAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
+        // 점프가 끝나면 이전 상태로 돌아가야한다
     }
 
 }
