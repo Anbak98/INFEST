@@ -103,29 +103,28 @@ public class RemotePlayerController : PlayerController
     {
     }
 
+    //public override void Update()
+    //{
+    //    base.Update();
+    //    // RemotePlayerController만의 로직은 아래에 추가
+    //}
+
     /// <summary>
     /// 상대방의 데이터를 이용하여 애니메이션, 데미지 주고받는 연산 등을 
     /// 상태에 따른 애니메이션 변화는 로컬에서 계산
-    /// </summary>
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();
-        // RemotePlayerController만의 로직은 아래에 추가
-        
-    }
-
-    /// <summary>
-    /// 상대방의 데이터를 받기만 한다
+    /// Network에서 내려받은 데이터를 신뢰하므로...
+    /// Update만 FixedUpdate로 바꾸면 되지 않을까?
     /// </summary>
     public override void FixedUpdateNetwork()
     {
-        Debug.Log("RemotePlayerController FixedUpdateNetwork 진입");
         // 상대방의 데이터를 내려받기만 한다
         if (GetInput(out NetworkInputData input))
         {
-
+            Debug.Log("RemotePlayerController FixedUpdateNetwork 진입");
+            base.Update();
+            // RemotePlayerController만의 로직은 아래에 추가
         }
+
     }
 
     // Remote 플레이어는 직접 이동하지 않는다 (서버로부터 받는 정보를 신뢰)
@@ -134,6 +133,23 @@ public class RemotePlayerController : PlayerController
         // TODO
     }
     public override void ApplyGravity()
+    {
+        // TODO
+    }
+
+    public override void HandleFire()
+    {
+        // TODO
+    }
+    public override void StartJump()
+    {
+        // TODO
+    }
+    public override void StartSit()
+    {
+        // TODO
+    }
+    public override void StartStand()
     {
         // TODO
     }

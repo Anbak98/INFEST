@@ -32,7 +32,7 @@ public class PlayerInputHandler : NetworkBehaviour
     /// 속성(Property)은 참조(ref)로 전달할 수 없으므로, ref 전달 하려면 필드로 바꿔라
     /// </summary>
     public Vector3 MoveInput { get; private set; } = Vector2.zero;      // 이동 방향 (Vector3)
-    public Vector2 LookInput { get; private set; } = Vector2.zero;      // 시선 방향 (ㅍㄷㅊ색2)
+    public Vector2 LookInput { get; private set; } = Vector2.zero;      // 시선 방향 (Vector2)
 
     public float RotationX { get; private set; } = 0f;       // 마우스 X 회전 (pitch)
     public float RotationY { get; private set; } = 0f;       // 마우스 Y 회전 (yaw)
@@ -78,7 +78,7 @@ public class PlayerInputHandler : NetworkBehaviour
     {
         /// performed: 키가 눌렸을 때 호출된다
         /// canceled: 키가 뗴졌을 때 호출
-        inputManager.GetInput(EPlayerInput.move).started += SetMoveInput;
+        //inputManager.GetInput(EPlayerInput.move).started += SetMoveInput;
         inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput; // 여러 방향키 동시입력을 위해 추가
         inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
 
@@ -91,7 +91,8 @@ public class PlayerInputHandler : NetworkBehaviour
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
         /// 
-        inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
+        //inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
+        inputManager.GetInput(EPlayerInput.jump).performed += StartJumpInput;
         inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
         inputManager.GetInput(EPlayerInput.fire).started += StartFireState;
