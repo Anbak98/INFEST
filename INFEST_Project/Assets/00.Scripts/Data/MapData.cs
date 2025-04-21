@@ -21,4 +21,6 @@ public class MapData : IKeyedItem
     /// </summary>
     public int BossZombie;
 
+    public int Key => key;
+
 }
