@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼öÇàÇØÁØ´Ù.
 {
     public StoreController _storeController;
     public Action<string> changeUI;
+
     public List<int> idList;
+    public UIStore uIStore;
 
     // ÇÃ·¹ÀÌ¾î °ñµå
     // ÇÃ·¹ÀÌ¾î ¹æ¾î±¸
@@ -24,7 +27,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestInteraction(Player _player, PlayerRef _playerRef)
+    public void RPC_RequestInteraction(NetworkObject _player, PlayerRef _playerRef)
     {
         RPC_Interaction(_player, _playerRef);
     }
@@ -34,58 +37,33 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// </summary>
     /// 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_Interaction(Player _player, [RpcTarget] PlayerRef _playerRef)
+    public void RPC_Interaction(NetworkObject _player, [RpcTarget] PlayerRef _playerRef)
     {
         // if (_playerRef != _player.Runner.LocalPlayer) return;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        _player.isInteraction = true;
+        uIStore = _player.GetComponentInChildren<UIStore>();
+        if (uIStore == null) return;
 
-        //isInteraction = false;
-        _player.uiStore.panel.gameObject.SetActive(true);
-        _player.uiStore.interactionText.gameObject.SetActive(false);
+        isInteraction = false;
+        uIStore.panel.gameObject.SetActive(true);
+        uIStore.interactionText.gameObject.SetActive(false);
         if (_storeController.activeTime)
         {
-            _storeController.Interaction();
+            _storeController.storeTimer = TickTimer.CreateFromSeconds(_storeController.Runner, _storeController.activateTime);
+            _storeController.activeTime = false;
         }
 
     }
 
-    /// <summary>
-    /// »óÈ£ÀÛ¿ëÇØÁ¦½Ã ¿äÃ»ÇÏ´Â ¸Þ¼Òµå
-    /// </summary>
-    /// <param name="_player"></param>
-    /// <param name="_playerRef"></param>
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestStopInteraction(Player _player, PlayerRef _playerRef)
-    {
-        RPC_StopInteraction(_player, _playerRef);
-
-    }
-    /// <summary>
-    /// »óÈ£ÀÛ¿ë ÇØÁ¦·ÎÁ÷
-    /// </summary>
-    /// <param name="_player"></param>
-    /// <param name="_playerRef"></param>
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_StopInteraction(Player _player, PlayerRef _playerRef)
-    {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
-        _player.isInteraction = false;
-
-        _player.uiStore.interactionText.gameObject.SetActive(true);
-        _player.uiStore.panel.gameObject.SetActive(false);
-    }
     /// <summary>
     /// »óÁ¡ÀÇ ¿µ¿ª¿¡ µé¾î°¬À»¶§ ¿äÃ»ÇÏ´Â ¸Þ¼Òµå
     /// </summary>
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestEnterShopZone(Player _player, PlayerRef _playerRef)
+    public void RPC_RequestEnterShopZone(NetworkObject _player, PlayerRef _playerRef)
     {
         RPC_EnterShopZone(_player, _playerRef);
 
@@ -97,12 +75,15 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_EnterShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
+    public void RPC_EnterShopZone(NetworkObject _player, [RpcTarget] PlayerRef _playerRef)
     {
         //if (_playerRef != _player.Runner.LocalPlayer) return;
 
-        _player.uiStore.panel.gameObject.SetActive(false);
-        _player.uiStore.interactionText.gameObject.SetActive(true);
+        uIStore = _player.GetComponentInChildren<UIStore>();
+        if (uIStore == null) return;
+
+        uIStore.panel.gameObject.SetActive(false);
+        uIStore.interactionText.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -111,7 +92,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestLeaveShopZone(Player _player, PlayerRef _playerRef)
+    public void RPC_RequestLeaveShopZone(NetworkObject _player, PlayerRef _playerRef)
     {
         RPC_LeaveShopZone(_player, _playerRef);
     }
@@ -122,15 +103,21 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_LeaveShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
+    public void RPC_LeaveShopZone(NetworkObject _player, [RpcTarget] PlayerRef _playerRef)
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
         //if (Runner.LocalPlayer != _playerRef) return;
-        _player.uiStore.interactionText.gameObject.SetActive(false);
-        _player.uiStore.panel.gameObject.SetActive(false);
+
+        uIStore = _player.GetComponentInChildren<UIStore>();
+        if (uIStore == null) return;
+
+        uIStore.interactionText.gameObject.SetActive(false);
+        uIStore.panel.gameObject.SetActive(false);
     }
+
+
     #endregion
 
 
@@ -184,23 +171,24 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         if (idList[index] % 10000 < 200 && player.inventory.auxiliaryWeapon != 0 && type == EBtnType.SaleauxiliaryWeapon) // º¸Á¶¹«±â
         {
+
             player.gold += DataManager.Instance.GetByKey<WeaponInfo>(player.inventory.auxiliaryWeapon).Price;
 
             player.inventory.RemoveWeaponItem(player.inventory.auxiliaryWeapon, index);
 
         }
-        else if (idList[index] % 10000 < 600 && player.inventory.weapon[index] != 0 && type == EBtnType.Weapon) // ¹«±â
+        else if(idList[index] % 10000 < 600 && player.inventory.weapon[index] != 0 && type == EBtnType.Weapon) // ¹«±â
         {
-            player.gold += DataManager.Instance.GetByKey<WeaponInfo>(player.inventory.weapon[index]).Price;
+            player.gold += DataManager.Instance.GetByKey<WeaponInfo>(player.inventory.weapon[index]).Price ;
 
             player.inventory.RemoveWeaponItem(player.inventory.weapon[index], index);
-
+            
         }
         else if (idList[index] % 10000 < 1000 && player.inventory.consume[index] != 0 && type == EBtnType.Consume) // ¾ÆÀÌÅÛ
         {
-            player.gold += DataManager.Instance.GetByKey<ConsumeItem>(player.inventory.weapon[index]).Price;
+            // player.gold += DataManager.Instance.GetByKey<ConsumeItem>(player.inventory.weapon[index]).Price / 2;
 
-            player.inventory.RemoveConsumeItem(index);
+            player.inventory.RemoveConsumeItem(player.inventory.consume[index], index);
         }
         Debug.Log("ÆÇ¸Å ÈÄ :" + player.gold);
 

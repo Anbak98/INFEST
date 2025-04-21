@@ -15,6 +15,7 @@ public enum EBtnType
 
 public class UIStore : UIBase // 유저의 상점 UI를 담고있다.
 {
+    private NetworkObject _networkObject;
     private Player _player;
     // 기본 세팅
     public TextMeshProUGUI interactionText;             // 존에 들어가면 나오는 텍스트
@@ -43,6 +44,8 @@ public class UIStore : UIBase // 유저의 상점 UI를 담고있다.
     private void Start()
     {
         _player = GetComponentInParent<Player>();
+        _networkObject = GetComponentInParent<NetworkObject>();
+        Init();
         panel.gameObject.SetActive(false);
         interactionText.gameObject.SetActive(false);
         
@@ -50,8 +53,7 @@ public class UIStore : UIBase // 유저의 상점 UI를 담고있다.
 
     private void Init()
     {
-        NetworkObject _networkObject = _player.networkObject;
-            
+        
         for (int i = 0; i < buyButton.Count; i++)
         {
             if (buyButton[i] == null) return;
@@ -67,10 +69,5 @@ public class UIStore : UIBase // 유저의 상점 UI를 담고있다.
     private void UIRefresh(string text, int key)
     {
         DataManager.Instance.GetByKey<WeaponInfo>(key);
-    }
-
-    private void UIUpdata()
-    {
-
     }
 }
