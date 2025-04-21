@@ -43,7 +43,7 @@ public abstract class PlayerBaseState : IState
 
     public virtual void Enter()
     {
-        AddInputActionsCallbacks(); // 이벤트 등록
+        AddInputActionsCallbacks(); // BaseState에 들어올 때 이벤트 등록
     }
 
     public virtual void Exit()
@@ -60,7 +60,12 @@ public abstract class PlayerBaseState : IState
         // 이거 Controller의 HandleMovement가 될 수 없냐는거지
         // 중력도 마찬가지 ApplyGravity
 
-        ReadMovementInput();    // 입력 값을 계속 확인
+        ReadMovementInput();    // 이동
+        // 달리기
+        // 점프
+        // 사격
+        // 앉기
+
     }
     public virtual void Update()
     {
@@ -71,73 +76,77 @@ public abstract class PlayerBaseState : IState
 
     #region 상태 관련 이벤트#
     // 모든 상태에 공통인 메서드
-    // 상태 진입 시에 이벤트 추가
+    // 각각 클래스에서 사용할 이벤트를 상태 진입 시에 추가
     protected virtual void AddInputActionsCallbacks()
     {
         // 상태에 진입했을 때 추가한다
-        inputManager.GetInput(EPlayerInput.move).started += OnMovementCanceled;
-        inputManager.GetInput(EPlayerInput.run).started += OnRunStarted;
+        //inputManager.GetInput(EPlayerInput.move).started += OnMovementCanceled; // 키를 해제했을 때
+        //inputManager.GetInput(EPlayerInput.move).started += OnMoveStarted; // 키를 해제했을 때
+        //inputManager.GetInput(EPlayerInput.run).started += OnRunStarted;    // 키를 눌렀을 때
+        //inputManager.GetInput(EPlayerInput.look).started += OnLookStarted;
 
-        inputManager.GetInput(EPlayerInput.look).started += OnLookStarted;
+        //inputManager.GetInput(EPlayerInput.fire).started += OnAttack;
+        //inputManager.GetInput(EPlayerInput.reload).started += OnReload;
 
-        inputManager.GetInput(EPlayerInput.fire).started += OnAttack;
-        inputManager.GetInput(EPlayerInput.reload).started += OnReload;
+        //inputManager.GetInput(EPlayerInput.sit).started += OnSitStarted;
 
-        inputManager.GetInput(EPlayerInput.sit).started += OnSitStarted;
-
-        inputManager.GetInput(EPlayerInput.jump).started += OnJumpStarted;
+        //inputManager.GetInput(EPlayerInput.jump).started += OnJumpStarted;
     }
     // 이벤트 해제
     protected virtual void RemoveInputActionsCallbacks()
     {
         // 상태를 빠져나갈 때 추가한다
-        inputManager.GetInput(EPlayerInput.move).canceled -= OnMovementCanceled;
-        inputManager.GetInput(EPlayerInput.run).canceled -= OnRunStarted;
+        //inputManager.GetInput(EPlayerInput.move).canceled -= OnMoveStarted;
+        //inputManager.GetInput(EPlayerInput.run).canceled -= OnRunStarted;
 
-        inputManager.GetInput(EPlayerInput.look).canceled += OnLookStarted;
+        //inputManager.GetInput(EPlayerInput.look).canceled += OnLookStarted;
 
-        inputManager.GetInput(EPlayerInput.fire).canceled += OnAttack;
-        inputManager.GetInput(EPlayerInput.reload).canceled += OnReload;
+        //inputManager.GetInput(EPlayerInput.fire).canceled += OnAttack;
+        //inputManager.GetInput(EPlayerInput.reload).canceled += OnReload;
 
-        inputManager.GetInput(EPlayerInput.sit).canceled += OnSitStarted;
+        //inputManager.GetInput(EPlayerInput.sit).canceled += OnSitStarted;
 
-        inputManager.GetInput(EPlayerInput.jump).canceled += OnJumpStarted;
+        //inputManager.GetInput(EPlayerInput.jump).canceled += OnJumpStarted;
     }
-    // 키를 떼었을 때 
+
+    // 각각 다음 상태로 가능한 경우에 구현한다
     protected virtual void OnMovementCanceled(InputAction.CallbackContext context)
     {
-        // 각각 상태에서 구현
+        // 방향키 이동을 해제했다면 Idle로 바꾼다
     }
-    // 키를 입력했을 때
+    protected virtual void OnMoveStarted(InputAction.CallbackContext context)
+    {
+    }
+
     protected virtual void OnRunStarted(InputAction.CallbackContext context)
     {
-        // 각각 상태에서 구현
     }
-    protected virtual void OnLookStarted(InputAction.CallbackContext context)
-    {
-        Vector2 lookDelta = context.ReadValue<Vector2>();
-
-        //MainCameraTransform.UpdateRotate(lookDelta.x, lookDelta.y);
-    }
+    //protected virtual void OnLookStarted(InputAction.CallbackContext context)
+    //{
+    //    //Vector2 lookDelta = context.ReadValue<Vector2>();
+    //}
     protected virtual void OnAttack(InputAction.CallbackContext context)
     {
-
     }
     protected virtual void OnReload(InputAction.CallbackContext context)
     {
-
     }
-    // 점프 키 입력
     protected virtual void OnJumpStarted(InputAction.CallbackContext context)
     {
-
     }
-
-
     protected virtual void OnSitStarted(InputAction.CallbackContext context)
     {
-
     }
+    protected virtual void OnWaddleStarted(InputAction.CallbackContext context)
+    {
+    }
+    protected virtual void OnSitReloadStarted(InputAction.CallbackContext context)
+    {
+    }
+    protected virtual void OnSitAttackStarted(InputAction.CallbackContext context)
+    {
+    }
+
     #endregion
     #region 애니메이션 교체
     // bool 파라미터
@@ -162,6 +171,7 @@ public abstract class PlayerBaseState : IState
 
     #endregion
 
+    #region 입력값 읽기
     // 모든 상태는 입력값을 받는다
     // WASD 입력
     // 이건 BaseState에서만 호출하고있다
@@ -170,46 +180,61 @@ public abstract class PlayerBaseState : IState
         // Input
         stateMachine.InputHandler.GetMoveInput();
     }
+    private void ReadBoolInput()
+    {
+        stateMachine.InputHandler.GetIsJumping();
+        // 이런식으로 다 들고와야할까
+    }
 
-    #region 이동
+    #endregion
+    #region 애니메이션이 있는 것들(이동, 달리기, 사격, 점프, 앉기, 앉아서 이동, 조준)의 실제 동작
     protected void PlayerMove()
     {
-        //Vector3 movementDir = GetMovementDir();
-        //Move(movementDir);
-        //Rotate(movementDir);
-
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.HandleMovement();
-        controller.ApplyGravity();
+        controller.HandleMovement();    // 이동
+        controller.ApplyGravity();  // 중력
     }
-    //private Vector3 GetMovementDir()
-    //{
-    //    // 메인 카메라가 바라보는 방향 = 플레이어가 바라보는 방향
-    //    Transform mainCameraTr = MainCameraTransform.transform;
-    //    Vector3 forward = mainCameraTr.forward;
-    //    Vector3 right = mainCameraTr.right;
+    
 
-    //    forward.y = 0;
-    //    right.y = 0;
+    protected void PlayerFire()
+    {
+        Debug.Log("Fire");
+        // 발사로직 PlayerController에 옮길것
+    }
+    protected void PlayerRun()
+    {
+        Debug.Log("Run");
+        // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
+        controller.HandleMovement();    // 이동
+        controller.ApplyGravity();  // 중력
 
-    //    forward.Normalize();
-    //    right.Normalize();
+    }
+    protected void PlayerJump()
+    {
+        Debug.Log("Jump");
 
-    //    return forward * inputHandler.GetMoveInput().y + right * inputHandler.GetMoveInput().x;
-    //}
-    //private void Move(Vector3 dir)
-    //{
-    //    int movementSpeed = GetMovementSpeed();
-    //    player.characterController.Move((dir * movementSpeed) * Time.deltaTime);
-    //}
-    //// 이동속도 가져오기  
-    //private int GetMovementSpeed()
-    //{
-    //    player.stateMachine.StatHandler.MoveSpeedModifier = 2;  // 나중에 리팩토링때 제거
+        // Junp 키입력하면 내부에서 1번만 y축 힘받고 그 외는 땅에 닿을 때까지 중력만 받을것이다
+        controller.StartJump();
+    }
+    protected void PlayerSit()
+    {
+        Debug.Log("Sit");
 
-    //    //int moveSpeed = GetStateMachine<PlayerStateMachine>().StatHandler.MoveSpeed * GetStateMachine<PlayerStateMachine>().StatHandler.MoveSpeedModifier;
-    //    int moveSpeed = player.stateMachine.StatHandler.MoveSpeed * player.stateMachine.StatHandler.MoveSpeedModifier;
-    //    return moveSpeed;
-    //}
+    }
+    // 앉아서 걷기
+    protected void PlayerWaddle()
+    {
+        Debug.Log("Waddle");
+        // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
+        controller.HandleMovement();    // 이동
+        controller.ApplyGravity();  // 중력
+
+    }
+    // 조준(애니메이션은 바꾸고, 카메라를 따로 조작)
+    protected void PlayerZoom()
+    {
+        Debug.Log("Zoom");
+
+    }
     #endregion
 }

@@ -23,6 +23,7 @@ public class Weapon : NetworkBehaviour
     public Recoil camRecoil;
     public Recoil gunRecoil;
     public EWeaponType Type; // 무기 종류
+    public Sprite icon;
 
     [Header("Firing")]
     public bool isAutomatic = false; // 연사 or 단발

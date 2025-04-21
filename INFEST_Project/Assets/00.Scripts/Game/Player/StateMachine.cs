@@ -26,10 +26,11 @@ public abstract class StateMachine
     }
 
     /// <summary>
-    /// 현재 상태, 입력값, 조건에 따라 다른 상태를 판단
+    /// 현재 상태의 입력값, 조건에 따라 다른 상태로 이동할 것인지 판단
     /// </summary>
     public void HandleInput()
     {
+        // 현재 상태에서 Input값을 확인한다
         currentState?.HandleInput();
     }
 
