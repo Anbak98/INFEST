@@ -26,10 +26,17 @@ public class UIShopView : UIScreen
     [Header("BuyWeapon")]
     public TextMeshProUGUI[] weaponNames;
 
+    WeaponInfo _weaponInfo;
+    CharacterInfo _characterInfo;
+
 
     public override void Awake()
     {
         base.Awake();
+
+        _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
+
+        DefSet();
     }
 
     public override void Show()
@@ -40,5 +47,22 @@ public class UIShopView : UIScreen
     public override void Hide()
     {
         base.Hide();
+    }
+
+    private void DefSet()
+    {
+        defText.text = $"{_characterInfo.DefGear}/200";
+    }
+
+    public void OnClickDefBtn()
+    {
+        if (_characterInfo.DefGear >= 200)
+        {
+            return;
+        }
+
+        _characterInfo.DefGear += 200;
+        _characterInfo.DefGear = Mathf.Min(_characterInfo.DefGear, 200);
+        DefSet();
     }
 }

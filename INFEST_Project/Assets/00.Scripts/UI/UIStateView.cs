@@ -10,7 +10,7 @@ public class UIStateView : UIScreen
     public Image[] jobIcon;
     public Image weaponIcon;
 
-    private CharacterInfo _characterInfo;
+    private CharacterInfo _player;
     private WeaponInfo _weaponInfo;
     private Weapon _weapon;
 
@@ -18,10 +18,10 @@ public class UIStateView : UIScreen
     {
         base.Awake();
 
-        _characterInfo = new CharacterInfo();
-        _weaponInfo = new WeaponInfo();
+        _player = DataManager.Instance.GetByKey<CharacterInfo>(1);
+        _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10101);
 
-        SetState();
+        UpdatePlayerState();
     }
 
     public override void Show()
@@ -32,38 +32,19 @@ public class UIStateView : UIScreen
     public override void Hide()
     {
         base.Hide();
-    }
+    }   
 
-    //임시 함수
-    public void SetState()
+    public void UpdatePlayerState()
     {
-        _characterInfo.Health = 100;
-        _characterInfo.Def = 50;
-        _characterInfo.StartGold = 500;
-        _weaponInfo.MaxBullet = 120;
-        _weaponInfo.MagazineBullet = 40;
-
-        hpText.text = _characterInfo.Health.ToString();
-        defText.text = _characterInfo.Def.ToString();
-        goldText.text = _characterInfo.StartGold.ToString("N0");
-        bulletText.text = _weaponInfo.MagazineBullet.ToString() + "/" + _weaponInfo.MaxBullet.ToString();        
-    }
-
-    public void UpdatePlayerState(Player player, CharacterInfo playerData, WeaponInfo weaponInfo)
-    {
-        hpText.text = playerData.Health.ToString();
-        defText.text = playerData.Def.ToString();
-        goldText.text = playerData.StartGold.ToString("N0");
-        bulletText.text = $"{weaponInfo.MagazineBullet}/{weaponInfo.MaxBullet}";
+        hpText.text = _player.Health.ToString();
+        defText.text = _player.Def.ToString();
+        goldText.text = _player.StartGold.ToString();
+        bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";
     }
 
     public void UpdateJobIcon()
     {
         //직업에 따라 아이콘 변경
-    }
-
-    private void SetJob()
-    {
     }
 
     public void UpdateWeapon(Weapons weapons)
