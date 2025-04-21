@@ -1216,6 +1216,7 @@ MonoBehaviour:
   - {fileID: 3072078453906701333}
   - {fileID: 4068375233546285216}
   - {fileID: -5511681442977026662}
+  - {fileID: 6335743027364179064}
   - {fileID: 724139344834979615}
   - {fileID: 1321386959695407079}
   - {fileID: 9097362746166209903}
@@ -1261,15 +1262,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AnimationData>k__BackingField:
+    _groundParameterName: '@Ground'
     _idleParameterName: Idle
     _moveXParameterName: MoveX
     _moveZParameterName: MoveZ
     _runParameterName: Run
-    _jumpParameterName: Jump
-    _sitParameterName: Sit
     _attackParameterName: Attack
     _reloadParameterName: Reload
     _aimParameterName: Aim
+    _airParameterName: '@Air'
+    _jumpParameterName: Jump
+    _fallParameterName: Fall
+    _sitParameterName: Sit
     _dieParameterName: Die
   data:
     key: 0

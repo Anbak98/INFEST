@@ -1156,14 +1156,15 @@ GameObject:
   m_Component:
   - component: {fileID: 3834324505224384244}
   - component: {fileID: 3297568450549869079}
+  - component: {fileID: 3875093106370897243}
   - component: {fileID: 1036566270813735001}
-  - component: {fileID: 3072078453906701333}
+  - component: {fileID: 7081860901902442314}
   - component: {fileID: 4204658218274871571}
+  - component: {fileID: 3072078453906701333}
   - component: {fileID: 4068375233546285216}
   - component: {fileID: 6770045564643699394}
   - component: {fileID: -5511681442977026662}
   - component: {fileID: 3147526191137004029}
-  - component: {fileID: 7081860901902442314}
   - component: {fileID: 1139099963600576956}
   m_Layer: 6
   m_Name: PlayerTest
@@ -1213,14 +1214,33 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 3875093106370897243}
   - {fileID: 3072078453906701333}
   - {fileID: 4068375233546285216}
   - {fileID: -5511681442977026662}
+  - {fileID: 1139099963600576956}
   - {fileID: 724139344834979615}
   - {fileID: 1321386959695407079}
   - {fileID: 9097362746166209903}
   - {fileID: 5648215091215980224}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &3875093106370897243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!54 &1036566270813735001
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1248,45 +1268,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &3072078453906701333
-MonoBehaviour:
+--- !u!143 &7081860901902442314
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7812586951838351475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <AnimationData>k__BackingField:
-    _idleParameterName: Idle
-    _moveXParameterName: MoveX
-    _moveZParameterName: MoveZ
-    _runParameterName: Run
-    _jumpParameterName: Jump
-    _sitParameterName: Sit
-    _attackParameterName: Attack
-    _reloadParameterName: Reload
-    _aimParameterName: Aim
-    _dieParameterName: Die
-  data:
-    key: 0
-    Playeridx: 
-    NickName: 
-  playerAnimator: {fileID: 0}
-  playerController: {fileID: 0}
-  statHandler: {fileID: 3147526191137004029}
-  characterController: {fileID: 7081860901902442314}
-  cameraHandler: {fileID: 0}
-  MoveSpeed: 6
-  JumpForce: 10
-  CameraHandle: {fileID: 5072942232072495766}
-  FirstPersonRoot: {fileID: 4260200998989714414}
-  ThirdPersonRoot: {fileID: 1055682366495237838}
-  _spawnedProjectile: 0
-  _material: {fileID: 0}
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4204658218274871571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,6 +1325,48 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3072078453906701333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <AnimationData>k__BackingField:
+    _groundParameterName: '@Ground'
+    _idleParameterName: Idle
+    _moveXParameterName: MoveX
+    _moveZParameterName: MoveZ
+    _runParameterName: Run
+    _attackParameterName: Attack
+    _reloadParameterName: Reload
+    _aimParameterName: Aim
+    _airParameterName: '@Air'
+    _jumpParameterName: Jump
+    _fallParameterName: Fall
+    _sitParameterName: Sit
+    _dieParameterName: Die
+  data:
+    key: 0
+    Playeridx: 
+    NickName: 
+  playerAnimator: {fileID: 0}
+  playerController: {fileID: 0}
+  statHandler: {fileID: 3147526191137004029}
+  characterController: {fileID: 7081860901902442314}
+  cameraHandler: {fileID: 0}
+  MoveSpeed: 6
+  JumpForce: 10
+  CameraHandle: {fileID: 5072942232072495766}
+  FirstPersonRoot: {fileID: 4260200998989714414}
+  ThirdPersonRoot: {fileID: 1055682366495237838}
+  _spawnedProjectile: 0
+  _material: {fileID: 0}
 --- !u!114 &4068375233546285216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1388,32 +1437,6 @@ MonoBehaviour:
     startWeapon1Id: 0
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
---- !u!143 &7081860901902442314
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1139099963600576956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2289,6 +2312,22 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 7502e2c60225dd7499c294d4c0ec948d, type: 2}
+    - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'root'\n\tTransform 'lowerarm_l'\n\tTransform
+        'root'\n\tTransform 'neck_01'\n\tTransform 'clavicle_l'\n\tTransform 'hand_l'\n\tTransform
+        'spine_02'\n\tTransform 'upperarm_r'\n\tTransform 'upperarm_l'\n\tTransform
+        'thigh_l'\n\tand more ...\n\tFrom animation clip 'Idle'\n\tFrom animation
+        clip 'Idle Crouching'\n\tFrom animation clip 'Walk Crouching Forward'\n\tFrom
+        animation clip 'Walk Crouching Backward'\n\tFrom animation clip 'Walk Crouching
+        Left'\n\tFrom animation clip 'Walk Crouching Right'\n\tFrom animation clip
+        'Walk Crouching Forward Left'\n\tFrom animation clip 'Walk Crouching Forward
+        Right'\n\tFrom animation clip 'Walk Crouching Backward Left'\n\tFrom animation
+        clip 'Walk Crouching Backward Right'\n\tand more ..."
+      objectReference: {fileID: 0}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_ApplyRootMotion
