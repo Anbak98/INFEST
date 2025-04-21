@@ -17,17 +17,39 @@ public class UISetView : UIScreen
     public TMP_Dropdown graphic;
     public TMP_Dropdown display;
 
+    [Header("저장버튼")]
+    public Button saveBtn;
+
     private Resolution[] _resolutions;
+
+    private float _originalBrightness;
+    private int _originalScreenRateIndex;
+    private int _originalResolutionIndex;
+    private int _originalGraphicIndex;
+    private int _originalDisplayIndex;
 
     public override void Awake()
     {
         base.Awake();
-        brightSlider.onValueChanged.AddListener(Brightness);
+
+        _originalBrightness = brightSlider.value;
+        _originalScreenRateIndex = screenrate.value;
+        _originalResolutionIndex = resolution.value;
+        _originalGraphicIndex = graphic.value;
+        _originalDisplayIndex = display.value;
+
+        saveBtn.gameObject.SetActive(false);
+
+        brightSlider.onValueChanged.AddListener(value =>
+        {
+            Brightness(value);
+            CheckForChanges();
+        });        
 
         SetUpScreenRate();
         SetUpResolution();
         SetUpGraphic();
-        SetUpDisplay();
+        SetUpDisplay();        
     }
 
     public override void Show()
@@ -53,11 +75,12 @@ public class UISetView : UIScreen
     private void SetUpScreenRate()
     {
         screenrate.ClearOptions();
-        var options = new List<string> { "4:3", "16:9", "21:9" };
+        var options = new List<string> { "4:3", "16:10", "16:9", "21:9" };
         screenrate.AddOptions(options);
         screenrate.onValueChanged.AddListener(index =>
         {
             Debug.Log($"Set ScreenRate: {options[index]}");
+            CheckForChanges();
         });
     }
 
@@ -65,22 +88,18 @@ public class UISetView : UIScreen
     {
         resolution.ClearOptions();
 
-        var targetResolutions = new List<Resolution>
-    {
-        new Resolution { width = 1920, height = 1080 },
-        new Resolution { width = 1600, height = 900 },
-        new Resolution { width = 1280, height = 720 }
-    };
+        _resolutions = Screen.resolutions;
 
+        var options = _resolutions.Select(r => $"{r.width}x{r.height}").Distinct().ToList();
 
-        var options = targetResolutions.Select(r => $"{r.width}x{r.height}").Distinct().ToList();
         resolution.AddOptions(options);
 
         resolution.onValueChanged.AddListener(index =>
         {
-            var res = targetResolutions[index];
+            var res = _resolutions[index];
             Screen.SetResolution(res.width, res.height, Screen.fullScreenMode);
             Debug.Log($"Set resolution: {res.width}x{res.height}");
+            CheckForChanges();
         });
     }
 
@@ -92,6 +111,7 @@ public class UISetView : UIScreen
         var qualityNames = QualitySettings.names.ToList();
 
         //드롭다운에 보여주고 싶은 이름들
+        //var graphicNames = new List<string> { "매우 낮음", "낮음", "보통", "높음", "매우 높음" };
         var graphicNames = new List<string> { "Very Low", "Medium", "Ultra" };
 
         //각 원하는 이름이 실제 몇 번째 레벨인지 찾아두기
@@ -114,6 +134,7 @@ public class UISetView : UIScreen
             {
                 QualitySettings.SetQualityLevel(qualityLevel);
                 Debug.Log($"Set Graphic: {graphicNames[dropdownIndex]} (Level {qualityLevel})");
+                CheckForChanges();
             }
             else
             {
@@ -133,6 +154,61 @@ public class UISetView : UIScreen
             var mode = (index == 0) ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
             Screen.fullScreenMode = mode;
             Debug.Log($"Set Display: {(index == 0 ? "Full Screen" : "Window Screen")}");
+            CheckForChanges();
         });
+    }
+
+    private void CheckForChanges()
+    {
+        bool changed =
+            !Mathf.Approximately(brightSlider.value, _originalBrightness) ||
+            screenrate.value != _originalScreenRateIndex ||
+            resolution.value != _originalResolutionIndex ||
+            graphic.value != _originalGraphicIndex ||
+            display.value != _originalDisplayIndex;
+
+        saveBtn.gameObject.SetActive(changed);
+    }
+
+    public void SaveSettings()
+    {
+        PlayerPrefs.SetFloat("Brightness", brightSlider.value);
+        PlayerPrefs.SetInt("ScreenRate", screenrate.value);
+        PlayerPrefs.SetInt("ResolutionIndex", resolution.value);
+        PlayerPrefs.SetInt("GraphicIndex", graphic.value);
+        PlayerPrefs.SetInt("DisplayIndex", display.value);
+        PlayerPrefs.Save();
+
+        // 현재 상태를 새로운 기준으로 업데이트
+        _originalBrightness = brightSlider.value;
+        _originalScreenRateIndex = screenrate.value;
+        _originalResolutionIndex = resolution.value;
+        _originalGraphicIndex = graphic.value;
+        _originalDisplayIndex = display.value;
+
+        saveBtn.gameObject.SetActive(false);
+    }
+
+    public void OnClickOKBtn()
+    {
+        PlayerPrefs.SetFloat("Brightness", brightSlider.value);
+        PlayerPrefs.SetInt("ScreenRate", screenrate.value);
+        PlayerPrefs.SetInt("ResolutionIndex", resolution.value);
+        PlayerPrefs.SetInt("GraphicIndex", graphic.value);
+        PlayerPrefs.SetInt("DisplayIndex", display.value);
+        PlayerPrefs.Save();
+
+        _originalBrightness = brightSlider.value;
+        _originalScreenRateIndex = screenrate.value;
+        _originalResolutionIndex = resolution.value;
+        _originalGraphicIndex = graphic.value;
+        _originalDisplayIndex = display.value;
+
+        this.gameObject.SetActive(false);
+    }
+
+    public void OnClickCancelBtn()
+    {
+        this.gameObject.SetActive(false);
     }
 }

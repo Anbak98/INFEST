@@ -1,13 +1,15 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TestGameUI : MonoBehaviour
 {
     public TestPlay testPlay;
     public NetworkRunner runner;
-    [SerializeField] private UIScoreboardView scoreboardView;
-    [SerializeField] private UIMenuView menuView;
-    [SerializeField] private UISetView setView;
+    [SerializeField] private UIScoreboardView _scoreboardView;
+    [SerializeField] private UIMenuView _menuView;
+    [SerializeField] private UISetView _setView;
+    [SerializeField] private UIStateView _stateView;
 
 
     private void Update()
@@ -16,29 +18,29 @@ public class TestGameUI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            scoreboardView.Show();
+            _scoreboardView.Show();
         }
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
-            scoreboardView.Hide();
+            _scoreboardView.Hide();
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (menuView.gameObject.activeSelf)
+            if (_menuView.gameObject.activeSelf)
             {
-                if (setView.gameObject.activeSelf)
+                if (_setView.gameObject.activeSelf)
                 {
-                    setView.Hide();
+                    _setView.Hide();
                 }
                 else
                 {
-                    menuView.Hide();
+                    _menuView.Hide();
                 }
             }
             else
             {
-                menuView.Show();
+                _menuView.Show();
             }
-        }
+        }        
     }
 }
