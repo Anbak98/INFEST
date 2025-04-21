@@ -96,4 +96,14 @@ public class MonsterInfo
     /// </summary>
     public int DropGold;
 
+    /// <summary>
+    /// 필드 스폰 여부
+    /// </summary>
+    public bool FieldSpawn;
+
+    /// <summary>
+    /// 스폰수 제한
+    /// </summary>
+    public int LimitSpawnCount;
+
 }
