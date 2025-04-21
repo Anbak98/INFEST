@@ -8,33 +8,33 @@ using UnityEngine;
 [Serializable]
 public class PlayerAnimationData
 {
+    [SerializeField] private string _groundParameterName = "@Ground";    // 
     [SerializeField] private string _idleParameterName = "Idle";
     //[SerializeField] private string _moveParameterName = "Move";    // walk
     [SerializeField] private string _moveXParameterName = "MoveX";    // walk
     [SerializeField] private string _moveZParameterName = "MoveZ";    // walk
-
-
     [SerializeField] private string _runParameterName = "Run";
+    [SerializeField] private string _attackParameterName = "Fire";
+    [SerializeField] private string _reloadParameterName = "IsReloading";    // 장전하는 상태가 있어야 할 것 같기도 하다
+    [SerializeField] private string _aimParameterName = "Aim";
 
+
+    [SerializeField] private string _airParameterName = "@Air";
     [SerializeField] private string _jumpParameterName = "Jump";
-
+    [SerializeField] private string _fallParameterName = "Fall";
     // 떨어지는 상태는 jump상태와 분명히 다르다
     // isGround가 false && isjumping이 false인 것으로 표현할 수 있어서 파라미터는 없어도 된다
     // 문제는 parameter가 없을때 idle과 구분해야한다는거
-    //[SerializeField] private string _fallParameterName = "Fall";    
 
-    [SerializeField] private string _sitParameterName = "Sit";
+    [SerializeField] private string _sitParameterName = "@Sit";
 
     // 앉아서 이동(105)하는건 새로운 애니메이션이 필요하지만 파라미터는 Sit && Move로 처리할 수 있다
     //[SerializeField] private string _waddleParameterName = "Waddle";
 
-    [SerializeField] private string _attackParameterName = "Fire";
-    [SerializeField] private string _reloadParameterName = "IsReloading";    // 장전하는 상태가 있어야 할 것 같기도 하다
 
     // 사격 중 이동(107)
     // Move && Attack일 때 애니메이션을 blend해야 할 것 같다
 
-    [SerializeField] private string _aimParameterName = "Aim";
 
     // 조준 상태 이동(109)
     // Move && Aim
@@ -45,31 +45,37 @@ public class PlayerAnimationData
     // 조준 상태 이동사격(111)
     // Walk&& Attack && Aim 
 
+    // 앉아서 공격 또한 
+    // Sit && Attack 으로 처리 가능
+
     [SerializeField] private string _dieParameterName = "Die";
 
 
     // string 비교는 연산이 많으므로 int로 바꾸어 비교한다
+    public int GroundParameterHash { get; private set; }
     public int IdleParameterHash { get; private set; }
     //public int MoveParameterHash { get; private set; }
     public int MoveXParameterHash { get; private set; }
     public int MoveZParameterHash { get; private set; }
     public int RunParameterHash { get; private set; }
+    public int AttackParameterHash { get; private set; }
+    public int ReloadParameterHash { get; private set; }
+    public int AimParameterHash { get; private set; }
     //
     public int JumpParameterHash { get; private set; }
     //
     public int SitParameterHash { get; private set; }
     //
-    public int AttackParameterHash { get; private set; }
-    public int ReloadParameterHash { get; private set; }
 
-    public int AimParameterHash { get; private set; }
 
     public int DieParameterHash { get; private set; }
 
 
     public void Initialize()
     {
-        IdleParameterHash = Animator.StringToHash(_idleParameterName);
+        GroundParameterHash = Animator.StringToHash(_groundParameterName);
+
+        //IdleParameterHash = Animator.StringToHash(_idleParameterName);
         //MoveParameterHash = Animator.StringToHash(_moveParameterName);
         MoveXParameterHash = Animator.StringToHash(_moveXParameterName);
         MoveZParameterHash = Animator.StringToHash(_moveZParameterName);

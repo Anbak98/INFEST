@@ -17,6 +17,7 @@ public class PlayerStateMachine : StateMachine
 
     ///// <summary>
     ///// Animator에 전달할 정보
+    /// InputHandler에 있으니까 아래의 내용은 없어도 된다
     ///// </summary>
     //[field: Header("MoveData")]
     //public Vector3 position;        //플레이어 현 위치
@@ -42,19 +43,26 @@ public class PlayerStateMachine : StateMachine
 
 
     // 나중에 Dictionary에 상태를 관리하는 방식으로 수정할 예정
+    // Ground
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
     public PlayerRunState RunState { get; private set; }
     public PlayerAttackState AttackState { get; private set; }
     public PlayerReloadState ReloadState { get; private set; }
+    // Air
     public PlayerJumpState JumpState { get; private set; }
     public PlayerFallState FallState { get; private set; }
-    public PlayerSitState SitState { get; private set; }
-
+    // Sit
+    public PlayerSitIdleState SitIdleState { get; private set; }
+    public PlayerSitAttackState SitAttackState { get; private set; }
+    public PlayerSitReloadState SitReloadState { get; private set; }
+    public PlayerWaddleState WaddleState { get; private set; }
+    
 
     public PlayerStateMachine(Player player, PlayerController controller)
     {
         this.Player = player;
+        this.controller = controller;
 
         StatHandler = player.statHandler;
         InputHandler = player.Input;
@@ -63,17 +71,21 @@ public class PlayerStateMachine : StateMachine
         IdleState = new PlayerIdleState(controller, this);
         MoveState = new PlayerMoveState(controller, this);
         RunState = new PlayerRunState(controller, this);
-
         AttackState = new PlayerAttackState(controller, this);
         ReloadState = new PlayerReloadState(controller, this);
-
+        
         JumpState = new PlayerJumpState(controller, this);
         FallState = new PlayerFallState(controller, this);
+        
+        SitIdleState = new PlayerSitIdleState(controller, this);
+        WaddleState = new PlayerWaddleState(controller, this);
+        SitAttackState = new PlayerSitAttackState(controller, this);
+        SitReloadState = new PlayerSitReloadState(controller, this);
 
-        SitState = new PlayerSitState(controller, this);
 
         // 처음에는 IdleState시작
         currentState = IdleState; // 파라미터가 없어서 명시적으로 지정
+        // Player에서 설정해주니까 상태머신에 들어왔을때 자꾸 currentState가 null
     }
 }
 
