@@ -43,7 +43,7 @@ public class Inventory
             auxiliaryWeapon = 0;
     }
 
-    public void RemoveConsumeItem(int key, int index)
+    public void RemoveConsumeItem(int index)
     {
         consume[index] = 0;
     }
