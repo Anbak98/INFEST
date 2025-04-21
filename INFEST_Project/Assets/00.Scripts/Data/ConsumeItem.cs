@@ -31,6 +31,11 @@ public class ConsumeItem : IKeyedItem
     /// </summary>
     public DesignEnums.ConsumeItemType ConsumeItemType;
 
+    /// <summary>
+    /// 아이템 가격
+    /// </summary>
+    public int Price;
+
     public int Key => key;
 
 }

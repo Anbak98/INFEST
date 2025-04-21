@@ -65,6 +65,7 @@ public abstract class PlayerController : BaseController
         stateMachine = new PlayerStateMachine(player, this);
 
         //MainCameraTransform = Camera.main.transform;
+
     }
 
     public override void Update()
@@ -72,8 +73,6 @@ public abstract class PlayerController : BaseController
         // 상태머신 
         stateMachine.HandleInput();
         stateMachine.Update();
-        // 이동
-        //PlayerMove();
     }
 
     //#region 상태 변화 조건(PlayerInputHandler의 값을 가져와서 판단)

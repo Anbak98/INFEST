@@ -31,4 +31,9 @@ public class ConsumeItem
     /// </summary>
     public DesignEnums.ConsumeItemType ConsumeItemType;
 
+    /// <summary>
+    /// 아이템 가격
+    /// </summary>
+    public int Price;
+
 }
