@@ -36,6 +36,10 @@ public class Player : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
+    public NetworkObject networkObject;
+    public UIStore uiStore;
+    public bool inStoreZoon = false;
+    public bool isInteraction = false;
     public Store store;
     public Inventory inventory = new();
     public int gold = 5000;
@@ -44,7 +48,6 @@ public class Player : NetworkBehaviour
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
     private Weapons _weapons;// SY
-    private Store stores;
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -90,13 +93,10 @@ public class Player : NetworkBehaviour
         Input = GetComponent<PlayerInputHandler>();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
-        store = FindFirstObjectByType<Store>();
-
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
-        stores = FindObjectOfType<Store>();
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
@@ -115,9 +115,10 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData data))
         {
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT))
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                store.isInteraction = true;
+                if(!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
+                else store.RPC_RequestStopInteraction(this, networkObject.InputAuthority);
             }
         }
     }
