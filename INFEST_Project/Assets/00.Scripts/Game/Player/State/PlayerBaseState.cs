@@ -220,8 +220,14 @@ public abstract class PlayerBaseState : IState
     protected void PlayerFire()
     {
         // 발사로직 PlayerController에 옮길것
-        controller.HandleFire();
+        controller.StartFire();
     }
+    protected void Reload()
+    {
+        // 장전
+        Debug.Log("Reload");
+    }
+
     protected void PlayerRun()
     {
         Debug.Log("Run");
@@ -241,6 +247,7 @@ public abstract class PlayerBaseState : IState
         Debug.Log("Sit");
 
     }
+
     // 앉아서 걷기
     protected void PlayerWaddle()
     {
@@ -252,18 +259,19 @@ public abstract class PlayerBaseState : IState
     {
         Debug.Log("SitFire");
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.HandleMovement();    // 이동
+        controller.StartFire();    
+    }
+    protected void SitReload()
+    {
+        // 장전
+        Debug.Log("Reload");
+        controller.StartReload();
     }
     // 조준(애니메이션은 바꾸고, 카메라를 따로 조작)
     protected void PlayerZoom()
     {
         Debug.Log("Zoom");
 
-    }
-    protected void Reload()
-    {
-        // 장전
-        Debug.Log("Reload");
     }
     #endregion
 }

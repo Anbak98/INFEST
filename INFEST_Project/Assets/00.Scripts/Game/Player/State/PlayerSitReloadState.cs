@@ -35,7 +35,7 @@ public class PlayerSitReloadState : PlayerSitState
         // false → true로 바뀌는 순간만 감지 (즉, 입력이 딱 들어온 그 순간)
         if (!prevIsReloading && currentIsReloading)
         {
-            Reload();
+            SitReload();
         }
 
         // reloading 끝났으면 상태 나가기
