@@ -24,19 +24,19 @@ public class PlayerSitIdleState : PlayerSitState
         StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
-        base.OnUpdate();
+        base.OnUpdate(data);
 
         controller.ApplyGravity();  // 중력
 
         // 입력값이 있다면 MoveState로 전환
-        if (stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
+        if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.WaddleState);
             return;
         }
-        if (!stateMachine.InputHandler.GetIsSitting())
+        if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }

@@ -25,7 +25,9 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
-    private Dictionary<PlayerRef, PlayerInputHandler> _inputHandlers = new();
+
+
+
 
     // Input Action을 이용한 키입력
     //private PlayerActionMap _inputActions;
@@ -102,7 +104,6 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
             
-            _inputHandlers.Add(player, networkPlayerObject.GetComponent<PlayerInputHandler>());
             _spawnedCharacters.Add(player, networkPlayerObject);
         }
     }
@@ -127,18 +128,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     /// <param name="input"></param>
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        _inputHandlers.TryGetValue(runner.LocalPlayer, out PlayerInputHandler playerInputHandler);
 
-        if (playerInputHandler == null || !playerInputHandler.HasInputAuthority)
-            return;
-
-        //Debug.Log("OnInput 진입");
-        NetworkInputData? networkInput = playerInputHandler.GetNetworkInput();
-
-        if (networkInput.HasValue)
-        {
-            input.Set(networkInput.Value);
-        }
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }

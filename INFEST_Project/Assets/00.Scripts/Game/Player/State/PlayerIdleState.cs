@@ -31,14 +31,15 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.PhysicsUpdate();
     }
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
-        base.OnUpdate();
+        base.OnUpdate(data);
         controller.ApplyGravity();  // 중력
 
         // 입력값이 있다면 MoveState로 전환
-        if (stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
+        if (data.direction != Vector3.zero)
         {
+            //(stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
             stateMachine.ChangeState(stateMachine.MoveState);
             return;
         }
