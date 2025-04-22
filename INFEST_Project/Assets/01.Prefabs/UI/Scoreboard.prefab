@@ -900,10 +900,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: YoungCha
+  m_text: "\uC6A9\uCCB4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 21741b17af1c7a848801e1827bdbe101, type: 2}
-  m_sharedMaterial: {fileID: 6069820558515866740, guid: 21741b17af1c7a848801e1827bdbe101,
+  m_fontAsset: {fileID: 11400000, guid: bb1fbd9aff65f9d44826f16e10d9355b, type: 2}
+  m_sharedMaterial: {fileID: -773788566335441707, guid: bb1fbd9aff65f9d44826f16e10d9355b,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1113,8 +1113,6 @@ MonoBehaviour:
   kills: {fileID: 4170003954431738813}
   deaths: {fileID: 2903275196767360601}
   golds: {fileID: 865959190981194251}
-  canvasGroup: {fileID: 6928571933774252475}
-  localPlayerGroup: {fileID: 1656369821282521575}
 --- !u!1 &7012440975182025370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1618,7 +1616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753f8902f0782c24a886b43be48642f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
   _isModal: 0
   _plugins: []
-  disconnectedPlayerAlpha: 0.4
   uirow: {fileID: 1912925000817694492}

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Fusion;
+using UnityEngine;
 
 public class UIScoreboardView : UIScreen
 {
@@ -7,8 +8,11 @@ public class UIScoreboardView : UIScreen
 
     private List<UIScoreboardRow> _rows = new(32);
     private List<UIPlayerData> _players = new(32);
-
+    
     private TestGameUI _gameUI;
+
+    [Networked]
+    public Profile Info { get; set; }
 
     public override void Awake()
     {
