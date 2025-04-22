@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerSitIdleState : PlayerSitState
 {
@@ -44,13 +45,25 @@ public class PlayerSitIdleState : PlayerSitState
     // SitIdle에서 사용할 이벤트는 
     protected override void AddInputActionsCallbacks()
     {
-        inputManager.GetInput(EPlayerInput.move).started += OnWaddleStarted;
+        inputManager.GetInput(EPlayerInput.fire).started += OnSitAttackStarted;
+        inputManager.GetInput(EPlayerInput.reload).started += OnSitReloadStarted;
 
     }
     protected override void RemoveInputActionsCallbacks()
     {
         //inputManager.GetInput(EPlayerInput.move).canceled += OnWaddleStarted;
-        inputManager.GetInput(EPlayerInput.move).started -= OnWaddleStarted;
+        inputManager.GetInput(EPlayerInput.fire).started -= OnSitAttackStarted;
+        inputManager.GetInput(EPlayerInput.reload).started -= OnSitReloadStarted;
+    }
+    protected override void OnSitAttackStarted(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.SitAttackState);
 
+    }
+    protected override void OnSitReloadStarted(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.SitReloadState);
     }
 }

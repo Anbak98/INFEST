@@ -137,7 +137,11 @@ public class RemotePlayerController : PlayerController
         // TODO
     }
 
-    public override void HandleFire()
+    public override void StartFire()
+    {
+        // TODO
+    }
+    public override void StartReload()
     {
         // TODO
     }
@@ -145,6 +149,7 @@ public class RemotePlayerController : PlayerController
     {
         // TODO
     }
+
     public override void StartSit()
     {
         // TODO
@@ -153,6 +158,7 @@ public class RemotePlayerController : PlayerController
     {
         // TODO
     }
+
 
 
     //private void OnDeath()

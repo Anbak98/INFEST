@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
-using static UnityEditor.Experimental.GraphView.GraphView;
+//using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 /// <summary>
@@ -21,6 +21,8 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public abstract class PlayerController : BaseController
 {
     public Player player;
+
+    public Weapons weapons;
 
     /// <summary>
     /// 플레이어가 입력을 받으면 다음 2가지 로직을 수행(2가지 동작은 별개의 동작이다)
@@ -53,8 +55,10 @@ public abstract class PlayerController : BaseController
     protected string hitTatgetId;
 
     public override void Awake()
-    {        
+    {
         player = GetComponentInParent<Player>();    // 플레이어 먼저 생성
+
+        weapons = player.GetWeapons();
 
         //inputHandler = player.Input;
         // inputManager에 더 잘 연결하는 방법을 생각해보자
@@ -69,12 +73,23 @@ public abstract class PlayerController : BaseController
 
     }
 
-    public override void Update()
+    //public override void Update()
+    //{
+    //    // 상태머신 
+    //    stateMachine.HandleInput();
+    //    stateMachine.Update();
+    //}
+
+    public override void FixedUpdateNetwork()
     {
+        //base.FixedUpdateNetwork();
+
+
         // 상태머신 
         stateMachine.HandleInput();
         stateMachine.Update();
     }
+
 
     //#region 상태 변화 조건(PlayerInputHandler의 값을 가져와서 판단)
     //// 1인칭 애니메이션은 LocalPlayerController 3인칭 애니메이션은 RemoteController에서 조작하지만

@@ -205,7 +205,7 @@ public class Player : NetworkBehaviour
     //    }
     //}
 
-    public Weapons GetWeapon()
+    public Weapons GetWeapons()
     {
         return _weapons;
     }

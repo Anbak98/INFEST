@@ -101,9 +101,10 @@ public class PlayerIdleState : PlayerGroundState
     }
     protected override void OnReload(InputAction.CallbackContext context)
     {
+        // 무기를 장착하고 있을 때 한정
+
         base.OnReload(context);
         stateMachine.ChangeState(stateMachine.ReloadState);
-
     }
     protected override void OnJumpStarted(InputAction.CallbackContext context)
     {

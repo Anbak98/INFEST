@@ -1,6 +1,7 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Build;
+//using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
@@ -28,6 +29,7 @@ public class LocalPlayerController : PlayerController
 
     /// <summary>
     /// 1인칭은 나만 가지고 있는거니까 상태 변화하는건 자신의 Update에서 처리한다
+    /// 
     /// </summary>
     // Update is called once per frame
     public override void Update()
@@ -98,12 +100,28 @@ public class LocalPlayerController : PlayerController
     }
 
 
-    public override void HandleFire()
+    public override void StartFire()
     {
-        bool input = player.Input.GetIsFiring();
-        if (input)
+        if (GetInput(out NetworkInputData data))
         {
-            // TODO
+            // 네트워크 객체는 StateAuthority(호스트)만 생성할 수 있기 때문에 StateAuthority에 대한 확인이 필요
+            // 호스트에서만 실행되고 클라이언트에서는 예측되지 않는다
+            if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+            {
+                // 마우스 좌클릭(공격)
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+                {
+                    //Debug.Log("공격");
+                    weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+
+                    delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+                }
+            }
         }
+    }
+
+    public override void StartReload()
+    {
+        // TODO
     }
 }
