@@ -14,6 +14,7 @@ using UnityEngine.SocialPlatforms.Impl;
 /// </summary>
 public class Player : NetworkBehaviour
 {
+    public static Player local { get; private set; }
     [Networked] private TickTimer delay { get; set; }
 
     [field: Header("Animations")]
@@ -37,7 +38,6 @@ public class Player : NetworkBehaviour
     public PlayerCameraHandler cameraHandler;
 
     public NetworkObject networkObject;
-    public UIStore uiStore;
     public bool inStoreZoon = false;
     public bool isInteraction = false;
     public Store store;
@@ -93,6 +93,7 @@ public class Player : NetworkBehaviour
         Input = GetComponent<PlayerInputHandler>();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
+
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
@@ -248,6 +249,12 @@ public class Player : NetworkBehaviour
             {
                 virtualCameras[i].enabled = false;
             }
+        }
+
+        if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
+        {
+            local = this;
+            Debug.Log("Local Player 설정 완료");
         }
         /// 디버그용
         statHandler.Init(200, 3, 2, 5, 8, 50, 60);

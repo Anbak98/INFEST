@@ -111,6 +111,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
             _spawnedCharacters.Add(player, networkPlayerObject);
+            Global.Instance.NetworkRunner = runner;
         }
     }
     // 접속종료

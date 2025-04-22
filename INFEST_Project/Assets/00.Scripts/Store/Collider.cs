@@ -12,12 +12,7 @@ public class Collider : MonoBehaviour // 유저가 상점에 진입했고 상호작용하는지 �
     public StoreController _storeController;
     public Player[] usePlaeyr;
 
-    private void Awake()
-    {
-        _store = GetComponent<Store>();
-    }
-
-    private void OnTriggerEnter(UnityEngine.Collider other) // => 나눠야함
+    private void OnTriggerEnter(UnityEngine.Collider other) 
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.TryGetComponent(out Player _player))
         {
@@ -31,10 +26,10 @@ public class Collider : MonoBehaviour // 유저가 상점에 진입했고 상호작용하는지 �
             //if (!_inside.Contains(_player))
             //{
             playersInShop.Add(_player);
-                Debug.Log("접촉");
-                //_inside.Add(_player);
-                _store.RPC_RequestEnterShopZone(_player, _player.networkObject.InputAuthority);
-                _player.inStoreZoon = true;
+            Debug.Log("접촉");
+            //_inside.Add(_player);
+            _store.RPC_RequestEnterShopZone(_player, _player.networkObject.InputAuthority);
+            _player.inStoreZoon = true;
 
             //}
             //else if (_inside.Contains(_player) && _store.isInteraction)

@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6356525794996167536
 Transform:
   m_ObjectHideFlags: 0
@@ -50,8 +50,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
   idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
-  _isInteraction:
-    _value: 0
 --- !u!114 &2110317807926065959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersInShop: []
   _store: {fileID: 8427605602746010791}
   _storeController: {fileID: 4794176077292064070}
   usePlaeyr: []
@@ -79,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3190387951
+  SortKey: 4122445457
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -126,7 +125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5565408664755997924
 Transform:
   m_ObjectHideFlags: 0
@@ -157,8 +156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
   idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
-  _isInteraction:
-    _value: 0
 --- !u!114 &9092279742298597837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersInShop: []
   _store: {fileID: 4897618131034360334}
   _storeController: {fileID: 4794176077292064070}
   usePlaeyr: []
@@ -186,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3105306144
+  SortKey: 4037363650
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -316,7 +314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9208804669002544183
 Transform:
   m_ObjectHideFlags: 0
@@ -347,8 +345,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
   idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
-  _isInteraction:
-    _value: 0
 --- !u!114 &4272308528996907498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersInShop: []
   _store: {fileID: 1920124757334832661}
   _storeController: {fileID: 4794176077292064070}
   usePlaeyr: []
@@ -376,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3066443383
+  SortKey: 3998500889
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -582,7 +579,7 @@ GameObject:
   - component: {fileID: 4794176077292064070}
   - component: {fileID: 5427930470031718088}
   m_Layer: 0
-  m_Name: StoreMap
+  m_Name: StoreController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,16 +615,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3cb51a95ddbc224d8a1e19726b9e6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _runningTimer:
-    _value: 0
+  uIShopView: {fileID: 0}
   _activeTime:
     _value: 0
   aiiStores:
   - {fileID: 8427605602746010791}
   - {fileID: 4897618131034360334}
   - {fileID: 1920124757334832661}
-  newStoreTime: 10
-  activateTime: 5
+  newStoreTime: 300
+  activateTime: 120
 --- !u!114 &5427930470031718088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,7 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 134319010
+  SortKey: 1066376516
   ObjectInterest: 1
   Flags: 262145
   NestedObjects:

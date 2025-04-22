@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
 public class StoreController : NetworkBehaviour
 {
+    public UIShopView uIShopView;
+
     [Networked] private NetworkBool _runingTime { get; set; }
     [Networked] public NetworkBool activeTime { get; set; }
     [Networked] public TickTimer storeTimer { get; set; }
-    [Networked] private int _randomIndex {  get; set; }
+    [Networked] private int _randomIndex { get; set; }
 
     public List<Store> aiiStores;
 
@@ -40,7 +43,7 @@ public class StoreController : NetworkBehaviour
 
         }
     }
-        
+
     /// <summary>
     /// 상점 생성시 타이머 활성화
     /// </summary>
@@ -52,6 +55,8 @@ public class StoreController : NetworkBehaviour
             RPC_Show(_randomIndex);
             storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
             _runingTime = true;
+            uIShopView.StoreInIt(aiiStores[_randomIndex]);
+            
         }
     }
 
@@ -65,7 +70,6 @@ public class StoreController : NetworkBehaviour
             float _remainingTime = storeTimer.RemainingTime(Runner) ?? 0f;
             storeTimer = TickTimer.CreateFromSeconds(Runner, activateTime + _remainingTime);
             activeTime = false;
-
             Debug.Log("상호작용 후 \n 현재 남은 시간 : " + storeTimer.RemainingTime(Runner));
         }
     }
@@ -78,10 +82,9 @@ public class StoreController : NetworkBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        //Player _plaeyr = GetComponentInChildren<Collider>().playersInShop[0];
 
-        //uiStore.interactionText.gameObject.SetActive(false);
-        //uiStore.panel.gameObject.SetActive(false);
+        uIShopView.interactionText.gameObject.SetActive(false);
+        uIShopView.bg.gameObject.SetActive(false);
     }
 
     /// <summary>
