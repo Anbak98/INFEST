@@ -24,6 +24,7 @@ public abstract class StateMachine
 
     /// <summary>
     /// 현재 상태의 입력값, 조건에 따라 다른 상태로 이동할 것인지 판단
+    /// 하지만 네트워크에서 입력을 받아 업데이트하므로 호출하지 않는다
     /// </summary>
     public void HandleInput()
     {
@@ -32,9 +33,9 @@ public abstract class StateMachine
     }
 
     // 생명주기함수 아니다
-    public void Update()
+    public void OnUpdate()
     {
-        currentState?.Update();
+        currentState?.OnUpdate();
     }
 
     public void PhysicsUpdate()

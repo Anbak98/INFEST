@@ -43,7 +43,7 @@ public class PlayerCameraHandler : NetworkBehaviour
     {
         base.FixedUpdateNetwork();
 
-        if(GetInput(out NetworkInputData data))
+        if (GetInput(out NetworkInputData data))
         {
             Vector2 mouseDelta = data.lookDelta;
 
@@ -53,10 +53,28 @@ public class PlayerCameraHandler : NetworkBehaviour
             // 좌우 회전 (플레이어)
             transform.Rotate(Vector3.up * mouseX);
 
+            // 카메라만 회전하고 플레이어는 회전하지않는다
+
+
             // 상하 회전 (카메라 홀더)
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
             _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         }
+    }
+
+    public Vector3 GetCameraForwardOnXZ()
+    {
+        //Vector3 camForward = _mainCam.transform.forward;
+        Vector3 camForward = transform.forward;
+        camForward.y = 0f;
+        return camForward.normalized;
+    }
+
+    public Vector3 GetCameraRightOnXZ()
+    {
+        Vector3 camRight = _mainCam.transform.right;
+        camRight.y = 0f;
+        return camRight.normalized;
     }
 }

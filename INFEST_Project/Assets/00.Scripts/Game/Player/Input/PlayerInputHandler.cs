@@ -357,18 +357,6 @@ public class PlayerInputHandler : NetworkBehaviour
     /// <returns></returns>
     public NetworkInputData? GetNetworkInput()
     {
-        // 이건 사라져야한다. 플레이어의 상태가 추가되면
-        // 입력이 없어도 상태가 출력되어야한다
-        if (MoveInput == Vector3.zero &&
-            _isSwapVelue.y == 0 &&
-            !_isJumping && !_isFiring && !_isReloading &&
-            !_isZooming && !_isInteracting && !_isUsingItem &&
-            !_isRunning && !_isSitting && !_isScoreBoardPopup &&
-            !_isShotgunOnFiring && !_isOnZoom)
-        {
-            return null;
-        }
-        //Debug.Log("입력 받았다");
         var data = new NetworkInputData
         {
             direction = MoveInput,

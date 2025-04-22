@@ -34,7 +34,7 @@ public class PlayerSitState : PlayerGroundState
         player.characterController.height *= 2;
     }
 
-    public override void Update()
+    public override void OnUpdate()
     {
         if (!stateMachine.InputHandler.GetIsSitting())
         {

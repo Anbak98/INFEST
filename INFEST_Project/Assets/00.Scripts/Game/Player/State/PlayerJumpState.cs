@@ -16,7 +16,7 @@ public class PlayerJumpState : PlayerAirState
         // 점프는 한번만
         PlayerJump();
     }
-    public override void Update()
+    public override void OnUpdate()
     {
         // 플레이어 이동
         PlayerMove();
