@@ -23,7 +23,7 @@ public class PlayerAirState : PlayerBaseState
         StopAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
 
-    public override void Update()
+    public override void OnUpdate()
     {
     }
     public override void PhysicsUpdate()

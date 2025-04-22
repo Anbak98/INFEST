@@ -18,7 +18,7 @@ public class PlayerFallState : PlayerAirState
 
         base.Enter();
     }
-    public override void Update()
+    public override void OnUpdate()
     {
         // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다
 

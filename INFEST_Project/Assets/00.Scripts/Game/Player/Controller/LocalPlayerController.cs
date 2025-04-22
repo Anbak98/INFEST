@@ -1,4 +1,4 @@
-using Fusion;
+ï»¿using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 //using UnityEditor.Build;
@@ -8,19 +8,145 @@ using UnityEngine.Windows;
 
 
 /// <summary>
-/// 1ÀÎÄª ÇÁ¸®ÆÕ¿¡ ºÙ¾î¼­ ¾Ö´Ï¸ŞÀÌ¼Ç °ü¸®
-/// ÀÚ½ÅÀÇ ÀÌµ¿Àº ·ÎÄÃ·Î °è»êÇÑ´Ù
+/// 1ì¸ì¹­ í”„ë¦¬íŒ¹ì— ë¶™ì–´ì„œ ì• ë‹ˆë©”ì´ì…˜ ê´€ë¦¬
+/// ìì‹ ì˜ ì´ë™ì€ ë¡œì»¬ë¡œ ê³„ì‚°í•œë‹¤
 /// 
-/// ÀÚ½ÅÀÇ ÀÔÀå¿¡¼­ 3ÀÎÄªÀº ºñÈ°¼ºÈ­°¡ µÇ¾îÀÖÀ»Å×´Ï±î
+/// ìì‹ ì˜ ì…ì¥ì—ì„œ 3ì¸ì¹­ì€ ë¹„í™œì„±í™”ê°€ ë˜ì–´ìˆì„í…Œë‹ˆê¹Œ
 /// 
-/// ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿
+/// í”Œë ˆì´ì–´ì˜ ì´ë™
 /// </summary>
 public class LocalPlayerController : PlayerController
 {
+    [SerializeField] private Transform weaponHolder; // ì†ì— ë¶™ì´ëŠ” ìŠ¬ë¡¯
+
     public override void Awake()
     {
         base.Awake();
     }
+
+    public override void FixedUpdateNetwork()
+    {
+        //base.FixedUpdateNetwork();
+
+        if (GetInput(out NetworkInputData data))
+        {
+            // ìƒíƒœë¨¸ì‹  
+            //stateMachine.HandleInput();
+            stateMachine.OnUpdate();
+        }
+    }
+
+    // ì í”„ ëˆŒë ¸ë‚˜
+    public override bool IsJumpInput() => player.Input.GetIsJumping();
+    public override bool IsSitInput() => player.Input.GetIsSitting();
+
+    // í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€?
+    //public override bool IsGrounded() => player.characterController.isGrounded;
+    public override bool IsGrounded() => player.networkCharacterController.Grounded;
+    public override float GetVerticalVelocity() => verticalVelocity;
+
+    // í”Œë ˆì´ì–´ì˜ ì´ë™(ë°©í–¥ì€ CameraHandlerì—ì„œ ì„¤ì •) ì²˜ë¦¬. ê·¸ ë°©í–¥ì´ transform.forwardë¡œ ì´ë¯¸ ì„¤ì •ë˜ì—ˆë‹¤
+    public override void HandleMovement()
+    {
+        //Vector3 input = player.Input.MoveInput;
+        //Vector3 forward = transform.forward;
+        //Vector3 right = transform.right;
+
+        //Vector3 move = right * input.x + forward * input.z;
+        //move.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
+        //player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
+
+
+        if (GetInput(out NetworkInputData data))
+        {
+            Vector3 input = data.direction;
+
+            // â— ì…ë ¥ ì—†ìœ¼ë©´ ì•„ë¬´ ê²ƒë„ í•˜ì§€ ì•ŠìŒ
+            if (input.sqrMagnitude < 0.01f) return;
+
+            // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê°€ì ¸ì˜¤ê¸°
+            Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
+            Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
+
+            Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
+            moveDir.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
+
+            //player.networkCharacterController.Move(camForward * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
+
+            // íšŒì „ì€ ë§‰ê³ , ì´ë™ë§Œ í•œë‹¤
+            player.networkCharacterController.Move(
+                moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
+            );
+
+            // íšŒì „ ê°•ì œ ê³ ì •: ì¹´ë©”ë¼ê°€ ì§€ì •í•œ forwardë¡œ
+            player.transform.forward = camForward;
+        }
+    }
+    public override void ApplyGravity()
+    {
+        // TODO
+        if (IsGrounded() && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        Vector3 gravityMove = new Vector3(0f, verticalVelocity, 0f);
+        player.characterController.Move(gravityMove * Time.deltaTime);
+    }
+    /// <summary>
+    /// ì í”„ ì‹œì‘ ì‹œ ìˆ˜ì§ ì†ë„ ê³„ì‚°
+    /// </summary>
+    public override void StartJump()
+    {
+        verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+    }
+
+    // ì•‰ëŠ”ë‹¤
+    public override void StartSit()
+    {
+        // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+        float playerYpos = player.transform.position.y;
+        playerYpos /= 2;
+        player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    }
+    // ì¼ì–´ë‚œë‹¤
+    public override void StartStand()
+    {
+        // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+        float playerYpos = player.transform.position.y;
+        playerYpos *= 2;
+        player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    }
+
+
+    public override void StartFire()
+    {
+        if (GetInput(out NetworkInputData data))
+        {
+            // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
+            // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
+            if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+            {
+                // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+                {
+                    //Debug.Log("ê³µê²©");
+                    weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+
+                    delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+                }
+            }
+        }
+    }
+
+    public override void StartReload()
+    {
+        // TODO
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,27 +154,27 @@ public class LocalPlayerController : PlayerController
     }
 
     /// <summary>
-    /// 1ÀÎÄªÀº ³ª¸¸ °¡Áö°í ÀÖ´Â°Å´Ï±î »óÅÂ º¯È­ÇÏ´Â°Ç ÀÚ½ÅÀÇ Update¿¡¼­ Ã³¸®ÇÑ´Ù
+    /// 1ì¸ì¹­ì€ ë‚˜ë§Œ ê°€ì§€ê³  ìˆëŠ”ê±°ë‹ˆê¹Œ ìƒíƒœ ë³€í™”í•˜ëŠ”ê±´ ìì‹ ì˜ Updateì—ì„œ ì²˜ë¦¬í•œë‹¤
     /// 
     /// </summary>
     // Update is called once per frame
     //public override void Update()
     //{
     //    base.Update();
-    //    // LocalPlayerController¸¸ÀÇ ·ÎÁ÷Àº ¾Æ·¡¿¡ Ãß°¡
+    //    // LocalPlayerControllerë§Œì˜ ë¡œì§ì€ ì•„ë˜ì— ì¶”ê°€
     //}
 
-    //// Á¡ÇÁ ´­·È³ª
+    //// ì í”„ ëˆŒë ¸ë‚˜
     //public override bool IsJumpInput() => player.Input.GetIsJumping();
     //public override bool IsSitInput() => player.Input.GetIsSitting();
 
-    //// ÇÃ·¹ÀÌ¾î°¡ ¶¥ À§¿¡ ÀÖ´ÂÁö?
+    //// í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€?
     //public override bool IsGrounded() => player.characterController.isGrounded;
     //public override float GetVerticalVelocity() => verticalVelocity;
 
 
 
-    //// ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿(¹æÇâÀº CameraHandler¿¡¼­ ¼³Á¤) Ã³¸®
+    //// í”Œë ˆì´ì–´ì˜ ì´ë™(ë°©í–¥ì€ CameraHandlerì—ì„œ ì„¤ì •) ì²˜ë¦¬
     //public override void HandleMovement()
     //{
     //    Vector3 input = player.Input.MoveInput;
@@ -57,7 +183,7 @@ public class LocalPlayerController : PlayerController
     //    Vector3 right = transform.right;
 
     //    Vector3 move = right * input.x + forward * input.z;
-    //    move.y = 0f; // ¼öÁ÷ ¹æÇâ Á¦°Å
+    //    move.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
     //    player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
     //}
     //public override void ApplyGravity()
@@ -75,25 +201,25 @@ public class LocalPlayerController : PlayerController
     //    player.characterController.Move(gravityMove * Time.deltaTime);
     //}
     ///// <summary>
-    ///// Á¡ÇÁ ½ÃÀÛ ½Ã ¼öÁ÷ ¼Óµµ °è»ê
+    ///// ì í”„ ì‹œì‘ ì‹œ ìˆ˜ì§ ì†ë„ ê³„ì‚°
     ///// </summary>
     //public override void StartJump()
     //{
     //    verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
     //}
 
-    //// ¾É´Â´Ù
+    //// ì•‰ëŠ”ë‹¤
     //public override void StartSit()
     //{
-    //    // collider´Â »óÅÂ¿¡¼­ º¯È­½ÃÅ°¹Ç·Î ¿©±â¼­´Â transform¸¸ ¾Æ·¡·Î
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
     //    float playerYpos = player.transform.position.y;
     //    playerYpos /= 2;
     //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
     //}
-    //// ÀÏ¾î³­´Ù
+    //// ì¼ì–´ë‚œë‹¤
     //public override void StartStand()
     //{
-    //    // collider´Â »óÅÂ¿¡¼­ º¯È­½ÃÅ°¹Ç·Î ¿©±â¼­´Â transform¸¸ ¾Æ·¡·Î
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
     //    float playerYpos = player.transform.position.y;
     //    playerYpos *= 2;
     //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
@@ -104,14 +230,14 @@ public class LocalPlayerController : PlayerController
     //{
     //    if (GetInput(out NetworkInputData data))
     //    {
-    //        // ³×Æ®¿öÅ© °´Ã¼´Â StateAuthority(È£½ºÆ®)¸¸ »ı¼ºÇÒ ¼ö ÀÖ±â ¶§¹®¿¡ StateAuthority¿¡ ´ëÇÑ È®ÀÎÀÌ ÇÊ¿ä
-    //        // È£½ºÆ®¿¡¼­¸¸ ½ÇÇàµÇ°í Å¬¶óÀÌ¾ğÆ®¿¡¼­´Â ¿¹ÃøµÇÁö ¾Ê´Â´Ù
+    //        // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
+    //        // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
     //        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
     //        {
-    //            // ¸¶¿ì½º ÁÂÅ¬¸¯(°ø°İ)
+    //            // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
     //            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
     //            {
-    //                //Debug.Log("°ø°İ");
+    //                //Debug.Log("ê³µê²©");
     //                weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
     //                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);

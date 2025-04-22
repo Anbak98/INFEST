@@ -24,7 +24,7 @@ public class PlayerAttackState : PlayerGroundState
 
 
 
-    public override void Update()
+    public override void OnUpdate()
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
         bool isFire = stateMachine.InputHandler.GetIsFiring();

@@ -9,7 +9,7 @@ public interface IState
     public void Enter();    // 상태 진입
     public void Exit();     // 상태 끝
     public void HandleInput();  // 새로운 입력값이 들어오면 이벤트를 추가, 삭제
-    public void Update();   // 상태 업데이트
+    public void OnUpdate();   // 상태 업데이트
     public void PhysicsUpdate();    // 물리 업데이트(중력 관련) 
 }
 
@@ -74,7 +74,7 @@ public abstract class PlayerBaseState : IState
         // 앉기
         ReadSitInput();
     }
-    public virtual void Update()
+    public virtual void OnUpdate()
     {
     }
     public virtual void PhysicsUpdate()

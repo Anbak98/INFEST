@@ -26,7 +26,7 @@ public class PlayerRunState : PlayerGroundState
         StopAnimation(stateMachine.Player.AnimationData.RunParameterHash);
     }
 
-    public override void Update()
+    public override void OnUpdate()
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
         Vector2 moveInput = stateMachine.InputHandler.MoveInput;

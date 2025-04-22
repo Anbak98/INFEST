@@ -31,9 +31,9 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.PhysicsUpdate();
     }
-    public override void Update()
+    public override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         controller.ApplyGravity();  // 중력
 
         // 입력값이 있다면 MoveState로 전환
