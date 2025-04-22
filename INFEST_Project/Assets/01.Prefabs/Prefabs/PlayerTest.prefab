@@ -1157,7 +1157,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3834324505224384244}
   - component: {fileID: 3297568450549869079}
-  - component: {fileID: 3875093106370897243}
   - component: {fileID: 1036566270813735001}
   - component: {fileID: 7081860901902442314}
   - component: {fileID: 4204658218274871571}
@@ -1167,6 +1166,7 @@ GameObject:
   - component: {fileID: -5511681442977026662}
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 1139099963600576956}
+  - component: {fileID: 2204635897523245189}
   m_Layer: 6
   m_Name: PlayerTest
   m_TagString: Untagged
@@ -1215,32 +1215,16 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 3875093106370897243}
   - {fileID: 3072078453906701333}
   - {fileID: 4068375233546285216}
   - {fileID: -5511681442977026662}
+  - {fileID: 1139099963600576956}
+  - {fileID: 2204635897523245189}
   - {fileID: 724139344834979615}
   - {fileID: 1321386959695407079}
   - {fileID: 9097362746166209903}
   - {fileID: 5648215091215980224}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &3875093106370897243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!54 &1036566270813735001
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1359,6 +1343,7 @@ MonoBehaviour:
   playerController: {fileID: 0}
   statHandler: {fileID: 3147526191137004029}
   characterController: {fileID: 7081860901902442314}
+  networkCharacterController: {fileID: 2204635897523245189}
   cameraHandler: {fileID: 0}
   MoveSpeed: 6
   JumpForce: 10
@@ -1452,6 +1437,25 @@ MonoBehaviour:
   _scopeCam: {fileID: 0}
   _cameraHolder: {fileID: 5072942232072495766}
   _sensitivity: 5
+--- !u!114 &2204635897523245189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  gravity: -20
+  jumpImpulse: 8
+  acceleration: 10
+  braking: 10
+  maxSpeed: 2
+  rotationSpeed: 15
 --- !u!1 &8169286849145927954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2568,7 +2572,7 @@ MonoBehaviour:
   weapons: {fileID: 0}
   cameraHandler: {fileID: 0}
   playerId: 
-  weaponHolder: {fileID: 0}
+  weaponHolder: {fileID: 1415502030778578817}
   weaponFix: {fileID: 0}
   model: {fileID: 0}
   groundLayer:

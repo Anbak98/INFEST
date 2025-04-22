@@ -31,7 +31,12 @@ public class Player : NetworkBehaviour
     public PlayerInputHandler Input { get; private set; }
     public PlayerController playerController;     // 1인칭: LocalPlayerController, 3인칭: RemotePlayerController
     public PlayerStatHandler statHandler;
+
+
     public CharacterController characterController; // collider, rigidbody 등 내장되어있다
+    public NetworkCharacterController networkCharacterController;
+
+
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
@@ -101,10 +106,18 @@ public class Player : NetworkBehaviour
         //stateMachine.ChangeState(stateMachine.IdleState);
         //Cursor.lockState = CursorLockMode.Locked;
     }
-    public void Update()
+    //public void Update()
+    //{
+    //    playerController.Update();
+    //}
+
+    public override void FixedUpdateNetwork()
     {
-        playerController.Update();
+        if (GetInput(out NetworkInputData data))
+            playerController.Update();
     }
+
+
     /// <summary>
     /// FixedUpdateNetwork를 PlayerController로 옮기는 건?
     /// </summary>
@@ -258,6 +271,7 @@ public class Player : NetworkBehaviour
 
                 // 무기 교체할때마다 animator를 검색할 수 없으니 저장하고 불러쓰는게 가장 좋다
                 // 3개 다 활성화 하고, rifle을 제외한 2개를 일단 비활성화(예정)
+                // 우선 Weapons를 붙인다
             }
         }
         else
@@ -265,7 +279,10 @@ public class Player : NetworkBehaviour
             playerController = GetComponentInChildren<RemotePlayerController>(true);
             if (playerController != null)
             {
+                // Weapons을 붙여야 한다
+
                 playerAnimator = playerController.GetComponent<Animator>();
+                
             }
         }
     }
