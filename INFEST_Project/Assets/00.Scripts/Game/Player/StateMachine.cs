@@ -33,9 +33,9 @@ public abstract class StateMachine
     }
 
     // 생명주기함수 아니다
-    public void OnUpdate()
+    public void OnUpdate(NetworkInputData data)
     {
-        currentState?.OnUpdate();
+        currentState?.OnUpdate(data);
     }
 
     public void PhysicsUpdate()

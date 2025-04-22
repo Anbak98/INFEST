@@ -26,10 +26,10 @@ public class PlayerRunState : PlayerGroundState
         StopAnimation(stateMachine.Player.AnimationData.RunParameterHash);
     }
 
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = stateMachine.InputHandler.MoveInput;
+        Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
@@ -44,7 +44,7 @@ public class PlayerRunState : PlayerGroundState
         //    stateMachine.ChangeState(stateMachine.IdleState);
         //}
         // run 다시 눌렀다면 걷기
-        if (!stateMachine.InputHandler.GetIsRunning())
+        if (!data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
         }

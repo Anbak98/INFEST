@@ -30,7 +30,24 @@ public struct NetworkInputData : INetworkInput
     // 내부에서 사용하는 변수
     public const byte BUTTON_FIREPRESSED = 10;    // 마우스 왼쪽클릭 지속
     public const byte BUTTON_ZOOMPRESSED = 11;    // 마우스 오른쪽클릭 지속
-    
+
+    // InputAction과 연결
+    public bool isJumping;
+    public bool isReloading;
+    public bool isFiring;
+    public bool isZooming;
+    public bool isInteracting;
+    public bool isUsingItem;
+    public bool isRunning;
+    public bool isSitting;
+    public bool isScoreBoardPopup;
+    public bool isMenuPopup;
+
+    // 내부 변수(Input Action과 연결X)
+    public bool isShotgunOnFiring;
+    public bool isOnZoom;
+
+
 
     /// 플레이어의 상태를 여기에 포함해서 보내야 한다    
     /// 애니메이션의 상태를 보내지 않는다

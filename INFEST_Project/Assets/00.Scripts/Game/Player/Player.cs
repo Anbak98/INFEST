@@ -28,7 +28,6 @@ public class Player : NetworkBehaviour
     public Animator playerAnimator;
 
     // playerController´Â Input°ª °ü¸®
-    public PlayerInputHandler Input { get; private set; }
     public PlayerController playerController;     // 1ÀÎÄª: LocalPlayerController, 3ÀÎÄª: RemotePlayerController
     public PlayerStatHandler statHandler;
 
@@ -88,7 +87,6 @@ public class Player : NetworkBehaviour
     private void Awake()
     {
         AnimationData.Initialize();
-        Input = GetComponent<PlayerInputHandler>();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
 

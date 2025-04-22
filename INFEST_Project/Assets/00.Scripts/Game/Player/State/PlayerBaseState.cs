@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public interface IState
     public void Enter();    // 상태 진입
     public void Exit();     // 상태 끝
     public void HandleInput();  // 새로운 입력값이 들어오면 이벤트를 추가, 삭제
-    public void OnUpdate();   // 상태 업데이트
+    public void OnUpdate(NetworkInputData data);   // 상태 업데이트
     public void PhysicsUpdate();    // 물리 업데이트(중력 관련) 
 }
 
@@ -35,7 +36,6 @@ public abstract class PlayerBaseState : IState
         this.stateMachine = stateMachine;
         statHandler = stateMachine.Player.statHandler;
         player = stateMachine.Player;
-        inputManager = player.Input.GetInputManager();
         stateMachine.Player.playerAnimator = player.playerAnimator;
 
         MainCameraTransform = Camera.main.transform;
@@ -60,21 +60,21 @@ public abstract class PlayerBaseState : IState
         // 이거 Controller의 HandleMovement가 될 수 없냐는거지
         // 중력도 마찬가지 ApplyGravity
 
-        ReadMovementInput();    // 이동
+        //ReadMovementInput();    // 이동
 
-        /// 여기에서 입력값을 모두 확인해야 상태머신의 Update에서 키입력을 확인하지 않는듯?
-        /// 나중에 리팩토링할때 바꿔보자
+        ///// 여기에서 입력값을 모두 확인해야 상태머신의 Update에서 키입력을 확인하지 않는듯?
+        ///// 나중에 리팩토링할때 바꿔보자
 
-        // 달리기
-        ReadRunInput();
-        // 점프
-        ReadJumpInput();
-        // 사격
-        ReadFireInput();
-        // 앉기
-        ReadSitInput();
+        //// 달리기
+        //ReadRunInput();
+        //// 점프
+        //ReadJumpInput();
+        //// 사격
+        //ReadFireInput();
+        //// 앉기
+        //ReadSitInput();
     }
-    public virtual void OnUpdate()
+    public virtual void OnUpdate(NetworkInputData data)
     {
     }
     public virtual void PhysicsUpdate()
@@ -182,29 +182,27 @@ public abstract class PlayerBaseState : IState
     // 모든 상태는 입력값을 받는다
     // WASD 입력
     // 이건 BaseState에서만 호출하고있다
-    private void ReadMovementInput()
-    {
-        // Input
-        stateMachine.InputHandler.GetMoveInput();
-    }
-    private void ReadJumpInput()
-    {
-        stateMachine.InputHandler.GetIsJumping();
-    }
-    private void ReadRunInput()
-    {
-        stateMachine.InputHandler.GetIsRunning();
-    }
-    private void ReadFireInput()
-    {
-        stateMachine.InputHandler.GetIsFiring();
-    }
-
-
-    private void ReadSitInput()
-    {
-        stateMachine.InputHandler.GetIsSitting();
-    }
+    //private void ReadMovementInput()
+    //{
+    //    // Input
+    //    stateMachine.InputHandler.GetMoveInput();
+    //}
+    //private void ReadJumpInput()
+    //{
+    //    stateMachine.InputHandler.GetIsJumping();
+    //}
+    //private void ReadRunInput()
+    //{
+    //    stateMachine.InputHandler.GetIsRunning();
+    //}
+    //private void ReadFireInput()
+    //{
+    //    stateMachine.InputHandler.GetIsFiring();
+    //}
+    //private void ReadSitInput()
+    //{
+    //    stateMachine.InputHandler.GetIsSitting();
+    //}
 
 
 
@@ -215,7 +213,7 @@ public abstract class PlayerBaseState : IState
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
         controller.HandleMovement();    // 이동
     }
-    
+
 
     protected void PlayerFire()
     {
@@ -259,7 +257,7 @@ public abstract class PlayerBaseState : IState
     {
         Debug.Log("SitFire");
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.StartFire();    
+        controller.StartFire();
     }
     protected void SitReload()
     {

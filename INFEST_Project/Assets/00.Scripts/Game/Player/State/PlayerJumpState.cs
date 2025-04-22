@@ -16,8 +16,9 @@ public class PlayerJumpState : PlayerAirState
         // 점프는 한번만
         PlayerJump();
     }
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
         // 플레이어 이동
         PlayerMove();
         controller.ApplyGravity();  // 중력

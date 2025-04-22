@@ -22,9 +22,9 @@ public class PlayerSitAttackState : PlayerSitState
         base.Exit();    // 상단의 layer로 나간다
         StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
-        bool isFire = stateMachine.InputHandler.GetIsFiring();
+        bool isFire = data.isFiring;
 
         // 사격
         PlayerSitFire();

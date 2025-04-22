@@ -17,8 +17,8 @@ public class PlayerWaddleState : PlayerSitState
 
 
         /// blend tree 애니메이션에 적용
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
@@ -28,10 +28,10 @@ public class PlayerWaddleState : PlayerSitState
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = stateMachine.InputHandler.MoveInput;
+        Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
@@ -42,7 +42,7 @@ public class PlayerWaddleState : PlayerSitState
         controller.ApplyGravity();  // 중력
 
 
-        if (!stateMachine.InputHandler.GetIsSitting())
+        if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }

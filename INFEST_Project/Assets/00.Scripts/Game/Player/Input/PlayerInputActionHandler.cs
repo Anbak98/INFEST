@@ -26,7 +26,7 @@ using static UnityEngine.EventSystems.StandaloneInputModule;
 /// SetFusionNetworkRunner()를 통해 Fusion 네트워크 전달.
 /// 장점: 네트워크 데이터 구조와 잘 연동, 깔끔하게 분리됨.
 /// </summary>
-public class PlayerInputHandler : NetworkBehaviour
+public class PlayerInputActionHandler : NetworkBehaviour
 {
     /// <summary>
     /// 속성(Property)은 참조(ref)로 전달할 수 없으므로, ref 전달 하려면 필드로 바꿔라
@@ -361,9 +361,26 @@ public class PlayerInputHandler : NetworkBehaviour
         {
             direction = MoveInput,
             lookDelta = new Vector2(RotationX, RotationY),
+
+
+            isRunning = _isRunning,
+            isJumping=_isJumping,
+            isFiring=_isFiring,
+            isZooming=_isZooming,
+            isReloading=_isReloading,
+            isInteracting=_isInteracting,
+            isUsingItem=_isUsingItem,
+            isSitting=_isSitting,
+            isMenuPopup = _isMenuPopup,
+            isScoreBoardPopup=_isScoreBoardPopup,
+
+            isShotgunOnFiring =_isShotgunOnFiring,
+            isOnZoom = _isOnZoom,
+
             scrollValue = _isSwapVelue
         };
 
+        // button 상태는 여기서
         if (_isRunning) data.buttons.Set(NetworkInputData.BUTTON_RUN, true);
         if (_isJumping) data.buttons.Set(NetworkInputData.BUTTON_JUMP, true);
         if (_isFiring) data.buttons.Set(NetworkInputData.BUTTON_FIRE, true);

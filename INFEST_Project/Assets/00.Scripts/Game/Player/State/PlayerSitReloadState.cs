@@ -24,10 +24,10 @@ public class PlayerSitReloadState : PlayerSitState
         StopAnimation(stateMachine.Player.AnimationData.ReloadParameterHash);
     }
 
-    public override void OnUpdate()
+    public override void OnUpdate(NetworkInputData data)
     {
         // 장전 애니메이션 1회 실행 이 되고 바로 나가야하는데... 이를 어떻게 확인?
-        bool currentIsReloading = stateMachine.InputHandler.GetIsReloading(); // 외부에서 bool 가져오기
+        bool currentIsReloading = data.isReloading; // 외부에서 bool 가져오기
 
         // 이동하면서 재장전 가능하다
         PlayerWaddle();

@@ -10,7 +10,6 @@ public class PlayerStateMachine : StateMachine
     public Player Player { get; }
 
     // player의 입력정보를 가져오기만 한다
-    public PlayerInputHandler InputHandler { get; }
 
     // 상태들이 받아갈 수 있는 값들을 관리
     public PlayerStatHandler StatHandler { get; set; }
@@ -65,7 +64,6 @@ public class PlayerStateMachine : StateMachine
         this.controller = controller;
 
         StatHandler = player.statHandler;
-        InputHandler = player.Input;
 
         // 수정사항
         IdleState = new PlayerIdleState(controller, this);
