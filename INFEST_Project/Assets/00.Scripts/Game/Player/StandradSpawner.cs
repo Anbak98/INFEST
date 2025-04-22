@@ -25,8 +25,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
-
-    public PlayerInputHandler playerInputHandler;
+    private Dictionary<PlayerRef, PlayerInputHandler> _inputHandlers = new();
 
     // Input Action을 이용한 키입력
     //private PlayerActionMap _inputActions;
@@ -103,8 +102,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
             
-            playerInputHandler = GetComponent<PlayerInputHandler>();
-
+            _inputHandlers.Add(player, networkPlayerObject.GetComponent<PlayerInputHandler>());
             _spawnedCharacters.Add(player, networkPlayerObject);
         }
     }
@@ -117,6 +115,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Remove(player);
         }
     }
+
     #region 나머지는 필요한 곳에서 구현한다(Single Responsibility Principle)
     /// <summary>
     /// Input Action을 사용하여 C# 이벤트 받는 방식으로 수정했다
@@ -128,6 +127,8 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     /// <param name="input"></param>
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        _inputHandlers.TryGetValue(runner.LocalPlayer, out PlayerInputHandler playerInputHandler);
+
         if (playerInputHandler == null || !playerInputHandler.HasInputAuthority)
             return;
 
@@ -139,6 +140,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             input.Set(networkInput.Value);
         }
     }
+
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
