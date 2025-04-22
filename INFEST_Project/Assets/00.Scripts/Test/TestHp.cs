@@ -39,7 +39,7 @@ public class TestHp : NetworkBehaviour
         if (CurrentHealth <= 0f)
         {
             CurrentHealth = 0f;
-
+            Debug.Log("»ç¸Á");
             //_sceneObjects.Gameplay.PlayerKilled(instigator, Object.InputAuthority, weaponType, isCritical);
         }
 

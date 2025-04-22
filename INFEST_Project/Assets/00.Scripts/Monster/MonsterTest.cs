@@ -76,9 +76,9 @@ public class MonsterTest : MonoBehaviour, INetworkRunnerCallbacks
 
     void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        IsJoined = true;
-        for(int i = 0; i < 1; ++i)
-            runner.Spawn(monster, Vector3.zero);
+        //IsJoined = true;
+        //for(int i = 0; i < 1; ++i)
+        //    runner.Spawn(monster, Vector3.zero);
     }
 
 

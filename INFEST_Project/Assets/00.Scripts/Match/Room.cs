@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Sockets;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,15 +13,17 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     [Networked] public PlayerRef HostPlayer { get; set; }
     [SerializeField] private NetworkPrefabRef _profilePrefab;
 
-    public NetworkRunner _runner;
+    public PlayerProfile MyProfile;
+    [SerializeField] private List<PlayerProfile> _teamProfiles = new();
 
-    [SerializeField]
-    private List<PlayerProfile> _playerProfiles;
+    private bool _isPrivate = false;
 
     public override void Spawned()
     {
-        _runner = Runner;
-        _runner.AddCallbacks(this);
+        MatchManager.Instance.RoomUI.Room = this;
+        MatchManager.Instance.Room = this;
+
+        Runner.AddCallbacks(this);
 
         if (HostPlayer == PlayerRef.None)
         {
@@ -29,7 +32,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             Debug.Log($"[Room] Host assigned to {Runner.LocalPlayer}");
         }
 
-        var obj = Runner.Spawn(_profilePrefab, inputAuthority: Runner.LocalPlayer);
+        Runner.Spawn(_profilePrefab, inputAuthority: Runner.LocalPlayer).GetComponent<PlayerProfile>();
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -70,60 +73,55 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_BroadcastUpdatePlayerProfile()
+    {
+        MyProfile.SetInfo();
+        MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendProfileToAll(PlayerProfile playerProfile)
     {
-        if (!_playerProfiles.Contains(playerProfile))
-        {
-            _playerProfiles.Add(playerProfile);
-        }
+        if (MyProfile != playerProfile && !_teamProfiles.Contains(playerProfile))
+            _teamProfiles.Add(playerProfile);
 
-        int i = 0;
-
-        foreach (var profile in MatchManager.Instance.uiProfils)
-        {
-            profile.NickName.text = "";
-        }
-
-        foreach (var item in _playerProfiles)
-        {
-            MatchManager.Instance.uiProfils[i++].NickName.text = item.Info.NickName.ToString();
-        }
+        MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RemoveProfileToAll(PlayerProfile playerProfile)
     {
-        if (_playerProfiles.Contains(playerProfile))
-        {
-            _playerProfiles.Remove(playerProfile);
-        }
+        if (_teamProfiles.Contains(playerProfile))
+            _teamProfiles.Remove(playerProfile);
 
-        if (MatchManager.Instance == null)
-            return;
-
-        foreach (var profile in MatchManager.Instance.uiProfils)
-        {
-            profile.NickName.text = "";
-        }
-
-        int i = 0;
-        foreach (var item in _playerProfiles)
-        {
-            if (i > 3)
-            {
-                Debug.LogError("s");
-            }
-            Debug.Log("HGI");
-            MatchManager.Instance.uiProfils[i++].NickName.text = item.Info.NickName.ToString();
-        }
+        MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
     }
 
-    [Rpc( RpcSources.All, RpcTargets.All)]
-    public void RPC_Foo()
+    public void HostPlayGame()
     {
-        FindAnyObjectByType<LocalPlayerProfile>().IsStarted = true;
+        if (HostPlayer == Runner.LocalPlayer)
+            RPC_BrodcastPlayGame();
     }
 
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_BrodcastPlayGame()
+    {
+        PlayGameListener listener = FindAnyObjectByType<PlayGameListener>();
+        listener.IsHost = HostPlayer == Runner.LocalPlayer;
+        listener.IsStarted = true;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_BrodcastChangeSession()
+    {
+        MatchManager.Instance.CreateNewSession(
+            false,
+            (MatchManager.GameType)(int)Runner.SessionInfo.Properties["type"],
+            (MatchManager.GameMap)(int)Runner.SessionInfo.Properties["map"],
+            Runner.SessionInfo.Name);
+    }
+
+    #region NOT USED
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
@@ -141,4 +139,5 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
+    #endregion
 }

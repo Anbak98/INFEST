@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerWaddleState : PlayerSitState
 {
@@ -45,34 +46,28 @@ public class PlayerWaddleState : PlayerSitState
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-
-        //// 이동 입력이 없으면 Sit 상태로
-        //if (moveInput == Vector2.zero)
-        //{
-        //    stateMachine.ChangeState(stateMachine.SitIdleState);
-        //}
-        //// 무기를 가진 상태에서 공격버튼 눌렀다면 공격상태
-        //else if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsFiring())
-        //{
-
-        //}
-        //// 무기를 가진 상태에서 입력이 있으면 Reload 상태로
-        //else if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsReloading())
-        //{
-        //    stateMachine.ChangeState(stateMachine.RunState);
-        //}
-        //// Idle로 전환
-        //else if (!stateMachine.InputHandler.GetIsSitting())
-        //{
-        //    stateMachine.ChangeState(stateMachine.IdleState);
-        //}
-
     }
 
     protected override void AddInputActionsCallbacks()
     {
+        inputManager.GetInput(EPlayerInput.fire).started += OnSitAttackStarted;
+        inputManager.GetInput(EPlayerInput.reload).started += OnSitReloadStarted;
+
     }
     protected override void RemoveInputActionsCallbacks()
     {
+        inputManager.GetInput(EPlayerInput.fire).started -= OnSitAttackStarted;
+        inputManager.GetInput(EPlayerInput.reload).started -= OnSitReloadStarted;
+    }
+
+    protected override void OnSitAttackStarted(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.SitAttackState);
+    }
+    protected override void OnSitReloadStarted(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.SitReloadState);
     }
 }

@@ -29,7 +29,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public override void Spawned()
     {
         base.Spawned();
-        target = FindAnyObjectByType<MonsterTest>().transform;
     }
 
     protected virtual void Update()

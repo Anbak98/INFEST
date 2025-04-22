@@ -10,7 +10,7 @@ public class PJ_HI_Run : MonsterStateNetworkBehaviour
     public override void Enter()
     {
         base.Enter();
-        target = FindAnyObjectByType<MonsterTest>().transform;
+        target = monster.target;
         monster.MovementSpeed = 5f;
     }
 
