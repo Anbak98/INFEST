@@ -23,7 +23,7 @@ public abstract class PlayerController : BaseController
     // 동적 연결되는 변수 숨기기
     [HideInInspector]
     public Player player;
-
+    public InputManager inputManager;
     public Weapons weapons;
 
     /// <summary>
@@ -50,7 +50,7 @@ public abstract class PlayerController : BaseController
     public override void Awake()
     {
         player = GetComponentInParent<Player>();    // 플레이어 먼저 생성
-
+        inputManager = FindAnyObjectByType<InputManager>(); 
         weapons = player.GetWeapons();
 
         //inputHandler = player.Input;
@@ -60,7 +60,7 @@ public abstract class PlayerController : BaseController
 
         //controller = GetComponentInParent<CharacterController>();
 
-        stateMachine = new PlayerStateMachine(player, this);
+        stateMachine = new PlayerStateMachine(player, this, inputManager);
 
         //MainCameraTransform = Camera.main.transform;
     }

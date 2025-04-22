@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerIdleState : PlayerGroundState
 {
-    public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 

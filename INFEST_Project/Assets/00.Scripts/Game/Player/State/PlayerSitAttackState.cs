@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerSitAttackState : PlayerSitState
 {
-    public PlayerSitAttackState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerSitAttackState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 

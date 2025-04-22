@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerFallState : PlayerAirState
 {
-    public PlayerFallState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerFallState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 

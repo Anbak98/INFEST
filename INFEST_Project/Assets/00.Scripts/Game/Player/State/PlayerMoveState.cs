@@ -6,7 +6,7 @@ using UnityEngine.Windows;
 
 public class PlayerMoveState : PlayerGroundState
 {
-    public PlayerMoveState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerMoveState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
     public override void Enter()

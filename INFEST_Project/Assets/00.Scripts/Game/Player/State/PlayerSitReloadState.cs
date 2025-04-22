@@ -6,7 +6,7 @@ public class PlayerSitReloadState : PlayerSitState
 {
     private bool prevIsReloading = false;
 
-    public PlayerSitReloadState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerSitReloadState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 

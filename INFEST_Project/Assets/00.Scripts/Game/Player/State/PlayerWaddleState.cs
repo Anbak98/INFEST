@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerWaddleState : PlayerSitState
 {
-    public PlayerWaddleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerWaddleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
     public override void Enter()

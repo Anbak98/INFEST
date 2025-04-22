@@ -24,6 +24,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private bool _mouseButton1;
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
+    [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
 
@@ -128,7 +129,12 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     /// <param name="input"></param>
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        var data = _playerInputActionHandler.GetNetworkInput();
 
+        if (data != null)
+        {
+            input.Set(data.Value);  
+        }
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }

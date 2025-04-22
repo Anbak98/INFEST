@@ -6,7 +6,7 @@ using UnityEngine;
 // Jump, Fall
 public class PlayerAirState : PlayerBaseState
 {
-    public PlayerAirState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerAirState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 

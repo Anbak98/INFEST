@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerSitIdleState : PlayerSitState
 {
-    public PlayerSitIdleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerSitIdleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
     public override void Enter()

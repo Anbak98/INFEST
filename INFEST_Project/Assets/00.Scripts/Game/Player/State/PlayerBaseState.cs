@@ -30,7 +30,7 @@ public abstract class PlayerBaseState : IState
     // 임시(동적연결)
     public InputManager inputManager;
 
-    public PlayerBaseState(PlayerController controller, PlayerStateMachine stateMachine)
+    public PlayerBaseState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager)
     {
         this.controller = controller;
         this.stateMachine = stateMachine;
@@ -39,6 +39,7 @@ public abstract class PlayerBaseState : IState
         stateMachine.Player.playerAnimator = player.playerAnimator;
 
         MainCameraTransform = Camera.main.transform;
+        this.inputManager = inputManager;
     }
 
     public virtual void Enter()

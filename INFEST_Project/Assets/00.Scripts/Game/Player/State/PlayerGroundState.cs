@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 // Idle, Move, Run, Attack, Reload
 public class PlayerGroundState : PlayerBaseState
 {
-    public PlayerGroundState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerGroundState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 

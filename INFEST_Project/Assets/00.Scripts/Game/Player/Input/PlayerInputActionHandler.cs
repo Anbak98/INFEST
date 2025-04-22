@@ -26,7 +26,7 @@ using static UnityEngine.EventSystems.StandaloneInputModule;
 /// SetFusionNetworkRunner()를 통해 Fusion 네트워크 전달.
 /// 장점: 네트워크 데이터 구조와 잘 연동, 깔끔하게 분리됨.
 /// </summary>
-public class PlayerInputActionHandler : NetworkBehaviour
+public class PlayerInputActionHandler : MonoBehaviour
 {
     /// <summary>
     /// 속성(Property)은 참조(ref)로 전달할 수 없으므로, ref 전달 하려면 필드로 바꿔라
@@ -54,111 +54,94 @@ public class PlayerInputActionHandler : NetworkBehaviour
     private bool _isShotgunOnFiring;
     private bool _isOnZoom;
 
-    // 임시(동적연결)
-    public InputManager inputManager;
+    [SerializeField]
+    private InputManager _inputManager;
 
-    // 임시방편(리팩토링할때 사라져야하는 메서드)
-    public InputManager GetInputManager()
-    {
-        if (inputManager == null)
-            inputManager = FindObjectOfType<InputManager>();
-        return inputManager;
-    }
-
-    private void Awake()
-    {
-        if (inputManager == null)
-            inputManager = FindObjectOfType<InputManager>();
-    }
     private void Start()
-    {
-    }
-
-    private void OnEnable()
     {
         /// performed: 키가 눌렸을 때 호출된다
         /// canceled: 키가 뗴졌을 때 호출
         //inputManager.GetInput(EPlayerInput.move).started += SetMoveInput;
-        inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput; // 여러 방향키 동시입력을 위해 추가
-        inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
+        _inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput; // 여러 방향키 동시입력을 위해 추가
+        _inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
 
-        inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
-        inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
+        _inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
+        _inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
 
-        inputManager.GetInput(EPlayerInput.swap).performed += SetSwapInput;
-        inputManager.GetInput(EPlayerInput.swap).canceled += SetSwapInput;
+        _inputManager.GetInput(EPlayerInput.swap).performed += SetSwapInput;
+        _inputManager.GetInput(EPlayerInput.swap).canceled += SetSwapInput;
 
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
         /// 
         //inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
-        inputManager.GetInput(EPlayerInput.jump).performed += StartJumpInput;
-        inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
+        _inputManager.GetInput(EPlayerInput.jump).performed += StartJumpInput;
+        _inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
-        inputManager.GetInput(EPlayerInput.fire).started += StartFireState;
-        inputManager.GetInput(EPlayerInput.fire).canceled += CancelFireState;
+        _inputManager.GetInput(EPlayerInput.fire).started += StartFireState;
+        _inputManager.GetInput(EPlayerInput.fire).canceled += CancelFireState;
 
-        inputManager.GetInput(EPlayerInput.zoom).started += StartZoomState;
-        inputManager.GetInput(EPlayerInput.zoom).canceled += CancelZoomState;
+        _inputManager.GetInput(EPlayerInput.zoom).started += StartZoomState;
+        _inputManager.GetInput(EPlayerInput.zoom).canceled += CancelZoomState;
 
-        inputManager.GetInput(EPlayerInput.reload).started += StartReloadState;
-        inputManager.GetInput(EPlayerInput.reload).canceled += CancelReloadState;
+        _inputManager.GetInput(EPlayerInput.reload).started += StartReloadState;
+        _inputManager.GetInput(EPlayerInput.reload).canceled += CancelReloadState;
 
-        inputManager.GetInput(EPlayerInput.interaction).started += StartInteraction;
-        inputManager.GetInput(EPlayerInput.interaction).canceled += CancelInteraction;
+        _inputManager.GetInput(EPlayerInput.interaction).started += StartInteraction;
+        _inputManager.GetInput(EPlayerInput.interaction).canceled += CancelInteraction;
 
-        inputManager.GetInput(EPlayerInput.useItem).started += StartUseItem;
-        inputManager.GetInput(EPlayerInput.useItem).canceled += CancelUseItem;
+        _inputManager.GetInput(EPlayerInput.useItem).started += StartUseItem;
+        _inputManager.GetInput(EPlayerInput.useItem).canceled += CancelUseItem;
 
-        inputManager.GetInput(EPlayerInput.run).started += StartRunState;
-        inputManager.GetInput(EPlayerInput.run).canceled += CancelRunState;
+        _inputManager.GetInput(EPlayerInput.run).started += StartRunState;
+        _inputManager.GetInput(EPlayerInput.run).canceled += CancelRunState;
 
-        inputManager.GetInput(EPlayerInput.sit).started += StartSitState;
-        inputManager.GetInput(EPlayerInput.sit).canceled += CancelSitState;
+        _inputManager.GetInput(EPlayerInput.sit).started += StartSitState;
+        _inputManager.GetInput(EPlayerInput.sit).canceled += CancelSitState;
 
-        inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
-        inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
+        _inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
+        _inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
 
     }
 
     private void OnDisable()
     {
-        inputManager.GetInput(EPlayerInput.move).started -= SetMoveInput;
-        inputManager.GetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
-        inputManager.GetInput(EPlayerInput.move).canceled -= SetMoveInput;
+        _inputManager.GetInput(EPlayerInput.move).started -= SetMoveInput;
+        _inputManager.GetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
+        _inputManager.GetInput(EPlayerInput.move).canceled -= SetMoveInput;
 
-        inputManager.GetInput(EPlayerInput.look).started -= SetLookInput;
-        inputManager.GetInput(EPlayerInput.look).canceled -= SetLookInput;
+        _inputManager.GetInput(EPlayerInput.look).started -= SetLookInput;
+        _inputManager.GetInput(EPlayerInput.look).canceled -= SetLookInput;
 
-        inputManager.GetInput(EPlayerInput.swap).performed -= SetSwapInput;
-        inputManager.GetInput(EPlayerInput.swap).canceled -= SetSwapInput;
+        _inputManager.GetInput(EPlayerInput.swap).performed -= SetSwapInput;
+        _inputManager.GetInput(EPlayerInput.swap).canceled -= SetSwapInput;
 
-        inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
-        inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
+        _inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
+        _inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
 
-        inputManager.GetInput(EPlayerInput.fire).started -= StartFireState;
-        inputManager.GetInput(EPlayerInput.fire).canceled -= CancelFireState;
+        _inputManager.GetInput(EPlayerInput.fire).started -= StartFireState;
+        _inputManager.GetInput(EPlayerInput.fire).canceled -= CancelFireState;
 
-        inputManager.GetInput(EPlayerInput.zoom).started -= StartZoomState;
-        inputManager.GetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
+        _inputManager.GetInput(EPlayerInput.zoom).started -= StartZoomState;
+        _inputManager.GetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
 
-        inputManager.GetInput(EPlayerInput.reload).started -= StartReloadState;
-        inputManager.GetInput(EPlayerInput.reload).canceled -= CancelReloadState;
+        _inputManager.GetInput(EPlayerInput.reload).started -= StartReloadState;
+        _inputManager.GetInput(EPlayerInput.reload).canceled -= CancelReloadState;
 
-        inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
-        inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
+        _inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
+        _inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
 
-        inputManager.GetInput(EPlayerInput.useItem).started -= StartUseItem;
-        inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelUseItem;
+        _inputManager.GetInput(EPlayerInput.useItem).started -= StartUseItem;
+        _inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelUseItem;
 
-        inputManager.GetInput(EPlayerInput.run).started -= StartRunState;
-        inputManager.GetInput(EPlayerInput.run).canceled -= CancelRunState;
+        _inputManager.GetInput(EPlayerInput.run).started -= StartRunState;
+        _inputManager.GetInput(EPlayerInput.run).canceled -= CancelRunState;
 
-        inputManager.GetInput(EPlayerInput.sit).started -= StartSitState;
-        inputManager.GetInput(EPlayerInput.sit).canceled -= CancelSitState;
+        _inputManager.GetInput(EPlayerInput.sit).started -= StartSitState;
+        _inputManager.GetInput(EPlayerInput.sit).canceled -= CancelSitState;
 
-        inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
-        inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
+        _inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
+        _inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
     }
 
     #region Get, Set
