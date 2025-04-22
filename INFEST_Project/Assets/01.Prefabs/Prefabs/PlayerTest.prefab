@@ -652,6 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  weapons: {fileID: 0}
   cameraHandler: {fileID: 0}
   playerId: 
 --- !u!1 &4300107019633739238
@@ -1218,7 +1219,6 @@ MonoBehaviour:
   - {fileID: 3072078453906701333}
   - {fileID: 4068375233546285216}
   - {fileID: -5511681442977026662}
-  - {fileID: 1139099963600576956}
   - {fileID: 724139344834979615}
   - {fileID: 1321386959695407079}
   - {fileID: 9097362746166209903}
@@ -2565,6 +2565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3072078453906701333}
+  weapons: {fileID: 0}
   cameraHandler: {fileID: 0}
   playerId: 
   weaponHolder: {fileID: 0}
