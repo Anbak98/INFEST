@@ -142,7 +142,7 @@ public class Player : NetworkBehaviour
     //                  });
     //                spawnedProjectile = !spawnedProjectile;
     //            }
-                // PhyscBall.Init() 메소드를 사용하여 스폰을 호출하고 속도(마지막 순방향에 곱한 상수)를 설정
+    // PhyscBall.Init() 메소드를 사용하여 스폰을 호출하고 속도(마지막 순방향에 곱한 상수)를 설정
 
     //            // 마우스 우클릭(ZOOM)
     //            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
@@ -205,7 +205,7 @@ public class Player : NetworkBehaviour
     //    }
     //}
 
-    public Weapons GetWeapon()
+    public Weapons GetWeapons()
     {
         return _weapons;
     }
@@ -260,7 +260,14 @@ public class Player : NetworkBehaviour
                 // 3개 다 활성화 하고, rifle을 제외한 2개를 일단 비활성화(예정)
             }
         }
- 
+        else
+        {
+            playerController = GetComponentInChildren<RemotePlayerController>(true);
+            if (playerController != null)
+            {
+                playerAnimator = playerController.GetComponent<Animator>();
+            }
+        }
     }
 
 

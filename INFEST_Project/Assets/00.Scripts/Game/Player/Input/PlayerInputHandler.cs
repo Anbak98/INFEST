@@ -219,13 +219,13 @@ public class PlayerInputHandler : NetworkBehaviour
     #region Fire
     private void StartFireState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetFireState - Fire started");
+        //Debug.Log($"[Input] SetFireState - Fire started");
         _isFiring = true;   // 유지 중
         _isShotgunOnFiring = true; // 누르고 있다, 샷건의 연발 방지용(누르고 있어도 안나가야한다)
     }
     private void CancelFireState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetFireState - Fire canceled");
+        //Debug.Log($"[Input] SetFireState - Fire canceled");
         _isFiring = false;
     }
     public bool GetIsFiring() => _isFiring;

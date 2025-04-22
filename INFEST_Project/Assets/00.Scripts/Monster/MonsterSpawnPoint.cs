@@ -1,33 +1,27 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawnPoint : MonoBehaviour
+public class MonsterSpawnPoint : NetworkBehaviour
 {
     public MonsterSpawner Spawner;
+    public NetworkObject Monster;
     public bool IsActivated = true;
 
-    // Start is called before the first frame update
-    void Start()
+    public void Init(MonsterSpawner spawner)
     {
-        
+        Spawner = spawner;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Spawn(int num)
     {
-        
-    }
-
-    private void OnBecameVisible()
-    {
-        IsActivated = true;
-        Spawner.ActivatedCallBySpawnPoint(this);
-    }
-
-    private void OnBecameInvisible()
-    {
-        IsActivated = false;
-        Spawner.DeactivatedCallBySpawnPoint(this);
+        if(Runner.IsServer)
+        {
+            for (int i = 0; i < num; i++)
+            {
+                Runner.Spawn(Monster, transform.position);
+            }
+        }
     }
 }

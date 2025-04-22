@@ -16,6 +16,8 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
+        CreateInstance();
+
         if (_instance == null)
         {
             _instance = this as T;
@@ -29,19 +31,30 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 
     private static void CreateInstance()
     {
-        T[] instances = FindObjectsOfType<T>();
-
-        if (_instance == null)
+        // 쓰레드 락 (잡 시스템) FindObjectsOfType
+        if( _instance == null)
         {
-            Debug.LogError($"[Singleton] Instance of {typeof(T).Name} not found in the scene.");
-            return;
-        }
+            T[] instances = FindObjectsOfType<T>();
 
-        for (int i = 1; i < instances.Length; i++)
-        {
-            Destroy(instances[i]);
-        }
+            if (instances.Length > 0)
+            {
+                _instance = instances[0];
 
-        _instance = instances[0];
+
+                for (int i = 1; i < instances.Length; i++)
+                {
+                    if (Application.isPlaying)
+                        Destroy(instances[i].gameObject);
+                    else
+                        DestroyImmediate(instances[i].gameObject);
+                }
+
+            }
+            else
+            {
+                GameObject obj = new GameObject(string.Format("s"));
+                _instance = obj.AddComponent<T>();
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerAttackState : PlayerGroundState
 {
@@ -38,4 +39,7 @@ public class PlayerAttackState : PlayerGroundState
             stateMachine.ChangeState(stateMachine.IdleState);
         }
     }
+    // reload는 idle과 move에서
+
+
 }
