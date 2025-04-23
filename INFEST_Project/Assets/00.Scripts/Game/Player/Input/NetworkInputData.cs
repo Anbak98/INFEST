@@ -55,4 +55,27 @@ public struct NetworkInputData : INetworkInput
     /// 그 정보를 받은 상대가 그에 맞는 애니메이션을 로컬에서 실행
     /// 
     /// PlayerStatHandler의 정보를 가져와야한다
+    /// 
+    public override string ToString()
+    {
+        string result =
+            $"Direction: {direction}\n" +
+            $"LookDelta: {lookDelta}\n" +
+            $"ScrollValue: {scrollValue}\n" +
+            $"Buttons: {buttons}\n" +
+            $"IsJumping: {isJumping}\n" +
+            $"IsReloading: {isReloading}\n" +
+            $"IsFiring: {isFiring}\n" +
+            $"IsZooming: {isZooming}\n" +
+            $"IsInteracting: {isInteracting}\n" +
+            $"IsUsingItem: {isUsingItem}\n" +
+            $"IsRunning: {isRunning}\n" +
+            $"IsSitting: {isSitting}\n" +
+            $"IsScoreBoardPopup: {isScoreBoardPopup}\n" +
+            $"IsMenuPopup: {isMenuPopup}\n" +
+            $"IsShotgunOnFiring: {isShotgunOnFiring}\n" +
+            $"IsOnZoom: {isOnZoom}";
+        return result;
+    }
+
 }

@@ -44,17 +44,7 @@ public class PlayerIdleState : PlayerGroundState
         }
         if (data.isJumping)
         {
-            //Debug.LogFormat($"NetworkCharacterController.IsGrounded: {controller.IsGrounded()}"); 
-
-            // 땅에 떨어지기 전에는 controller.IsGrounded() ==  false 되어 내부 로직 실행
-            // 땅에 닿기 전에 JumpState로 바뀐다
-            // JumpState로 바뀌자마자 다시 PlayerJump호출하고 
-            // 무한반복된다
-            if (controller.IsGrounded())
-            {
-                // 여기에서 
-                stateMachine.ChangeState(stateMachine.JumpState);
-            }
+            stateMachine.ChangeState(stateMachine.JumpState);
         }
         if (data.isReloading)
         {
