@@ -70,7 +70,7 @@ public class UIStateView : UIScreen
         launcher.gameObject.SetActive(false);
     }
 
-    public void SetJobIcon()
+    private void SetJobIcon()
     {
         comender.gameObject.SetActive(false);
         medic.gameObject.SetActive(false);
@@ -78,7 +78,7 @@ public class UIStateView : UIScreen
         warrior.gameObject.SetActive(false);
     }
 
-    public void ChoiceJob()
+    private void ChoiceJob()
     {
         if (Info.Job == JOB.SWAT)
         {
@@ -109,7 +109,7 @@ public class UIStateView : UIScreen
     }
 
     
-    public void UpdateJobIcon()
+    private void UpdateJobIcon()
     {
         //캐릭터인포 키값이 1이면 커맨더, 2면 전투의무병 , 3이면 데몰레이터, 4면 워리어
         switch (_characterInfo.key)
