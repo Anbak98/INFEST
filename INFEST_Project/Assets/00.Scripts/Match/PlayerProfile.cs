@@ -9,9 +9,8 @@ public enum JOB
     SWAT,
     Demolator
 }
-
 [Serializable]
-public struct Profile : INetworkStruct
+public struct Profile: INetworkStruct
 {
     public NetworkString<_16> NickName;
     public JOB Job;
@@ -24,37 +23,39 @@ public class PlayerProfile : NetworkBehaviour
 
     public override void Spawned()
     {
-        SetInfo();
-
-        Debug.Log($"[Profile] Player joined: {Runner.TryGetNetworkedBehaviourId(this)}");
         base.Spawned();
+        if (HasInputAuthority)
+        {
+            Profile profile = new Profile()
+            {
+                NickName = PlayerPrefs.GetString("Nickname"),
+                Job = JOB.Medic
+            };
+
+            RPC_SetInfo(profile);
+        }
+
+        var Room = FindObjectOfType<Room>();
+        Debug.Log($"[Profile] Player joined: {Runner.TryGetNetworkedBehaviourId(this)}");
+        Room.RPC_SendProfileToAll(this);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
-        Debug.Log($"[Room] Player left: {Runner.TryGetNetworkedBehaviourId(this)}");
-        base.Despawned(runner, hasState);
-    }
-
-    public void SetInfo()
-    {
-        var Room = FindObjectOfType<Room>();
-        if (Room != null)
+        if (HasInputAuthority)
         {
-            if (HasInputAuthority)
+
+            foreach (var profile in MatchManager.Instance.uiProfils)
             {
-                Room.MyProfile = this;
-
-                Profile profile = new Profile()
-                {
-                    NickName = PlayerPrefs.GetString("Nickname"),
-                    Job = (JOB)PlayerPrefs.GetInt("Job"),
-                };
-
-                RPC_SetInfo(profile);
+                profile.NickName.text = "";
             }
-            Room.RPC_SendProfileToAll(this);
         }
+
+
+        Debug.Log($"[Room] Player left: {Runner.TryGetNetworkedBehaviourId(this)}");
+        var Room = FindObjectOfType<Room>();
+        Room.RPC_RemoveProfileToAll(this);
+        base.Despawned(runner, hasState);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]

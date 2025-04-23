@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class MonsterInfo : IKeyedItem
+public class MonsterInfo
 {
     /// <summary>
     /// ID
@@ -96,14 +96,44 @@ public class MonsterInfo : IKeyedItem
     /// </summary>
     public int DropGold;
 
-    /// <summary>
-    /// 필드 스폰 여부
-    /// </summary>
-    public bool FieldSpawn;
+}
+public class MonsterInfoLoader
+{
+    public List<MonsterInfo> ItemsList { get; private set; }
+    public Dictionary<int, MonsterInfo> ItemsDict { get; private set; }
 
-    /// <summary>
-    /// 스폰수 제한
-    /// </summary>
-    public int LimitSpawnCount;
-    public int Key => key;
+    public MonsterInfoLoader(string path = "JSON/MonsterInfo")
+    {
+        string jsonData;
+        jsonData = Resources.Load<TextAsset>(path).text;
+        ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
+        ItemsDict = new Dictionary<int, MonsterInfo>();
+        foreach (var item in ItemsList)
+        {
+            ItemsDict.Add(item.key, item);
+        }
+    }
+
+    [Serializable]
+    private class Wrapper
+    {
+        public List<MonsterInfo> Items;
+    }
+
+    public MonsterInfo GetByKey(int key)
+    {
+        if (ItemsDict.ContainsKey(key))
+        {
+            return ItemsDict[key];
+        }
+        return null;
+    }
+    public MonsterInfo GetByIndex(int index)
+    {
+        if (index >= 0 && index < ItemsList.Count)
+        {
+            return ItemsList[index];
+        }
+        return null;
+    }
 }

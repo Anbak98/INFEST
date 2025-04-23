@@ -1390,6 +1390,7 @@ MonoBehaviour:
   store: {fileID: 0}
   inventory: {fileID: 0}
   gold: 5000
+  Weapons: {fileID: 0}
   MoveSpeed: 6
   JumpForce: 10
   CameraHandle: {fileID: 5072942232072495766}
@@ -1412,6 +1413,7 @@ MonoBehaviour:
   camera: {fileID: 4742838933017268266}
   fireTransform: {fileID: 3834324505224384244}
   weaponSwitchTime: 1
+  CurrentWeapon: {fileID: 0}
   AllWeapons: []
 --- !u!114 &3147526191137004029
 MonoBehaviour:
@@ -1463,6 +1465,7 @@ MonoBehaviour:
   _scopeCam: {fileID: 0}
   _cameraHolder: {fileID: 5072942232072495766}
   _sensitivity: 5
+  _parentTransform: {fileID: 3834324505224384244}
 --- !u!114 &2204635897523245189
 MonoBehaviour:
   m_ObjectHideFlags: 0

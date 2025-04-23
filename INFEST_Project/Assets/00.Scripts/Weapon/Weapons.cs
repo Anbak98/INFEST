@@ -10,12 +10,17 @@ public class Weapons : NetworkBehaviour
 
     public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
 
-    public Weapon CurrentWeapon;
+    public Weapon CurrentWeapon { get; set; }
 
-    public Weapon[] AllWeapons;
+    [HideInInspector] public Weapon[] AllWeapons;
 
     private TickTimer _switchTimer { get; set; }
     private int _weaponIdx = -1;
+
+    private void Awake()
+    {
+        AllWeapons = GetComponentsInChildren<Weapon>();
+    }
 
     public override void Spawned()
     {
@@ -74,40 +79,40 @@ public class Weapons : NetworkBehaviour
     /// </summary>
     public void Swap(float scrollWheelValue)
     {
-        //for(int i = 0; i < AllWeapons.Length; i++)
-        //{
-        //    if (AllWeapons[i] == CurrentWeapon)
-        //    {
-        //        CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(false);
-        //        _weaponIdx = i;
-        //        break;
-        //    }
-        //}
+        for(int i = 0; i < AllWeapons.Length; i++)
+        {
+            if (AllWeapons[i] == CurrentWeapon)
+            {
+                CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(false);
+                _weaponIdx = i;
+                break;
+            }
+        }
 
-        //if (scrollWheelValue > 0) // 스크롤 업
-        //{
-        //    if (CurrentWeapon == AllWeapons[AllWeapons.Length - 1])
-        //        CurrentWeapon = AllWeapons[0];
-        //    else
-        //        CurrentWeapon = AllWeapons[_weaponIdx + 1];
+        if (scrollWheelValue > 0) // 스크롤 업
+        {
+            if (CurrentWeapon == AllWeapons[AllWeapons.Length - 1])
+                CurrentWeapon = AllWeapons[0];
+            else
+                CurrentWeapon = AllWeapons[_weaponIdx + 1];
 
-        //    CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
-        //}
-        //else if(scrollWheelValue < 0) // 스크롤 다운
-        //{
-        //    if (CurrentWeapon == AllWeapons[0])
-        //        CurrentWeapon = AllWeapons[AllWeapons.Length - 1];
-        //    else
-        //        CurrentWeapon = AllWeapons[_weaponIdx - 1];
+            CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
+        }
+        else if(scrollWheelValue < 0) // 스크롤 다운
+        {
+            if (CurrentWeapon == AllWeapons[0])
+                CurrentWeapon = AllWeapons[AllWeapons.Length - 1];
+            else
+                CurrentWeapon = AllWeapons[_weaponIdx - 1];
 
-        //    CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
-        //}
-        //else
-        //{
-        //    CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
+            CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
+        }
+        else
+        {
+            CurrentWeapon.GetComponentInChildren<Transform>().gameObject.SetActive(true);
 
-        //    Debug.Log("스크롤버튼 클릭");
-        //}
+            Debug.Log("스크롤버튼 클릭");
+        }
 
     }
 }

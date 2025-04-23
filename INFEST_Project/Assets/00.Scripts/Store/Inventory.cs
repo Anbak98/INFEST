@@ -1,71 +1,39 @@
-
 using Fusion;
 
 public class Inventory : NetworkBehaviour
 {
-    public WeaponInstance[] weapon = new WeaponInstance[2];
-    public WeaponInstance[] auxiliaryWeapon = new WeaponInstance[1];
-    public ConsumeInstance[] consume = new ConsumeInstance[3];
-
+    public int[] inventoryItme = new int[6];
+    
     public void AddWeponItme(WeaponInstance item)
     {
         if (item.data.key % 10000 > 200)
         {
-            if (weapon[0] == null)
-                weapon[0] = item;
+            if (inventoryItme[0] == 0)
+                inventoryItme[0] = item.data.key;
 
             else
-                weapon[1] = item;
+                inventoryItme[1] = item.data.key;
         }
         else
         {
-            auxiliaryWeapon[0] = item;
+            inventoryItme[2] = item.data.key;
         }
     }
 
     public void AddConsumeItme(ConsumeInstance item)
     {
-        int key = item.data.key % 10000;
-        if (key < 800)
-        {
-            if (consume[0] == null)
-                consume[0] = item;
+        if (item.data.key % 10000 < 800)
+            inventoryItme[3] = item.data.key;
 
-            else
-                consume[0].AddNum();
-        }
-        else if (key > 800 && key < 900)
-        {
-            if (consume[1] == null)
-                consume[1] = item;
-            
-            else
-                consume[1].AddNum();
+        else if (item.data.key % 10000 < 900)
+            inventoryItme[4] = item.data.key;
 
-        }
         else
-        {
-            if (consume[2] == null)
-                consume[2] = item;
-
-            else
-                consume[2].AddNum();
-        }
-            
+            inventoryItme[5] = item.data.key;
     }
 
-    public void RemoveWeaponItem(WeaponInstance item, int index)
+    public void RemoveItem(int index)
     {
-        if (item.data.key % 10000 < 200)
-            auxiliaryWeapon[index] = null; 
-        else
-            weapon[index] = null;
-    }
-
-    public void RemoveConsumeItem(int index)
-    {
-        consume[index].RemoveNum();
-        if (consume[index].curNum == 0)
-        consume[index] = null;
+        inventoryItme[index] = 0;
     }
 }

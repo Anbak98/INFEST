@@ -9,38 +9,29 @@ public abstract class BaseController : NetworkBehaviour
 {
     public StateMachine stateMachine;
 
-    [Networked] protected TickTimer delay { get; set; }
-
-    public virtual void Awake()
+    protected virtual void Awake()
     {
     }
 
-    public virtual void Update()
+    protected virtual void Update()
     {
+        stateMachine?.Update();
     }
 
-
-    // 상태 관련 함수(Local과 Remote 따로 정의)
-    // 
-    //public abstract void PlayFireAnim();
-    //public virtual bool HasMoveInput() => false;
+    // 상태 관련 함수
+    public abstract void PlayFireAnim();
+    public virtual bool HasMoveInput() => false;
     public virtual bool IsGrounded() => true;
     public virtual bool IsJumpInput() => false;
-    public virtual bool IsSitInput() => false;
-
-    //public virtual bool IsFiring() => false;
-    //public virtual bool IsShotgunFiring() => false;
-    public abstract void HandleMovement(NetworkInputData data);
+    public virtual bool IsFiring() => false;
+    public virtual bool IsShotgunFiring() => false;
+    public virtual void HandleMovement() { }   // 실제 이동(PlayerInputHandler에서는 값만 저장했다)
     public abstract void ApplyGravity();
     public abstract void StartJump();
-    public abstract void StartFire(NetworkInputData data);
-    public abstract void StartReload(NetworkInputData data);
+    public abstract void HandleFire(bool started);
     public virtual float GetVerticalVelocity() => 0f;
+    public virtual Vector3 GetMoveInput() => Vector3.zero;
 
-    //public virtual Vector3 GetMoveInput() => Vector3.zero;
-
-    public abstract void StartSit();
-    public abstract void StartStand();
-
-
+    // 상태는 여기에서 변화시킨다
+    public abstract void ApplyNetworkState(PlayerStatData data);
 }

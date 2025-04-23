@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class CharacterInfo : IKeyedItem
+public class CharacterInfo
 {
     /// <summary>
     /// ID
@@ -66,7 +66,44 @@ public class CharacterInfo : IKeyedItem
     /// </summary>
     public int StartConsumeItem1;
 
-    public int Key => key;
+}
+public class CharacterInfoLoader
+{
+    public List<CharacterInfo> ItemsList { get; private set; }
+    public Dictionary<int, CharacterInfo> ItemsDict { get; private set; }
 
+    public CharacterInfoLoader(string path = "JSON/CharacterInfo")
+    {
+        string jsonData;
+        jsonData = Resources.Load<TextAsset>(path).text;
+        ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
+        ItemsDict = new Dictionary<int, CharacterInfo>();
+        foreach (var item in ItemsList)
+        {
+            ItemsDict.Add(item.key, item);
+        }
+    }
 
+    [Serializable]
+    private class Wrapper
+    {
+        public List<CharacterInfo> Items;
+    }
+
+    public CharacterInfo GetByKey(int key)
+    {
+        if (ItemsDict.ContainsKey(key))
+        {
+            return ItemsDict[key];
+        }
+        return null;
+    }
+    public CharacterInfo GetByIndex(int index)
+    {
+        if (index >= 0 && index < ItemsList.Count)
+        {
+            return ItemsList[index];
+        }
+        return null;
+    }
 }

@@ -1,62 +1,31 @@
-using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatHandler : NetworkBehaviour
+public class PlayerStatHandler : MonoBehaviour
 {
-    public PlayerStatData statData;
-
-    // Networked 붙으면 서버로 자동 전송
-    [Networked] public int MaxHealth { get; set; }
-    [Networked] public int MoveSpeed { get; set; }
-    [Networked] public int MoveSpeedModifier { get; set; }
-    [Networked] public int RotationDamping { get; set; }
-
-    [Networked] public int JumpPower { get; set; }
-    [Networked] public int AttackPower { get; set; }
-    [Networked] public int DefensePower { get; set; }
-    [Networked] public int CurrentHealth { get; set; }
+    public float MaxHealth { get; set; }
+    public float MoveSpeed { get; set; }
+    public float JumpPower { get; set; }
+    public float AttackPower { get; set; }
+    public float DefensePower { get; set; }
+    public float CurrentHealth { get; set; }
 
     public event Action OnDeath;
     public event Action OnHealthChanged;
 
-
-    // 직업에 따라 다른 능력치로 생성
-    public void Init(int maxHealth, int moveSpeed, int moveSpeedModifier, int rotationDamping, int jumpPower, int attackPower, int defensePower)
+    public void Init(float maxHealth, float moveSpeed, float jumpPower, float attackPower, float defensePower)
     {
         MaxHealth = maxHealth;
         MoveSpeed = moveSpeed;
-        MoveSpeedModifier = moveSpeedModifier;
-        RotationDamping = rotationDamping;
         JumpPower = jumpPower;
         AttackPower = attackPower;
         DefensePower = defensePower;
         CurrentHealth = MaxHealth;
     }
-
-    // 리팩토링을 위한 메서드
-    // StatData를 사용하는 식으로 개선
-    public void InitFromData(PlayerStatData data)
-    {
-        MaxHealth = data.maxHp;
-        MoveSpeed = data.speedMove;
-        JumpPower = 10; // 데이터에 없으면 기본값
-        AttackPower = 20; // 데이터에 없으면 기본값
-        DefensePower = data.def;
-        CurrentHealth = MaxHealth;
-        // 그 외 여러가지 추가
-    }
-    public void SetToData(PlayerStatData data)
-    {
-
-    }
-
-
-
     // 아이템 사용, 장비 시 stat 변동
-    public void SetModifier(int? health = null, int? speed = null, int? jump = null, int? attack = null, int? defense = null)
+    public void SetModifier(float? health = null, float? speed = null, float? jump = null, float? attack = null, float? defense = null)
     {
         if (health.HasValue) MaxHealth = health.Value;
         if (speed.HasValue) MoveSpeed = speed.Value;
@@ -66,31 +35,31 @@ public class PlayerStatHandler : NetworkBehaviour
     }
 
     // 피격
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         CurrentHealth -= amount;
         OnHealthChanged?.Invoke();
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0f)
         {
-            CurrentHealth = 0;
+            CurrentHealth = 0f;
             HandleDeath();
         }
     }
-    public void SetHealth(int amount)
+    public void SetHealth(float amount)
     {
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0f)
             return;
 
         CurrentHealth = amount;
         OnHealthChanged?.Invoke();
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0f)
         {
-            CurrentHealth = 0;
+            CurrentHealth = 0f;
             //HandleDeath();
         }
     }
     // 회복
-    public void Heal(int amount)
+    public void Heal(float amount)
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
         OnHealthChanged?.Invoke();
@@ -103,20 +72,20 @@ public class PlayerStatHandler : NetworkBehaviour
     }
     // 지속시간 스탯 버프 처리
     public void ApplyTemporaryBuff(
-    int? speedDelta = null,
-    int? jumpDelta = null,
-    int? attackDelta = null,
-    int? defenseDelta = null,
-    int duration = 5)
+    float? speedDelta = null,
+    float? jumpDelta = null,
+    float? attackDelta = null,
+    float? defenseDelta = null,
+    float duration = 5f)
     {
         StartCoroutine(ApplyBuffCoroutine(speedDelta, jumpDelta, attackDelta, defenseDelta, duration));
     }
     private IEnumerator ApplyBuffCoroutine(
-    int? speedDelta,
-    int? jumpDelta,
-    int? attackDelta,
-    int? defenseDelta,
-    int duration)
+    float? speedDelta,
+    float? jumpDelta,
+    float? attackDelta,
+    float? defenseDelta,
+    float duration)
     {
         // 스탯 변경
         if (speedDelta.HasValue) MoveSpeed += speedDelta.Value;
@@ -132,4 +101,6 @@ public class PlayerStatHandler : NetworkBehaviour
         if (attackDelta.HasValue) AttackPower -= attackDelta.Value;
         if (defenseDelta.HasValue) DefensePower -= defenseDelta.Value;
     }
+
+
 }

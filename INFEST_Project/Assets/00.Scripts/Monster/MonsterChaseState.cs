@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class MonsterChaseState : MonsterStateNetworkBehaviour
 {
-    public override void Enter()
+    // Start is called before the first frame update
+    void Start()
     {
-        base.Enter();
-        monster.MovementSpeed = 10f;
+        
     }
 
-    public override void Execute()
+    // Update is called once per frame
+    void Update()
     {
-        base.Execute();
-        if (HasStateAuthority)
-        {
-            bool result = monster.AIPathing.SetDestination(monster.target.position);
-        }
+        
     }
 }

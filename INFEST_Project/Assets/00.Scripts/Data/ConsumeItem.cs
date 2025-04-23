@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class ConsumeItem : IKeyedItem
+public class ConsumeItem
 {
     /// <summary>
     /// ID
@@ -31,11 +31,44 @@ public class ConsumeItem : IKeyedItem
     /// </summary>
     public DesignEnums.ConsumeItemType ConsumeItemType;
 
-    /// <summary>
-    /// 아이템 가격
-    /// </summary>
-    public int Price;
+}
+public class ConsumeItemLoader
+{
+    public List<ConsumeItem> ItemsList { get; private set; }
+    public Dictionary<int, ConsumeItem> ItemsDict { get; private set; }
 
-    public int Key => key;
+    public ConsumeItemLoader(string path = "JSON/ConsumeItem")
+    {
+        string jsonData;
+        jsonData = Resources.Load<TextAsset>(path).text;
+        ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
+        ItemsDict = new Dictionary<int, ConsumeItem>();
+        foreach (var item in ItemsList)
+        {
+            ItemsDict.Add(item.key, item);
+        }
+    }
 
+    [Serializable]
+    private class Wrapper
+    {
+        public List<ConsumeItem> Items;
+    }
+
+    public ConsumeItem GetByKey(int key)
+    {
+        if (ItemsDict.ContainsKey(key))
+        {
+            return ItemsDict[key];
+        }
+        return null;
+    }
+    public ConsumeItem GetByIndex(int index)
+    {
+        if (index >= 0 && index < ItemsList.Count)
+        {
+            return ItemsList[index];
+        }
+        return null;
+    }
 }
