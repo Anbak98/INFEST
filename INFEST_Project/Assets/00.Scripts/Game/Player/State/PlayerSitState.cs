@@ -6,7 +6,7 @@ using UnityEngine;
 // SitIdle, Waddle, SitAttack, SitReload
 public class PlayerSitState : PlayerGroundState
 {
-    public PlayerSitState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
+    public PlayerSitState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
 
@@ -39,9 +39,10 @@ public class PlayerSitState : PlayerGroundState
         if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
+            return;
         }
     }
-    public override void PhysicsUpdate()
+    public override void PhysicsUpdate(NetworkInputData data)
     {
     }
 }

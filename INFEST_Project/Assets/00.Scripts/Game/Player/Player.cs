@@ -6,7 +6,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms;
-using UnityEngine.SocialPlatforms.Impl;
 
 
 /// <summary>
@@ -40,14 +39,6 @@ public class Player : NetworkBehaviour
 
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
-
-    public NetworkObject networkObject;
-    public bool inStoreZoon = false;
-    public bool isInteraction = false;
-    public Store store;
-    public Inventory inventory = new();
-    public int gold = 5000;
-    private InputManager _inputManager;
 
 
     #region 기존의 데이터
@@ -98,7 +89,6 @@ public class Player : NetworkBehaviour
         AnimationData.Initialize();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
-        _inputManager = FindAnyObjectByType<InputManager>();
 
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
@@ -109,7 +99,7 @@ public class Player : NetworkBehaviour
     }
     private void Start()
     {
-        stateMachine = new PlayerStateMachine(this, playerController, _inputManager);
+        stateMachine = new PlayerStateMachine(this, playerController);
         //stateMachine.ChangeState(stateMachine.IdleState);
         //Cursor.lockState = CursorLockMode.Locked;
     }
@@ -131,7 +121,6 @@ public class Player : NetworkBehaviour
             }
         }
     }
-
 
 
     /// <summary>
