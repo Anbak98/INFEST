@@ -121,13 +121,9 @@ public class Player : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if (GetInput(out NetworkInputData data))
-            playerController.Update();
-    }
-
-    public override void FixedUpdateNetwork()
-    {
-        if (GetInput(out NetworkInputData data))
         {
+            playerController.Update();
+
             if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
                 if(!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);

@@ -11,22 +11,26 @@ public class Collider : MonoBehaviour // 유저가 상점에 진입했고 상호작용하는지 �
     public Store _store;
     public StoreController _storeController;
     public Player[] usePlaeyr;
+    private int _playerLayer = 6;
+    bool _active = false;
+
 
     private void OnTriggerEnter(UnityEngine.Collider other) 
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.TryGetComponent(out Player _player))
+        if (other.gameObject.layer == _playerLayer && other.TryGetComponent(out Player _player))
         {
             //if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
             //var _player = other.GetComponent<NetworkObject>();
             //if (_player == null) return;
-            
+            if (_active) return;
+            _active = true;
             if (_store == null) return;
             _player.store = _store;
 
             //if (!_inside.Contains(_player))
             //{
             playersInShop.Add(_player);
-            Debug.Log("접촉");
+            Debug.Log("접촉 " + other.name);
             //_inside.Add(_player);
             _store.RPC_RequestEnterShopZone(_player, _player.networkObject.InputAuthority);
             _player.inStoreZoon = true;
