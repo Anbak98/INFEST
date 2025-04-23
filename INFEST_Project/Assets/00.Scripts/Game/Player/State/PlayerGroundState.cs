@@ -16,12 +16,12 @@ public class PlayerGroundState : PlayerBaseState
         base.Enter();
 
 
-        StartAnimation(stateMachine.Player.AnimationData.GroundParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.GroundParameterHash);
     }
     public override void Exit()
     {
         base.Exit();    // 상단의 layer로 나간다
-        StopAnimation(stateMachine.Player.AnimationData.GroundParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.GroundParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)

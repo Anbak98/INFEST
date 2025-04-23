@@ -46,24 +46,21 @@ public class PlayerCameraHandler : NetworkBehaviour
         // 권한설정을 하면 host만 내부에 진입한다
         //if (HasInputAuthority)
         //{
-            if (GetInput(out NetworkInputData data))
-            {
-                Debug.LogFormat($"{gameObject.name}의 카메라 FixedUpdate"); // 어느 controller가 들어오는가?
+        if (GetInput(out NetworkInputData data))
+        {
+            Vector2 mouseDelta = data.lookDelta;
 
+            float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
+            float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
 
-                Vector2 mouseDelta = data.lookDelta;
+            // 좌우 회전 (플레이어)
+            transform.Rotate(Vector3.up * mouseX);
 
-                float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
-                float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
-
-                // 좌우 회전 (플레이어)
-                transform.Rotate(Vector3.up * mouseX);
-
-                // 상하 회전 (카메라 홀더)
-                xRotation -= mouseY;
-                xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
-                _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            }
+            // 상하 회전 (카메라 홀더)
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
+            _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }
         //}
     }
 

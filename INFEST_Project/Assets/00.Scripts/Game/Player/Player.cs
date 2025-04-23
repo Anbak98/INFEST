@@ -16,9 +16,7 @@ public class Player : NetworkBehaviour
     public static Player local { get; private set; }
     [Networked] private TickTimer delay { get; set; }
 
-    [field: Header("Animations")]
-    [field: SerializeField] public PlayerAnimationData AnimationData { get; private set; } // 외부에서 수정불가
-
+    [SerializeField] public PlayerAnimationController animationController;
     [field: SerializeField] public PlayerData data; // 플레이어의 데이터
                                                     // 초기화할때 json파일을 읽고 대입한다
                                                     // 
@@ -26,7 +24,6 @@ public class Player : NetworkBehaviour
     // 누가 되었든 실행되는 animator는 1개이므로 나중에 1개로 줄인다
     //public Animator firstPersonAnimator;   // Spawn할때 연결한다
     //public Animator thirdPersonAnimator;   // 다른 플레이어의 animator는 이곳에 연결되어야 한다
-    public Animator playerAnimator;
 
     // playerController는 Input값 관리
     public PlayerController playerController;     // 1인칭: LocalPlayerController, 3인칭: RemotePlayerController
@@ -91,7 +88,6 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        AnimationData.Initialize();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
         networkObject = GetComponent<NetworkObject>();
@@ -283,7 +279,7 @@ public class Player : NetworkBehaviour
             {
                 // 1인칭의 경우 Hands_Rifle가 활성화 된 상태로 시작하여 Rifle의 Animator를 대입
                 //firstPersonAnimator = localController.GetComponentInChildren<Animator>();
-                playerAnimator = playerController.GetComponentInChildren<Animator>();
+                //playerAnimator = playerController.GetComponentInChildren<Animator>();
 
                 // 무기 교체할때마다 animator를 검색할 수 없으니 저장하고 불러쓰는게 가장 좋다
                 // 3개 다 활성화 하고, rifle을 제외한 2개를 일단 비활성화(예정)
@@ -297,7 +293,7 @@ public class Player : NetworkBehaviour
             {
                 // Weapons을 붙여야 한다
 
-                playerAnimator = playerController.GetComponent<Animator>();
+                //playerAnimator = playerController.GetComponent<Animator>();
                 
             }
         }
