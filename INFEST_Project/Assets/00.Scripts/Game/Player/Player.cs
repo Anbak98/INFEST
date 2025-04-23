@@ -88,9 +88,6 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        statHandler = GetComponent<PlayerStatHandler>();
-        cameraHandler = GetComponent<PlayerCameraHandler>();
-        networkObject = GetComponent<NetworkObject>();
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
@@ -108,22 +105,29 @@ public class Player : NetworkBehaviour
     //{
     //    playerController.Update();
     //}
-
+    NetworkInputData DEBUG_DATA;
     public override void FixedUpdateNetwork()
     {
         if (GetInput(out NetworkInputData data))
         {
-            playerController.Update();
+            DEBUG_DATA = data;
+            playerController.stateMachine.OnUpdate(data);
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
                 if (!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
-                 
+
                 else store.RPC_RequestStopInteraction(networkObject.InputAuthority);
 
                 isInteraction = !isInteraction;
             }
         }
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label(playerController.stateMachine.currentState.ToString());
+        GUILayout.Label(DEBUG_DATA.ToString());
     }
 
 
@@ -277,7 +281,6 @@ public class Player : NetworkBehaviour
         if (firstPerson)
         {
             // 1인칭일 경우: LocalPlayerController 자식에서 Animator 가져오기
-            playerController = GetComponentInChildren<LocalPlayerController>(true);
             if (playerController != null)
             {
                 // 1인칭의 경우 Hands_Rifle가 활성화 된 상태로 시작하여 Rifle의 Animator를 대입
@@ -291,7 +294,6 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            playerController = GetComponentInChildren<RemotePlayerController>(true);
             if (playerController != null)
             {
                 // Weapons을 붙여야 한다
