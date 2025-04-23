@@ -9,6 +9,7 @@ public enum JOB
     SWAT,
     Demolator
 }
+
 [Serializable]
 public struct Profile : INetworkStruct
 {
@@ -23,46 +24,37 @@ public class PlayerProfile : NetworkBehaviour
 
     public override void Spawned()
     {
-        base.Spawned();
         SetInfo();
 
         Debug.Log($"[Profile] Player joined: {Runner.TryGetNetworkedBehaviourId(this)}");
+        base.Spawned();
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
-        //if (HasInputAuthority)
-        //{
-
-        //    foreach (var profile in MatchManager.Instance.uiProfils)
-        //    {
-        //        profile.NickName.text = "";
-        //    }
-        //}
-
-
         Debug.Log($"[Room] Player left: {Runner.TryGetNetworkedBehaviourId(this)}");
-        var Room = FindObjectOfType<Room>();
-        //Room?.RPC_RemoveProfileToAll(this);
         base.Despawned(runner, hasState);
     }
 
     public void SetInfo()
     {
         var Room = FindObjectOfType<Room>();
-        if (HasInputAuthority)
+        if (Room != null)
         {
-            Room.MyProfile = this;
-
-            Profile profile = new Profile()
+            if (HasInputAuthority)
             {
-                NickName = PlayerPrefs.GetString("Nickname"),
-                Job = (JOB)PlayerPrefs.GetInt("Job"),
-            };
+                Room.MyProfile = this;
 
-            RPC_SetInfo(profile);
+                Profile profile = new Profile()
+                {
+                    NickName = PlayerPrefs.GetString("Nickname"),
+                    Job = (JOB)PlayerPrefs.GetInt("Job"),
+                };
+
+                RPC_SetInfo(profile);
+            }
+            Room.RPC_SendProfileToAll(this);
         }
-        Room.RPC_SendProfileToAll(this);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
