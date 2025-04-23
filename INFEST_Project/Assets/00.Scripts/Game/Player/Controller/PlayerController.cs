@@ -70,7 +70,7 @@ public abstract class PlayerController : BaseController
         //base.FixedUpdateNetwork();
         if (GetInput(out NetworkInputData data))
         {
-            Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
+            //Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
 
             // 상태머신
 
@@ -78,6 +78,8 @@ public abstract class PlayerController : BaseController
             stateMachine.OnUpdate(data);
         }
     }
+
+
 
     // 점프 눌렸나
     //public override bool IsJumpInput() => player.Input.GetIsJumping();
@@ -163,8 +165,14 @@ public abstract class PlayerController : BaseController
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
-                //Debug.Log("공격");
+                Debug.Log(data.isShotgunOnFiring);
+                Debug.Log($"두 프레임 사이 시간: {Time.deltaTime:F5}초");
+
                 weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+
+                // 사격 후에 false로 바꿔주어야하는데 이 방식으로 가능할까?
+                // data는 입력값이니까 다음에 입력할때 다시 true가 될 것 같지만 일단 해보자
+                //data.isShotgunOnFiring = false;
 
                 delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
             }

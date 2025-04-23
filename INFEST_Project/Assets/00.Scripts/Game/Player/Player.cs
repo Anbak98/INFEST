@@ -109,11 +109,11 @@ public class Player : NetworkBehaviour
     //    playerController.Update();
     //}
 
-    public override void FixedUpdateNetwork()
-    {
-        if (GetInput(out NetworkInputData data))
-            playerController.Update();
-    }
+    //public override void FixedUpdateNetwork()
+    //{
+    //    if (GetInput(out NetworkInputData data))
+    //        playerController.Update();
+    //}
 
 
     /// <summary>
@@ -139,21 +139,24 @@ public class Player : NetworkBehaviour
     //            // 마우스 좌클릭(공격)
     //            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
     //            {
-    //                //Debug.Log("공격");
+    //                Debug.Log("공격");
+    //                Debug.Log(data.isShotgunOnFiring);
+    //                Debug.Log($"두 프레임 사이 시간: {Time.deltaTime:F5}초");
+
     //                _weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
-    //                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
-    //                Runner.Spawn(_prefabBall,
-    //                transform.position + _forward,
-    //                Quaternion.LookRotation(_forward),
-    //                  Object.InputAuthority, (runner, o) =>
-    //                  {
-    //                      // Initialize the Ball before synchronizing it
-    //                      o.GetComponent<Ball>().Init();
-    //                  });
-    //                spawnedProjectile = !spawnedProjectile;
+    //                //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+    //                //Runner.Spawn(_prefabBall,
+    //                //transform.position + _forward,
+    //                //Quaternion.LookRotation(_forward),
+    //                //  Object.InputAuthority, (runner, o) =>
+    //                //  {
+    //                //      // Initialize the Ball before synchronizing it
+    //                //      o.GetComponent<Ball>().Init();
+    //                //  });
+    //                //spawnedProjectile = !spawnedProjectile;
     //            }
-    // PhyscBall.Init() 메소드를 사용하여 스폰을 호출하고 속도(마지막 순방향에 곱한 상수)를 설정
+    //            //PhyscBall.Init() 메소드를 사용하여 스폰을 호출하고 속도(마지막 순방향에 곱한 상수)를 설정
 
     //            // 마우스 우클릭(ZOOM)
     //            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
@@ -197,32 +200,21 @@ public class Player : NetworkBehaviour
     //    }
     //}
 
-    //private void Update()
-    //{
-    //    // Object.HasInputAuthority를 확인한다: 모든 클라이언트에서 실행되지만 이 플레이어를 제어하는 클라이언트만 RPC를 호출해야 하기 때문
-    //    if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
-    //    {
-    //        RPC_SendMessage("Hey Mate!");
-    //    }
-    //}
 
 
-    //private void Update()
-    //{
-    //    // Object.HasInputAuthority를 확인한다: 모든 클라이언트에서 실행되지만 이 플레이어를 제어하는 클라이언트만 RPC를 호출해야 하기 때문
-    //    if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
-    //    {
-    //        RPC_SendMessage("Hey Mate!");
-    //    }
-    //}
 
+    private void Update()
+    {
+        // Object.HasInputAuthority를 확인한다: 모든 클라이언트에서 실행되지만 이 플레이어를 제어하는 클라이언트만 RPC를 호출해야 하기 때문
+        if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
+        {
+            RPC_SendMessage("Hey Mate!");
+        }
+    }
     public Weapons GetWeapons()
     {
         return _weapons;
     }
-
-
-
     public override void Spawned()
     {
         // 튜토리얼에 있던 부분, 삭제하니까 오류가 많이 나서 일단 남겨두었다
@@ -284,7 +276,6 @@ public class Player : NetworkBehaviour
             }
         }
     }
-
 
 
     /// <summary>

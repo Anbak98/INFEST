@@ -43,32 +43,26 @@ public class PlayerMoveState : PlayerGroundState
         if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
-            return;
         }
         if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         if (data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
-            return;
         }
         if (data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
-            return;
         }
     }
 }

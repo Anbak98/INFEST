@@ -21,6 +21,8 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     private Camera _mainCam;    // 1인칭 카메라
 
+    // 무기 발사는 1인칭 프리팹 기준으로 하고, 3인칭 프리팹은 1인칭프리팹과 같은 위치로 맞춘다
+    private Transform weaponHolder;
 
     private void Awake()
     {
@@ -37,6 +39,9 @@ public class PlayerCameraHandler : NetworkBehaviour
         _mainCam = Camera.main;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        // 검색해서 붙여야함
+        // weaponHolder = 
     }
 
     public override void FixedUpdateNetwork()
@@ -46,24 +51,27 @@ public class PlayerCameraHandler : NetworkBehaviour
         // 권한설정을 하면 host만 내부에 진입한다
         //if (HasInputAuthority)
         //{
-            if (GetInput(out NetworkInputData data))
-            {
-                Debug.LogFormat($"{gameObject.name}의 카메라 FixedUpdate"); // 어느 controller가 들어오는가?
+        if (GetInput(out NetworkInputData data))
+        {
+            //Debug.LogFormat($"{gameObject.name}의 카메라 FixedUpdate"); // 어느 controller가 들어오는가?
+
+            Vector2 mouseDelta = data.lookDelta;
+
+            float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
+            float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
+
+            // 좌우 회전 (플레이어)
+            transform.Rotate(Vector3.up * mouseX);
+
+            // 상하 회전 (카메라 홀더)
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
+            _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
 
-                Vector2 mouseDelta = data.lookDelta;
-
-                float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
-                float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
-
-                // 좌우 회전 (플레이어)
-                transform.Rotate(Vector3.up * mouseX);
-
-                // 상하 회전 (카메라 홀더)
-                xRotation -= mouseY;
-                xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
-                _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            }
+            // 카메라의 방향을 무기의 방향으로 바꾸어준다
+            //weaponHolder.transform.rotation = _cameraHolder.transform.rotation;
+        }
         //}
     }
 
