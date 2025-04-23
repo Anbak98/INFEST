@@ -160,7 +160,7 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
             WeaponInstance _weaponInstance = new(idList[index]);
 
             _player.gold -= _weaponInstance.data.Price;
-            SpawnWeapon(_player,index);
+            //SpawnWeapon(_player,index);
             _player.inventory.AddWeponItme(_weaponInstance);
         }
         else if (idList[index] % 10000 < 1000) // 아이템

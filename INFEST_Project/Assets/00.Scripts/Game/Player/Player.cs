@@ -40,7 +40,12 @@ public class Player : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
-
+    public NetworkObject networkObject;
+    public bool inStoreZoon = false;
+    public bool isInteraction = false;
+    public Store store;
+    public Inventory inventory = new();
+    public int gold = 5000;
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
@@ -89,7 +94,7 @@ public class Player : NetworkBehaviour
         AnimationData.Initialize();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
-
+        networkObject = GetComponent<NetworkObject>();
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
