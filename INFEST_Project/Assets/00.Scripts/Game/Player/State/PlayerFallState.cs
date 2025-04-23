@@ -11,6 +11,8 @@ public class PlayerFallState : PlayerAirState
 
     public override void Enter()
     {
+        Debug.Log("Fall상태 진입");
+
         // 지면에서 떨어졌다 && y방향 속도가 0보다 작거나 같으면 Fall
         base.Enter();
     }

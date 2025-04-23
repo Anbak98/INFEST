@@ -16,8 +16,6 @@ public class PlayerRunState : PlayerGroundState
         stateMachine.StatHandler.MoveSpeedModifier = 6;
         Debug.Log("Run상태 진입");
         base.Enter();
-        // Run은 Move를 기반으로 해야하는데... Move인 상태를 기반으로 Run 파라미터를 추가입력해야한다
-        // 어쩔래?
         //StartAnimation(stateMachine.Player.AnimationData.RunParameterHash);
     }
     public override void Exit()

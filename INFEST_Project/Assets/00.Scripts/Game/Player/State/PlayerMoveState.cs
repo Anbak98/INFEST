@@ -40,9 +40,9 @@ public class PlayerMoveState : PlayerGroundState
         PlayerMove(data);
         controller.ApplyGravity();  // ม฿ทย
 
-        if (data.direction != Vector3.zero)
+        if (data.direction == Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.MoveState);
+            stateMachine.ChangeState(stateMachine.IdleState);
         }
         if (data.isRunning)
         {
@@ -58,7 +58,10 @@ public class PlayerMoveState : PlayerGroundState
         }
         if (data.isJumping)
         {
-            stateMachine.ChangeState(stateMachine.JumpState);
+            if (controller.IsGrounded())
+            {
+                stateMachine.ChangeState(stateMachine.JumpState);
+            }
         }
         if (data.isSitting)
         {

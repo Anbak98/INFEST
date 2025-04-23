@@ -69,11 +69,10 @@ public class PlayerController : BaseController
             //Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
 
             // 상태머신
-
-    //        //stateMachine.HandleInput();
-    //        stateMachine.OnUpdate(data);
-    //    }
-    //}
+            //stateMachine.HandleInput();
+            stateMachine.OnUpdate(data);
+        }
+    }
 
 
 

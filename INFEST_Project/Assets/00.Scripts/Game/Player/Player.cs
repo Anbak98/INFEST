@@ -126,8 +126,8 @@ public class Player : NetworkBehaviour
 
     private void OnGUI()
     {
-        GUILayout.Label(playerController.stateMachine.currentState.ToString());
-        GUILayout.Label(DEBUG_DATA.ToString());
+        //GUILayout.Label(playerController.stateMachine.currentState.ToString());
+        //GUILayout.Label(DEBUG_DATA.ToString());
     }
 
 
@@ -256,7 +256,7 @@ public class Player : NetworkBehaviour
             Debug.Log("Local Player 설정 완료");
         }
         /// 디버그용
-        statHandler.Init(200, 3, 2, 5, 8, 50, 60);
+        statHandler.Init(200, 3, 2, 5, 3, 50, 60);
         Debug.LogFormat($"플레이어 hp = {statHandler.CurrentHealth}");
         Debug.LogFormat($"플레이어 speed = {statHandler.MoveSpeed}");
         Debug.LogFormat($"플레이어 speedModifier = {statHandler.MoveSpeedModifier}");
@@ -272,12 +272,13 @@ public class Player : NetworkBehaviour
 
         if (firstPerson)
         {
+            playerController = GetComponentInChildren<PlayerController>(true);
             // 1인칭일 경우: LocalPlayerController 자식에서 Animator 가져오기
             if (playerController != null)
             {
                 // 1인칭의 경우 Hands_Rifle가 활성화 된 상태로 시작하여 Rifle의 Animator를 대입
                 //firstPersonAnimator = localController.GetComponentInChildren<Animator>();
-                //playerAnimator = playerController.GetComponentInChildren<Animator>();
+                animationController.playerAnimator = playerController.GetComponentInChildren<Animator>();
 
                 // 무기 교체할때마다 animator를 검색할 수 없으니 저장하고 불러쓰는게 가장 좋다
                 // 3개 다 활성화 하고, rifle을 제외한 2개를 일단 비활성화(예정)
@@ -286,12 +287,13 @@ public class Player : NetworkBehaviour
         }
         else
         {
+            playerController = GetComponentInChildren<PlayerController>(true);
             if (playerController != null)
             {
                 // Weapons을 붙여야 한다
 
-                //playerAnimator = playerController.GetComponent<Animator>();
-                
+                animationController.playerAnimator = playerController.GetComponent<Animator>();
+
             }
         }
     }
