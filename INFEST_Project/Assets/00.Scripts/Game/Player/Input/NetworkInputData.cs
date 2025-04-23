@@ -1,24 +1,24 @@
-ï»¿using Fusion;
+using Fusion;
 using UnityEngine;
 
 
 /// <summary>
-/// í”Œë ˆì´ì–´ì˜ ì…ë ¥ ë°ì´í„°ë¥¼ ë„¤íŠ¸ì›Œí¬ë¡œ ë™ê¸°í™”í•˜ê¸° ìœ„í•´ ì‚¬ìš©í•˜ëŠ” êµ¬ì¡°ì²´
-/// í”Œë ˆì´ì–´ì˜ ì…ë ¥ ìƒíƒœë¥¼ ë„¤íŠ¸ì›Œí¬ë¥¼ í†µí•´ ì „ë‹¬
+/// ÇÃ·¹ÀÌ¾îÀÇ ÀÔ·Â µ¥ÀÌÅÍ¸¦ ³×Æ®¿öÅ©·Î µ¿±âÈ­ÇÏ±â À§ÇØ »ç¿ëÇÏ´Â ±¸Á¶Ã¼
+/// ÇÃ·¹ÀÌ¾îÀÇ ÀÔ·Â »óÅÂ¸¦ ³×Æ®¿öÅ©¸¦ ÅëÇØ Àü´Ş
 /// </summary>
 public struct NetworkInputData : INetworkInput
 {
-    public Vector3 direction;           // ì´ë™ë°©í–¥(wasd)
-    public Vector2 lookDelta;           // ë§ˆìš°ìŠ¤ ì›€ì§ì„(ì‹œì  íšŒì „)
-    public NetworkButtons buttons;      // ë²„íŠ¼ ìƒíƒœ
-    public Vector2 scrollValue;           // ë§ˆìš°ìŠ¤ íœ  ê°’;
+    public Vector3 direction;           // ÀÌµ¿¹æÇâ(wasd)
+    public Vector2 lookDelta;           // ¸¶¿ì½º ¿òÁ÷ÀÓ(½ÃÁ¡ È¸Àü)
+    public NetworkButtons buttons;      // ¹öÆ° »óÅÂ
+    public Vector2 scrollValue;           // ¸¶¿ì½º ÈÙ °ª;
 
-    // ë§ˆìš°ìŠ¤
-    public const byte BUTTON_FIRE = 0;      // ë§ˆìš°ìŠ¤ ì™¼ìª½
-    public const byte BUTTON_ZOOM = 1;      // ë§ˆìš°ìŠ¤ ì˜¤ë¥¸ìª½
-    public const byte BUTTON_SWAP = 2;      // ë§ˆìš°ìŠ¤ íœ 
+    // ¸¶¿ì½º
+    public const byte BUTTON_FIRE = 0;      // ¸¶¿ì½º ¿ŞÂÊ
+    public const byte BUTTON_ZOOM = 1;      // ¸¶¿ì½º ¿À¸¥ÂÊ
+    public const byte BUTTON_SWAP = 2;      // ¸¶¿ì½º ÈÙ
 
-    // í‚¤ë³´ë“œ
+    // Å°º¸µå
     public const byte BUTTON_JUMP = 3;      // space
     public const byte BUTTON_RELOAD = 4;    // R
     public const byte BUTTON_INTERACT = 5;  // F
@@ -27,12 +27,11 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_SIT = 8;       // lCtrl
     public const byte BUTTON_SCOREBOARD = 9;    // Tab
 
-    // ë‚´ë¶€ì—ì„œ ì‚¬ìš©í•˜ëŠ” ë³€ìˆ˜
-    public const byte BUTTON_FIREPRESSED = 10;    // ë§ˆìš°ìŠ¤ ì™¼ìª½í´ë¦­ ì§€ì†
-    public const byte BUTTON_ZOOMPRESSED = 11;    // ë§ˆìš°ìŠ¤ ì˜¤ë¥¸ìª½í´ë¦­ ì§€ì†
+    // ³»ºÎ¿¡¼­ »ç¿ëÇÏ´Â º¯¼ö
+    public const byte BUTTON_FIREPRESSED = 10;    // ¸¶¿ì½º ¿ŞÂÊÅ¬¸¯ Áö¼Ó
+    public const byte BUTTON_ZOOMPRESSED = 11;    // ¸¶¿ì½º ¿À¸¥ÂÊÅ¬¸¯ Áö¼Ó
 
-
-    // InputAction
+    // InputAction°ú ¿¬°á
     public bool isJumping;
     public bool isReloading;
     public bool isFiring;
@@ -44,8 +43,39 @@ public struct NetworkInputData : INetworkInput
     public bool isScoreBoardPopup;
     public bool isMenuPopup;
 
-    // (Input Action) ë‚´ë¶€ë³€ìˆ˜
+    // ³»ºÎ º¯¼ö(Input Action°ú ¿¬°áX)
     public bool isShotgunOnFiring;
     public bool isOnZoom;
+
+
+
+    /// ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ¸¦ ¿©±â¿¡ Æ÷ÇÔÇØ¼­ º¸³»¾ß ÇÑ´Ù    
+    /// ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ »óÅÂ¸¦ º¸³»Áö ¾Ê´Â´Ù
+    /// move, ¹«±â ÀåÂø¿©ºÎ, ¾î¶² ¹«±â¸¦ ÀåÂøÇß´ÂÁö Á¤º¸°¡ ³Ñ¾î¿À¸é
+    /// ±× Á¤º¸¸¦ ¹ŞÀº »ó´ë°¡ ±×¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ·ÎÄÃ¿¡¼­ ½ÇÇà
+    /// 
+    /// PlayerStatHandlerÀÇ Á¤º¸¸¦ °¡Á®¿Í¾ßÇÑ´Ù
+    /// 
+    public override string ToString()
+    {
+        string result =
+            $"Direction: {direction}\n" +
+            $"LookDelta: {lookDelta}\n" +
+            $"ScrollValue: {scrollValue}\n" +
+            $"Buttons: {buttons}\n" +
+            $"IsJumping: {isJumping}\n" +
+            $"IsReloading: {isReloading}\n" +
+            $"IsFiring: {isFiring}\n" +
+            $"IsZooming: {isZooming}\n" +
+            $"IsInteracting: {isInteracting}\n" +
+            $"IsUsingItem: {isUsingItem}\n" +
+            $"IsRunning: {isRunning}\n" +
+            $"IsSitting: {isSitting}\n" +
+            $"IsScoreBoardPopup: {isScoreBoardPopup}\n" +
+            $"IsMenuPopup: {isMenuPopup}\n" +
+            $"IsShotgunOnFiring: {isShotgunOnFiring}\n" +
+            $"IsOnZoom: {isOnZoom}";
+        return result;
+    }
 
 }

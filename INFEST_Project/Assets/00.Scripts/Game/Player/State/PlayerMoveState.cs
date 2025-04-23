@@ -12,16 +12,20 @@ public class PlayerMoveState : PlayerGroundState
     public override void Enter()
     {
         // 일단 숫자대입. 나중에 PlayStatData.WalkSpeedModifier 변수 추가해서 그,값으로 바꾼다
-        //stateMachine.StatHandler.MoveSpeedModifier = 2;
+        stateMachine.StatHandler.MoveSpeedModifier = 2;
         Debug.Log("Move상태 진입");
         base.Enter();
+
+        ///// blend tree 애니메이션에 적용
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
         base.Exit();
         // 방향 초기화
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
     public override void OnUpdate(NetworkInputData data)
@@ -30,8 +34,8 @@ public class PlayerMoveState : PlayerGroundState
         player.animationController.MoveDirection = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
@@ -54,10 +58,7 @@ public class PlayerMoveState : PlayerGroundState
         }
         if (data.isJumping)
         {
-            //if (controller.IsGrounded())
-            //{
             stateMachine.ChangeState(stateMachine.JumpState);
-            //}
         }
         if (data.isSitting)
         {

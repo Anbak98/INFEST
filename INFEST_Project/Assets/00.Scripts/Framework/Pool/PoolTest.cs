@@ -11,7 +11,7 @@ public class PoolTest : MonoBehaviour
 
     private System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
-    private bool IsSpawn = true;
+    //private bool IsSpawn = true;
 
     private void Start()
     {
@@ -41,7 +41,7 @@ public class PoolTest : MonoBehaviour
 
         if (GUILayout.Button("Spawn 1000"))
         {
-            IsSpawn = true ;
+            //IsSpawn = true ;
             sw.Reset();
             sw.Start();
             // 전체 메모리 사용량 (바이트)
@@ -69,7 +69,7 @@ public class PoolTest : MonoBehaviour
 
         if (GUILayout.Button("Despawn 1000"))
         {
-            IsSpawn = false;
+            //IsSpawn = false;
             sw.Reset();
             sw.Start();
             // 전체 메모리 사용량 (바이트)

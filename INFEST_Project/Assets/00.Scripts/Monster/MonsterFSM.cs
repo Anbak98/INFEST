@@ -5,31 +5,32 @@ using System.Collections.Generic;
 
 public class MonsterFSM : NetworkBehaviour
 {
-    public Monster monster;
-
-    public MonsterStateMachine currentPhase;
+    public MonsterNetworkBehaviour monster;
+    [Header("Phase")]
+    public MonsterPhase currentPhase;
 
     [SerializeField]
-    private List<MonsterStateMachine> phases;
+    private List<MonsterPhase> phases;
 
-    private Dictionary<Type, MonsterStateMachine> phaseMap = new();
+    private Dictionary<Type, MonsterPhase> phaseMap = new();
 
     public override void Spawned()
     {
-        foreach (MonsterStateMachine m in phases)
+        foreach (MonsterPhase m in phases)
         {
+            m.Init(monster);
             phaseMap.Add(m.GetType(), m);
         }
 
-        currentPhase.currentState.Enter();
+        currentPhase.MachineEnter();
     }
 
     public override void FixedUpdateNetwork()
     {
-        currentPhase.currentState.Execute();
+        currentPhase.ExecuteState();
     }
 
-    public void ChangePhase<T>() where T : MonsterStateMachine
+    public void ChangePhase<T>() where T : MonsterPhase
     {
         currentPhase?.MachineExit();
         currentPhase = phaseMap[typeof(T)];

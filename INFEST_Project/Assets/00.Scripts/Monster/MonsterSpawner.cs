@@ -1,18 +1,28 @@
-using System.Collections;
+using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawner : MonoBehaviour
+public class MonsterSpawner : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private int SpawnMonsterNumberOnEachWave = 50;
 
-    // Update is called once per frame
-    void Update()
+    public List<MonsterSpawnPoint> pointRefs;
+
+    public void SpawnMonsterOnWave()
     {
-        
+        if (Runner.IsServer)
+        {
+            int remainSpawnNumber = SpawnMonsterNumberOnEachWave;
+            int iteral = 20;
+            while(remainSpawnNumber > 0 && iteral > 0)
+            {
+                int point = Random.Range(0, pointRefs.Count);
+                int num = Random.Range(0, 8);
+                num = num > remainSpawnNumber ? remainSpawnNumber : num;
+                pointRefs[point].Spawn(num);
+                remainSpawnNumber -= num;
+                iteral--; 
+            }
+        }
     }
 }

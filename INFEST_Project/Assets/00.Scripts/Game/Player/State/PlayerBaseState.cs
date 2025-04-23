@@ -16,8 +16,8 @@ public interface IState
 
 public abstract class PlayerBaseState : IState
 {
-    protected PlayerController controller;    
-    protected PlayerStateMachine stateMachine;    
+    protected PlayerController controller;    // PlayerController, 다른 npc의 controller
+    protected PlayerStateMachine stateMachine;    // PlayerStateMachine
     protected readonly PlayerStatHandler statHandler;   // PlayerStatHandler에 있는 데이터를 읽기만 한다
     protected Player player;
     // 지금은 플레이어의 카메라만 있으니 그냥 하지만
@@ -30,7 +30,7 @@ public abstract class PlayerBaseState : IState
     {
         this.controller = controller;
         this.stateMachine = stateMachine;
-        //statHandler = stateMachine.Player.statHandler;
+        statHandler = stateMachine.Player.statHandler;
         player = stateMachine.Player;
         //stateMachine.Player.playerAnimator = player.playerAnimator;
 
@@ -42,10 +42,6 @@ public abstract class PlayerBaseState : IState
     }
     public virtual void Exit()
     {
-    }
-    public void HandleInput(NetworkInputData data)
-    {
-        throw new System.NotImplementedException();
     }
     public virtual void OnUpdate(NetworkInputData data)
     {

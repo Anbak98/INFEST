@@ -1,32 +1,61 @@
-ï»¿using Cinemachine;
+using Cinemachine;
 using Fusion;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
 
 
 /// <summary>
-/// í”Œë ˆì´ì–´ì˜ ê¸°ë³¸ì ì¸ ì‚¬í•­ë“¤
+/// ÇÃ·¹ÀÌ¾îÀÇ ±âº»ÀûÀÎ »çÇ×µé
 /// </summary>
 public class Player : NetworkBehaviour
 {
-    //[SerializeField] private Ball _prefabBall;
-    // ë²„íŠ¼ ëˆ„ë¦„ì´ ê°ì§€ë  ë•Œë§Œ íƒ€ì´ë¨¸ë¥¼ ì¬ì„¤ì •
+    public static Player local { get; private set; }
     [Networked] private TickTimer delay { get; set; }
 
-    // 
-    private NetworkCharacterController _cc;
+    [SerializeField] public PlayerAnimationController animationController;
+    [field: SerializeField] public PlayerData data; // ÇÃ·¹ÀÌ¾îÀÇ µ¥ÀÌÅÍ
+                                                    // ÃÊ±âÈ­ÇÒ¶§ jsonÆÄÀÏÀ» ÀĞ°í ´ëÀÔÇÑ´Ù
+                                                    // 
+
+    // ´©°¡ µÇ¾úµç ½ÇÇàµÇ´Â animator´Â 1°³ÀÌ¹Ç·Î ³ªÁß¿¡ 1°³·Î ÁÙÀÎ´Ù
+    //public Animator firstPersonAnimator;   // SpawnÇÒ¶§ ¿¬°áÇÑ´Ù
+    //public Animator thirdPersonAnimator;   // ´Ù¸¥ ÇÃ·¹ÀÌ¾îÀÇ animator´Â ÀÌ°÷¿¡ ¿¬°áµÇ¾î¾ß ÇÑ´Ù
+
+    // playerController´Â Input°ª °ü¸®
+    public PlayerController playerController;     // 1ÀÎÄª: LocalPlayerController, 3ÀÎÄª: RemotePlayerController
+    public PlayerStatHandler statHandler;
+
+
+    public CharacterController characterController; // collider, rigidbody µî ³»ÀåµÇ¾îÀÖ´Ù
+    public NetworkCharacterController networkCharacterController;
+
+
+    public PlayerStateMachine stateMachine;
+    public PlayerCameraHandler cameraHandler;
+
+    public NetworkObject networkObject;
+    public bool inStoreZoon = false;
+    public bool isInteraction = false;
+    public Store store;
+    public Inventory inventory = new();
+    public int gold = 5000;
+    #region ±âÁ¸ÀÇ µ¥ÀÌÅÍ
+    //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
-    private Weapons _weapons;// SY
+    public Weapons Weapons;// SY
 
     [Header("Components")]
     //public SimpleKCC KCC;
     //public Weapons Weapons;
     //public Health Health;
-    public Animator playerAnimator;
-    public HitboxRoot HitboxRoot;
+    //public HitboxRoot HitboxRoot;
 
-
+    // ³×Æ®¿öÅ©¿Í transform position ¿¬½À(½ÇÁ¦·Î´Â ¾µ ÇÊ¿ä ¾ø´Ù. À¯´ÏÆ¼¿¡¼­ Á¦°øÇÏ´Â transform.position ¾µ°Å´Ï±î)
+    //[Networked] public Vector3 playerTransform { get; set; }
 
     [Header("Setup")]
     public float MoveSpeed = 6f;
@@ -40,141 +69,179 @@ public class Player : NetworkBehaviour
 
     //[SerializeField] private PhysxBall _prefabPhysxBall;
 
-    // ë„¤íŠ¸ì›Œí¬ ì†ì„±ì„ ì •ì˜í•  ë•Œ Fusionì€ ì œê³µëœ get ë° set ìŠ¤í…ì„ ì‚¬ìš©ì ì§€ì • ì½”ë“œë¡œ ëŒ€ì²´í•˜ì—¬ ë„¤íŠ¸ì›Œí¬ ìƒíƒœì— ì ‘ê·¼
-    // ì´ëŠ” ì• í”Œë¦¬ì¼€ì´ì…˜ì´ ì´ëŸ¬í•œ ë°©ë²•ì„ ì‚¬ìš©í•˜ì—¬ ì†ì„± ê°’ì˜ ë³€í™”ë¥¼ ì²˜ë¦¬í•  ìˆ˜ ì—†ìœ¼ë©°
-    // ë³„ë„ì˜ setter ë©”ì†Œë“œë¥¼ ë§Œë“œëŠ” ê²ƒì€ ë¡œì»¬ì—ì„œë§Œ ì‘ë™í•œë‹¤ëŠ” ê²ƒì„ ì˜ë¯¸
+    // ³×Æ®¿öÅ© ¼Ó¼ºÀ» Á¤ÀÇÇÒ ¶§ FusionÀº Á¦°øµÈ get ¹× set ½ºÅÓÀ» »ç¿ëÀÚ ÁöÁ¤ ÄÚµå·Î ´ëÃ¼ÇÏ¿© ³×Æ®¿öÅ© »óÅÂ¿¡ Á¢±Ù
+    // ÀÌ´Â ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ ÀÌ·¯ÇÑ ¹æ¹ıÀ» »ç¿ëÇÏ¿© ¼Ó¼º °ªÀÇ º¯È­¸¦ Ã³¸®ÇÒ ¼ö ¾øÀ¸¸ç
+    // º°µµÀÇ setter ¸Ş¼Òµå¸¦ ¸¸µå´Â °ÍÀº ·ÎÄÃ¿¡¼­¸¸ ÀÛµ¿ÇÑ´Ù´Â °ÍÀ» ÀÇ¹Ì
     [Networked] public bool spawnedProjectile { get; set; }
 
     private ChangeDetector _changeDetector;
 
     public Material _material;
 
-    #region ì„ì‹œ ë³µêµ¬
-    public CharacterController characterController; // collider, rigidbody
-    public NetworkCharacterController networkCharacterController;
-    public PlayerStateMachine stateMachine;
-    public PlayerController playerController;
-    public PlayerStatHandler statHandler;
-    public PlayerCameraHandler cameraHandler;
-    #endregion
-
-    // RPC(ì›ê²© í”„ë¡œì‹œì € í˜¸ì¶œ)ëŠ” íŠ¹ì • ì´ë²¤íŠ¸ë¥¼ ë„¤íŠ¸ì›Œí¬ í´ë¼ì´ì–¸íŠ¸ ê°„ì— ê³µìœ í•˜ê¸°ì— ì´ìƒì ì…ë‹ˆë‹¤.
-    // ë°˜ë©´ì—, [Networked] ì†ì„±ì€ ì§€ì†ì ìœ¼ë¡œ ë³€í•˜ëŠ” ìƒíƒœë¥¼ ê³µìœ í•˜ëŠ” ë° ì í•©í•œ ê¸°ë³¸ ì†”ë£¨ì…˜ì…ë‹ˆë‹¤.
+    // RPC(¿ø°İ ÇÁ·Î½ÃÀú È£Ãâ)´Â Æ¯Á¤ ÀÌº¥Æ®¸¦ ³×Æ®¿öÅ© Å¬¶óÀÌ¾ğÆ® °£¿¡ °øÀ¯ÇÏ±â¿¡ ÀÌ»óÀûÀÔ´Ï´Ù.
+    // ¹İ¸é¿¡, [Networked] ¼Ó¼ºÀº Áö¼ÓÀûÀ¸·Î º¯ÇÏ´Â »óÅÂ¸¦ °øÀ¯ÇÏ´Â µ¥ ÀûÇÕÇÑ ±âº» ¼Ö·ç¼ÇÀÔ´Ï´Ù.
     //[Networked] public string playerName { get; set; }
     //[Networked] public Color playerColor { get; set; }
 
     private TMP_Text _messages;
-
+    #endregion
 
     private void Awake()
     {
-        _cc = GetComponent<NetworkCharacterController>();
+        /// ±âÁ¸ÀÇ µ¥ÀÌÅÍ
+        //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
-        _weapons = GetComponent<Weapons>(); // SY
-        /// Playerì— ë¶™ì€ PlayerColor ìŠ¤í¬ë¦½íŠ¸ì˜ MeshRendererì— ì ‘ê·¼í•˜ì—¬ materialì„ ê°€ì ¸ì˜¨ë‹¤
+        /// Player¿¡ ºÙÀº PlayerColor ½ºÅ©¸³Æ®ÀÇ MeshRenderer¿¡ Á¢±ÙÇÏ¿© materialÀ» °¡Á®¿Â´Ù
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
-
     private void Start()
     {
-        // ì„ì‹œ ë³µêµ¬
-        //stateMachine = new PlayerStateMachine(this, playerController);
+        stateMachine = new PlayerStateMachine(this, playerController);
+        //stateMachine.ChangeState(stateMachine.IdleState);
+        //Cursor.lockState = CursorLockMode.Locked;
     }
-
-    /// <summary>
-    /// FixedUpdateNetworkë¥¼ PlayerControllerë¡œ ì˜®ê¸°ëŠ” ê±´?
-    /// </summary>
+    //public void Update()
+    //{
+    //    playerController.Update();
+    //}
+    NetworkInputData DEBUG_DATA;
     public override void FixedUpdateNetwork()
     {
-        //Debug.Log("FixedUpdateNetwork ì§„ì…");
-        /// GetInput: OnInputì— ìˆëŠ” ë°ì´í„° ê°€ì ¸ì˜¨ë‹¤
         if (GetInput(out NetworkInputData data))
         {
-            data.direction.Normalize();
-            _cc.Move(5 * data.direction * Runner.DeltaTime);
+            DEBUG_DATA = data;
+            playerController.stateMachine.OnUpdate(data);
 
-            if (data.direction.sqrMagnitude > 0)
-                _forward = data.direction;  //  ë§ˆì§€ë§‰ ì´ë™ ë°©í–¥ì„ ì €ì¥í•˜ê³  ì´ë¥¼ ê³µì˜ ì• ë°©í–¥ìœ¼ë¡œ ì‚¬ìš©
-
-            // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
-            // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
-            if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
-                {
-                    //Debug.Log("ê³µê²©");
-                    _weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+                if (!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
 
-                    //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
-                    //Runner.Spawn(_prefabBall,
-                    //transform.position + _forward,
-                    //Quaternion.LookRotation(_forward),
-                    //  Object.InputAuthority, (runner, o) =>
-                    //  {
-                    //      // Initialize the Ball before synchronizing it
-                    //      o.GetComponent<Ball>().Init();
-                    //  });
-                    //spawnedProjectile = !spawnedProjectile;
-                }
-                // PhyscBall.Init() ë©”ì†Œë“œë¥¼ ì‚¬ìš©í•˜ì—¬ ìŠ¤í°ì„ í˜¸ì¶œí•˜ê³  ì†ë„(ë§ˆì§€ë§‰ ìˆœë°©í–¥ì— ê³±í•œ ìƒìˆ˜)ë¥¼ ì„¤ì •
+                else store.RPC_RequestStopInteraction(networkObject.InputAuthority);
 
-                // ë§ˆìš°ìŠ¤ ìš°í´ë¦­(ZOOM)
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
-                {
-                    //Debug.Log("ì¡°ì¤€");
-
-                    _weapons.Aiming();
-                    //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
-                    //Runner.Spawn(_prefabPhysxBall,
-                    //  transform.position + _forward,
-                    //  Quaternion.LookRotation(_forward),
-                    //  Object.InputAuthority,
-                    //  (runner, o) =>
-                    //  {
-                    //      o.GetComponent<PhysxBall>().Init(10 * _forward);
-                    //  });
-                    //spawnedProjectile = !spawnedProjectile;
-                }
-                // Runner.Spawn()ì„ í˜¸ì¶œí•œ í›„ spawnedProjectile ì†ì„±ì„ í† ê¸€ í•˜ì—¬ ì½œë°±ì„ íŠ¸ë¦¬ê±°
-                //spawnedProjectile = !spawnedProjectile;
-                
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
-                {
-                    Debug.Log("ì¡°ì¤€ í•´ì œ");
-
-                    _weapons.StopAiming();
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_RELOAD))
-                {
-                    //Debug.Log("ì¥ì „");
-
-                    _weapons.Reload();
-
-                }
-
-                if (data.scrollValue.y != 0)
-                {
-                    Debug.Log("ìŠ¤ì™‘");
-
-                    _weapons.Swap(data.scrollValue.y);
-                }
+                isInteraction = !isInteraction;
             }
         }
     }
 
-    private void Update()
+    private void OnGUI()
     {
-        // Object.HasInputAuthorityë¥¼ í™•ì¸í•œë‹¤: ëª¨ë“  í´ë¼ì´ì–¸íŠ¸ì—ì„œ ì‹¤í–‰ë˜ì§€ë§Œ ì´ í”Œë ˆì´ì–´ë¥¼ ì œì–´í•˜ëŠ” í´ë¼ì´ì–¸íŠ¸ë§Œ RPCë¥¼ í˜¸ì¶œí•´ì•¼ í•˜ê¸° ë•Œë¬¸
-        if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
-        {
-            RPC_SendMessage("Hey Mate!");
-        }
+        GUILayout.Label(playerController.stateMachine.currentState.ToString());
+        GUILayout.Label(DEBUG_DATA.ToString());
+        GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+        GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
     }
+
+
+    /// <summary>
+    /// FixedUpdateNetwork¸¦ PlayerController·Î ¿Å±â´Â °Ç?
+    /// </summary>
+    //public override void FixedUpdateNetwork()
+    //{
+    //    /// ±âÁ¸ÀÇ µ¥ÀÌÅÍ
+    //    //Debug.Log("FixedUpdateNetwork ÁøÀÔ");
+    //    /// GetInput: OnInput¿¡ ÀÖ´Â µ¥ÀÌÅÍ °¡Á®¿Â´Ù
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        data.direction.Normalize();
+    //        //_cc.Move(5 * data.direction * Runner.DeltaTime);
+
+    //        if (data.direction.sqrMagnitude > 0)
+    //            _forward = data.direction;  //  ¸¶Áö¸· ÀÌµ¿ ¹æÇâÀ» ÀúÀåÇÏ°í ÀÌ¸¦ °øÀÇ ¾Õ ¹æÇâÀ¸·Î »ç¿ë
+
+    //        // ³×Æ®¿öÅ© °´Ã¼´Â StateAuthority(È£½ºÆ®)¸¸ »ı¼ºÇÒ ¼ö ÀÖ±â ¶§¹®¿¡ StateAuthority¿¡ ´ëÇÑ È®ÀÎÀÌ ÇÊ¿ä
+    //        // È£½ºÆ®¿¡¼­¸¸ ½ÇÇàµÇ°í Å¬¶óÀÌ¾ğÆ®¿¡¼­´Â ¿¹ÃøµÇÁö ¾Ê´Â´Ù
+    //        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+    //        {
+    //            // ¸¶¿ì½º ÁÂÅ¬¸¯(°ø°İ)
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+    //            {
+    //                //Debug.Log("°ø°İ");
+    //                _weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+
+    //                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+    //                Runner.Spawn(_prefabBall,
+    //                transform.position + _forward,
+    //                Quaternion.LookRotation(_forward),
+    //                  Object.InputAuthority, (runner, o) =>
+    //                  {
+    //                      // Initialize the Ball before synchronizing it
+    //                      o.GetComponent<Ball>().Init();
+    //                  });
+    //                spawnedProjectile = !spawnedProjectile;
+    //            }
+    // PhyscBall.Init() ¸Ş¼Òµå¸¦ »ç¿ëÇÏ¿© ½ºÆùÀ» È£ÃâÇÏ°í ¼Óµµ(¸¶Áö¸· ¼ø¹æÇâ¿¡ °öÇÑ »ó¼ö)¸¦ ¼³Á¤
+
+    //            // ¸¶¿ì½º ¿ìÅ¬¸¯(ZOOM)
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+    //            {
+    //                //Debug.Log("Á¶ÁØ");
+
+    //                _weapons.Aiming();
+    //                //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+    //                //Runner.Spawn(_prefabPhysxBall,
+    //                //  transform.position + _forward,
+    //                //  Quaternion.LookRotation(_forward),
+    //                //  Object.InputAuthority,
+    //                //  (runner, o) =>
+    //                //  {
+    //                //      o.GetComponent<PhysxBall>().Init(10 * _forward);
+    //                //  });
+    //                //spawnedProjectile = !spawnedProjectile;
+    //            }
+    //            // Runner.Spawn()À» È£ÃâÇÑ ÈÄ spawnedProjectile ¼Ó¼ºÀ» Åä±Û ÇÏ¿© Äİ¹éÀ» Æ®¸®°Å
+    //            //spawnedProjectile = !spawnedProjectile;
+
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+    //            {
+    //                Debug.Log("Á¶ÁØ ÇØÁ¦");
+
+    //                _weapons.StopAiming();
+    //            }
+
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_RELOAD))
+    //            {
+    //                //Debug.Log("ÀåÀü");
+
+    //                _weapons.Reload();
+    //            }
+    //            if (data.scrollValue.y != 0)
+    //            {
+    //                Debug.Log("½º¿Ò");
+    //                _weapons.Swap(data.scrollValue.y);
+    //            }
+    //        }
+    //    }
+    //}
+
+    //private void Update()
+    //{
+    //    // Object.HasInputAuthority¸¦ È®ÀÎÇÑ´Ù: ¸ğµç Å¬¶óÀÌ¾ğÆ®¿¡¼­ ½ÇÇàµÇÁö¸¸ ÀÌ ÇÃ·¹ÀÌ¾î¸¦ Á¦¾îÇÏ´Â Å¬¶óÀÌ¾ğÆ®¸¸ RPC¸¦ È£ÃâÇØ¾ß ÇÏ±â ¶§¹®
+    //    if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
+    //    {
+    //        RPC_SendMessage("Hey Mate!");
+    //    }
+    //}
+
+
+    //private void Update()
+    //{
+    //    // Object.HasInputAuthority¸¦ È®ÀÎÇÑ´Ù: ¸ğµç Å¬¶óÀÌ¾ğÆ®¿¡¼­ ½ÇÇàµÇÁö¸¸ ÀÌ ÇÃ·¹ÀÌ¾î¸¦ Á¦¾îÇÏ´Â Å¬¶óÀÌ¾ğÆ®¸¸ RPC¸¦ È£ÃâÇØ¾ß ÇÏ±â ¶§¹®
+    //    if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
+    //    {
+    //        RPC_SendMessage("Hey Mate!");
+    //    }
+    //}
+
+    public Weapons GetWeapons()
+    {
+        return Weapons;
+    }
+
+
+
     public override void Spawned()
     {
-        // íŠœí† ë¦¬ì–¼ì— ìˆë˜ ë¶€ë¶„, ì‚­ì œí•˜ë‹ˆê¹Œ ì˜¤ë¥˜ê°€ ë§ì´ ë‚˜ì„œ ì¼ë‹¨ ë‚¨ê²¨ë‘ì—ˆë‹¤
+        // Æ©Åä¸®¾ó¿¡ ÀÖ´ø ºÎºĞ, »èÁ¦ÇÏ´Ï±î ¿À·ù°¡ ¸¹ÀÌ ³ª¼­ ÀÏ´Ü ³²°ÜµÎ¾ú´Ù
         _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
         name = $"{Object.InputAuthority} ({(HasInputAuthority ? "Input Authority" : (HasStateAuthority ? "State Authority" : "Proxy"))})";
@@ -191,28 +258,49 @@ public class Player : NetworkBehaviour
                 virtualCameras[i].enabled = false;
             }
         }
+
+        if (Object.HasInputAuthority) // ·ÎÄÃ ÇÃ·¹ÀÌ¾î º»ÀÎÀÏ ¶§
+        {
+            local = this;
+            Debug.Log("Local Player ¼³Á¤ ¿Ï·á");
+        }
+        /// µğ¹ö±×¿ë
+        statHandler.Init(200, 3, 2, 5, 8, 50, 60);
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î hp = {statHandler.CurrentHealth}");
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î speed = {statHandler.MoveSpeed}");
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î speedModifier = {statHandler.MoveSpeedModifier}");
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î rotationDamping = {statHandler.RotationDamping}");
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î jumpPower = {statHandler.JumpPower}");
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î attackPower = {statHandler.AttackPower}");
+        Debug.LogFormat($"ÇÃ·¹ÀÌ¾î depencePower = {statHandler.DefensePower}");
     }
     private void SetFirstPersonVisuals(bool firstPerson)
     {
         FirstPersonRoot.SetActive(firstPerson);
         ThirdPersonRoot.SetActive(firstPerson == false);
 
-
-        /// ì„ì‹œ ë³µêµ¬
         if (firstPerson)
         {
-            playerController = GetComponentInChildren<PlayerController>(true);
+            // 1ÀÎÄªÀÏ °æ¿ì: LocalPlayerController ÀÚ½Ä¿¡¼­ Animator °¡Á®¿À±â
             if (playerController != null)
             {
-                playerAnimator = playerController.GetComponentInChildren<Animator>();
+                // 1ÀÎÄªÀÇ °æ¿ì Hands_Rifle°¡ È°¼ºÈ­ µÈ »óÅÂ·Î ½ÃÀÛÇÏ¿© RifleÀÇ Animator¸¦ ´ëÀÔ
+                //firstPersonAnimator = localController.GetComponentInChildren<Animator>();
+                //playerAnimator = playerController.GetComponentInChildren<Animator>();
+
+                // ¹«±â ±³Ã¼ÇÒ¶§¸¶´Ù animator¸¦ °Ë»öÇÒ ¼ö ¾øÀ¸´Ï ÀúÀåÇÏ°í ºÒ·¯¾²´Â°Ô °¡Àå ÁÁ´Ù
+                // 3°³ ´Ù È°¼ºÈ­ ÇÏ°í, rifleÀ» Á¦¿ÜÇÑ 2°³¸¦ ÀÏ´Ü ºñÈ°¼ºÈ­(¿¹Á¤)
+                // ¿ì¼± Weapons¸¦ ºÙÀÎ´Ù
             }
         }
         else
         {
-            playerController = GetComponentInChildren<PlayerController>(true);
             if (playerController != null)
             {
-                playerAnimator = playerController.GetComponent<Animator>();
+                // WeaponsÀ» ºÙ¿©¾ß ÇÑ´Ù
+
+                //playerAnimator = playerController.GetComponent<Animator>();
+                
             }
         }
     }
@@ -220,8 +308,8 @@ public class Player : NetworkBehaviour
 
 
     /// <summary>
-    /// ë§ˆì§€ë§‰ìœ¼ë¡œ ChangeDetectorë¥¼ í˜¸ì¶œí•œ ì´í›„ ë„¤íŠ¸ì›Œí¬í™”ëœ ì†ì„±ì— ë°œìƒí•œ ëª¨ë“  ë³€ê²½ ì‚¬í•­ì„ ë°˜ë³µ
-    /// Render()ëŠ” Unityì˜ Update()ì²˜ëŸ¼ Fusionì´ ë§¤ í”„ë ˆì„ë§ˆë‹¤ ë Œë”ë§ ë£¨í”„ì—ì„œ ìë™ìœ¼ë¡œ í˜¸ì¶œí•˜ëŠ” í•¨ìˆ˜ë‹¤
+    /// ¸¶Áö¸·À¸·Î ChangeDetector¸¦ È£ÃâÇÑ ÀÌÈÄ ³×Æ®¿öÅ©È­µÈ ¼Ó¼º¿¡ ¹ß»ıÇÑ ¸ğµç º¯°æ »çÇ×À» ¹İº¹
+    /// Render()´Â UnityÀÇ Update()Ã³·³ FusionÀÌ ¸Å ÇÁ·¹ÀÓ¸¶´Ù ·»´õ¸µ ·çÇÁ¿¡¼­ ÀÚµ¿À¸·Î È£ÃâÇÏ´Â ÇÔ¼ö´Ù
     /// </summary>
     public override void Render()
     {
@@ -230,17 +318,17 @@ public class Player : NetworkBehaviour
             switch (change)
             {
                 case nameof(spawnedProjectile):
-                    /// PlayerColor ìŠ¤í¬ë¦½íŠ¸ì˜ MeshRendererì— ì ‘ê·¼í•˜ì—¬ materialì˜ ìƒ‰ê¹” ë³€ê²½
+                    /// PlayerColor ½ºÅ©¸³Æ®ÀÇ MeshRenderer¿¡ Á¢±ÙÇÏ¿© materialÀÇ »ö±ò º¯°æ
                     _material.color = Color.white;
                     break;
             }
         }
-        /// PlayerColor ìŠ¤í¬ë¦½íŠ¸ì˜ MeshRendererì— ì ‘ê·¼í•˜ì—¬ materialì˜ ìƒ‰ê¹” ë³€ê²½
+        /// PlayerColor ½ºÅ©¸³Æ®ÀÇ MeshRenderer¿¡ Á¢±ÙÇÏ¿© materialÀÇ »ö±ò º¯°æ
         _material.color = Color.Lerp(_material.color, Color.blue, Time.deltaTime);
     }
 
     /// <summary>
-    /// RPC ê´€ë ¨ ë©”ì„œë“œë“¤
+    /// RPC °ü·Ã ¸Ş¼­µåµé
     /// </summary>
     /// <param name="name"></param>
     /// <param name="color"></param>
@@ -265,11 +353,7 @@ public class Player : NetworkBehaviour
             message = $"Some other player said: {message}\n";
         }
 
-        _messages.text += message;
-    }
-
-    public Weapons GetWeapons()
-    {
-        return _weapons;
+        //_messages.text += message;
+        _messages.text = message;
     }
 }

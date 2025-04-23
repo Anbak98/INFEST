@@ -12,6 +12,7 @@ public class PlayerAirState : PlayerBaseState
 
     public override void Enter()
     {
+        Debug.Log("Air상태 진입");
         base.Enter();
 
         //StartAnimation(stateMachine.Player.AnimationData.AimParameterHash);
@@ -24,14 +25,6 @@ public class PlayerAirState : PlayerBaseState
 
     public override void OnUpdate(NetworkInputData data)
     {
-        PlayerFire(data);
-        controller.ApplyGravity();
-
-        if (!data.isFiring)
-        {
-            stateMachine.ChangeState(stateMachine.IdleState);
-            return;
-        }
     }
     public override void PhysicsUpdate(NetworkInputData data)
     {

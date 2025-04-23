@@ -15,6 +15,7 @@ public class PlayerSitState : PlayerGroundState
         // collider의 크기를 절반으로 줄인다
         player.characterController.height /= 2;
 
+        Debug.Log("Sit상태 진입");
         base.Enter();
         
         //StartAnimation(stateMachine.Player.AnimationData.SitParameterHash);

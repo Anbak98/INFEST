@@ -34,6 +34,7 @@ public class PlayerAttackState : PlayerGroundState
         if (!data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
+            return;
         }
     }
 }

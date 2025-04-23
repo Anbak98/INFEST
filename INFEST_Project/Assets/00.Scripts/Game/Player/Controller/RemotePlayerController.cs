@@ -1,54 +1,50 @@
-using Fusion;
+ï»¿using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 /// <summary>
-/// 3ÀÎÄª ÇÁ¸®ÆÕ¿¡ ºÙ¾î¼­ ¾Ö´Ï¸ŞÀÌ¼Ç °ü¸®
-/// 1ÀÎÄªÀº µû·Î °ü¸®ÇÏ¹Ç·Î 3ÀÎÄª ÇÁ¸®ÆÕ°ú °ü·ÃµÈ ¸ğµç °ÍÀ» °ü¸®(ÀÌµ¿, È¸Àü, ¾Ö´Ï¸ŞÀÌ¼Ç)
+/// 3ì¸ì¹­ í”„ë¦¬íŒ¹ì— ë¶™ì–´ì„œ ì• ë‹ˆë©”ì´ì…˜ ê´€ë¦¬
+/// 1ì¸ì¹­ì€ ë”°ë¡œ ê´€ë¦¬í•˜ë¯€ë¡œ 3ì¸ì¹­ í”„ë¦¬íŒ¹ê³¼ ê´€ë ¨ëœ ëª¨ë“  ê²ƒì„ ê´€ë¦¬(íšŒì „, ì• ë‹ˆë©”ì´ì…˜)
+/// í”Œë ˆì´ì–´ì˜ íšŒì „
 /// 
-/// 3ÀÎÄª ÇÁ¸®ÆÕÀº ³ª´Â º¼ ¼ö ¾øÀ¸¹Ç·Î ºñÈ°¼ºÈ­ »óÅÂ
-/// »ó´ë¹æ¸¸ º¼ ¼ö ÀÖÀ¸´Ï±î ³×Æ®¿öÅ©·Î º¸¿©Áà¾ßÇÑ´Ù
+/// 3ì¸ì¹­ í”„ë¦¬íŒ¹ì€ ë‚˜ëŠ” ë³¼ ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ë¹„í™œì„±í™” ìƒíƒœ
+/// ìƒëŒ€ë°©ë§Œ ë³¼ ìˆ˜ ìˆìœ¼ë‹ˆê¹Œ ë„¤íŠ¸ì›Œí¬ë¡œ ë³´ì—¬ì¤˜ì•¼í•œë‹¤
+/// 
 /// </summary>
 public class RemotePlayerController : PlayerController
 {
-    #region ÇÃ·¹ÀÌ¾î ÇÁ¸®ÆÕ °ü·Ã
+    #region í”Œë ˆì´ì–´ í”„ë¦¬íŒ¹ ê´€ë ¨
     [Header("Components")]
-    public Player player;
 
-    // 3ÀÎÄªÀº ÇÃ·¹ÀÌ¾îÀÇ ¾Ö´Ï¸ŞÀÌ¼Ç¸¸ ±³È¯ÇÑ´Ù
-    public Animator animator;
-    // collider´Â CharacterController¿¡ ³»ÀçµÇ¾îÀÖ´Ù
-    //public CharacterController controller;    // ºÎ¸ğÀÎ PlayerController¿¡ ¼±¾ğµÇ¾îÀÖ´Ù
-
-    private PlayerStatData _networkData;   //¼­¹ö·ÎºÎÅÍ ¹ŞÀ» ÀûÀÇ µ¥ÀÌÅÍ
+    private PlayerStatData _networkData;   //ì„œë²„ë¡œë¶€í„° ë°›ì„ ì ì˜ ë°ì´í„°
     //private DummyGunController _dummyGunController;
     private Vector3 _networkPosition;
 
-    // ÇÊ¿äÇÑ°¡?
+    // í•„ìš”í•œê°€?
     private Vector3 _correctedPosition;
     private float _correctionSpeed = 20f;
 
     private Quaternion _networkRotation;
 
-    private PlayerStatHandler _statHandler;
+    private PlayerStatHandler _statHandler; // ë‹¤ë¥¸ í”Œë ˆì´ì–´ì˜ ì •ë³´ë¥¼ ë„¤íŠ¸ì›Œí¬ë¡œ ë°›ëŠ” ê°’ìœ¼ë¡œ ê°±ì‹ í•œë‹¤
 
-    // ÇÊ¿äÇÑ°¡?
-    [SerializeField] private Transform weaponHolder; // ¼Õ¿¡ ºÙÀÌ´Â ½½·Ô
-    [SerializeField] private Transform weaponFix;   //¹æÇâ Á¶Á¤
+    // í•„ìš”í•œê°€?
+    [SerializeField] private Transform weaponHolder; // ì†ì— ë¶™ì´ëŠ” ìŠ¬ë¡¯
+    [SerializeField] private Transform weaponFix;   //ë°©í–¥ ì¡°ì •
 
-    [Header("ÀÌ¸§ ÅÂ±×")]
+    [Header("ì´ë¦„ íƒœê·¸")]
     //[SerializeField] public PlayerNameTag nameTag;
 
-    [SerializeField] private Transform model;   // 3ÀÎÄª ¸ğµ¨
-    [SerializeField] private Transform bodyCollider;  // Rigidbody + CapsuleCollider
+    [SerializeField] private Transform model;   // 3ì¸ì¹­ ëª¨ë¸
+    //[SerializeField] private Transform bodyCollider;  // Playerì˜ Capsule Collider
     [SerializeField] private LayerMask groundLayer;
 
     private GameObject equippedWeapon;
     #endregion
 
-    #region 3ÀÎÄª ÇÁ¸®ÆÕÀÇ »óÅÂ °ü·Ã
+    #region 3ì¸ì¹­ í”„ë¦¬íŒ¹ì˜ ìƒíƒœ ê´€ë ¨
     private float _currentYaw = 0f;
 
     private Vector3 _inputMove;
@@ -69,17 +65,15 @@ public class RemotePlayerController : PlayerController
     private Vector3 _startPos;
     private Vector3 _targetPos;
     private float _lerpTime = 0f;
-    private float _lerpDuration = 0.05f; // ÇÑ º¸°£ ´ÜÀ§ ½Ã°£ (ms ´ÜÀ§·Îµµ ¼³Á¤ °¡´É)  
+    private float _lerpDuration = 0.05f; // í•œ ë³´ê°„ ë‹¨ìœ„ ì‹œê°„ (ms ë‹¨ìœ„ë¡œë„ ì„¤ì • ê°€ëŠ¥)  
     private bool _isInterpolating = false;
 
-    private Rigidbody _rb;  // Player¿¡ ºÙ¾îÀÖ´Â rigidbody
+    private Rigidbody _rb;  // Playerì— ë¶™ì–´ìˆëŠ” rigidbody
 
     public PlayerStatData PlayerStateData => _networkData;
     //public DummyGunController DummyGunController => _dummyGunController;
 
     private Vector3 _velocity = Vector3.zero;
-
-    //public PlayerStat
     #endregion
 
 
@@ -87,95 +81,173 @@ public class RemotePlayerController : PlayerController
     {
         base.Awake();
 
-        // animatorÀÌ ÀÖ´Â °÷¿¡ Ãß°¡Çß´Ù(1ÀÎÄª, 3ÀÎÄª °¢°¢)
-        animator = GetComponent<Animator>();
+        // animatorì´ ìˆëŠ” ê³³ì— ì¶”ê°€í–ˆë‹¤(1ì¸ì¹­, 3ì¸ì¹­ ê°ê°)
+
         _rb = GetComponentInParent<Rigidbody>();
         _statHandler = GetComponentInParent<PlayerStatHandler>();
 
-        _jumpHeight = _statHandler.JumpPower;
-        _rb.interpolation = RigidbodyInterpolation.Interpolate;
-        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        //if (_statHandler != null)
+        //{
+        //    _jumpHeight = _statHandler.JumpPower;
+        //    _rb.interpolation = RigidbodyInterpolation.Interpolate;
+        //    _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        GetComponentInParent<PlayerStatHandler>().OnDeath += OnDeath;
+        //    _statHandler.OnDeath += OnDeath;
+        //}
     }
-
-    // Start is called before the first frame update
     void Start()
     {
-
     }
 
-    /// <summary>
-    /// »ó´ë¹æÀÇ µ¥ÀÌÅÍ¸¦ ÀÌ¿ëÇÏ¿© ¾Ö´Ï¸ŞÀÌ¼Ç, µ¥¹ÌÁö ÁÖ°í¹Ş´Â ¿¬»ê µîÀ» 
-    /// »óÅÂ¿¡ µû¸¥ ¾Ö´Ï¸ŞÀÌ¼Ç º¯È­´Â ·ÎÄÃ¿¡¼­ °è»ê
-    /// </summary>
-    // Update is called once per frame
-    public override void Update()
-    {
-        // Å×½ºÆ®¿ëÀ¸·Î »ó´ë¹æ ÇÃ·¹ÀÌ¾î ÀÌµ¿½ÃÅ²´Ù
+    //public override void FixedUpdateNetwork()
+    //{
+    //    //base.FixedUpdateNetwork();
 
-        // »ó´ë¹æÀÇ ÀÔ·ÂÀ» ÇöÀç »óÅÂ¿¡ Àü´Ş
-        //stateMachine.currentState.HandleInput(input);
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // ìƒíƒœë¨¸ì‹  
+    //        //stateMachine.HandleInput();
+    //        stateMachine.OnUpdate();
+    //    }
+    //}
 
-        // »ó´ë¹æÀÇ »óÅÂ ¾÷µ¥ÀÌÆ®
-        //stateMachine.currentState.UpdateLogic();
-    }
+    //// ì í”„ ëˆŒë ¸ë‚˜
+    //public override bool IsJumpInput() => player.Input.GetIsJumping();
+    //public override bool IsSitInput() => player.Input.GetIsSitting();
 
-    /// <summary>
-    /// »ó´ë¹æÀÇ µ¥ÀÌÅÍ¸¦ ¹Ş±â¸¸ ÇÑ´Ù
-    /// </summary>
-    public override void FixedUpdateNetwork()
-    {
-        Debug.Log("RemotePlayerController FixedUpdateNetwork ÁøÀÔ");
-        // »ó´ë¹æÀÇ µ¥ÀÌÅÍ¸¦ ³»·Á¹Ş±â¸¸ ÇÑ´Ù
-        if (GetInput(out NetworkInputData input))
-        {
+    //// í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€?
+    ////public override bool IsGrounded() => player.characterController.isGrounded;
+    //public override bool IsGrounded() => player.networkCharacterController.Grounded;
+    //public override float GetVerticalVelocity() => verticalVelocity;
 
-        }
-    }
+    //// í”Œë ˆì´ì–´ì˜ ì´ë™(ë°©í–¥ì€ CameraHandlerì—ì„œ ì„¤ì •) ì²˜ë¦¬. ê·¸ ë°©í–¥ì´ transform.forwardë¡œ ì´ë¯¸ ì„¤ì •ë˜ì—ˆë‹¤
+    //public override void HandleMovement()
+    //{
+    //    //Vector3 input = player.Input.MoveInput;
+    //    //Vector3 forward = transform.forward;
+    //    //Vector3 right = transform.right;
 
+    //    //Vector3 move = right * input.x + forward * input.z;
+    //    //move.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
+    //    //player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
 
-    public override void StartJump()
-    {
-        Debug.Log("Á¡ÇÁ ½ÃÀÛ");
-    }
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        Vector3 input = data.direction;
 
-    private void OnDeath()
-    {
-        //_statHandler.OnDeath(_networkData.networkId);
-        Debug.Log($"RemotePlayerController OnDeath : {_networkData.networkId}");
-    }
-    private void HandleJump()
-    {
-        _jumpElapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(_jumpElapsed / _jumpDuration);
-        float height = Mathf.SmoothStep(0f, _jumpHeight, t);
-        Vector3 pos = _jumpStartPos;
-        pos.y += height;
-        transform.position = pos;
+    //        // â— ì…ë ¥ ì—†ìœ¼ë©´ ì•„ë¬´ ê²ƒë„ í•˜ì§€ ì•ŠìŒ
+    //        if (input.sqrMagnitude < 0.01f) return;
 
-        if (t >= 1f)
-            _isJumpingUp = false;
-    }
+    //        // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê°€ì ¸ì˜¤ê¸°
+    //        Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
+    //        Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
 
-    private void ApplyCorrection()
-    {
-        if (_isInAir || _isJumpingUp) return;
+    //        Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
+    //        moveDir.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
 
-        float dist = Vector3.Distance(transform.position, _correctedPosition);
+    //        //player.networkCharacterController.Move(camForward * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
 
-        if (dist > 0.01f)
-        {
-            float lerpFactor = Mathf.Clamp01(_correctionSpeed * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, _correctedPosition, lerpFactor);
-        }
-    }
+    //        // íšŒì „ì€ ë§‰ê³ , ì´ë™ë§Œ í•œë‹¤
+    //        player.networkCharacterController.Move(
+    //            moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
+    //        );
 
-    public override bool IsGrounded()
-    {
-        Vector3 origin = bodyCollider.position + Vector3.up * 0.1f;
-        return Physics.Raycast(origin, Vector3.down, 1.0f, groundLayer);
-    }
+    //        // íšŒì „ ê°•ì œ ê³ ì •: ì¹´ë©”ë¼ê°€ ì§€ì •í•œ forwardë¡œ
+    //        player.transform.forward = camForward;
+    //    }
+    //}
+    //public override void ApplyGravity()
+    //{
+    //    // TODO
+    //    if (IsGrounded() && verticalVelocity < 0)
+    //    {
+    //        verticalVelocity = -2f;
+    //    }
+    //    else
+    //    {
+    //        verticalVelocity += gravity * Time.deltaTime;
+    //    }
+    //    Vector3 gravityMove = new Vector3(0f, verticalVelocity, 0f);
+    //    player.characterController.Move(gravityMove * Time.deltaTime);
+    //}
+    ///// <summary>
+    ///// ì í”„ ì‹œì‘ ì‹œ ìˆ˜ì§ ì†ë„ ê³„ì‚°
+    ///// </summary>
+    //public override void StartJump()
+    //{
+    //    verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+    //}
 
+    //// ì•‰ëŠ”ë‹¤
+    //public override void StartSit()
+    //{
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+    //    float playerYpos = player.transform.position.y;
+    //    playerYpos /= 2;
+    //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    //}
+    //// ì¼ì–´ë‚œë‹¤
+    //public override void StartStand()
+    //{
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+    //    float playerYpos = player.transform.position.y;
+    //    playerYpos *= 2;
+    //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    //}
+
+    //public override void StartFire()
+    //{
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
+    //        // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
+    //        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+    //        {
+    //            // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+    //            {
+    //                //Debug.Log("ê³µê²©");
+    //                weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+    //                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+    //            }
+    //        }
+    //    }
+    //}
+
+    //public override void StartReload()
+    //{
+    //    // TODO
+    //}
+
+    //private void OnDeath()
+    //{
+    //    //_statHandler.OnDeath(_networkData.networkId);
+    //    Debug.Log($"RemotePlayerController OnDeath : {_networkData.id}");
+    //}
+    //private void HandleJump()
+    //{
+    //    _jumpElapsed += Time.deltaTime;
+    //    float t = Mathf.Clamp01(_jumpElapsed / _jumpDuration);
+    //    float height = Mathf.SmoothStep(0f, _jumpHeight, t);
+    //    Vector3 pos = _jumpStartPos;
+    //    pos.y += height;
+    //    transform.position = pos;
+
+    //    if (t >= 1f)
+    //        _isJumpingUp = false;
+    //}
+
+    //private void ApplyCorrection()
+    //{
+    //    if (_isInAir || _isJumpingUp) return;
+
+    //    float dist = Vector3.Distance(transform.position, _correctedPosition);
+
+    //    if (dist > 0.01f)
+    //    {
+    //        float lerpFactor = Mathf.Clamp01(_correctionSpeed * Time.deltaTime);
+    //        transform.position = Vector3.Lerp(transform.position, _correctedPosition, lerpFactor);
+    //    }
+    //}
 }
 

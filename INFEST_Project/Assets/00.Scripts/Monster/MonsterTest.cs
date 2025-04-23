@@ -1,7 +1,6 @@
 using Fusion;
 using Fusion.Sockets;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,11 +60,27 @@ public class MonsterTest : MonoBehaviour, INetworkRunnerCallbacks
         });
     }
 
+    private void OnTriggerEnter(UnityEngine.Collider other)
+    {
+        if(other.TryGetComponent(out MonsterNetworkBehaviour monster))
+        {
+            RPC_Detected(monster);
+        }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_Detected(MonsterNetworkBehaviour monster)
+    {
+        monster.PlayerDetectedListnerByPlayer();
+    }
+
     void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        IsJoined = true;
-            runner.Spawn(monster);
+        //IsJoined = true;
+        //for(int i = 0; i < 1; ++i)
+        //    runner.Spawn(monster, Vector3.zero);
     }
+
 
     void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {

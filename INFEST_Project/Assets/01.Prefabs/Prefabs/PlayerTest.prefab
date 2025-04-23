@@ -614,7 +614,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5953457501803415890}
-  - component: {fileID: 4700102094170209223}
+  - component: {fileID: 5648215091215980224}
   m_Layer: 6
   m_Name: FirstPersonRoot
   m_TagString: Untagged
@@ -639,7 +639,7 @@ Transform:
   - {fileID: 841323921144475672}
   m_Father: {fileID: 5072942232072495766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4700102094170209223
+--- !u!114 &5648215091215980224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -648,13 +648,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4260200998989714414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13abb73a0ec0ccd4da186d828a768ec5, type: 3}
+  m_Script: {fileID: 11500000, guid: 5eb8d9698187a0947a814b81e44c1077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3072078453906701333}
-  weapons: {fileID: -5511681442977026662}
-  cameraHandler: {fileID: 1139099963600576956}
+  player: {fileID: 0}
+  inputManager: {fileID: 0}
+  weapons: {fileID: 0}
+  cameraHandler: {fileID: 0}
   playerId: 
+  weaponHolder: {fileID: 0}
 --- !u!1 &4300107019633739238
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,7 +1220,6 @@ GameObject:
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 1139099963600576956}
   - component: {fileID: 2204635897523245189}
-  - component: {fileID: 8662622028262300258}
   m_Layer: 6
   m_Name: PlayerTest
   m_TagString: Untagged
@@ -1273,10 +1274,9 @@ MonoBehaviour:
   - {fileID: 3147526191137004029}
   - {fileID: 1139099963600576956}
   - {fileID: 2204635897523245189}
-  - {fileID: 8662622028262300258}
   - {fileID: 724139344834979615}
-  - {fileID: 1421655046164098459}
-  - {fileID: 4700102094170209223}
+  - {fileID: 9097362746166209903}
+  - {fileID: 5648215091215980224}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &1036566270813735001
 Rigidbody:
@@ -1374,7 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationController: {fileID: 8662622028262300258}
+  animationController: {fileID: 0}
   data:
     key: 0
     Playeridx: 
@@ -1388,9 +1388,7 @@ MonoBehaviour:
   inStoreZoon: 0
   isInteraction: 0
   store: {fileID: 0}
-  inventory: {fileID: 0}
   gold: 5000
-  Weapons: {fileID: 0}
   MoveSpeed: 6
   JumpForce: 10
   CameraHandle: {fileID: 5072942232072495766}
@@ -1413,7 +1411,6 @@ MonoBehaviour:
   camera: {fileID: 4742838933017268266}
   fireTransform: {fileID: 3834324505224384244}
   weaponSwitchTime: 1
-  CurrentWeapon: {fileID: 0}
   AllWeapons: []
 --- !u!114 &3147526191137004029
 MonoBehaviour:
@@ -1465,7 +1462,6 @@ MonoBehaviour:
   _scopeCam: {fileID: 0}
   _cameraHolder: {fileID: 5072942232072495766}
   _sensitivity: 5
-  _parentTransform: {fileID: 3834324505224384244}
 --- !u!114 &2204635897523245189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,20 +1481,6 @@ MonoBehaviour:
   braking: 10
   maxSpeed: 2
   rotationSpeed: 15
---- !u!114 &8662622028262300258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d01d58c65d6544e44b299c905f90424e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 0}
-  _MoveDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &8169286849145927954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,7 +2567,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1525218576529477831, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1421655046164098459}
+      addedObject: {fileID: 9097362746166209903}
   m_SourcePrefab: {fileID: 100100000, guid: 889d24f8fc349cf45b463fb9b13b0143, type: 3}
 --- !u!4 &427095570019515508 stripped
 Transform:
@@ -2599,7 +2581,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1985000783179576841}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1421655046164098459
+--- !u!114 &9097362746166209903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2608,13 +2590,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1055682366495237838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13abb73a0ec0ccd4da186d828a768ec5, type: 3}
+  m_Script: {fileID: 11500000, guid: 5fef9538ea1ba18458b81d91ccb43143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3072078453906701333}
-  weapons: {fileID: -5511681442977026662}
-  cameraHandler: {fileID: 1139099963600576956}
+  inputManager: {fileID: 0}
+  weapons: {fileID: 0}
+  cameraHandler: {fileID: 0}
   playerId: 
+  weaponHolder: {fileID: 1415502030778578817}
+  weaponFix: {fileID: 0}
+  model: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &6702231413404486571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5084344385780989346, guid: 889d24f8fc349cf45b463fb9b13b0143,

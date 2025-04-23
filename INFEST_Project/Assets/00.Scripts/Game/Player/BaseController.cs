@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class BaseController : NetworkBehaviour
 {
     public StateMachine stateMachine;
+
     [Networked] protected TickTimer delay { get; set; }
 
     public virtual void Awake()
@@ -16,9 +17,13 @@ public abstract class BaseController : NetworkBehaviour
 
     public virtual void Update()
     {
-        stateMachine?.OnUpdate();
     }
 
+
+    // 상태 관련 함수(Local과 Remote 따로 정의)
+    // 
+    //public abstract void PlayFireAnim();
+    //public virtual bool HasMoveInput() => false;
     public virtual bool IsGrounded() => true;
     public virtual bool IsJumpInput() => false;
     public virtual bool IsSitInput() => false;
@@ -32,7 +37,10 @@ public abstract class BaseController : NetworkBehaviour
     public abstract void StartReload(NetworkInputData data);
     public virtual float GetVerticalVelocity() => 0f;
 
+    //public virtual Vector3 GetMoveInput() => Vector3.zero;
 
     public abstract void StartSit();
     public abstract void StartStand();
+
+
 }

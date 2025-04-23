@@ -6,13 +6,22 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
+//using static UnityEditor.Experimental.GraphView.GraphView;
 
+
+/// <summary>
+/// 캐릭터 동작 처리를 한다
+/// 
+/// InputAction의 이벤트메서드를 연결한다
+/// 플레이어의 FSM은 네트워크에서 동기화된 입력 데이터를 기반으로 상태 전환
+/// 
+/// 플레이어의 동작 및 상태 관리
+/// FixedUpdateNetwork()에서 Fusion으로부터 받은 입력 데이터를 기반으로 시뮬레이션 수행.
+/// </summary>
 public class PlayerController : BaseController
 {
     // 동적 연결되는 변수 숨기기
-    [HideInInspector]
     public Player player;
-    public InputManager inputManager;
     public Weapons weapons;
 
     /// <summary>
@@ -38,29 +47,31 @@ public class PlayerController : BaseController
 
     public override void Awake()
     {
-        player = GetComponentInParent<Player>();    // 플레이어 먼저 생성
-        inputManager = FindAnyObjectByType<InputManager>();
         weapons = player.GetWeapons();
 
+        //inputHandler = player.Input;
+        // inputManager에 더 잘 연결하는 방법을 생각해보자
+        //if (inputManager == null)
+        //    inputManager = FindObjectOfType<InputManager>();
+
+        //controller = GetComponentInParent<CharacterController>();
 
         stateMachine = new PlayerStateMachine(player, this);
 
         //MainCameraTransform = Camera.main.transform;
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        //base.FixedUpdateNetwork();
-        if (GetInput(out NetworkInputData data))
-        {
-            //Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
+    //public override void FixedUpdateNetwork()
+    //{
+    //    //base.FixedUpdateNetwork();
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // 상태머신
 
-            // 상태머신
-            //stateMachine.HandleInput();
-            stateMachine.OnUpdate(data);
-        }
-    }
-
+    //        //stateMachine.HandleInput();
+    //        stateMachine.OnUpdate(data);
+    //    }
+    //}
 
     // 점프 눌렸나
     //public override bool IsJumpInput() => player.Input.GetIsJumping();
@@ -70,7 +81,6 @@ public class PlayerController : BaseController
     //public override bool IsGrounded() => player.characterController.isGrounded;
     public override bool IsGrounded() => player.networkCharacterController.Grounded;
     public override float GetVerticalVelocity() => verticalVelocity;
-
 
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     public override void HandleMovement(NetworkInputData data)
@@ -146,14 +156,8 @@ public class PlayerController : BaseController
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
-                Debug.Log(data.isShotgunOnFiring);
-                Debug.Log($"두 프레임 사이 시간: {Time.deltaTime:F5}초");
-
+                //Debug.Log("공격");
                 weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
-
-                // 사격 후에 false로 바꿔주어야하는데 이 방식으로 가능할까?
-                // data는 입력값이니까 다음에 입력할때 다시 true가 될 것 같지만 일단 해보자
-                //data.isShotgunOnFiring = false;
 
                 delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
             }

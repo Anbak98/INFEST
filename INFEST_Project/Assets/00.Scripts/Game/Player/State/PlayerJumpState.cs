@@ -1,4 +1,4 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,24 +10,22 @@ public class PlayerJumpState : PlayerAirState
 
     public override void Enter()
     {
-        //Debug.Log("Jump");
+        //Debug.Log("Jump»óÅÂ ÁøÀÔ");
         base.Enter();
         //StartAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
+        // Á¡ÇÁ´Â ÇÑ¹ø¸¸
         PlayerJump();
-        // ì§„ì…í• ë•Œ ì²˜ìŒ 1ë²ˆë§Œ ì í”„
     }
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-        PlayerMove();
+        // ÇÃ·¹ÀÌ¾î ÀÌµ¿
         PlayerMove(data);
-        controller.ApplyGravity();
+        controller.ApplyGravity();  // Áß·Â
 
-        // yì†ë„ 0ì´í•˜ë©´ fallStateë¡œ
-
-
+        // y¹æÇâ ¼Óµµ°¡ ÀÛÀ¸¸é fallstate·Î ¹Ù²Ù¾î¾ßÇÑ´Ù(ÀÌ°Ç ÀÏ´Ü ³ªÁß¿¡
         if (controller.IsGrounded())
-        {
+        {            
             stateMachine.ChangeState(stateMachine.IdleState);
         }
     }
@@ -36,6 +34,7 @@ public class PlayerJumpState : PlayerAirState
     {
         base.Exit();
         //StopAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
+        // Á¡ÇÁ°¡ ³¡³ª¸é ÀÌÀü »óÅÂ·Î µ¹¾Æ°¡¾ßÇÑ´Ù
     }
 
 }
