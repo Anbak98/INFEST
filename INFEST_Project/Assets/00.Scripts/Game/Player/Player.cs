@@ -121,8 +121,11 @@ public class Player : NetworkBehaviour
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                if(!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
-                else store.RPC_RequestStopInteraction(this, networkObject.InputAuthority);
+                if (!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
+                 
+                else store.RPC_RequestStopInteraction(networkObject.InputAuthority);
+
+                isInteraction = !isInteraction;
             }
         }
     }
