@@ -22,6 +22,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
     private bool _mouseButton0;
     private bool _mouseButton1;
+    public UIScoreboardView scoreboard;
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
@@ -111,7 +112,10 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
             _spawnedCharacters.Add(player, networkPlayerObject);
-        }
+
+            var info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
+            scoreboard.AddPlayerRow(player, info);
+        }        
     }
     // 접속종료
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -120,6 +124,8 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
+
+            scoreboard.RemovePlayerRow(player);
         }
     }
     #region 나머지는 필요한 곳에서 구현한다(Single Responsibility Principle)
