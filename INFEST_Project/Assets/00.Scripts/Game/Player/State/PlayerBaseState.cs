@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public interface IState
     public void Enter();    // 상태 진입
     public void Exit();     // 상태 끝
     public void HandleInput();  // 새로운 입력값이 들어오면 이벤트를 추가, 삭제
-    public void Update();   // 상태 업데이트
+    public void OnUpdate(NetworkInputData data);   // 상태 업데이트
     public void PhysicsUpdate();    // 물리 업데이트(중력 관련) 
 }
 
@@ -29,16 +30,16 @@ public abstract class PlayerBaseState : IState
     // 임시(동적연결)
     public InputManager inputManager;
 
-    public PlayerBaseState(PlayerController controller, PlayerStateMachine stateMachine)
+    public PlayerBaseState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager)
     {
         this.controller = controller;
         this.stateMachine = stateMachine;
         statHandler = stateMachine.Player.statHandler;
         player = stateMachine.Player;
-        inputManager = player.Input.GetInputManager();
         stateMachine.Player.playerAnimator = player.playerAnimator;
 
         MainCameraTransform = Camera.main.transform;
+        this.inputManager = inputManager;
     }
 
     public virtual void Enter()
@@ -60,21 +61,28 @@ public abstract class PlayerBaseState : IState
         // 이거 Controller의 HandleMovement가 될 수 없냐는거지
         // 중력도 마찬가지 ApplyGravity
 
-        ReadMovementInput();    // 이동
-        // 달리기
-        // 점프
-        // 사격
-        // 앉기
+        //ReadMovementInput();    // 이동
 
+        ///// 여기에서 입력값을 모두 확인해야 상태머신의 Update에서 키입력을 확인하지 않는듯?
+        ///// 나중에 리팩토링할때 바꿔보자
+
+        //// 달리기
+        //ReadRunInput();
+        //// 점프
+        //ReadJumpInput();
+        //// 사격
+        //ReadFireInput();
+        //// 앉기
+        //ReadSitInput();
     }
-    public virtual void Update()
+    public virtual void OnUpdate(NetworkInputData data)
     {
     }
     public virtual void PhysicsUpdate()
     {
     }
 
-    #region 상태 관련 이벤트#
+    #region 상태 관련 이벤트
     // 모든 상태에 공통인 메서드
     // 각각 클래스에서 사용할 이벤트를 상태 진입 시에 추가
     protected virtual void AddInputActionsCallbacks()
@@ -175,16 +183,29 @@ public abstract class PlayerBaseState : IState
     // 모든 상태는 입력값을 받는다
     // WASD 입력
     // 이건 BaseState에서만 호출하고있다
-    private void ReadMovementInput()
-    {
-        // Input
-        stateMachine.InputHandler.GetMoveInput();
-    }
-    private void ReadBoolInput()
-    {
-        stateMachine.InputHandler.GetIsJumping();
-        // 이런식으로 다 들고와야할까
-    }
+    //private void ReadMovementInput()
+    //{
+    //    // Input
+    //    stateMachine.InputHandler.GetMoveInput();
+    //}
+    //private void ReadJumpInput()
+    //{
+    //    stateMachine.InputHandler.GetIsJumping();
+    //}
+    //private void ReadRunInput()
+    //{
+    //    stateMachine.InputHandler.GetIsRunning();
+    //}
+    //private void ReadFireInput()
+    //{
+    //    stateMachine.InputHandler.GetIsFiring();
+    //}
+    //private void ReadSitInput()
+    //{
+    //    stateMachine.InputHandler.GetIsSitting();
+    //}
+
+
 
     #endregion
     #region 애니메이션이 있는 것들(이동, 달리기, 사격, 점프, 앉기, 앉아서 이동, 조준)의 실제 동작
@@ -192,21 +213,25 @@ public abstract class PlayerBaseState : IState
     {
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
         controller.HandleMovement();    // 이동
-        controller.ApplyGravity();  // 중력
     }
-    
+
 
     protected void PlayerFire()
     {
-        Debug.Log("Fire");
         // 발사로직 PlayerController에 옮길것
+        controller.StartFire();
     }
+    protected void Reload()
+    {
+        // 장전
+        Debug.Log("Reload");
+    }
+
     protected void PlayerRun()
     {
         Debug.Log("Run");
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
         controller.HandleMovement();    // 이동
-        controller.ApplyGravity();  // 중력
 
     }
     protected void PlayerJump()
@@ -221,14 +246,25 @@ public abstract class PlayerBaseState : IState
         Debug.Log("Sit");
 
     }
+
     // 앉아서 걷기
     protected void PlayerWaddle()
     {
         Debug.Log("Waddle");
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
         controller.HandleMovement();    // 이동
-        controller.ApplyGravity();  // 중력
-
+    }
+    protected void PlayerSitFire()
+    {
+        Debug.Log("SitFire");
+        // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
+        controller.StartFire();
+    }
+    protected void SitReload()
+    {
+        // 장전
+        Debug.Log("Reload");
+        controller.StartReload();
     }
     // 조준(애니메이션은 바꾸고, 카메라를 따로 조작)
     protected void PlayerZoom()

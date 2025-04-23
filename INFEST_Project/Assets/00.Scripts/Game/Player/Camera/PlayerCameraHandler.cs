@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.InputSystem;
 /// 카메라의 이동 회전을 다룬다
 /// 회전은 상태 변화에 영향을 미치지 않으므로 StateMachine으로부터 독립적으로 작성
 /// </summary>
-public class PlayerCameraHandler : MonoBehaviour
+public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private Camera _scopeCam;          // scope 전용 카메라
     [SerializeField] private Transform _cameraHolder;    // 카메라 부모 (X축 회전만 담당)
@@ -26,15 +27,6 @@ public class PlayerCameraHandler : MonoBehaviour
         InitCamera();
     }
 
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-        RotateCamera();
-    }
-
     public Camera GetCamera(bool scopeCam)
     {
         return scopeCam ? _scopeCam : _mainCam;
@@ -47,20 +39,42 @@ public class PlayerCameraHandler : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void RotateCamera()
+    public override void FixedUpdateNetwork()
     {
-        //마우스 이동량 (InputSystem)
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        base.FixedUpdateNetwork();
 
-        float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
-        float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
+        if (GetInput(out NetworkInputData data))
+        {
+            Vector2 mouseDelta = data.lookDelta;
 
-        // 좌우 회전 (플레이어)
-        transform.Rotate(Vector3.up * mouseX);
+            float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
+            float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
 
-        // 상하 회전 (카메라 홀더)
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
-        _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            // 좌우 회전 (플레이어)
+            transform.Rotate(Vector3.up * mouseX);
+
+            // 카메라만 회전하고 플레이어는 회전하지않는다
+
+
+            // 상하 회전 (카메라 홀더)
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
+            _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }
+    }
+
+    public Vector3 GetCameraForwardOnXZ()
+    {
+        //Vector3 camForward = _mainCam.transform.forward;
+        Vector3 camForward = transform.forward;
+        camForward.y = 0f;
+        return camForward.normalized;
+    }
+
+    public Vector3 GetCameraRightOnXZ()
+    {
+        Vector3 camRight = _mainCam.transform.right;
+        camRight.y = 0f;
+        return camRight.normalized;
     }
 }

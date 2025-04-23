@@ -1,50 +1,50 @@
-using Fusion;
+ï»¿using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 /// <summary>
-/// 3ÀÎÄª ÇÁ¸®ÆÕ¿¡ ºÙ¾î¼­ ¾Ö´Ï¸ŞÀÌ¼Ç °ü¸®
-/// 1ÀÎÄªÀº µû·Î °ü¸®ÇÏ¹Ç·Î 3ÀÎÄª ÇÁ¸®ÆÕ°ú °ü·ÃµÈ ¸ğµç °ÍÀ» °ü¸®(È¸Àü, ¾Ö´Ï¸ŞÀÌ¼Ç)
-/// ÇÃ·¹ÀÌ¾îÀÇ È¸Àü
+/// 3ì¸ì¹­ í”„ë¦¬íŒ¹ì— ë¶™ì–´ì„œ ì• ë‹ˆë©”ì´ì…˜ ê´€ë¦¬
+/// 1ì¸ì¹­ì€ ë”°ë¡œ ê´€ë¦¬í•˜ë¯€ë¡œ 3ì¸ì¹­ í”„ë¦¬íŒ¹ê³¼ ê´€ë ¨ëœ ëª¨ë“  ê²ƒì„ ê´€ë¦¬(íšŒì „, ì• ë‹ˆë©”ì´ì…˜)
+/// í”Œë ˆì´ì–´ì˜ íšŒì „
 /// 
-/// 3ÀÎÄª ÇÁ¸®ÆÕÀº ³ª´Â º¼ ¼ö ¾øÀ¸¹Ç·Î ºñÈ°¼ºÈ­ »óÅÂ
-/// »ó´ë¹æ¸¸ º¼ ¼ö ÀÖÀ¸´Ï±î ³×Æ®¿öÅ©·Î º¸¿©Áà¾ßÇÑ´Ù
+/// 3ì¸ì¹­ í”„ë¦¬íŒ¹ì€ ë‚˜ëŠ” ë³¼ ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ë¹„í™œì„±í™” ìƒíƒœ
+/// ìƒëŒ€ë°©ë§Œ ë³¼ ìˆ˜ ìˆìœ¼ë‹ˆê¹Œ ë„¤íŠ¸ì›Œí¬ë¡œ ë³´ì—¬ì¤˜ì•¼í•œë‹¤
 /// 
 /// </summary>
 public class RemotePlayerController : PlayerController
 {
-    #region ÇÃ·¹ÀÌ¾î ÇÁ¸®ÆÕ °ü·Ã
+    #region í”Œë ˆì´ì–´ í”„ë¦¬íŒ¹ ê´€ë ¨
     [Header("Components")]
 
-    private PlayerStatData _networkData;   //¼­¹ö·ÎºÎÅÍ ¹ŞÀ» ÀûÀÇ µ¥ÀÌÅÍ
+    private PlayerStatData _networkData;   //ì„œë²„ë¡œë¶€í„° ë°›ì„ ì ì˜ ë°ì´í„°
     //private DummyGunController _dummyGunController;
     private Vector3 _networkPosition;
 
-    // ÇÊ¿äÇÑ°¡?
+    // í•„ìš”í•œê°€?
     private Vector3 _correctedPosition;
     private float _correctionSpeed = 20f;
 
     private Quaternion _networkRotation;
 
-    private PlayerStatHandler _statHandler; // ´Ù¸¥ ÇÃ·¹ÀÌ¾îÀÇ Á¤º¸¸¦ ³×Æ®¿öÅ©·Î ¹Ş´Â °ªÀ¸·Î °»½ÅÇÑ´Ù
+    private PlayerStatHandler _statHandler; // ë‹¤ë¥¸ í”Œë ˆì´ì–´ì˜ ì •ë³´ë¥¼ ë„¤íŠ¸ì›Œí¬ë¡œ ë°›ëŠ” ê°’ìœ¼ë¡œ ê°±ì‹ í•œë‹¤
 
-    // ÇÊ¿äÇÑ°¡?
-    [SerializeField] private Transform weaponHolder; // ¼Õ¿¡ ºÙÀÌ´Â ½½·Ô
-    [SerializeField] private Transform weaponFix;   //¹æÇâ Á¶Á¤
+    // í•„ìš”í•œê°€?
+    [SerializeField] private Transform weaponHolder; // ì†ì— ë¶™ì´ëŠ” ìŠ¬ë¡¯
+    [SerializeField] private Transform weaponFix;   //ë°©í–¥ ì¡°ì •
 
-    [Header("ÀÌ¸§ ÅÂ±×")]
+    [Header("ì´ë¦„ íƒœê·¸")]
     //[SerializeField] public PlayerNameTag nameTag;
 
-    [SerializeField] private Transform model;   // 3ÀÎÄª ¸ğµ¨
-    //[SerializeField] private Transform bodyCollider;  // PlayerÀÇ Capsule Collider
+    [SerializeField] private Transform model;   // 3ì¸ì¹­ ëª¨ë¸
+    //[SerializeField] private Transform bodyCollider;  // Playerì˜ Capsule Collider
     [SerializeField] private LayerMask groundLayer;
 
     private GameObject equippedWeapon;
     #endregion
 
-    #region 3ÀÎÄª ÇÁ¸®ÆÕÀÇ »óÅÂ °ü·Ã
+    #region 3ì¸ì¹­ í”„ë¦¬íŒ¹ì˜ ìƒíƒœ ê´€ë ¨
     private float _currentYaw = 0f;
 
     private Vector3 _inputMove;
@@ -65,10 +65,10 @@ public class RemotePlayerController : PlayerController
     private Vector3 _startPos;
     private Vector3 _targetPos;
     private float _lerpTime = 0f;
-    private float _lerpDuration = 0.05f; // ÇÑ º¸°£ ´ÜÀ§ ½Ã°£ (ms ´ÜÀ§·Îµµ ¼³Á¤ °¡´É)  
+    private float _lerpDuration = 0.05f; // í•œ ë³´ê°„ ë‹¨ìœ„ ì‹œê°„ (ms ë‹¨ìœ„ë¡œë„ ì„¤ì • ê°€ëŠ¥)  
     private bool _isInterpolating = false;
 
-    private Rigidbody _rb;  // Player¿¡ ºÙ¾îÀÖ´Â rigidbody
+    private Rigidbody _rb;  // Playerì— ë¶™ì–´ìˆëŠ” rigidbody
 
     public PlayerStatData PlayerStateData => _networkData;
     //public DummyGunController DummyGunController => _dummyGunController;
@@ -81,7 +81,7 @@ public class RemotePlayerController : PlayerController
     {
         base.Awake();
 
-        // animatorÀÌ ÀÖ´Â °÷¿¡ Ãß°¡Çß´Ù(1ÀÎÄª, 3ÀÎÄª °¢°¢)
+        // animatorì´ ìˆëŠ” ê³³ì— ì¶”ê°€í–ˆë‹¤(1ì¸ì¹­, 3ì¸ì¹­ ê°ê°)
 
 
         _rb = GetComponentInParent<Rigidbody>();
@@ -98,62 +98,255 @@ public class RemotePlayerController : PlayerController
         //}
     }
 
+    //public override void FixedUpdateNetwork()
+    //{
+    //    //base.FixedUpdateNetwork();
+
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // ìƒíƒœë¨¸ì‹  
+    //        //stateMachine.HandleInput();
+    //        stateMachine.OnUpdate();
+    //    }
+    //}
+
+    //// ì í”„ ëˆŒë ¸ë‚˜
+    //public override bool IsJumpInput() => player.Input.GetIsJumping();
+    //public override bool IsSitInput() => player.Input.GetIsSitting();
+
+    //// í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€?
+    ////public override bool IsGrounded() => player.characterController.isGrounded;
+    //public override bool IsGrounded() => player.networkCharacterController.Grounded;
+    //public override float GetVerticalVelocity() => verticalVelocity;
+
+    //// í”Œë ˆì´ì–´ì˜ ì´ë™(ë°©í–¥ì€ CameraHandlerì—ì„œ ì„¤ì •) ì²˜ë¦¬. ê·¸ ë°©í–¥ì´ transform.forwardë¡œ ì´ë¯¸ ì„¤ì •ë˜ì—ˆë‹¤
+    //public override void HandleMovement()
+    //{
+    //    //Vector3 input = player.Input.MoveInput;
+    //    //Vector3 forward = transform.forward;
+    //    //Vector3 right = transform.right;
+
+    //    //Vector3 move = right * input.x + forward * input.z;
+    //    //move.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
+    //    //player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
+
+
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        Vector3 input = data.direction;
+
+    //        // â— ì…ë ¥ ì—†ìœ¼ë©´ ì•„ë¬´ ê²ƒë„ í•˜ì§€ ì•ŠìŒ
+    //        if (input.sqrMagnitude < 0.01f) return;
+
+    //        // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê°€ì ¸ì˜¤ê¸°
+    //        Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
+    //        Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
+
+    //        Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
+    //        moveDir.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
+
+    //        //player.networkCharacterController.Move(camForward * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
+
+    //        // íšŒì „ì€ ë§‰ê³ , ì´ë™ë§Œ í•œë‹¤
+    //        player.networkCharacterController.Move(
+    //            moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
+    //        );
+
+    //        // íšŒì „ ê°•ì œ ê³ ì •: ì¹´ë©”ë¼ê°€ ì§€ì •í•œ forwardë¡œ
+    //        player.transform.forward = camForward;
+    //    }
+    //}
+    //public override void ApplyGravity()
+    //{
+    //    // TODO
+    //    if (IsGrounded() && verticalVelocity < 0)
+    //    {
+    //        verticalVelocity = -2f;
+    //    }
+    //    else
+    //    {
+    //        verticalVelocity += gravity * Time.deltaTime;
+    //    }
+    //    Vector3 gravityMove = new Vector3(0f, verticalVelocity, 0f);
+    //    player.characterController.Move(gravityMove * Time.deltaTime);
+    //}
+    ///// <summary>
+    ///// ì í”„ ì‹œì‘ ì‹œ ìˆ˜ì§ ì†ë„ ê³„ì‚°
+    ///// </summary>
+    //public override void StartJump()
+    //{
+    //    verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+    //}
+
+    //// ì•‰ëŠ”ë‹¤
+    //public override void StartSit()
+    //{
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+    //    float playerYpos = player.transform.position.y;
+    //    playerYpos /= 2;
+    //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    //}
+    //// ì¼ì–´ë‚œë‹¤
+    //public override void StartStand()
+    //{
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+    //    float playerYpos = player.transform.position.y;
+    //    playerYpos *= 2;
+    //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    //}
+
+
+    //public override void StartFire()
+    //{
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
+    //        // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
+    //        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+    //        {
+    //            // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+    //            {
+    //                //Debug.Log("ê³µê²©");
+    //                weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+
+    //                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+    //            }
+    //        }
+    //    }
+    //}
+
+    //public override void StartReload()
+    //{
+    //    // TODO
+    //}
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
     }
 
-    //public override void Update()
+
+
+    /// <summary>
+    /// ìƒëŒ€ë°©ì˜ ë°ì´í„°ë¥¼ ì´ìš©í•˜ì—¬ ì• ë‹ˆë©”ì´ì…˜, ë°ë¯¸ì§€ ì£¼ê³ ë°›ëŠ” ì—°ì‚° ë“±ì„ 
+    /// ìƒíƒœì— ë”°ë¥¸ ì• ë‹ˆë©”ì´ì…˜ ë³€í™”ëŠ” ë¡œì»¬ì—ì„œ ê³„ì‚°
+    /// Networkì—ì„œ ë‚´ë ¤ë°›ì€ ë°ì´í„°ë¥¼ ì‹ ë¢°í•˜ë¯€ë¡œ...
+    /// Updateë§Œ FixedUpdateë¡œ ë°”ê¾¸ë©´ ë˜ì§€ ì•Šì„ê¹Œ?
+    /// </summary>
+    //public override void FixedUpdateNetwork()
     //{
-    //    base.Update();
-    //    // RemotePlayerController¸¸ÀÇ ·ÎÁ÷Àº ¾Æ·¡¿¡ Ãß°¡
+    //    // ìƒëŒ€ë°©ì˜ ë°ì´í„°ë¥¼ ë‚´ë ¤ë°›ê¸°ë§Œ í•œë‹¤
+    //    if (GetInput(out NetworkInputData input))
+    //    {
+    //        Debug.Log("RemotePlayerController FixedUpdateNetwork ì§„ì…");
+    //        base.Update();
+    //        // RemotePlayerControllerë§Œì˜ ë¡œì§ì€ ì•„ë˜ì— ì¶”ê°€
+    //    }
+
     //}
 
     /// <summary>
-    /// »ó´ë¹æÀÇ µ¥ÀÌÅÍ¸¦ ÀÌ¿ëÇÏ¿© ¾Ö´Ï¸ŞÀÌ¼Ç, µ¥¹ÌÁö ÁÖ°í¹Ş´Â ¿¬»ê µîÀ» 
-    /// »óÅÂ¿¡ µû¸¥ ¾Ö´Ï¸ŞÀÌ¼Ç º¯È­´Â ·ÎÄÃ¿¡¼­ °è»ê
-    /// Network¿¡¼­ ³»·Á¹ŞÀº µ¥ÀÌÅÍ¸¦ ½Å·ÚÇÏ¹Ç·Î...
-    /// Update¸¸ FixedUpdate·Î ¹Ù²Ù¸é µÇÁö ¾ÊÀ»±î?
+    /// ////////////////////////////////////////////////////////////////
     /// </summary>
-    public override void FixedUpdateNetwork()
-    {
-        // »ó´ë¹æÀÇ µ¥ÀÌÅÍ¸¦ ³»·Á¹Ş±â¸¸ ÇÑ´Ù
-        if (GetInput(out NetworkInputData input))
-        {
-            Debug.Log("RemotePlayerController FixedUpdateNetwork ÁøÀÔ");
-            base.Update();
-            // RemotePlayerController¸¸ÀÇ ·ÎÁ÷Àº ¾Æ·¡¿¡ Ãß°¡
-        }
+    /// <returns></returns>
+    //public override void Update()
+    //{
+    //    base.Update();
+    //    // RemotePlayerControllerë§Œì˜ ë¡œì§ì€ ì•„ë˜ì— ì¶”ê°€
+    //}
 
-    }
+    //// ì í”„ ëˆŒë ¸ë‚˜
+    //public override bool IsJumpInput() => player.Input.GetIsJumping();
+    //public override bool IsSitInput() => player.Input.GetIsSitting();
 
-    // Remote ÇÃ·¹ÀÌ¾î´Â Á÷Á¢ ÀÌµ¿ÇÏÁö ¾Ê´Â´Ù (¼­¹ö·ÎºÎÅÍ ¹Ş´Â Á¤º¸¸¦ ½Å·Ú)
-    public override void HandleMovement()
-    {
-        // TODO
-    }
-    public override void ApplyGravity()
-    {
-        // TODO
-    }
+    //// í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€?
+    //public override bool IsGrounded() => player.characterController.isGrounded;
+    //public override float GetVerticalVelocity() => verticalVelocity;
 
-    public override void HandleFire()
-    {
-        // TODO
-    }
-    public override void StartJump()
-    {
-        // TODO
-    }
-    public override void StartSit()
-    {
-        // TODO
-    }
-    public override void StartStand()
-    {
-        // TODO
-    }
 
+
+    //// Remote í”Œë ˆì´ì–´ëŠ” ì§ì ‘ ì´ë™í•˜ì§€ ì•ŠëŠ”ë‹¤ (ì„œë²„ë¡œë¶€í„° ë°›ëŠ” ì •ë³´ë¥¼ ì‹ ë¢°)
+
+    //// í”Œë ˆì´ì–´ì˜ ì´ë™(ë°©í–¥ì€ CameraHandlerì—ì„œ ì„¤ì •) ì²˜ë¦¬
+    //public override void HandleMovement()
+    //{
+    //    Vector3 input = player.Input.MoveInput;
+
+    //    Vector3 forward = transform.forward;
+    //    Vector3 right = transform.right;
+
+    //    Vector3 move = right * input.x + forward * input.z;
+    //    move.y = 0f; // ìˆ˜ì§ ë°©í–¥ ì œê±°
+    //    player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
+    //}
+    //public override void ApplyGravity()
+    //{
+    //    // TODO
+    //    if (IsGrounded() && verticalVelocity < 0)
+    //    {
+    //        verticalVelocity = -2f;
+    //    }
+    //    else
+    //    {
+    //        verticalVelocity += gravity * Time.deltaTime;
+    //    }
+    //    Vector3 gravityMove = new Vector3(0f, verticalVelocity, 0f);
+    //    player.characterController.Move(gravityMove * Time.deltaTime);
+    //}
+    ///// <summary>
+    ///// ì í”„ ì‹œì‘ ì‹œ ìˆ˜ì§ ì†ë„ ê³„ì‚°
+    ///// </summary>
+    //public override void StartJump()
+    //{
+    //    verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+    //}
+
+    //// ì•‰ëŠ”ë‹¤
+    //public override void StartSit()
+    //{
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+    //    float playerYpos = player.transform.position.y;
+    //    playerYpos /= 2;
+    //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    //}
+    //// ì¼ì–´ë‚œë‹¤
+    //public override void StartStand()
+    //{
+    //    // colliderëŠ” ìƒíƒœì—ì„œ ë³€í™”ì‹œí‚¤ë¯€ë¡œ ì—¬ê¸°ì„œëŠ” transformë§Œ ì•„ë˜ë¡œ
+    //    float playerYpos = player.transform.position.y;
+    //    playerYpos *= 2;
+    //    player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+    //}
+
+
+    //public override void StartFire()
+    //{
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
+    //        // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
+    //        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+    //        {
+    //            // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
+    //            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+    //            {
+    //                //Debug.Log("ê³µê²©");
+    //                weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+
+    //                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+    //            }
+    //        }
+    //    }
+    //}
+
+    //public override void StartReload()
+    //{
+    //    // TODO
+    //}
 
     //private void OnDeath()
     //{

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerIdleState : PlayerGroundState
 {
-    public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 
@@ -31,14 +31,15 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.PhysicsUpdate();
     }
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
-        base.Update();
+        base.OnUpdate(data);
         controller.ApplyGravity();  // 중력
 
         // 입력값이 있다면 MoveState로 전환
-        if (stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
+        if (data.direction != Vector3.zero)
         {
+            //(stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
             stateMachine.ChangeState(stateMachine.MoveState);
             return;
         }
@@ -101,9 +102,10 @@ public class PlayerIdleState : PlayerGroundState
     }
     protected override void OnReload(InputAction.CallbackContext context)
     {
+        // 무기를 장착하고 있을 때 한정
+
         base.OnReload(context);
         stateMachine.ChangeState(stateMachine.ReloadState);
-
     }
     protected override void OnJumpStarted(InputAction.CallbackContext context)
     {

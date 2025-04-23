@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerAirState
 {
-    public PlayerJumpState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerJumpState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 
@@ -16,8 +16,9 @@ public class PlayerJumpState : PlayerAirState
         // 점프는 한번만
         PlayerJump();
     }
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
         // 플레이어 이동
         PlayerMove();
         controller.ApplyGravity();  // 중력

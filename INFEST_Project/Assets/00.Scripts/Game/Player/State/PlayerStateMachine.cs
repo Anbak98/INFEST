@@ -10,7 +10,6 @@ public class PlayerStateMachine : StateMachine
     public Player Player { get; }
 
     // player의 입력정보를 가져오기만 한다
-    public PlayerInputHandler InputHandler { get; }
 
     // 상태들이 받아갈 수 있는 값들을 관리
     public PlayerStatHandler StatHandler { get; set; }
@@ -59,28 +58,27 @@ public class PlayerStateMachine : StateMachine
     public PlayerWaddleState WaddleState { get; private set; }
     
 
-    public PlayerStateMachine(Player player, PlayerController controller)
+    public PlayerStateMachine(Player player, PlayerController controller, InputManager inputManager)
     {
         this.Player = player;
         this.controller = controller;
 
         StatHandler = player.statHandler;
-        InputHandler = player.Input;
 
         // 수정사항
-        IdleState = new PlayerIdleState(controller, this);
-        MoveState = new PlayerMoveState(controller, this);
-        RunState = new PlayerRunState(controller, this);
-        AttackState = new PlayerAttackState(controller, this);
-        ReloadState = new PlayerReloadState(controller, this);
+        IdleState = new PlayerIdleState(controller, this, inputManager);
+        MoveState = new PlayerMoveState(controller, this, inputManager);
+        RunState = new PlayerRunState(controller, this, inputManager);
+        AttackState = new PlayerAttackState(controller, this, inputManager);
+        ReloadState = new PlayerReloadState(controller, this, inputManager);
         
-        JumpState = new PlayerJumpState(controller, this);
-        FallState = new PlayerFallState(controller, this);
+        JumpState = new PlayerJumpState(controller, this, inputManager);
+        FallState = new PlayerFallState(controller, this, inputManager);
         
-        SitIdleState = new PlayerSitIdleState(controller, this);
-        WaddleState = new PlayerWaddleState(controller, this);
-        SitAttackState = new PlayerSitAttackState(controller, this);
-        SitReloadState = new PlayerSitReloadState(controller, this);
+        SitIdleState = new PlayerSitIdleState(controller, this, inputManager);
+        WaddleState = new PlayerWaddleState(controller, this, inputManager);
+        SitAttackState = new PlayerSitAttackState(controller, this, inputManager);
+        SitReloadState = new PlayerSitReloadState(controller, this, inputManager);
 
 
         // 처음에는 IdleState시작

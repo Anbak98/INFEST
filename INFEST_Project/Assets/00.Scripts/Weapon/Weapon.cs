@@ -225,7 +225,7 @@ public class Weapon : NetworkBehaviour
 
                 if (hit.Hitbox != null)
                 {
-                    //ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);                    
                 }
                 else
                 {
@@ -290,6 +290,7 @@ public class Weapon : NetworkBehaviour
         //{
         //    _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
         //}
+        Debug.Log("Àû Å¸°Ý");
     }
 
     /// <summary>

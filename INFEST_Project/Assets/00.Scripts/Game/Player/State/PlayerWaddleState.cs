@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerWaddleState : PlayerSitState
 {
-    public PlayerWaddleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerWaddleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
     public override void Enter()
@@ -16,8 +17,8 @@ public class PlayerWaddleState : PlayerSitState
 
 
         /// blend tree 애니메이션에 적용
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
@@ -27,10 +28,10 @@ public class PlayerWaddleState : PlayerSitState
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = stateMachine.InputHandler.MoveInput;
+        Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
@@ -41,38 +42,32 @@ public class PlayerWaddleState : PlayerSitState
         controller.ApplyGravity();  // 중력
 
 
-        if (!stateMachine.InputHandler.GetIsSitting())
+        if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-
-        //// 이동 입력이 없으면 Sit 상태로
-        //if (moveInput == Vector2.zero)
-        //{
-        //    stateMachine.ChangeState(stateMachine.SitIdleState);
-        //}
-        //// 무기를 가진 상태에서 공격버튼 눌렀다면 공격상태
-        //else if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsFiring())
-        //{
-
-        //}
-        //// 무기를 가진 상태에서 입력이 있으면 Reload 상태로
-        //else if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsReloading())
-        //{
-        //    stateMachine.ChangeState(stateMachine.RunState);
-        //}
-        //// Idle로 전환
-        //else if (!stateMachine.InputHandler.GetIsSitting())
-        //{
-        //    stateMachine.ChangeState(stateMachine.IdleState);
-        //}
-
     }
 
     protected override void AddInputActionsCallbacks()
     {
+        inputManager.GetInput(EPlayerInput.fire).started += OnSitAttackStarted;
+        inputManager.GetInput(EPlayerInput.reload).started += OnSitReloadStarted;
+
     }
     protected override void RemoveInputActionsCallbacks()
     {
+        inputManager.GetInput(EPlayerInput.fire).started -= OnSitAttackStarted;
+        inputManager.GetInput(EPlayerInput.reload).started -= OnSitReloadStarted;
+    }
+
+    protected override void OnSitAttackStarted(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.SitAttackState);
+    }
+    protected override void OnSitReloadStarted(InputAction.CallbackContext context)
+    {
+        base.OnAttack(context);
+        stateMachine.ChangeState(stateMachine.SitReloadState);
     }
 }

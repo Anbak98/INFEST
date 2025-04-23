@@ -9,6 +9,8 @@ public abstract class BaseController : NetworkBehaviour
 {
     public StateMachine stateMachine;
 
+    [Networked] protected TickTimer delay { get; set; }
+
     public virtual void Awake()
     {
     }
@@ -16,9 +18,6 @@ public abstract class BaseController : NetworkBehaviour
     public virtual void Update()
     {
     }
-
-    // 쓸때마다 null 나오는데...?
-    //public T GetStateMachine<T>() where T : StateMachine => stateMachine as T;
 
 
     // 상태 관련 함수(Local과 Remote 따로 정의)
@@ -34,7 +33,8 @@ public abstract class BaseController : NetworkBehaviour
     public abstract void HandleMovement();
     public abstract void ApplyGravity();
     public abstract void StartJump();
-    public abstract void HandleFire();
+    public abstract void StartFire();
+    public abstract void StartReload();
     public virtual float GetVerticalVelocity() => 0f;
 
     //public virtual Vector3 GetMoveInput() => Vector3.zero;

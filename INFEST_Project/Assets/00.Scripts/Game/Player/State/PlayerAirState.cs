@@ -6,7 +6,7 @@ using UnityEngine;
 // Jump, Fall
 public class PlayerAirState : PlayerBaseState
 {
-    public PlayerAirState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerAirState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
     {
     }
 
@@ -23,7 +23,7 @@ public class PlayerAirState : PlayerBaseState
         StopAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
 
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
     }
     public override void PhysicsUpdate()
