@@ -41,38 +41,31 @@ public class PlayerIdleState : PlayerGroundState
         if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
-            return;
         }
         if (data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
-            return;
         }
         if (data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
-            return;
         }
         if (data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
-            return;
         }
     }
 }

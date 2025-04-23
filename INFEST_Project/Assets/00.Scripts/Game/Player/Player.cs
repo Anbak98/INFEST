@@ -46,7 +46,7 @@ public class Player : NetworkBehaviour
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
-    private Weapons _weapons;// SY
+    public Weapons Weapons;// SY
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -91,7 +91,6 @@ public class Player : NetworkBehaviour
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
-        _weapons = GetComponent<Weapons>(); // SY
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
@@ -128,6 +127,8 @@ public class Player : NetworkBehaviour
     {
         GUILayout.Label(playerController.stateMachine.currentState.ToString());
         GUILayout.Label(DEBUG_DATA.ToString());
+        GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+        GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
     }
 
 
@@ -233,7 +234,7 @@ public class Player : NetworkBehaviour
 
     public Weapons GetWeapons()
     {
-        return _weapons;
+        return Weapons;
     }
 
 

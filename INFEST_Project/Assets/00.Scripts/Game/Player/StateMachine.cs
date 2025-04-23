@@ -4,7 +4,7 @@
 public abstract class StateMachine
 {
     // 현재 상태를 가지고 있어야한다
-    protected IState currentState;
+    public IState currentState;
 
     // 확장성을 고려하면 BaseController를 선언하는게 맞지만
     // 사용하는 곳에서 ((PlayerController) controller).PlayerAnimation 처럼 쓸때마다 형변환해야하는 문제가 생길 수 있음
