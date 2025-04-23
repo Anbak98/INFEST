@@ -63,7 +63,8 @@ public class StoreController : NetworkBehaviour
     /// <summary>
     /// 상점 상호작용시 타이머 시간 연장
     /// </summary>
-    public void Interaction()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_Timer(PlayerRef _playerRef)
     {
         if (HasStateAuthority)
         {
@@ -83,6 +84,7 @@ public class StoreController : NetworkBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+        Player.local.inStoreZoon = false;
         uIShopView.interactionText.gameObject.SetActive(false);
         uIShopView.bg.gameObject.SetActive(false);
     }

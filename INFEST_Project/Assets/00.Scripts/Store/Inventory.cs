@@ -1,5 +1,7 @@
 
-public class Inventory
+using Fusion;
+
+public class Inventory : NetworkBehaviour
 {
     public WeaponInstance[] weapon = new WeaponInstance[2];
     public WeaponInstance[] auxiliaryWeapon = new WeaponInstance[1];

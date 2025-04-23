@@ -21,9 +21,7 @@ using UnityEngine.Windows;
 public class PlayerController : BaseController
 {
     // 동적 연결되는 변수 숨기기
-    [HideInInspector]
     public Player player;
-    public InputManager inputManager;
     public Weapons weapons;
 
     /// <summary>
@@ -49,8 +47,6 @@ public class PlayerController : BaseController
 
     public override void Awake()
     {
-        player = GetComponentInParent<Player>();    // 플레이어 먼저 생성
-        inputManager = FindAnyObjectByType<InputManager>();
         weapons = player.GetWeapons();
 
         //inputHandler = player.Input;
@@ -74,10 +70,10 @@ public class PlayerController : BaseController
 
             // 상태머신
 
-            //stateMachine.HandleInput();
-            stateMachine.OnUpdate(data);
-        }
-    }
+    //        //stateMachine.HandleInput();
+    //        stateMachine.OnUpdate(data);
+    //    }
+    //}
 
 
 
