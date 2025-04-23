@@ -26,43 +26,28 @@ public class PlayerRunState : PlayerGroundState
         StopAnimation(stateMachine.Player.AnimationData.RunParameterHash);
     }
 
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = stateMachine.InputHandler.MoveInput;
+        Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
-        PlayerRun();
+        PlayerRun(data);
         controller.ApplyGravity();  // 중력
 
-        // 이동 입력이 없을 떄 Idle로 바꾸면 Lshift를 누르고 있는 채 점프를 하게 된다
-        //if (moveInput == Vector2.zero)
-        //{
-        //    stateMachine.ChangeState(stateMachine.IdleState);
-        //}
-        // run 다시 눌렀다면 걷기
-        if (!stateMachine.InputHandler.GetIsRunning())
+        if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
+            return;
         }
-        // run일때는 점프할 수 없다
-        //else if (stateMachine.InputHandler.GetIsJumping())
-        //{
-        //    stateMachine.ChangeState(stateMachine.JumpState);
-        //}
-        // run일때는 공격상태로 전환할 수 없다
+        // run 다시 눌렀다면 걷기
+        if (!data.isRunning)
+        {
+            stateMachine.ChangeState(stateMachine.MoveState);
+            return;
+        }
     }
-
-    // Run에서는 Idle, Move(따로 작성하지 않았는데 나중에 생각하자) 으로 상태전환 가능하다
-    protected override void AddInputActionsCallbacks()
-    {
-    }
-    protected override void RemoveInputActionsCallbacks()
-    {
-    }
-
-
 }

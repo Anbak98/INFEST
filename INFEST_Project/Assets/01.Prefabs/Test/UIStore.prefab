@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &601212696321353982
 RectTransform:
   m_ObjectHideFlags: 0
@@ -585,6 +585,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionText: {fileID: 54128467169240912}
   panel: {fileID: 3363224124415998006}
+  buyButton: []
+  buyPiceText: []
+  buyNameText: []
+  icon: []
+  saleButton: []
+  salePriceText: []
+  possessItemButton: []
+  priceBullet: []
+  repairButton: {fileID: 0}
+  repairText: {fileID: 0}
+  AIIReplenishButton: {fileID: 0}
+  AIIReplenishText: {fileID: 0}
 --- !u!1 &6709660499887526076
 GameObject:
   m_ObjectHideFlags: 0

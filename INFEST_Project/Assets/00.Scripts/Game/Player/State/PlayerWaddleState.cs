@@ -15,10 +15,9 @@ public class PlayerWaddleState : PlayerSitState
         Debug.Log("Waddle상태 진입");
         base.Enter();
 
-
         /// blend tree 애니메이션에 적용
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
@@ -28,46 +27,30 @@ public class PlayerWaddleState : PlayerSitState
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = stateMachine.InputHandler.MoveInput;
+        Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         // 플레이어 이동
-        PlayerWaddle();
+        PlayerWaddle(data);
         controller.ApplyGravity();  // 중력
 
-
-        if (!stateMachine.InputHandler.GetIsSitting())
+        // isSitting && isFiring
+        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
-            stateMachine.ChangeState(stateMachine.IdleState);
+            stateMachine.ChangeState(stateMachine.SitAttackState);
+            return;
         }
-    }
-
-    protected override void AddInputActionsCallbacks()
-    {
-        inputManager.GetInput(EPlayerInput.fire).started += OnSitAttackStarted;
-        inputManager.GetInput(EPlayerInput.reload).started += OnSitReloadStarted;
-
-    }
-    protected override void RemoveInputActionsCallbacks()
-    {
-        inputManager.GetInput(EPlayerInput.fire).started -= OnSitAttackStarted;
-        inputManager.GetInput(EPlayerInput.reload).started -= OnSitReloadStarted;
-    }
-
-    protected override void OnSitAttackStarted(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.SitAttackState);
-    }
-    protected override void OnSitReloadStarted(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.SitReloadState);
+        // isSitting && isReloading
+        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.SitReloadState);
+            return;
+        }
     }
 }

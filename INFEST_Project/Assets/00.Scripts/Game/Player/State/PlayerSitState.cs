@@ -34,14 +34,15 @@ public class PlayerSitState : PlayerGroundState
         player.characterController.height *= 2;
     }
 
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
-        if (!stateMachine.InputHandler.GetIsSitting())
+        if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
+            return;
         }
     }
-    public override void PhysicsUpdate()
+    public override void PhysicsUpdate(NetworkInputData data)
     {
     }
 }

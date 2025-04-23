@@ -18,10 +18,13 @@ public class PlayerFallState : PlayerAirState
 
         base.Enter();
     }
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
         // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다
-
+        if (controller.IsGrounded())
+        {
+            stateMachine.ChangeState(stateMachine.IdleState);
+        }
     }
 
     public override void Exit()

@@ -22,22 +22,23 @@ public class PlayerSitAttackState : PlayerSitState
         base.Exit();    // 상단의 layer로 나간다
         StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
-        bool isFire = stateMachine.InputHandler.GetIsFiring();
+        bool isFire = data.isFiring;
 
         // 사격
-        PlayerSitFire();
+        PlayerSitFire(data);
         controller.ApplyGravity();  // 중력
 
         // 이동 입력이 없으면 Idle 상태로
-        if (!isFire)
+        if (!data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
+            return;
         }
 
     }
-    public override void PhysicsUpdate()
+    public override void PhysicsUpdate(NetworkInputData data)
     {
     }
 }

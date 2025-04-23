@@ -24,46 +24,29 @@ public class PlayerSitIdleState : PlayerSitState
         StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
-    public override void Update()
+    public override void OnUpdate(NetworkInputData data)
     {
-        base.Update();
+        base.OnUpdate(data);
 
         controller.ApplyGravity();  // 중력
 
-        // 입력값이 있다면 MoveState로 전환
-        if (stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
+        if (data.direction != Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.WaddleState);
-            return;
+            stateMachine.ChangeState(stateMachine.MoveState);
         }
-        if (!stateMachine.InputHandler.GetIsSitting())
+        if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-    }
-
-    // SitIdle에서 사용할 이벤트는 
-    protected override void AddInputActionsCallbacks()
-    {
-        inputManager.GetInput(EPlayerInput.fire).started += OnSitAttackStarted;
-        inputManager.GetInput(EPlayerInput.reload).started += OnSitReloadStarted;
-
-    }
-    protected override void RemoveInputActionsCallbacks()
-    {
-        //inputManager.GetInput(EPlayerInput.move).canceled += OnWaddleStarted;
-        inputManager.GetInput(EPlayerInput.fire).started -= OnSitAttackStarted;
-        inputManager.GetInput(EPlayerInput.reload).started -= OnSitReloadStarted;
-    }
-    protected override void OnSitAttackStarted(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.SitAttackState);
-
-    }
-    protected override void OnSitReloadStarted(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.SitReloadState);
+        // isSitting && isFiring
+        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        {
+            stateMachine.ChangeState(stateMachine.SitAttackState);
+        }
+        // isSitting && isReloading
+        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.SitReloadState);
+        }
     }
 }

@@ -13,6 +13,7 @@ using UnityEngine.SocialPlatforms;
 /// </summary>
 public class Player : NetworkBehaviour
 {
+    public static Player local { get; private set; }
     [Networked] private TickTimer delay { get; set; }
 
     [field: Header("Animations")]
@@ -28,19 +29,27 @@ public class Player : NetworkBehaviour
     public Animator playerAnimator;
 
     // playerController는 Input값 관리
-    public PlayerInputHandler Input { get; private set; }
     public PlayerController playerController;     // 1인칭: LocalPlayerController, 3인칭: RemotePlayerController
     public PlayerStatHandler statHandler;
+
+
     public CharacterController characterController; // collider, rigidbody 등 내장되어있다
+    public NetworkCharacterController networkCharacterController;
+
+
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
-
+    public NetworkObject networkObject;
+    public bool inStoreZoon = false;
+    public bool isInteraction = false;
+    public Store store;
+    public Inventory inventory = new();
+    public int gold = 5000;
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
     private Weapons _weapons;// SY
-    private Store stores;
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -83,15 +92,13 @@ public class Player : NetworkBehaviour
     private void Awake()
     {
         AnimationData.Initialize();
-        Input = GetComponent<PlayerInputHandler>();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
-
+        networkObject = GetComponent<NetworkObject>();
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
-        stores = FindObjectOfType<Store>();
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
@@ -101,10 +108,26 @@ public class Player : NetworkBehaviour
         //stateMachine.ChangeState(stateMachine.IdleState);
         //Cursor.lockState = CursorLockMode.Locked;
     }
-    public void Update()
+    //public void Update()
+    //{
+    //    playerController.Update();
+    //}
+
+    public override void FixedUpdateNetwork()
     {
-        playerController.Update();
+        if (GetInput(out NetworkInputData data))
+        {
+            playerController.Update();
+
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
+            {
+                if(!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
+                else store.RPC_RequestStopInteraction(this, networkObject.InputAuthority);
+            }
+        }
     }
+
+
     /// <summary>
     /// FixedUpdateNetwork를 PlayerController로 옮기는 건?
     /// </summary>
@@ -231,6 +254,12 @@ public class Player : NetworkBehaviour
                 virtualCameras[i].enabled = false;
             }
         }
+
+        if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
+        {
+            local = this;
+            Debug.Log("Local Player 설정 완료");
+        }
         /// 디버그용
         statHandler.Init(200, 3, 2, 5, 8, 50, 60);
         Debug.LogFormat($"플레이어 hp = {statHandler.CurrentHealth}");
@@ -258,6 +287,7 @@ public class Player : NetworkBehaviour
 
                 // 무기 교체할때마다 animator를 검색할 수 없으니 저장하고 불러쓰는게 가장 좋다
                 // 3개 다 활성화 하고, rifle을 제외한 2개를 일단 비활성화(예정)
+                // 우선 Weapons를 붙인다
             }
         }
         else
@@ -265,7 +295,10 @@ public class Player : NetworkBehaviour
             playerController = GetComponentInChildren<RemotePlayerController>(true);
             if (playerController != null)
             {
+                // Weapons을 붙여야 한다
+
                 playerAnimator = playerController.GetComponent<Animator>();
+                
             }
         }
     }
