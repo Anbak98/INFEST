@@ -11,13 +11,14 @@ public class Collider : MonoBehaviour // 유저가 상점에 진입했고 상호작용하는지 �
     public Store _store;
     public StoreController _storeController;
     public Player[] usePlaeyr;
-    private int _playerLayer = 6;
+    private int _playerLayer = 7;
     bool _active = false;
 
 
     private void OnTriggerEnter(UnityEngine.Collider other) 
     {
-        if (other.gameObject.layer == _playerLayer && other.TryGetComponent(out Player _player))
+        Player _player = other.GetComponentInParent<Player>();
+        if (other.gameObject.layer == _playerLayer && _player)
         {
             //if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
             //var _player = other.GetComponent<NetworkObject>();
