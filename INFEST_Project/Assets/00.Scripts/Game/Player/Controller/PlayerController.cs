@@ -18,7 +18,7 @@ using UnityEngine.Windows;
 /// 플레이어의 동작 및 상태 관리
 /// FixedUpdateNetwork()에서 Fusion으로부터 받은 입력 데이터를 기반으로 시뮬레이션 수행.
 /// </summary>
-public abstract class PlayerController : BaseController
+public class PlayerController : BaseController
 {
     // 동적 연결되는 변수 숨기기
     [HideInInspector]

@@ -39,7 +39,7 @@ public class PlayerCameraHandler : NetworkBehaviour
         _mainCam = Camera.main;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+
         // 검색해서 붙여야함
         // weaponHolder = 
     }
@@ -63,11 +63,11 @@ public class PlayerCameraHandler : NetworkBehaviour
             // 좌우 회전 (플레이어)
             transform.Rotate(Vector3.up * mouseX);
 
-                // 상하 회전 (카메라 홀더)
-                xRotation -= mouseY;
-                xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
-                _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            }
+            // 상하 회전 (카메라 홀더)
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
+            _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }
         //}
     }
 

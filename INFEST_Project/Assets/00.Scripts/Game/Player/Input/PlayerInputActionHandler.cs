@@ -74,8 +74,8 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
         /// 
-        //inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
-        _inputManager.GetInput(EPlayerInput.jump).performed += StartJumpInput;
+        _inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
+        //_inputManager.GetInput(EPlayerInput.jump).performed += StartJumpInput;
         _inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
         _inputManager.GetInput(EPlayerInput.fire).started += StartFireState;
@@ -117,6 +117,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.swap).canceled -= SetSwapInput;
 
         _inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
+        //_inputManager.GetInput(EPlayerInput.jump).performed -= StartJumpInput;
         _inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
 
         _inputManager.GetInput(EPlayerInput.fire).started -= StartFireState;

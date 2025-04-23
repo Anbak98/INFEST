@@ -41,38 +41,41 @@ public class PlayerIdleState : PlayerGroundState
         if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
-            return;
         }
         if (data.isJumping)
         {
-            stateMachine.ChangeState(stateMachine.JumpState);
-            return;
+            //Debug.LogFormat($"NetworkCharacterController.IsGrounded: {controller.IsGrounded()}"); 
+
+            // 땅에 떨어지기 전에는 controller.IsGrounded() ==  false 되어 내부 로직 실행
+            // 땅에 닿기 전에 JumpState로 바뀐다
+            // JumpState로 바뀌자마자 다시 PlayerJump호출하고 
+            // 무한반복된다
+            if (controller.IsGrounded())
+            {
+                // 여기에서 
+                stateMachine.ChangeState(stateMachine.JumpState);
+            }
         }
         if (data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
-            return;
         }
         if (data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
-            return;
         }
     }
 }

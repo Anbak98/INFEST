@@ -266,7 +266,7 @@ public class Player : NetworkBehaviour
         if (firstPerson)
         {
             // 1인칭일 경우: LocalPlayerController 자식에서 Animator 가져오기
-            playerController = GetComponentInChildren<LocalPlayerController>(true);
+            playerController = GetComponentInChildren<PlayerController>(true);
             if (playerController != null)
             {
                 // 1인칭의 경우 Hands_Rifle가 활성화 된 상태로 시작하여 Rifle의 Animator를 대입
@@ -280,7 +280,7 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            playerController = GetComponentInChildren<RemotePlayerController>(true);
+            playerController = GetComponentInChildren<PlayerController>(true);
             if (playerController != null)
             {
                 // Weapons을 붙여야 한다

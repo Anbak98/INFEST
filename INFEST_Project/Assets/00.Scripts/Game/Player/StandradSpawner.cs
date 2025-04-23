@@ -109,7 +109,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Add(player, networkPlayerObject);
 
             var info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
-            scoreboard.AddPlayerRow(player, info);
+            //scoreboard.AddPlayerRow(player, info);
 
             Global.Instance.NetworkRunner = runner;
         }
