@@ -19,18 +19,20 @@ public class PlayerIdleState : PlayerGroundState
         Debug.Log("Idle상태 진입");
 
         // Ground && Idle
-        StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
+
     public override void PhysicsUpdate(NetworkInputData data)
     {
         base.PhysicsUpdate(data);
     }
+
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);

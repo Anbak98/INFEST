@@ -16,12 +16,12 @@ public class PlayerSitReloadState : PlayerSitState
         base.Enter();
 
         // Sit && Reload
-        StartAnimation(stateMachine.Player.AnimationData.ReloadParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.ReloadParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.ReloadParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.ReloadParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)

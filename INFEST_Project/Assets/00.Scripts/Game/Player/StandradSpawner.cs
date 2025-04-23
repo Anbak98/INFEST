@@ -22,6 +22,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
     private bool _mouseButton0;
     private bool _mouseButton1;
+    public UIScoreboardView scoreboard;
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
@@ -104,10 +105,15 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             /// 플레이어 오브젝트를 생성
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
-            
+
             _spawnedCharacters.Add(player, networkPlayerObject);
+
+            var info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
+            scoreboard.AddPlayerRow(player, info);
+
             Global.Instance.NetworkRunner = runner;
         }
+
     }
     // 접속종료
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -116,6 +122,8 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
+
+            scoreboard.RemovePlayerRow(player);
         }
     }
 

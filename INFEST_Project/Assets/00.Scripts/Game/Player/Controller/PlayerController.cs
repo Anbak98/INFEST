@@ -70,8 +70,6 @@ public abstract class PlayerController : BaseController
         //base.FixedUpdateNetwork();
         if (GetInput(out NetworkInputData data))
         {
-            Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
-
             // 상태머신
 
             //stateMachine.HandleInput();
@@ -91,8 +89,6 @@ public abstract class PlayerController : BaseController
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     public override void HandleMovement(NetworkInputData data)
     {
-        Debug.LogFormat($"{gameObject.name}의 이동로직"); // 어느 controller가 들어오는가?
-
         Vector3 input = data.direction;
 
         // ❗ 입력 없으면 아무 것도 하지 않음
@@ -115,6 +111,7 @@ public abstract class PlayerController : BaseController
         // 회전 강제 고정: 카메라가 지정한 forward로
         player.transform.forward = camForward;
     }
+
     public override void ApplyGravity()
     {
         if (IsGrounded() && verticalVelocity < 0)
