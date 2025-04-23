@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4898254325112488999}
   - component: {fileID: 1675232870886407020}
   - component: {fileID: 726786875664827721}
-  - component: {fileID: 7286986640779924037}
   m_Layer: 0
   m_Name: MonsterSpawnPoint
   m_TagString: Untagged
@@ -100,22 +99,3 @@ MonoBehaviour:
   Spawner: {fileID: 0}
   Monster: {fileID: 0}
   IsActivated: 1
---- !u!114 &7286986640779924037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4306137900494360428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3235321456
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 726786875664827721}
-  ForceRemoteRenderTimeframe: 0
