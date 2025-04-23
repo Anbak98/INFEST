@@ -23,6 +23,10 @@ public class LocalPlayerController : PlayerController
     {
         base.Awake();
     }
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
 
     //public override void FixedUpdateNetwork()
     //{
@@ -147,10 +151,4 @@ public class LocalPlayerController : PlayerController
     //{
     //    // TODO
     //}
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 }

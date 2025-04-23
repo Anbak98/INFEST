@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerWaddleState : PlayerSitState
 {
-    public PlayerWaddleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
+    public PlayerWaddleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
     public override void Enter()
@@ -14,7 +14,6 @@ public class PlayerWaddleState : PlayerSitState
         stateMachine.StatHandler.MoveSpeedModifier = 1; // 걷는 속도의 0.5배
         Debug.Log("Waddle상태 진입");
         base.Enter();
-
 
         /// blend tree 애니메이션에 적용
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
@@ -38,36 +37,20 @@ public class PlayerWaddleState : PlayerSitState
         SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         // 플레이어 이동
-        PlayerWaddle();
+        PlayerWaddle(data);
         controller.ApplyGravity();  // 중력
 
-
-        if (!data.isSitting)
+        // isSitting && isFiring
+        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
-            stateMachine.ChangeState(stateMachine.IdleState);
+            stateMachine.ChangeState(stateMachine.SitAttackState);
+            return;
         }
-    }
-
-    protected override void AddInputActionsCallbacks()
-    {
-        inputManager.GetInput(EPlayerInput.fire).started += OnSitAttackStarted;
-        inputManager.GetInput(EPlayerInput.reload).started += OnSitReloadStarted;
-
-    }
-    protected override void RemoveInputActionsCallbacks()
-    {
-        inputManager.GetInput(EPlayerInput.fire).started -= OnSitAttackStarted;
-        inputManager.GetInput(EPlayerInput.reload).started -= OnSitReloadStarted;
-    }
-
-    protected override void OnSitAttackStarted(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.SitAttackState);
-    }
-    protected override void OnSitReloadStarted(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.SitReloadState);
+        // isSitting && isReloading
+        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.SitReloadState);
+            return;
+        }
     }
 }

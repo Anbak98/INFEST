@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerSitAttackState : PlayerSitState
 {
-    public PlayerSitAttackState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
+    public PlayerSitAttackState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
 
@@ -27,17 +27,18 @@ public class PlayerSitAttackState : PlayerSitState
         bool isFire = data.isFiring;
 
         // 사격
-        PlayerSitFire();
+        PlayerSitFire(data);
         controller.ApplyGravity();  // 중력
 
         // 이동 입력이 없으면 Idle 상태로
-        if (!isFire)
+        if (!data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
+            return;
         }
 
     }
-    public override void PhysicsUpdate()
+    public override void PhysicsUpdate(NetworkInputData data)
     {
     }
 }

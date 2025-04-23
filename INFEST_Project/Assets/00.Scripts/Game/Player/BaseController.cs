@@ -30,11 +30,11 @@ public abstract class BaseController : NetworkBehaviour
 
     //public virtual bool IsFiring() => false;
     //public virtual bool IsShotgunFiring() => false;
-    public abstract void HandleMovement();
+    public abstract void HandleMovement(NetworkInputData data);
     public abstract void ApplyGravity();
     public abstract void StartJump();
-    public abstract void StartFire();
-    public abstract void StartReload();
+    public abstract void StartFire(NetworkInputData data);
+    public abstract void StartReload(NetworkInputData data);
     public virtual float GetVerticalVelocity() => 0f;
 
     //public virtual Vector3 GetMoveInput() => Vector3.zero;

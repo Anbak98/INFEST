@@ -39,8 +39,6 @@ public class Player : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
-    private InputManager _inputManager;
-
 
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
@@ -91,7 +89,6 @@ public class Player : NetworkBehaviour
         AnimationData.Initialize();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
-        _inputManager = FindAnyObjectByType<InputManager>();
 
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
@@ -103,7 +100,7 @@ public class Player : NetworkBehaviour
     }
     private void Start()
     {
-        stateMachine = new PlayerStateMachine(this, playerController, _inputManager);
+        stateMachine = new PlayerStateMachine(this, playerController);
         //stateMachine.ChangeState(stateMachine.IdleState);
         //Cursor.lockState = CursorLockMode.Locked;
     }

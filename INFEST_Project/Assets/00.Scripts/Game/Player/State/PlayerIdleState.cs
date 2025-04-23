@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerIdleState : PlayerGroundState
 {
-    public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
+    public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
 
@@ -27,96 +27,50 @@ public class PlayerIdleState : PlayerGroundState
         base.Exit();
         StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
-    public override void PhysicsUpdate()
+    public override void PhysicsUpdate(NetworkInputData data)
     {
-        base.PhysicsUpdate();
+        base.PhysicsUpdate(data);
     }
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
         controller.ApplyGravity();  // 중력
 
-        // 입력값이 있다면 MoveState로 전환
         if (data.direction != Vector3.zero)
         {
-            //(stateMachine.InputHandler.GetMoveInput() != Vector3.zero)
             stateMachine.ChangeState(stateMachine.MoveState);
             return;
         }
-
-        //if (stateMachine.InputHandler.GetIsJumping())
-        //{
-        //    stateMachine.ChangeState(stateMachine.JumpState);
-        //}
-
-        //if (stateMachine.InputHandler.GetIsReloading())
-        //{
-        //    stateMachine.ChangeState(stateMachine.RunState);
-        //}
-        //// 무기를 가진 상태에서 입력이 있으면 Reload 상태로
-        //if ((stateMachine.Player.GetWeapon() != null) && stateMachine.InputHandler.GetIsReloading())
-        //{
-        //    stateMachine.ChangeState(stateMachine.RunState);
-        //}
+        if (data.isJumping)
+        {
+            stateMachine.ChangeState(stateMachine.JumpState);
+            return;
+        }
+        if (data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.ReloadState);
+            return;
+        }
+        // 일단 샷건(isShotgunOnFiring)은 미작성
+        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+            return;
+        }
+        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.ReloadState);
+            return;
+        }
+        if (data.isRunning)
+        {
+            stateMachine.ChangeState(stateMachine.RunState);
+            return;
+        }
+        if (data.isSitting)
+        {
+            stateMachine.ChangeState(stateMachine.SitIdleState);
+            return;
+        }
     }
-
-    // Idle에서 사용할 이벤트는
-    protected override void AddInputActionsCallbacks()
-    {
-        inputManager.GetInput(EPlayerInput.move).started += OnMoveStarted;
-        inputManager.GetInput(EPlayerInput.run).started += OnRunStarted;
-        inputManager.GetInput(EPlayerInput.fire).started += OnAttack;
-        inputManager.GetInput(EPlayerInput.reload).started += OnReload;
-        inputManager.GetInput(EPlayerInput.sit).started += OnSitStarted;
-        inputManager.GetInput(EPlayerInput.jump).started += OnJumpStarted;
-    }
-    protected override void RemoveInputActionsCallbacks()
-    {
-        //inputManager.GetInput(EPlayerInput.move).canceled += OnMoveStarted;
-        //inputManager.GetInput(EPlayerInput.run).canceled += OnRunStarted;
-        //inputManager.GetInput(EPlayerInput.fire).canceled += OnAttack;
-        //inputManager.GetInput(EPlayerInput.reload).canceled += OnReload;
-        //inputManager.GetInput(EPlayerInput.sit).canceled += OnSitStarted;
-        //inputManager.GetInput(EPlayerInput.jump).canceled += OnJumpStarted;
-        inputManager.GetInput(EPlayerInput.move).started -= OnMoveStarted;
-        inputManager.GetInput(EPlayerInput.run).started -= OnRunStarted;
-        inputManager.GetInput(EPlayerInput.fire).started -= OnAttack;
-        inputManager.GetInput(EPlayerInput.reload).started -= OnReload;
-        inputManager.GetInput(EPlayerInput.sit).started -= OnSitStarted;
-        inputManager.GetInput(EPlayerInput.jump).started -= OnJumpStarted;
-
-    }
-
-
-
-    // 
-    protected override void OnRunStarted(InputAction.CallbackContext context)
-    {
-        base.OnRunStarted(context);
-        stateMachine.ChangeState(stateMachine.RunState);
-    }
-    protected override void OnAttack(InputAction.CallbackContext context)
-    {
-        base.OnAttack(context);
-        stateMachine.ChangeState(stateMachine.AttackState);
-    }
-    protected override void OnReload(InputAction.CallbackContext context)
-    {
-        // 무기를 장착하고 있을 때 한정
-
-        base.OnReload(context);
-        stateMachine.ChangeState(stateMachine.ReloadState);
-    }
-    protected override void OnJumpStarted(InputAction.CallbackContext context)
-    {
-        base.OnJumpStarted(context);
-        stateMachine.ChangeState(stateMachine.JumpState);
-    }
-    protected override void OnSitStarted(InputAction.CallbackContext context)
-    {
-        base.OnSitStarted(context);
-        stateMachine.ChangeState(stateMachine.SitIdleState);
-    }
-
-
 }
