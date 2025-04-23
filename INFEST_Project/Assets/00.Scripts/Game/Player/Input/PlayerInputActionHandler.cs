@@ -148,7 +148,6 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Move
     private void SetMoveInput(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] SetMoveInput - Move: {context.ReadValue<Vector2>()}, Phase: {context.phase}");
         Vector2 moveInput = context.ReadValue<Vector2>();
         if (moveInput.sqrMagnitude < 0.01f)
         {

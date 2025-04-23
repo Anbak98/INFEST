@@ -471,6 +471,7 @@ GameObject:
   - component: {fileID: 2842381568767903673}
   - component: {fileID: 9076511194168237146}
   - component: {fileID: 3791723330585105188}
+  - component: {fileID: -5553270421971808599}
   m_Layer: 6
   m_Name: Rifle
   m_TagString: Untagged
@@ -508,10 +509,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394c50a9b9a634c4e9f5d873cee78f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 10201
   animator: {fileID: 9076511194168237146}
   camRecoil: {fileID: 0}
   gunRecoil: {fileID: 3791723330585105188}
   Type: 1
+  icon: {fileID: 21300000, guid: 6fda819836ba343469894117cb6c4826, type: 3}
   isAutomatic: 1
   damage: 10
   fireRate: 500
@@ -578,3 +581,22 @@ MonoBehaviour:
   recoilRotation: {x: 5, y: 2, z: 2}
   returnSpeed: 5
   snappiness: 10
+--- !u!114 &-5553270421971808599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426425906345699054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 851020684
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2842381568767903673}
+  ForceRemoteRenderTimeframe: 0

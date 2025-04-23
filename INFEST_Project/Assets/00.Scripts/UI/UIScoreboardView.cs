@@ -1,21 +1,37 @@
 using System.Collections.Generic;
 using Fusion;
+using UnityEngine;
 
 public class UIScoreboardView : UIScreen
 {
+    public Transform rowParent;
     public UIScoreboardRow uirow;
 
-    private List<UIScoreboardRow> _rows = new(32);
-    private List<UIPlayerData> _players = new(32);
+    private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
 
-    private TestGameUI _gameUI;
+    private List<UIScoreboardRow> _rows = new(32);
+    private CharacterInfo _characterInfo;
+
+    [Networked]
+    public Profile Info { get; set; }
+
+    //[Networked]
+    //public UIPlayerData UIPlayerData { get; set; }
+
+    private int _kill = 0;
+    private int _death = 0;
+
+    private NetworkRunner _runner;
 
     public override void Awake()
     {
-        base.Awake();
-        _rows.Add(uirow);
+        base.Awake();                
 
-        _gameUI = GetComponentInParent<TestGameUI>();
+        //uirow.nickName.text = (string)Info.NickName;
+        //SetKDG();
+
+        ////임시코드
+        //uirow.nickName.text = "정민";
     }
 
     public override void Init()
@@ -27,7 +43,6 @@ public class UIScoreboardView : UIScreen
     public override void Show()
     {
         base.Show();
-        UpdateScoreboard();
     }
 
     public override void Hide()
@@ -35,62 +50,61 @@ public class UIScoreboardView : UIScreen
         base.Hide();
     }
 
-    private void UpdateScoreboard()
+    private void SetKDG(UIScoreboardRow row)
     {
-        if (_gameUI.runner == null)
+        _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
+        row.kills.text = _kill.ToString();
+        row.deaths.text = _death.ToString();
+        row.golds.text = _characterInfo.StartGold.ToString("N0");
+    }
+
+    public void AddPlayerRow(PlayerRef player, CharacterInfo info)
+    {
+        if (activeRows.ContainsKey(player))
             return;
 
-        _players.Clear();
+        var row = Instantiate(uirow, rowParent);
+        row.SetData(info);
+        SetKDG(row);
 
-        foreach (var record in _gameUI.testPlay.PlayerData)
-        {
-            _players.Add(record.Value);
-        }
-
-        PlayerRef localPlayer = _gameUI.runner.LocalPlayer;
-        _players.Sort((a, b) =>
-        {
-            bool aIsLocal = a.PlayerRef == localPlayer;
-            bool bIsLocal = b.PlayerRef == localPlayer;
-
-            if (aIsLocal && !bIsLocal) return -1;
-            if (!aIsLocal && bIsLocal) return 1;
-
-            return a.StatisticPosition.CompareTo(b.StatisticPosition);
-        });
-
-        PrepareRows(_players.Count);
-        UpdateRows();
+        activeRows.Add(player, row);
+        _rows.Add(row);        
     }
 
-    private void PrepareRows(int playerCount)
+    public void RemovePlayerRow(PlayerRef player)
     {
-        for (int i = _rows.Count; i < playerCount; i++)
+        if(activeRows.TryGetValue(player, out var row))
         {
-            var row = Instantiate(uirow, uirow.transform.parent);
-            row.gameObject.SetActive(true);
-
-            _rows.Add(row);
+            Destroy(row.gameObject);
+            activeRows.Remove(player);
+            _rows.Remove(row);
         }
+    }    
 
-        // Activate correct count of rows
-        for (int i = 0; i < _rows.Count; i++)
-        {
-            _rows[i].gameObject.SetActive(i < playerCount);
-        }
-    }
-
-    private void UpdateRows()
+    public void KillCount()
     {
-        for (int i = 0; i < _players.Count; i++)
+        _kill++;
+        foreach(var row in _rows)
         {
-            var row = _rows[i];
-            var data = _players[i];
-
-            row.nickName.text = data.Nickname;
-            row.kills.text = data.Kills.ToString();
-            row.deaths.text = data.Deaths.ToString();
-            row.golds.text = data.Golds.ToString();
+            row.kills.text = _kill.ToString();
         }
     }
+
+    public void DeathCount()
+    {
+        _death++;
+        foreach (var row in _rows)
+        {
+            row.deaths.text = _death.ToString();
+        }
+    }
+
+    public void GoldCount(int amount)
+    {
+        _characterInfo.StartGold += amount;
+        foreach (var row in _rows)
+        {
+            row.golds.text = _characterInfo.StartGold.ToString("N0");
+        }
+    }    
 }

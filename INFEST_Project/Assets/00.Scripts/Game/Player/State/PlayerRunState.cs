@@ -18,22 +18,22 @@ public class PlayerRunState : PlayerGroundState
         base.Enter();
         // Run은 Move를 기반으로 해야하는데... Move인 상태를 기반으로 Run 파라미터를 추가입력해야한다
         // 어쩔래?
-        StartAnimation(stateMachine.Player.AnimationData.RunParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.RunParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.RunParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.RunParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = data.direction;
+        Vector3 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.z);
 
         PlayerRun(data);
         controller.ApplyGravity();  // 중력

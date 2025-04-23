@@ -1,26 +1,52 @@
+using Fusion;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIStateView : UIScreen
 {
+    [Header("State")]
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI defText;
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI bulletText;
-    public Image[] jobIcon;
-    public Image weaponIcon;
 
-    private CharacterInfo _player;
+    [Header("Job Icon")]
+    public Image comender;
+    public Image medic;
+    public Image demol;
+    public Image warrior;
+
+    [Header("Weapon Icon")]
+    public Image pistol;
+    public Image rifle;
+    public Image shotgun;
+    public Image sniper;
+    public Image machinegun;
+    public Image launcher;
+
     private WeaponInfo _weaponInfo;
-    private Weapon _weapon;
+    private CharacterInfo _characterInfo;
+
+    [Networked]
+    public Profile Info { get; set; }
 
     public override void Awake()
     {
         base.Awake();
 
-        _player = DataManager.Instance.GetByKey<CharacterInfo>(1);
-        _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10101);
+        SetJobIcon();
+        SetWeaponIcon();
 
+        _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
+        ChoiceJob();
+
+        UpdateJobIcon();
+        UpdateWeaponIcon();
+    }
+
+    private void Update()
+    {
         UpdatePlayerState();
     }
 
@@ -32,38 +58,103 @@ public class UIStateView : UIScreen
     public override void Hide()
     {
         base.Hide();
-    }   
+    }
+
+    public void SetWeaponIcon()
+    {
+        pistol.gameObject.SetActive(false);
+        rifle.gameObject.SetActive(false);
+        shotgun.gameObject.SetActive(false);
+        sniper.gameObject.SetActive(false);
+        machinegun.gameObject.SetActive(false);
+        launcher.gameObject.SetActive(false);
+    }
+
+    public void SetJobIcon()
+    {
+        comender.gameObject.SetActive(false);
+        medic.gameObject.SetActive(false);
+        demol.gameObject.SetActive(false);
+        warrior.gameObject.SetActive(false);
+    }
+
+    public void ChoiceJob()
+    {
+        if (Info.Job == JOB.SWAT)
+        {
+            _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
+        }
+        else if (Info.Job == JOB.Medic)
+        {
+            _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(2);
+        }
+        else if (Info.Job == JOB.Demolator)
+        {
+            _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(3);
+        }
+        else if (Info.Job == JOB.Defender)
+        {
+            _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(4);
+        }
+    }
 
     public void UpdatePlayerState()
     {
-        hpText.text = _player.Health.ToString();
-        defText.text = _player.Def.ToString();
-        goldText.text = _player.StartGold.ToString();
-        bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";
+        if (_characterInfo == null) return;
+
+        hpText.text = _characterInfo.Health.ToString();
+        defText.text = _characterInfo.Def.ToString();
+        goldText.text = _characterInfo.StartGold.ToString();
+        bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";        
     }
 
+    
     public void UpdateJobIcon()
     {
-        //직업에 따라 아이콘 변경
+        //캐릭터인포 키값이 1이면 커맨더, 2면 전투의무병 , 3이면 데몰레이터, 4면 워리어
+        switch (_characterInfo.key)
+        {
+            case 1:
+                comender.gameObject.SetActive(true);
+                break;
+            case 2:
+                medic.gameObject.SetActive(true);
+                break;
+            case 3:
+                demol.gameObject.SetActive(true);
+                break;
+            case 4:
+                warrior.gameObject.SetActive(true);
+                break;
+        }
     }
 
-    public void UpdateWeapon(Weapons weapons)
+    //스왑할때 넣어줘야함
+    public void UpdateWeaponIcon()
     {
-        SetWeapon(weapons.CurrentWeapon);
+        SetWeaponIcon();
+        int weaponType = (int)_weaponInfo.WeaponType;
 
-        if (_weapon == null) return;
-
-        bulletText.text = $"{_weapon.curClip}/{_weapon.possessionAmmo}";
-    }
-
-    private void SetWeapon(Weapon weapon)
-    {
-        if (weapon == _weapon) return;
-
-        _weapon = weapon;
-
-        if(weapon == null) return;
-
-        weaponIcon.sprite = weapon.icon;
+        switch (weaponType)
+        {
+            case 0:
+                pistol.gameObject.SetActive(true);
+                break;
+            case 1:
+                rifle.gameObject.SetActive(true);
+                break;
+            case 2:
+                shotgun.gameObject.SetActive(true);
+                break;
+            case 3:
+                sniper.gameObject.SetActive(true);
+                break;
+            case 4:
+                machinegun.gameObject.SetActive(true);
+                break;
+            case 5:
+                launcher.gameObject.SetActive(true);
+                break;
+        }
     }
 }

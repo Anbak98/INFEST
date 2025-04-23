@@ -16,12 +16,12 @@ public class PlayerSitIdleState : PlayerSitState
         Debug.Log("SitIdle상태 진입");
 
         // Sit && Idle
-        StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
