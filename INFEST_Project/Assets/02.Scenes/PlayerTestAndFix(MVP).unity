@@ -6097,6 +6097,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ef5a46c44b71084288d7e1732c4d53f, type: 3}
+--- !u!224 &323757517 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8621167064049919257, guid: feba69cd73977d7408227744969181f5,
+    type: 3}
+  m_PrefabInstance: {fileID: 2029662611}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &326891295
 GameObject:
   m_ObjectHideFlags: 0
@@ -7364,7 +7370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
-    RawGuidValue: 2774f2bbe8fb6bf47a771997e0e2f721
+    RawGuidValue: 163506e14459bd54bb0dd2d35a57925d
   _monsterSpawnerPrefab:
     RawGuidValue: c599246f0e0a3414f88a5b53600b82fb
   _playerInputActionHandler: {fileID: 1059157647}
@@ -7381,7 +7387,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 4089587197
+  SortKey: 3839355482
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -25588,7 +25594,7 @@ RectTransform:
   - {fileID: 1895203669}
   - {fileID: 1012060499}
   - {fileID: 405017799}
-  - {fileID: 2029662612}
+  - {fileID: 323757517}
   - {fileID: 1696896291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -33971,12 +33977,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: feba69cd73977d7408227744969181f5, type: 3}
---- !u!224 &2029662612 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8621167064049919257, guid: feba69cd73977d7408227744969181f5,
-    type: 3}
-  m_PrefabInstance: {fileID: 2029662611}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2030050487
 GameObject:
   m_ObjectHideFlags: 0
