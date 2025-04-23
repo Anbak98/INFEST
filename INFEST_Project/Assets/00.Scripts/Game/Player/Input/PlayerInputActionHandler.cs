@@ -376,7 +376,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         // 샷건의 경우 누르고 있어도 발사가 되면 안되니까 막아놓았다
         if (_isShotgunOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);   // 구조체의 변수를 바꾼거고
-        //_isShotgunOnFiring = false;    // PlayerInputHandler의 변수를 바꾼거다
+        _isShotgunOnFiring = false;    // PlayerInputHandler의 변수를 바꾼거다
 
         // Shotgun의 단발을 위해 false로 바꿔야한다
         // 위의 if문이 있을 때 다른 입력이 없을 때 우클릭을 해제하면, 아무 입력도 없게 되어 return된다.

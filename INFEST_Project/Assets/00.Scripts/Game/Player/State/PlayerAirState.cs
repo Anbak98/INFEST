@@ -24,6 +24,14 @@ public class PlayerAirState : PlayerBaseState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        PlayerFire(data);
+        controller.ApplyGravity();
+
+        if (!data.isFiring)
+        {
+            stateMachine.ChangeState(stateMachine.IdleState);
+            return;
+        }
     }
     public override void PhysicsUpdate(NetworkInputData data)
     {

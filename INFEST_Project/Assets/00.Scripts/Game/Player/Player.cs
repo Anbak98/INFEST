@@ -1,4 +1,4 @@
-using Cinemachine;
+ï»¿using Cinemachine;
 using Fusion;
 using TMPro;
 using UnityEngine;
@@ -6,12 +6,12 @@ using UnityEngine.InputSystem;
 
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾îÀÇ ±âº»ÀûÀÎ »çÇ×µé
+/// í”Œë ˆì´ì–´ì˜ ê¸°ë³¸ì ì¸ ì‚¬í•­ë“¤
 /// </summary>
 public class Player : NetworkBehaviour
 {
     //[SerializeField] private Ball _prefabBall;
-    // ¹öÆ° ´©¸§ÀÌ °¨ÁöµÉ ¶§¸¸ Å¸ÀÌ¸Ó¸¦ Àç¼³Á¤
+    // ë²„íŠ¼ ëˆ„ë¦„ì´ ê°ì§€ë  ë•Œë§Œ íƒ€ì´ë¨¸ë¥¼ ì¬ì„¤ì •
     [Networked] private TickTimer delay { get; set; }
 
     // 
@@ -23,7 +23,7 @@ public class Player : NetworkBehaviour
     //public SimpleKCC KCC;
     //public Weapons Weapons;
     //public Health Health;
-    public Animator Animator;
+    public Animator playerAnimator;
     public HitboxRoot HitboxRoot;
 
 
@@ -40,25 +40,30 @@ public class Player : NetworkBehaviour
 
     //[SerializeField] private PhysxBall _prefabPhysxBall;
 
-    // ³×Æ®¿öÅ© ¼Ó¼ºÀ» Á¤ÀÇÇÒ ¶§ FusionÀº Á¦°øµÈ get ¹× set ½ºÅÓÀ» »ç¿ëÀÚ ÁöÁ¤ ÄÚµå·Î ´ëÃ¼ÇÏ¿© ³×Æ®¿öÅ© »óÅÂ¿¡ Á¢±Ù
-    // ÀÌ´Â ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ ÀÌ·¯ÇÑ ¹æ¹ıÀ» »ç¿ëÇÏ¿© ¼Ó¼º °ªÀÇ º¯È­¸¦ Ã³¸®ÇÒ ¼ö ¾øÀ¸¸ç
-    // º°µµÀÇ setter ¸Ş¼Òµå¸¦ ¸¸µå´Â °ÍÀº ·ÎÄÃ¿¡¼­¸¸ ÀÛµ¿ÇÑ´Ù´Â °ÍÀ» ÀÇ¹Ì
+    // ë„¤íŠ¸ì›Œí¬ ì†ì„±ì„ ì •ì˜í•  ë•Œ Fusionì€ ì œê³µëœ get ë° set ìŠ¤í…ì„ ì‚¬ìš©ì ì§€ì • ì½”ë“œë¡œ ëŒ€ì²´í•˜ì—¬ ë„¤íŠ¸ì›Œí¬ ìƒíƒœì— ì ‘ê·¼
+    // ì´ëŠ” ì• í”Œë¦¬ì¼€ì´ì…˜ì´ ì´ëŸ¬í•œ ë°©ë²•ì„ ì‚¬ìš©í•˜ì—¬ ì†ì„± ê°’ì˜ ë³€í™”ë¥¼ ì²˜ë¦¬í•  ìˆ˜ ì—†ìœ¼ë©°
+    // ë³„ë„ì˜ setter ë©”ì†Œë“œë¥¼ ë§Œë“œëŠ” ê²ƒì€ ë¡œì»¬ì—ì„œë§Œ ì‘ë™í•œë‹¤ëŠ” ê²ƒì„ ì˜ë¯¸
     [Networked] public bool spawnedProjectile { get; set; }
 
     private ChangeDetector _changeDetector;
 
     public Material _material;
 
-    // RPC(¿ø°İ ÇÁ·Î½ÃÀú È£Ãâ)´Â Æ¯Á¤ ÀÌº¥Æ®¸¦ ³×Æ®¿öÅ© Å¬¶óÀÌ¾ğÆ® °£¿¡ °øÀ¯ÇÏ±â¿¡ ÀÌ»óÀûÀÔ´Ï´Ù.
-    // ¹İ¸é¿¡, [Networked] ¼Ó¼ºÀº Áö¼ÓÀûÀ¸·Î º¯ÇÏ´Â »óÅÂ¸¦ °øÀ¯ÇÏ´Â µ¥ ÀûÇÕÇÑ ±âº» ¼Ö·ç¼ÇÀÔ´Ï´Ù.
+    #region ì„ì‹œ ë³µêµ¬
+    public CharacterController characterController; // collider, rigidbody
+    public NetworkCharacterController networkCharacterController;
+    public PlayerStateMachine stateMachine;
+    public PlayerController playerController;
+    public PlayerStatHandler statHandler;
+    public PlayerCameraHandler cameraHandler;
+    #endregion
+
+    // RPC(ì›ê²© í”„ë¡œì‹œì € í˜¸ì¶œ)ëŠ” íŠ¹ì • ì´ë²¤íŠ¸ë¥¼ ë„¤íŠ¸ì›Œí¬ í´ë¼ì´ì–¸íŠ¸ ê°„ì— ê³µìœ í•˜ê¸°ì— ì´ìƒì ì…ë‹ˆë‹¤.
+    // ë°˜ë©´ì—, [Networked] ì†ì„±ì€ ì§€ì†ì ìœ¼ë¡œ ë³€í•˜ëŠ” ìƒíƒœë¥¼ ê³µìœ í•˜ëŠ” ë° ì í•©í•œ ê¸°ë³¸ ì†”ë£¨ì…˜ì…ë‹ˆë‹¤.
     //[Networked] public string playerName { get; set; }
     //[Networked] public Color playerColor { get; set; }
 
     private TMP_Text _messages;
-
-    /// <summary>
-    ///
-    /// </summary>
 
 
     private void Awake()
@@ -66,37 +71,39 @@ public class Player : NetworkBehaviour
         _cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
-        /// Player¿¡ ºÙÀº PlayerColor ½ºÅ©¸³Æ®ÀÇ MeshRenderer¿¡ Á¢±ÙÇÏ¿© materialÀ» °¡Á®¿Â´Ù
+        /// Playerì— ë¶™ì€ PlayerColor ìŠ¤í¬ë¦½íŠ¸ì˜ MeshRendererì— ì ‘ê·¼í•˜ì—¬ materialì„ ê°€ì ¸ì˜¨ë‹¤
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
 
     private void Start()
     {
+        // ì„ì‹œ ë³µêµ¬
+        //stateMachine = new PlayerStateMachine(this, playerController);
     }
 
     /// <summary>
-    /// FixedUpdateNetwork¸¦ PlayerController·Î ¿Å±â´Â °Ç?
+    /// FixedUpdateNetworkë¥¼ PlayerControllerë¡œ ì˜®ê¸°ëŠ” ê±´?
     /// </summary>
     public override void FixedUpdateNetwork()
     {
-        //Debug.Log("FixedUpdateNetwork ÁøÀÔ");
-        /// GetInput: OnInput¿¡ ÀÖ´Â µ¥ÀÌÅÍ °¡Á®¿Â´Ù
+        //Debug.Log("FixedUpdateNetwork ì§„ì…");
+        /// GetInput: OnInputì— ìˆëŠ” ë°ì´í„° ê°€ì ¸ì˜¨ë‹¤
         if (GetInput(out NetworkInputData data))
         {
             data.direction.Normalize();
             _cc.Move(5 * data.direction * Runner.DeltaTime);
 
             if (data.direction.sqrMagnitude > 0)
-                _forward = data.direction;  //  ¸¶Áö¸· ÀÌµ¿ ¹æÇâÀ» ÀúÀåÇÏ°í ÀÌ¸¦ °øÀÇ ¾Õ ¹æÇâÀ¸·Î »ç¿ë
+                _forward = data.direction;  //  ë§ˆì§€ë§‰ ì´ë™ ë°©í–¥ì„ ì €ì¥í•˜ê³  ì´ë¥¼ ê³µì˜ ì• ë°©í–¥ìœ¼ë¡œ ì‚¬ìš©
 
-            // ³×Æ®¿öÅ© °´Ã¼´Â StateAuthority(È£½ºÆ®)¸¸ »ı¼ºÇÒ ¼ö ÀÖ±â ¶§¹®¿¡ StateAuthority¿¡ ´ëÇÑ È®ÀÎÀÌ ÇÊ¿ä
-            // È£½ºÆ®¿¡¼­¸¸ ½ÇÇàµÇ°í Å¬¶óÀÌ¾ğÆ®¿¡¼­´Â ¿¹ÃøµÇÁö ¾Ê´Â´Ù
+            // ë„¤íŠ¸ì›Œí¬ ê°ì²´ëŠ” StateAuthority(í˜¸ìŠ¤íŠ¸)ë§Œ ìƒì„±í•  ìˆ˜ ìˆê¸° ë•Œë¬¸ì— StateAuthorityì— ëŒ€í•œ í™•ì¸ì´ í•„ìš”
+            // í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ì‹¤í–‰ë˜ê³  í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ì˜ˆì¸¡ë˜ì§€ ì•ŠëŠ”ë‹¤
             if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
             {
-                // ¸¶¿ì½º ÁÂÅ¬¸¯(°ø°İ)
+                // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­(ê³µê²©)
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
                 {
-                    //Debug.Log("°ø°İ");
+                    //Debug.Log("ê³µê²©");
                     _weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
                     //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
@@ -110,12 +117,12 @@ public class Player : NetworkBehaviour
                     //  });
                     //spawnedProjectile = !spawnedProjectile;
                 }
-                // PhyscBall.Init() ¸Ş¼Òµå¸¦ »ç¿ëÇÏ¿© ½ºÆùÀ» È£ÃâÇÏ°í ¼Óµµ(¸¶Áö¸· ¼ø¹æÇâ¿¡ °öÇÑ »ó¼ö)¸¦ ¼³Á¤
+                // PhyscBall.Init() ë©”ì†Œë“œë¥¼ ì‚¬ìš©í•˜ì—¬ ìŠ¤í°ì„ í˜¸ì¶œí•˜ê³  ì†ë„(ë§ˆì§€ë§‰ ìˆœë°©í–¥ì— ê³±í•œ ìƒìˆ˜)ë¥¼ ì„¤ì •
 
-                // ¸¶¿ì½º ¿ìÅ¬¸¯(ZOOM)
+                // ë§ˆìš°ìŠ¤ ìš°í´ë¦­(ZOOM)
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
                 {
-                    //Debug.Log("Á¶ÁØ");
+                    //Debug.Log("ì¡°ì¤€");
 
                     _weapons.Aiming();
                     //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
@@ -129,19 +136,19 @@ public class Player : NetworkBehaviour
                     //  });
                     //spawnedProjectile = !spawnedProjectile;
                 }
-                // Runner.Spawn()À» È£ÃâÇÑ ÈÄ spawnedProjectile ¼Ó¼ºÀ» Åä±Û ÇÏ¿© Äİ¹éÀ» Æ®¸®°Å
+                // Runner.Spawn()ì„ í˜¸ì¶œí•œ í›„ spawnedProjectile ì†ì„±ì„ í† ê¸€ í•˜ì—¬ ì½œë°±ì„ íŠ¸ë¦¬ê±°
                 //spawnedProjectile = !spawnedProjectile;
                 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
                 {
-                    Debug.Log("Á¶ÁØ ÇØÁ¦");
+                    Debug.Log("ì¡°ì¤€ í•´ì œ");
 
                     _weapons.StopAiming();
                 }
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_RELOAD))
                 {
-                    //Debug.Log("ÀåÀü");
+                    //Debug.Log("ì¥ì „");
 
                     _weapons.Reload();
 
@@ -149,21 +156,17 @@ public class Player : NetworkBehaviour
 
                 if (data.scrollValue.y != 0)
                 {
-                    Debug.Log("½º¿Ò");
+                    Debug.Log("ìŠ¤ì™‘");
 
                     _weapons.Swap(data.scrollValue.y);
                 }
             }
         }
-
-        // 1ÀÎÄª, 3ÀÎÄª¿¡ µû¶ó ´Ù¸£°Ô º¸¿©¾ßÇÑ´Ù
-
-
     }
 
     private void Update()
     {
-        // Object.HasInputAuthority¸¦ È®ÀÎÇÑ´Ù: ¸ğµç Å¬¶óÀÌ¾ğÆ®¿¡¼­ ½ÇÇàµÇÁö¸¸ ÀÌ ÇÃ·¹ÀÌ¾î¸¦ Á¦¾îÇÏ´Â Å¬¶óÀÌ¾ğÆ®¸¸ RPC¸¦ È£ÃâÇØ¾ß ÇÏ±â ¶§¹®
+        // Object.HasInputAuthorityë¥¼ í™•ì¸í•œë‹¤: ëª¨ë“  í´ë¼ì´ì–¸íŠ¸ì—ì„œ ì‹¤í–‰ë˜ì§€ë§Œ ì´ í”Œë ˆì´ì–´ë¥¼ ì œì–´í•˜ëŠ” í´ë¼ì´ì–¸íŠ¸ë§Œ RPCë¥¼ í˜¸ì¶œí•´ì•¼ í•˜ê¸° ë•Œë¬¸
         if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
         {
             RPC_SendMessage("Hey Mate!");
@@ -171,7 +174,7 @@ public class Player : NetworkBehaviour
     }
     public override void Spawned()
     {
-        // Æ©Åä¸®¾ó¿¡ ÀÖ´ø ºÎºĞ, »èÁ¦ÇÏ´Ï±î ¿À·ù°¡ ¸¹ÀÌ ³ª¼­ ÀÏ´Ü ³²°ÜµÎ¾ú´Ù
+        // íŠœí† ë¦¬ì–¼ì— ìˆë˜ ë¶€ë¶„, ì‚­ì œí•˜ë‹ˆê¹Œ ì˜¤ë¥˜ê°€ ë§ì´ ë‚˜ì„œ ì¼ë‹¨ ë‚¨ê²¨ë‘ì—ˆë‹¤
         _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
         name = $"{Object.InputAuthority} ({(HasInputAuthority ? "Input Authority" : (HasStateAuthority ? "State Authority" : "Proxy"))})";
@@ -193,13 +196,32 @@ public class Player : NetworkBehaviour
     {
         FirstPersonRoot.SetActive(firstPerson);
         ThirdPersonRoot.SetActive(firstPerson == false);
+
+
+        /// ì„ì‹œ ë³µêµ¬
+        if (firstPerson)
+        {
+            playerController = GetComponentInChildren<PlayerController>(true);
+            if (playerController != null)
+            {
+                playerAnimator = playerController.GetComponentInChildren<Animator>();
+            }
+        }
+        else
+        {
+            playerController = GetComponentInChildren<PlayerController>(true);
+            if (playerController != null)
+            {
+                playerAnimator = playerController.GetComponent<Animator>();
+            }
+        }
     }
 
 
 
     /// <summary>
-    /// ¸¶Áö¸·À¸·Î ChangeDetector¸¦ È£ÃâÇÑ ÀÌÈÄ ³×Æ®¿öÅ©È­µÈ ¼Ó¼º¿¡ ¹ß»ıÇÑ ¸ğµç º¯°æ »çÇ×À» ¹İº¹
-    /// Render()´Â UnityÀÇ Update()Ã³·³ FusionÀÌ ¸Å ÇÁ·¹ÀÓ¸¶´Ù ·»´õ¸µ ·çÇÁ¿¡¼­ ÀÚµ¿À¸·Î È£ÃâÇÏ´Â ÇÔ¼ö´Ù
+    /// ë§ˆì§€ë§‰ìœ¼ë¡œ ChangeDetectorë¥¼ í˜¸ì¶œí•œ ì´í›„ ë„¤íŠ¸ì›Œí¬í™”ëœ ì†ì„±ì— ë°œìƒí•œ ëª¨ë“  ë³€ê²½ ì‚¬í•­ì„ ë°˜ë³µ
+    /// Render()ëŠ” Unityì˜ Update()ì²˜ëŸ¼ Fusionì´ ë§¤ í”„ë ˆì„ë§ˆë‹¤ ë Œë”ë§ ë£¨í”„ì—ì„œ ìë™ìœ¼ë¡œ í˜¸ì¶œí•˜ëŠ” í•¨ìˆ˜ë‹¤
     /// </summary>
     public override void Render()
     {
@@ -208,17 +230,17 @@ public class Player : NetworkBehaviour
             switch (change)
             {
                 case nameof(spawnedProjectile):
-                    /// PlayerColor ½ºÅ©¸³Æ®ÀÇ MeshRenderer¿¡ Á¢±ÙÇÏ¿© materialÀÇ »ö±ò º¯°æ
+                    /// PlayerColor ìŠ¤í¬ë¦½íŠ¸ì˜ MeshRendererì— ì ‘ê·¼í•˜ì—¬ materialì˜ ìƒ‰ê¹” ë³€ê²½
                     _material.color = Color.white;
                     break;
             }
         }
-        /// PlayerColor ½ºÅ©¸³Æ®ÀÇ MeshRenderer¿¡ Á¢±ÙÇÏ¿© materialÀÇ »ö±ò º¯°æ
+        /// PlayerColor ìŠ¤í¬ë¦½íŠ¸ì˜ MeshRendererì— ì ‘ê·¼í•˜ì—¬ materialì˜ ìƒ‰ê¹” ë³€ê²½
         _material.color = Color.Lerp(_material.color, Color.blue, Time.deltaTime);
     }
 
     /// <summary>
-    /// RPC °ü·Ã ¸Ş¼­µåµé
+    /// RPC ê´€ë ¨ ë©”ì„œë“œë“¤
     /// </summary>
     /// <param name="name"></param>
     /// <param name="color"></param>
@@ -244,5 +266,10 @@ public class Player : NetworkBehaviour
         }
 
         _messages.text += message;
+    }
+
+    public Weapons GetWeapons()
+    {
+        return _weapons;
     }
 }

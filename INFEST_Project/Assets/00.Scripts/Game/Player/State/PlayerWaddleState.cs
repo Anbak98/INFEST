@@ -11,7 +11,8 @@ public class PlayerWaddleState : PlayerSitState
     public override void Enter()
     {
         // 일단 숫자대입. 나중에 PlayStatData.WalkSpeedModifier 변수 추가해서 그,값으로 바꾼다
-        stateMachine.StatHandler.MoveSpeedModifier = 1; // 걷는 속도의 0.5배
+        //stateMachine.StatHandler.MoveSpeedModifier = 1; // 걷는 속도의 0.5배
+        //Debug.Log("Waddle상태");
         base.Enter();
 
         /// blend tree 애니메이션에 적용
@@ -43,13 +44,11 @@ public class PlayerWaddleState : PlayerSitState
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.SitAttackState);
-            return;
         }
         // isSitting && isReloading
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.SitReloadState);
-            return;
         }
     }
 }

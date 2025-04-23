@@ -83,7 +83,7 @@ public class RemotePlayerController : PlayerController
     #endregion
 
 
-    protected override void Awake()
+    public override void Awake()
     {
         base.Awake();
 
@@ -110,7 +110,7 @@ public class RemotePlayerController : PlayerController
     /// 상태에 따른 애니메이션 변화는 로컬에서 계산
     /// </summary>
     // Update is called once per frame
-    protected override void Update()
+    public override void Update()
     {
         // 테스트용으로 상대방 플레이어 이동시킨다
 
@@ -135,23 +135,10 @@ public class RemotePlayerController : PlayerController
     }
 
 
-    // 3인칭에만 붙는 변수들
-    public override void ApplyNetworkState(PlayerStatData data)
-    {
-
-    }
-    public override void PlayFireAnim() => animator?.SetTrigger("Fire");
-
     public override void StartJump()
     {
         Debug.Log("점프 시작");
     }
-
-    public override void HandleFire(bool started)
-    {
-        Debug.Log("Fire 시작");
-    }
-
 
     private void OnDeath()
     {
@@ -170,7 +157,6 @@ public class RemotePlayerController : PlayerController
         if (t >= 1f)
             _isJumpingUp = false;
     }
-
 
     private void ApplyCorrection()
     {

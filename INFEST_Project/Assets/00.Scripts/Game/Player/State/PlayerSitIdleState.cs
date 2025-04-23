@@ -10,10 +10,10 @@ public class PlayerSitIdleState : PlayerSitState
     }
     public override void Enter()
     {
-        stateMachine.StatHandler.MoveSpeedModifier = 0;
+        //stateMachine.StatHandler.MoveSpeedModifier = 0;
 
         base.Enter();
-        Debug.Log("SitIdle상태 진입");
+        //Debug.Log("SitIdle상태 진입");
 
         // Sit && Idle
         //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
@@ -48,5 +48,8 @@ public class PlayerSitIdleState : PlayerSitState
         {
             stateMachine.ChangeState(stateMachine.SitReloadState);
         }
+    }
+    public override void PhysicsUpdate(NetworkInputData data)
+    {
     }
 }
