@@ -50,7 +50,7 @@ public abstract class PlayerController : BaseController
     public override void Awake()
     {
         player = GetComponentInParent<Player>();    // 플레이어 먼저 생성
-        inputManager = FindAnyObjectByType<InputManager>(); 
+        inputManager = FindAnyObjectByType<InputManager>();
         weapons = player.GetWeapons();
 
         //inputHandler = player.Input;
@@ -60,7 +60,7 @@ public abstract class PlayerController : BaseController
 
         //controller = GetComponentInParent<CharacterController>();
 
-        stateMachine = new PlayerStateMachine(player, this, inputManager);
+        stateMachine = new PlayerStateMachine(player, this);
 
         //MainCameraTransform = Camera.main.transform;
     }
@@ -68,10 +68,12 @@ public abstract class PlayerController : BaseController
     public override void FixedUpdateNetwork()
     {
         //base.FixedUpdateNetwork();
-
         if (GetInput(out NetworkInputData data))
         {
-            // 상태머신 
+            Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
+
+            // 상태머신
+
             //stateMachine.HandleInput();
             stateMachine.OnUpdate(data);
         }
@@ -87,45 +89,34 @@ public abstract class PlayerController : BaseController
     public override float GetVerticalVelocity() => verticalVelocity;
 
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
-    public override void HandleMovement()
+    public override void HandleMovement(NetworkInputData data)
     {
-        //Vector3 input = player.Input.MoveInput;
-        //Vector3 forward = transform.forward;
-        //Vector3 right = transform.right;
+        Debug.LogFormat($"{gameObject.name}의 이동로직"); // 어느 controller가 들어오는가?
 
-        //Vector3 move = right * input.x + forward * input.z;
-        //move.y = 0f; // 수직 방향 제거
-        //player.characterController.Move(move.normalized * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
+        Vector3 input = data.direction;
 
+        // ❗ 입력 없으면 아무 것도 하지 않음
+        if (input.sqrMagnitude < 0.01f) return;
 
-        if (GetInput(out NetworkInputData data))
-        {
-            Vector3 input = data.direction;
+        // 카메라 기준 방향 가져오기
+        Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
+        Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
 
-            // ❗ 입력 없으면 아무 것도 하지 않음
-            if (input.sqrMagnitude < 0.01f) return;
+        Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
+        moveDir.y = 0f; // 수직 방향 제거
 
-            // 카메라 기준 방향 가져오기
-            Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
-            Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
+        //player.networkCharacterController.Move(camForward * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
 
-            Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
-            moveDir.y = 0f; // 수직 방향 제거
+        // 회전은 막고, 이동만 한다
+        player.networkCharacterController.Move(
+            moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
+        );
 
-            //player.networkCharacterController.Move(camForward * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
-
-            // 회전은 막고, 이동만 한다
-            player.networkCharacterController.Move(
-                moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
-            );
-
-            // 회전 강제 고정: 카메라가 지정한 forward로
-            player.transform.forward = camForward;
-        }
+        // 회전 강제 고정: 카메라가 지정한 forward로
+        player.transform.forward = camForward;
     }
     public override void ApplyGravity()
     {
-        // TODO
         if (IsGrounded() && verticalVelocity < 0)
         {
             verticalVelocity = -2f;
@@ -163,27 +154,24 @@ public abstract class PlayerController : BaseController
     }
 
 
-    public override void StartFire()
+    public override void StartFire(NetworkInputData data)
     {
-        if (GetInput(out NetworkInputData data))
+        // 네트워크 객체는 StateAuthority(호스트)만 생성할 수 있기 때문에 StateAuthority에 대한 확인이 필요
+        // 호스트에서만 실행되고 클라이언트에서는 예측되지 않는다
+        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
         {
-            // 네트워크 객체는 StateAuthority(호스트)만 생성할 수 있기 때문에 StateAuthority에 대한 확인이 필요
-            // 호스트에서만 실행되고 클라이언트에서는 예측되지 않는다
-            if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+            // 마우스 좌클릭(공격)
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
-                // 마우스 좌클릭(공격)
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
-                {
-                    //Debug.Log("공격");
-                    weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
+                //Debug.Log("공격");
+                weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
-                    delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
-                }
+                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
             }
         }
     }
 
-    public override void StartReload()
+    public override void StartReload(NetworkInputData data)
     {
         // TODO
     }

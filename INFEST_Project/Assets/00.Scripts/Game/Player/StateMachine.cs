@@ -22,15 +22,6 @@ public abstract class StateMachine
         currentState?.Enter();
     }
 
-    /// <summary>
-    /// 현재 상태의 입력값, 조건에 따라 다른 상태로 이동할 것인지 판단
-    /// 하지만 네트워크에서 입력을 받아 업데이트하므로 호출하지 않는다
-    /// </summary>
-    public void HandleInput()
-    {
-        // 현재 상태에서 Input값을 확인한다
-        currentState?.HandleInput();
-    }
 
     // 생명주기함수 아니다
     public void OnUpdate(NetworkInputData data)
@@ -38,8 +29,8 @@ public abstract class StateMachine
         currentState?.OnUpdate(data);
     }
 
-    public void PhysicsUpdate()
+    public void PhysicsUpdate(NetworkInputData data)
     {
-        currentState?.PhysicsUpdate();
+        currentState?.PhysicsUpdate(data);
     }
 }

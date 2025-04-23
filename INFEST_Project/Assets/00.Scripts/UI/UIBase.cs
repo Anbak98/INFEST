@@ -10,7 +10,7 @@ public class UIBase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Global.Instance.UIManager.Show<UIShopView>();
     }
 
     // Update is called once per frame

@@ -13,6 +13,7 @@ using UnityEngine.SocialPlatforms;
 /// </summary>
 public class Player : NetworkBehaviour
 {
+    public static Player local { get; private set; }
     [Networked] private TickTimer delay { get; set; }
 
     [field: Header("Animations")]
@@ -39,14 +40,16 @@ public class Player : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
-    private InputManager _inputManager;
-
-
+    public NetworkObject networkObject;
+    public bool inStoreZoon = false;
+    public bool isInteraction = false;
+    public Store store;
+    public Inventory inventory = new();
+    public int gold = 5000;
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
     private Weapons _weapons;// SY
-    private Store stores;
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -91,19 +94,17 @@ public class Player : NetworkBehaviour
         AnimationData.Initialize();
         statHandler = GetComponent<PlayerStatHandler>();
         cameraHandler = GetComponent<PlayerCameraHandler>();
-        _inputManager = FindAnyObjectByType<InputManager>();
-
+        networkObject = GetComponent<NetworkObject>();
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
         _weapons = GetComponent<Weapons>(); // SY
-        stores = FindObjectOfType<Store>();
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
     private void Start()
     {
-        stateMachine = new PlayerStateMachine(this, playerController, _inputManager);
+        stateMachine = new PlayerStateMachine(this, playerController);
         //stateMachine.ChangeState(stateMachine.IdleState);
         //Cursor.lockState = CursorLockMode.Locked;
     }
@@ -115,7 +116,15 @@ public class Player : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if (GetInput(out NetworkInputData data))
+        {
             playerController.Update();
+
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
+            {
+                if(!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
+                else store.RPC_RequestStopInteraction(this, networkObject.InputAuthority);
+            }
+        }
     }
 
 
@@ -244,6 +253,12 @@ public class Player : NetworkBehaviour
             {
                 virtualCameras[i].enabled = false;
             }
+        }
+
+        if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
+        {
+            local = this;
+            Debug.Log("Local Player 설정 완료");
         }
         /// 디버그용
         statHandler.Init(200, 3, 2, 5, 8, 50, 60);

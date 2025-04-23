@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerAirState
 {
-    public PlayerJumpState(PlayerController controller, PlayerStateMachine stateMachine, InputManager inputManager) : base(controller, stateMachine, inputManager)
+    public PlayerJumpState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
 
@@ -20,12 +20,10 @@ public class PlayerJumpState : PlayerAirState
     {
         base.OnUpdate(data);
         // 플레이어 이동
-        PlayerMove();
+        PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
-        // y방향 속도가 작으면 fallstate로 바꿔야한다
-        // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다        
-
+        // y방향 속도가 작으면 fallstate로 바꾸어야한다(이건 일단 나중에
         if (controller.IsGrounded())
         {            
             stateMachine.ChangeState(stateMachine.IdleState);
