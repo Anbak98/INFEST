@@ -23,8 +23,8 @@ public class PlayerWaddleState : PlayerSitState
     {
         base.Exit();
         // 방향 초기화
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
     public override void OnUpdate(NetworkInputData data)
@@ -33,8 +33,8 @@ public class PlayerWaddleState : PlayerSitState
         Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         // 플레이어 이동
         PlayerWaddle(data);

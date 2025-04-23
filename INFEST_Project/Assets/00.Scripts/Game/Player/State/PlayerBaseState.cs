@@ -32,7 +32,7 @@ public abstract class PlayerBaseState : IState
         this.stateMachine = stateMachine;
         statHandler = stateMachine.Player.statHandler;
         player = stateMachine.Player;
-        stateMachine.Player.playerAnimator = player.playerAnimator;
+        //stateMachine.Player.playerAnimator = player.playerAnimator;
 
         MainCameraTransform = Camera.main.transform;
     }
@@ -52,24 +52,24 @@ public abstract class PlayerBaseState : IState
 
     #region 애니메이션 교체
     // bool 파라미터
-    protected void StartAnimation(int animatorHash)
-    {
-        stateMachine.Player.playerAnimator.SetBool(animatorHash, true);
-    }
-    protected void StopAnimation(int animatorHash)
-    {
-        stateMachine.Player.playerAnimator.SetBool(animatorHash, false);
-    }
-    // Trigger 파리미터
-    protected void SetTriggerAnimation(int animatorHash)
-    {
-        stateMachine.Player.playerAnimator.SetTrigger(animatorHash);
-    }
-    // MoveX, MoveZ
-    protected void SetAnimationFloat(int animatorHash, float value)
-    {
-        stateMachine.Player.playerAnimator.SetFloat(animatorHash, value);
-    }
+    //protected void StartAnimation(int animatorHash)
+    //{
+    //    stateMachine.Player.playerAnimator.SetBool(animatorHash, true);
+    //}
+    //protected void StopAnimation(int animatorHash)
+    //{
+    //    stateMachine.Player.playerAnimator.SetBool(animatorHash, false);
+    //}
+    //// Trigger 파리미터
+    //protected void SetTriggerAnimation(int animatorHash)
+    //{
+    //    stateMachine.Player.playerAnimator.SetTrigger(animatorHash);
+    //}
+    //// MoveX, MoveZ
+    //protected void SetAnimationFloat(int animatorHash, float value)
+    //{
+    //    stateMachine.Player.playerAnimator.SetFloat(animatorHash, value);
+    //}
 
     #endregion
 
