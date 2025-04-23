@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonsterSpawner : NetworkBehaviour
 {
-    private int SpawnMonsterNumberOnEachWave = 1;
+    private int SpawnMonsterNumberOnEachWave = 50;
 
     public List<MonsterSpawnPoint> pointRefs;
 

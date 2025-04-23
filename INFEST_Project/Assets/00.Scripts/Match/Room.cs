@@ -99,16 +99,16 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
     public void HostPlayGame()
     {
-        if (HostPlayer == Runner.LocalPlayer)
-            RPC_BrodcastPlayGame();
+        RPC_BrodcastPlayGame();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_BrodcastPlayGame()
     {
-        PlayGameListener listener = FindAnyObjectByType<PlayGameListener>();
-        listener.IsHost = HostPlayer == Runner.LocalPlayer;
-        listener.IsStarted = true;
+        if (Runner.IsSharedModeMasterClient)
+        {
+            Runner.LoadScene("PlayStage(MVP)");
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
