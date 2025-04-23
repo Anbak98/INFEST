@@ -1271,6 +1271,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 3072078453906701333}
   - {fileID: -5511681442977026662}
+  - {fileID: 3147526191137004029}
   - {fileID: 1139099963600576956}
   - {fileID: 2204635897523245189}
   - {fileID: 724139344834979615}
@@ -1373,25 +1374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <AnimationData>k__BackingField:
-    _groundParameterName: '@Ground'
-    _idleParameterName: Idle
-    _moveXParameterName: MoveX
-    _moveZParameterName: MoveZ
-    _runParameterName: Run
-    _attackParameterName: Attack
-    _reloadParameterName: Reload
-    _aimParameterName: Aim
-    _airParameterName: '@Air'
-    _jumpParameterName: Jump
-    _fallParameterName: Fall
-    _sitParameterName: Sit
-    _dieParameterName: Die
+  animationController: {fileID: 0}
   data:
     key: 0
     Playeridx: 
     NickName: 
-  playerAnimator: {fileID: 0}
   playerController: {fileID: 0}
   statHandler: {fileID: 3147526191137004029}
   characterController: {fileID: 7081860901902442314}
@@ -1452,6 +1439,14 @@ MonoBehaviour:
     startWeapon1Id: 0
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
+  _MaxHealth: 0
+  _MoveSpeed: 0
+  _MoveSpeedModifier: 0
+  _RotationDamping: 0
+  _JumpPower: 0
+  _AttackPower: 0
+  _DefensePower: 0
+  _CurrentHealth: 0
 --- !u!114 &1139099963600576956
 MonoBehaviour:
   m_ObjectHideFlags: 0
