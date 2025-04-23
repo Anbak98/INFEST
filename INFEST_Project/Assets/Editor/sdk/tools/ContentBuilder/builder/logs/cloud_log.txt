@@ -1,0 +1,23 @@
+
+
+[2025-04-23 15:38:04] Client version: 1743712175
+[2025-04-23 15:38:04] [AppID 7] Starting sync (init,)
+[2025-04-23 15:38:04] [AppID 7] AutoCloud checking local state for user 852476694
+[2025-04-23 15:38:04] [AppID 7] Not running AutoCloud. No config data found
+[2025-04-23 15:38:04] [U:1:852476694] [AppID 7] Init cache request complete
+[2025-04-23 15:38:04] [AppID 7] YldWriteCacheDirectoryToFile - empty vector, deleting 'C:\Users\worni\Desktop\GitProject\INFEST\INFEST_Project\Assets\Editor\sdk\tools\ContentBuilder\builder/userdata/852476694/7/remotecache.vdf'
+[2025-04-23 15:38:08] [AppID 7] Starting sync (down,)
+[2025-04-23 15:38:08] [AppID 7] Attempting to sync from local change number '0' to global change number '8' (full)
+[2025-04-23 15:38:08] [AppID 7] Need to download file serverbrowser_hist.vdf
+[2025-04-23 15:38:08] [AppID 7] Need to download file sharedconfig.vdf
+[2025-04-23 15:38:08] [AppID 7] HTTP download for file 'serverbrowser_hist.vdf' from host 'steamcloudseoul2.blob.core.windows.net', path /cloud/16/C3/CF/32/7/035_0_1A9B668E_89AB5_106.dat?sv=2017-04-17&se=2025-04-23T07%3A38%3A09Z&sr=b&sp=r&sig=j8BihMhiZHIXGiaxZFS2Ksla9O9ZD2uVFDALI3%2FxNaU%3D, beginning. . .
+[2025-04-23 15:38:08] [AppID 7] HTTP download for file 'sharedconfig.vdf' from host 'steamcloud-kr.s3.dualstack.ap-northeast-2.amazonaws.com', path /16/C3/CF/32/7/033_5_18A3DCBD_4BFA6_64.dat?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJEYAFUFLL3GRVB5Q%2F20250423%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20250423T063809Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=2ab7c13ba06fba554360ca87864476e01ff703054d1474e45480eb0035f14430, beginning. . .
+[2025-04-23 15:38:09] [AppID 7] HTTP download for file 'serverbrowser_hist.vdf' from host 'steamcloudseoul2.blob.core.windows.net' - Success.
+[2025-04-23 15:38:09] [AppID 7] HTTP download for file 'sharedconfig.vdf' from host 'steamcloud-kr.s3.dualstack.ap-northeast-2.amazonaws.com' - Success.
+[2025-04-23 15:38:09] [AppID 7] Download OK for file serverbrowser_hist.vdf
+[2025-04-23 15:38:09] [AppID 7] Download OK for file sharedconfig.vdf
+[2025-04-23 15:38:09] [AppID 7] Download complete, result OK
+[2025-04-23 15:38:09] [AppID 7] Successfully synced to ChangeNumber 8
+[2025-04-23 15:38:09] [Roaming Config] OnRemoteStorageSyncedClient() - result OK
+[2025-04-23 15:38:09] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\worni\Desktop\GitProject\INFEST\INFEST_Project\Assets\Editor\sdk\tools\ContentBuilder\builder/userdata/852476694/7/remotecache.vdf'
+[2025-04-23 15:39:05] [Roaming Config] PerformSyncCloud - all sync'd up
