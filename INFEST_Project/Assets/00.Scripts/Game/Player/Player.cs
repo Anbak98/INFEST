@@ -270,6 +270,13 @@ public class Player : NetworkBehaviour
             Debug.Log("Local Player 설정 완료");
         }
 
+        if(characterInfoInstance == null)
+        {
+            characterInfoInstance = new(1);
+            characterInfoInstance.curGold = 5000;
+        }
+        
+
         /// 디버그용
         /// 인스펙터 창에서 값 조절
         //statHandler.Init(200, 3, 2, 5, 8, 50, 60);

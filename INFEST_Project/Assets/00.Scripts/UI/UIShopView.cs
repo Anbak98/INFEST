@@ -4,7 +4,6 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class UIShopView : UIScreen
 {
@@ -26,7 +25,7 @@ public class UIShopView : UIScreen
     public Image defIcon;
     public TextMeshProUGUI defText;
     public Image[] weaponIcon;
-    public TextMeshProUGUI[] weaponText;
+    public TextMeshProUGUI[] weaponText; // 현재 총알 텍스트
     //public Image weaponIcon1;
     //public TextMeshProUGUI weaponText1;
     //public Image weaponIcon2;
@@ -37,38 +36,40 @@ public class UIShopView : UIScreen
     [Header("Gold")]
     public TextMeshProUGUI goldText;
 
-    [Header("BuyWeapon")]
+    [Header("BuyItme")]
     public TextMeshProUGUI[] weaponNames;
+    public TextMeshProUGUI[] ItmePrice;
 
     [Header("Button")]
     public List<Button> buyButton;                      // 구매 버튼
     public List<TextMeshProUGUI> buyButtonText;         // 구매 버튼 텍스트
     public List<Button> saleButton;                     // 판매 버튼
-    public List<Button> possessItemButton;              // 소유 아이템 구매 버튼
+    public List<TextMeshProUGUI> saleButtonText;        // 판매 버튼 텍스트
 
-    WeaponInfo _subWeaponInfo;
-    WeaponInfo _mainWeaponInfo;
-    WeaponInfo _mainWeaponInfo2;
-    ConsumeItem _itemInfo;
+    //WeaponInfo _subWeaponInfo;
+    //WeaponInfo _mainWeaponInfo;
+    //WeaponInfo _mainWeaponInfo2;
+    //ConsumeItem _itemInfo;
     CharacterInfo _characterInfo;
 
-    [Header("CurBullet")]
-    public int subCurBullet;
-    public int main1CurBullet;
-    public int main2CurBullet;
-    public int consumeItem;
+    //[Header("CurBullet")]
+    //public int subCurBullet;
+    //public int main1CurBullet;
+    //public int main2CurBullet;
+    //public int consumeItem;
 
-    [Header("BulletPrice")]
-    public TextMeshProUGUI[] weaponBullet;
+    [Header("BulletPrice")] // 구매 버튼 텍스트
+    public TextMeshProUGUI[] weaponBullet; // 총알 가격
+
     //public TextMeshProUGUI mainWeapon1Bullet;
     //public TextMeshProUGUI mainWeapon2Bullet;
-    public TextMeshProUGUI[] itemPrice;
+    public TextMeshProUGUI[] itemPrice; // 아이템 가격
 
     [Header("WeaponName")]
-    public TextMeshProUGUI[] weaponName;
+    public TextMeshProUGUI[] weaponName; // 무기 이름
     //public TextMeshProUGUI mainWeapon1Name;
     //public TextMeshProUGUI mainWeapon2Name;
-    public TextMeshProUGUI[] itemName;
+    public TextMeshProUGUI[] itemName; // 아이템 이름
 
     [Networked]
     public Profile Info { get; set; }
@@ -77,19 +78,19 @@ public class UIShopView : UIScreen
     public override void Awake()
     {
         //_characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
-        _subWeaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10102);
-        _mainWeaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
-        _mainWeaponInfo2 = DataManager.Instance.GetByKey<WeaponInfo>(10303);
-        _itemInfo = DataManager.Instance.GetByKey<ConsumeItem>(10701);
+        //_subWeaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10102);
+        //_mainWeaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
+        //_mainWeaponInfo2 = DataManager.Instance.GetByKey<WeaponInfo>(10303);
+        //_itemInfo = DataManager.Instance.GetByKey<ConsumeItem>(10701);
 
-        subCurBullet = _subWeaponInfo.MagazineBullet;
-        main1CurBullet = _mainWeaponInfo.MagazineBullet;
-        main2CurBullet = _mainWeaponInfo2.MagazineBullet;
-        consumeItem = _itemInfo.MaxNum;
+        //subCurBullet = _subWeaponInfo.MagazineBullet;
+        //main1CurBullet = _mainWeaponInfo.MagazineBullet;
+        //main2CurBullet = _mainWeaponInfo2.MagazineBullet;
+        //consumeItem = _itemInfo.MaxNum;
 
         ChoiceJob();
         SetJobIcon();
-        DefSet();
+        //DefSet();
         UpdateJobIcon();
     }
 
@@ -98,6 +99,7 @@ public class UIShopView : UIScreen
         base.Start();
         bg.gameObject.SetActive(false);
         interactionText.gameObject.SetActive(false);
+        profile.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -168,9 +170,9 @@ public class UIShopView : UIScreen
         }
     }
 
-    private void DefSet()
+    public void DefSet()
     {
-        defText.text = $"{_characterInfo.DefGear}/200";
+        defText.text = $"{Player.local.characterInfoInstance.curDefGear}/200";
     }
 
     private void GoldSet()
@@ -198,11 +200,10 @@ public class UIShopView : UIScreen
     }
     //private void MainWeapon1Set()
     //{
-    //    weaponText1.text = $"{main1CurBullet}/{_mainWeaponInfo.MaxBullet}";
+    //      .text = $"{main1CurBullet}/{_mainWeaponInfo.MaxBullet}";
     //    mainWeapon1Bullet.text = $"탄창\n{(_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice}G";
     //    mainWeapon1Name.text = $"{_mainWeaponInfo.Name}";
     //}
-
     //private void MainWeapon2Set()
     //{
     //    weaponText2.text = $"{main2CurBullet}/{_mainWeaponInfo2.MaxBullet}";
@@ -211,95 +212,113 @@ public class UIShopView : UIScreen
     //}
 
 
-    private void AllSupplementSet()
-    {
-        int subPrice = (_subWeaponInfo.MagazineBullet - subCurBullet) * _subWeaponInfo.BulletPrice;
-        int main1Price = (_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice;
-        int main2Price = (_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice;
-        int itemPrice = (_itemInfo.MaxNum - consumeItem) * _itemInfo.Price;
+    //private void AllSupplementSet()
+    //{
+    //    int subPrice = (_subWeaponInfo.MagazineBullet - subCurBullet) * _subWeaponInfo.BulletPrice;
+    //    int main1Price = (_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice;
+    //    int main2Price = (_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice;
+    //    int itemPrice = (_itemInfo.MaxNum - consumeItem) * _itemInfo.Price;
 
-        if (_characterInfo.DefGear >= 200)
+    //    if (_characterInfo.DefGear >= 200)
+    //    {
+    //        allSupplement.text = $"모두 보충\n({subPrice + main1Price + main2Price + itemPrice}G)";
+    //    }
+    //    else
+    //    {
+    //        allSupplement.text = $"모두 보충\n({500 + subPrice + main1Price + main2Price + itemPrice}G)";
+    //    }
+    //}
+
+    //public void OnClickAllBtn()
+    //{
+    //    int subPrice = (_subWeaponInfo.MagazineBullet - subCurBullet) * _subWeaponInfo.BulletPrice;
+    //    int main1Price = (_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice;
+    //    int main2Price = (_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice;
+    //    int itemPrice = (_itemInfo.MaxNum - consumeItem) * _itemInfo.Price;
+
+    //    if (_characterInfo.DefGear >= 200)
+    //    {
+    //        Player.local.characterInfoInstance.curGold -= subPrice + main1Price + main2Price + itemPrice;
+    //    }
+    //    else
+    //    {
+    //        Player.local.characterInfoInstance.curGold -= 500 + subPrice + main1Price + main2Price + itemPrice;
+    //    }
+
+    //    _characterInfo.DefGear += 200;
+    //    _characterInfo.DefGear = Mathf.Min(_characterInfo.DefGear, 200);
+
+    //    subCurBullet += _subWeaponInfo.MagazineBullet;
+    //    subCurBullet = Mathf.Min(subCurBullet, _subWeaponInfo.MagazineBullet);
+
+    //    main1CurBullet += _mainWeaponInfo.MagazineBullet;
+    //    main1CurBullet = Mathf.Min(main1CurBullet, _mainWeaponInfo.MagazineBullet);
+
+    //    main2CurBullet += _mainWeaponInfo2.MagazineBullet;
+    //    main2CurBullet = Mathf.Min(main2CurBullet, _mainWeaponInfo2.MagazineBullet);
+
+    //    consumeItem += _itemInfo.MaxNum;
+    //    consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
+    //}
+
+  
+
+    public void SetBuyItem(Store stpre)
+    {
+        for (int i = 0; i < weaponNames.Length; i++)
         {
-            allSupplement.text = $"모두 보충\n({subPrice + main1Price + main2Price + itemPrice}G)";
-        }
-        else
-        {
-            allSupplement.text = $"모두 보충\n({500 + subPrice + main1Price + main2Price + itemPrice}G)";
+            if (i < 17)
+            {
+                weaponNames[i].text = DataManager.Instance.GetByKey<WeaponInfo>(stpre.idList[i]).Name;
+                ItmePrice[i].text = $"{DataManager.Instance.GetByKey<WeaponInfo>(stpre.idList[i]).Price}G";
+            }
+            else
+            {
+                weaponNames[i].text = DataManager.Instance.GetByKey<ConsumeItem>(stpre.idList[i]).Name;
+                ItmePrice[i].text = $"{DataManager.Instance.GetByKey<ConsumeItem>(stpre.idList[i]).Price}G";
+            }
         }
     }
 
+    //public void OnClickMainWeapon1()
+    //{
+    //    if (main1CurBullet >= _mainWeaponInfo.MagazineBullet)
+    //        return;
+
+    //    Player.local.characterInfoInstance.curGold -= _mainWeaponInfo.BulletPrice * (_mainWeaponInfo.MagazineBullet - main1CurBullet);
+    //    main1CurBullet += _mainWeaponInfo.MagazineBullet;
+    //    main1CurBullet = Mathf.Min(main1CurBullet, _mainWeaponInfo.MagazineBullet);        
+    //}
+
+    //public void OnClickMainWeapon2()
+    //{
+    //    if (main2CurBullet >= _mainWeaponInfo2.MagazineBullet)
+    //        return;
+
+    //    Player.local.characterInfoInstance.curGold -= _mainWeaponInfo2.BulletPrice * (_mainWeaponInfo2.MagazineBullet - main2CurBullet);
+    //    main2CurBullet += _mainWeaponInfo2.MagazineBullet;
+    //    main2CurBullet = Mathf.Min(main2CurBullet, _mainWeaponInfo2.MagazineBullet);
+    //}
+
+    //public void OnClickItemBuy()
+    //{
+    //    if (consumeItem >= _itemInfo.MaxNum) return;
+
+    //    Player.local.characterInfoInstance.curGold -= _itemInfo.Price;
+    //    consumeItem++;
+    //    consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
+    //}
     public void OnClickAllBtn()
     {
-        int subPrice = (_subWeaponInfo.MagazineBullet - subCurBullet) * _subWeaponInfo.BulletPrice;
-        int main1Price = (_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice;
-        int main2Price = (_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice;
-        int itemPrice = (_itemInfo.MaxNum - consumeItem) * _itemInfo.Price;
-
-        if (_characterInfo.DefGear >= 200)
-        {
-            Player.local.characterInfoInstance.curGold -= subPrice + main1Price + main2Price + itemPrice;
-        }
-        else
-        {
-            Player.local.characterInfoInstance.curGold -= 500 + subPrice + main1Price + main2Price + itemPrice;
-        }
-
-        _characterInfo.DefGear += 200;
-        _characterInfo.DefGear = Mathf.Min(_characterInfo.DefGear, 200);
-
-        subCurBullet += _subWeaponInfo.MagazineBullet;
-        subCurBullet = Mathf.Min(subCurBullet, _subWeaponInfo.MagazineBullet);
-
-        main1CurBullet += _mainWeaponInfo.MagazineBullet;
-        main1CurBullet = Mathf.Min(main1CurBullet, _mainWeaponInfo.MagazineBullet);
-
-        main2CurBullet += _mainWeaponInfo2.MagazineBullet;
-        main2CurBullet = Mathf.Min(main2CurBullet, _mainWeaponInfo2.MagazineBullet);
-
-        consumeItem += _itemInfo.MaxNum;
-        consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
+        _store.RPC_RequestTryAllSupplement(Player.local, Player.local.Runner.LocalPlayer);
     }
 
     public void OnClickDefBtn()
     {
-        if (_characterInfo.DefGear >= 200)
-            return;
 
-        Player.local.characterInfoInstance.curGold -= 500;
-        _characterInfo.DefGear += 200;
-        _characterInfo.DefGear = Mathf.Min(_characterInfo.DefGear, 200);   
+        _store.RPC_RequestTryDefSupplement(Player.local, Player.local.Runner.LocalPlayer);
     }
 
-
-
-    public void OnClickMainWeapon1()
-    {
-        if (main1CurBullet >= _mainWeaponInfo.MagazineBullet)
-            return;
-
-        Player.local.characterInfoInstance.curGold -= _mainWeaponInfo.BulletPrice * (_mainWeaponInfo.MagazineBullet - main1CurBullet);
-        main1CurBullet += _mainWeaponInfo.MagazineBullet;
-        main1CurBullet = Mathf.Min(main1CurBullet, _mainWeaponInfo.MagazineBullet);        
-    }
-
-    public void OnClickMainWeapon2()
-    {
-        if (main2CurBullet >= _mainWeaponInfo2.MagazineBullet)
-            return;
-
-        Player.local.characterInfoInstance.curGold -= _mainWeaponInfo2.BulletPrice * (_mainWeaponInfo2.MagazineBullet - main2CurBullet);
-        main2CurBullet += _mainWeaponInfo2.MagazineBullet;
-        main2CurBullet = Mathf.Min(main2CurBullet, _mainWeaponInfo2.MagazineBullet);
-    }
-
-    public void OnClickItemBuy()
-    {
-        if (consumeItem >= _itemInfo.MaxNum) return;
-
-        Player.local.characterInfoInstance.curGold -= _itemInfo.Price;
-        consumeItem++;
-        consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
-    }
     public void OnClickBulletSupplementBtn(int index)
     {
         _store.RPC_RequestTryBulletSupplement(Player.local, Player.local.Runner.LocalPlayer, index);
@@ -323,6 +342,10 @@ public class UIShopView : UIScreen
     public void StoreInIt(Store store)
     {
         _store = store;
+        SetBuyItem(store);
+        UpdateButtonState();
+        DefSet();
+
     }
     /// <summary>
     /// 구매버튼 업데이트
@@ -386,5 +409,18 @@ public class UIShopView : UIScreen
             }
             GoldSet();
         }
+    }
+    public void SaleSet(int index)
+    {
+        WeaponInstance[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
+        ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
+
+
+        if (weaponInv[index] == null) return;
+
+        if(index < 3)
+            saleButtonText[index].text = $"판매\n{weaponInv[index].data.Price/2}G";
+        else
+            saleButtonText[index-3].text = $"판매\n{ItemInv[index-3].data.Price/2}G";
     }
 }
