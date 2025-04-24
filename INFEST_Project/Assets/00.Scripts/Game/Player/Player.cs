@@ -46,7 +46,7 @@ public class Player : NetworkBehaviour
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
-    private Weapons _weapons;// SY
+    public Weapons Weapons;// SY
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -88,13 +88,9 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        statHandler = GetComponent<PlayerStatHandler>();
-        cameraHandler = GetComponent<PlayerCameraHandler>();
-        networkObject = GetComponent<NetworkObject>();
         /// 기존의 데이터
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
-        _weapons = GetComponent<Weapons>(); // SY
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
     }
@@ -108,19 +104,31 @@ public class Player : NetworkBehaviour
     //{
     //    playerController.Update();
     //}
-
+    NetworkInputData DEBUG_DATA;
     public override void FixedUpdateNetwork()
     {
         if (GetInput(out NetworkInputData data))
         {
-            playerController.Update();
+            DEBUG_DATA = data;
+            playerController.stateMachine.OnUpdate(data);
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                if(!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
-                else store.RPC_RequestStopInteraction(this, networkObject.InputAuthority);
+                if (!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
+
+                else store.RPC_RequestStopInteraction(networkObject.InputAuthority);
+
+                isInteraction = !isInteraction;
             }
         }
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label(playerController.stateMachine.currentState.ToString());
+        GUILayout.Label(DEBUG_DATA.ToString());
+        GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+        GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
     }
 
 
@@ -226,7 +234,7 @@ public class Player : NetworkBehaviour
 
     public Weapons GetWeapons()
     {
-        return _weapons;
+        return Weapons;
     }
 
 
@@ -274,7 +282,6 @@ public class Player : NetworkBehaviour
         if (firstPerson)
         {
             // 1인칭일 경우: LocalPlayerController 자식에서 Animator 가져오기
-            playerController = GetComponentInChildren<LocalPlayerController>(true);
             if (playerController != null)
             {
                 // 1인칭의 경우 Hands_Rifle가 활성화 된 상태로 시작하여 Rifle의 Animator를 대입
@@ -288,7 +295,6 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            playerController = GetComponentInChildren<RemotePlayerController>(true);
             if (playerController != null)
             {
                 // Weapons을 붙여야 한다

@@ -30,6 +30,7 @@ public abstract class BaseController : NetworkBehaviour
 
     //public virtual bool IsFiring() => false;
     //public virtual bool IsShotgunFiring() => false;
+    public abstract void SetGrounded(bool b);
     public abstract void HandleMovement(NetworkInputData data);
     public abstract void ApplyGravity();
     public abstract void StartJump();

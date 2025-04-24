@@ -23,6 +23,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     public void RPC_RequestInteraction(Player _player, PlayerRef _playerRef)
     {
         RPC_Interaction(_player, _playerRef);
+        if (_storeController.activeTime)
+        {
+            _storeController.RPC_Timer(_playerRef);
+        }
     }
 
     /// <summary>
@@ -36,16 +40,11 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        _player.isInteraction = true;
         _storeController.uIShopView.UpdateButtonState();
         //isInteraction = false;
         _storeController.uIShopView.bg.gameObject.SetActive(true);
         _storeController.uIShopView.interactionText.gameObject.SetActive(false);
-        if (_storeController.activeTime)
-        {
-            _storeController.Interaction();
-        }
-
+        
     }
 
     /// <summary>
@@ -54,9 +53,9 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestStopInteraction(Player _player, PlayerRef _playerRef)
+    public void RPC_RequestStopInteraction(PlayerRef _playerRef)
     {
-        RPC_StopInteraction(_player, _playerRef);
+        RPC_StopInteraction(_playerRef);
 
     }
     /// <summary>
@@ -65,12 +64,11 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_StopInteraction(Player _player, PlayerRef _playerRef)
+    public void RPC_StopInteraction([RpcTarget] PlayerRef _playerRef)
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        _player.isInteraction = false;
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
         _storeController.uIShopView.bg.gameObject.SetActive(false);
     }
@@ -83,7 +81,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     public void RPC_RequestEnterShopZone(Player _player, PlayerRef _playerRef)
     {
         RPC_EnterShopZone(_player, _playerRef);
-
     }
 
     /// <summary>
@@ -94,7 +91,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EnterShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        //if (_playerRef != _player.Runner.LocalPlayer) return;
+        if (_playerRef != _player.Runner.LocalPlayer) return;
 
         _storeController.uIShopView.bg.gameObject.SetActive(false);
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
@@ -172,7 +169,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             _player.inventory.AddConsumeItme(_consumeInstance);
         }
         Debug.Log("±¸¸Å ÈÄ :" + _player.gold + " ");
-
     }
     /// <summary>
     /// ÆÇ¸Å ¿äÃ» ¸Þ¼Òµå
