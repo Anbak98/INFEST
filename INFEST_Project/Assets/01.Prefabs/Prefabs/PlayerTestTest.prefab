@@ -3617,13 +3617,13 @@ MonoBehaviour:
     startWeapon1Id: 0
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
-  _MaxHealth: 0
-  _MoveSpeed: 0
-  _MoveSpeedModifier: 0
-  _RotationDamping: 0
-  _JumpPower: 0
-  _AttackPower: 0
-  _DefensePower: 0
+  _MaxHealth: 200
+  _MoveSpeed: 12
+  _MoveSpeedModifier: 2
+  _RotationDamping: 5
+  _JumpPower: 5
+  _AttackPower: 50
+  _DefensePower: 60
   _CurrentHealth: 0
 --- !u!114 &3724504915549296076
 MonoBehaviour:

@@ -12,7 +12,7 @@ public class PlayerMoveState : PlayerGroundState
     public override void Enter()
     {
         // 일단 숫자대입. 나중에 PlayStatData.WalkSpeedModifier 변수 추가해서 그,값으로 바꾼다
-        stateMachine.StatHandler.MoveSpeedModifier = 2;
+        stateMachine.StatHandler.MoveSpeedModifier = 4;
         Debug.Log("Move상태 진입");
         base.Enter();
 
@@ -38,29 +38,29 @@ public class PlayerMoveState : PlayerGroundState
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         PlayerMove(data);
-        controller.ApplyGravity();  // 중력
+        //controller.ApplyGravity();  // 중력
 
-        if (data.direction == Vector3.zero)
+        if (controller.IsGrounded() && data.direction == Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-        if (data.isRunning)
+        if (controller.IsGrounded() && data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
         }
-        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
         }
-        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
-        if (data.isJumping)
+        if ((controller.IsGrounded()) && data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (data.isSitting)
+        if (controller.IsGrounded() && data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }

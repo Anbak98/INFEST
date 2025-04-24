@@ -127,6 +127,10 @@ public class Player : NetworkBehaviour
     {
         GUILayout.Label(playerController.stateMachine.currentState.ToString());
         GUILayout.Label(DEBUG_DATA.ToString());
+        GUILayout.Label("PlayerController position: " + playerController.transform.position.ToString());
+        GUILayout.Label("PlayerController rotation: " + playerController.transform.rotation.ToString());
+        GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+        GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
         GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
         GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
     }
@@ -265,7 +269,8 @@ public class Player : NetworkBehaviour
             Debug.Log("Local Player 설정 완료");
         }
         /// 디버그용
-        statHandler.Init(200, 3, 2, 5, 8, 50, 60);
+        /// 인스펙터 창에서 값 조절
+        //statHandler.Init(200, 3, 2, 5, 8, 50, 60);
         Debug.LogFormat($"플레이어 hp = {statHandler.CurrentHealth}");
         Debug.LogFormat($"플레이어 speed = {statHandler.MoveSpeed}");
         Debug.LogFormat($"플레이어 speedModifier = {statHandler.MoveSpeedModifier}");

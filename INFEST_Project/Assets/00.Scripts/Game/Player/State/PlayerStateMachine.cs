@@ -82,8 +82,8 @@ public class PlayerStateMachine : StateMachine
 
 
         // 처음에는 IdleState시작
-        currentState = IdleState; // 파라미터가 없어서 명시적으로 지정
-        // Player에서 설정해주니까 상태머신에 들어왔을때 자꾸 currentState가 null
+        //currentState = IdleState; 
+        currentState = FallState;         // 처음에 떠있는 상태에서 떨어진다
     }
 }
 
