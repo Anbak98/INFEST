@@ -41,7 +41,7 @@ public class Player : NetworkBehaviour
     public bool isInteraction = false;
     public Store store;
     public Inventory inventory;
-    public int gold = 5000;
+    public CharacterInfoInstance characterInfoInstance;
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
@@ -120,6 +120,7 @@ public class Player : NetworkBehaviour
 
                 isInteraction = !isInteraction;
             }
+
         }
     }
 
