@@ -36,7 +36,7 @@ public class UIScoreboardView : UIScreen
 
     public void AddPlayerRow(PlayerRef player, CharacterInfoData info)
     {        
-        UIScoreboardRow row = Instantiate(rowPrefab, rowParent);        
+        UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
         row.SetNickname(info.nickname.ToString());
 
         PlayerScoreData init = new PlayerScoreData

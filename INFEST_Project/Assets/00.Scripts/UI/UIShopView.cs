@@ -99,13 +99,13 @@ public class UIShopView : UIScreen
 
     private void Update()
     {
-        DefSet();
-        SubWeaponSet();
-        MainWeapon1Set();
-        MainWeapon2Set();
-        ItemSet();
-        AllSupplementSet();
-        GoldSet();
+        //DefSet();
+        //SubWeaponSet();
+        //MainWeapon1Set();
+        //MainWeapon2Set();
+        //ItemSet();
+        //AllSupplementSet();
+        //GoldSet();
     }
 
     public override void Show()
