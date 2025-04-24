@@ -12,7 +12,6 @@ public class PlayerGroundState : PlayerBaseState
     }
     public override void Enter()
     {
-        Debug.Log("Ground상태 진입");
         base.Enter();
 
 

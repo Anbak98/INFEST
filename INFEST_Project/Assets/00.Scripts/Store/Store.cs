@@ -91,8 +91,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EnterShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        if (_playerRef != _player.Runner.LocalPlayer) return;
-
         _storeController.uIShopView.bg.gameObject.SetActive(false);
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
     }
@@ -169,6 +167,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             _player.inventory.AddConsumeItme(_consumeInstance);
         }
         Debug.Log("±¸¸Å ÈÄ :" + _player.gold + " ");
+        _storeController.uIShopView.UpdateButtonState();
     }
     /// <summary>
     /// ÆÇ¸Å ¿äÃ» ¸Þ¼Òµå
@@ -234,7 +233,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     {
         if (!HasStateAuthority) return;
         Vector3 spawnPosition = player.transform.position + player.transform.forward * 2f;
-        NetworkObject item = player.Runner.Spawn(itemPrefabList[index], spawnPosition, Quaternion.identity, player.networkObject.InputAuthority, (runner, obj) => obj.transform.SetParent(player.transform));
+        NetworkObject item = player.Runner.Spawn(itemPrefabList[index], spawnPosition, Quaternion.identity, player.Object.InputAuthority, (runner, obj) => obj.transform.SetParent(player.transform));
 
     }
 

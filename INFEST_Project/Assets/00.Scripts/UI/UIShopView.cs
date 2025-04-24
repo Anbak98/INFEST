@@ -99,13 +99,13 @@ public class UIShopView : UIScreen
 
     private void Update()
     {
-        DefSet();
-        SubWeaponSet();
-        MainWeapon1Set();
-        MainWeapon2Set();
-        ItemSet();
-        AllSupplementSet();
-        GoldSet();
+        //DefSet();
+        //SubWeaponSet();
+        //MainWeapon1Set();
+        //MainWeapon2Set();
+        //ItemSet();
+        //AllSupplementSet();
+        //GoldSet();
     }
 
     public override void Show()
@@ -303,13 +303,13 @@ public class UIShopView : UIScreen
 
     public void OnClickBuyBtn(int index)
     {
-        _store.RPC_RequestTryBuy(Player.local, Player.local.networkObject.InputAuthority, index);
-        UpdateButtonState();
+        _store.RPC_RequestTryBuy(Player.local, Player.local.Runner.LocalPlayer, index);
+        //UpdateButtonState();
     }
 
     public void OnClickSaleBtn(int index)
     {
-        _store.RPC_RequestTrySale(Player.local, Player.local.networkObject.InputAuthority, index);
+        _store.RPC_RequestTrySale(Player.local, Player.local.Runner.LocalPlayer, index);
         UpdateButtonState();
     }
 
