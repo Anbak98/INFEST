@@ -38,32 +38,37 @@ public class PlayerIdleState : PlayerGroundState
         base.OnUpdate(data);
         //controller.ApplyGravity();  // 중력
 
+        // Idle 또한 X, Z 방향으로 회전할 수 있어야함
+        player.animationController.LookDirection = data.lookDelta;
+
+
+
         if (controller.IsGrounded() && data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
         }
-        if ((controller.IsGrounded()) && data.isJumping)
+        else if ((controller.IsGrounded()) && data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (controller.IsGrounded() && data.isReloading)
+        else if (controller.IsGrounded() && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
-        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        else if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
         }
-        if (controller.IsGrounded() &&(stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        else if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
-        if (controller.IsGrounded() && data.isRunning)
+        else if (controller.IsGrounded() && data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
         }
-        if (controller.IsGrounded() && data.isSitting)
+        else if (controller.IsGrounded() && data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }

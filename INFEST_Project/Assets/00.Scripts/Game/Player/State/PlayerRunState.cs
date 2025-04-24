@@ -38,16 +38,14 @@ public class PlayerRunState : PlayerGroundState
         PlayerRun(data);
         //controller.ApplyGravity();  // Áß·Â
 
-        if (data.direction != Vector3.zero)
+        if (controller.IsGrounded() && data.direction == Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.MoveState);
-            return;
+            stateMachine.ChangeState(stateMachine.IdleState);
         }
         // run ´Ù½Ã ´­·¶´Ù¸é °È±â
-        if (!data.isRunning)
+        if (controller.IsGrounded() && !data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
-            return;
         }
     }
 }

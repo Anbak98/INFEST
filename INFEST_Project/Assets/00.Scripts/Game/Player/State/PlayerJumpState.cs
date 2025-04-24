@@ -23,6 +23,7 @@ public class PlayerJumpState : PlayerAirState
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
+        // 속도에 해당하는 float 변수와 연결해서 같이 처리해야함
         if (controller.GetVerticalVelocity() <= 0)
         {
             stateMachine.ChangeState(stateMachine.FallState);
