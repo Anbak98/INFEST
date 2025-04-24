@@ -55,12 +55,18 @@ public class ScoreboardManager : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddGold(PlayerRef player, int amount)
     {
-        if (PlayerScores.TryGet(player, out var data))
+        if (Runner.TryGetPlayerObject(player, out var playerObj))
         {
-            data.gold += amount;
-            PlayerScores.Set(player, data);
+            var characterInfo = playerObj.GetComponent<CharacterInfoInstance>();
+            characterInfo.curGold += amount;
 
-            scoreboardView.UpdatePlayerRow(player, data);
+            if (PlayerScores.TryGet(player, out var data))
+            {
+                data.gold += amount;
+                PlayerScores.Set(player, data);
+
+                scoreboardView.UpdatePlayerRow(player, data);
+            }
         }
     }
 

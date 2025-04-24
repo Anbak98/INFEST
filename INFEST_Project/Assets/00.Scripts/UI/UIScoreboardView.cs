@@ -11,8 +11,6 @@ public class UIScoreboardView : UIScreen
 
     private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
 
-    CharacterInfoInstance characterInfoInstance;
-
     [Networked]
     public Profile Info { get; set; }
 
@@ -47,7 +45,7 @@ public class UIScoreboardView : UIScreen
         {
             kills = 0,
             deaths = 0,
-            characterInfoInstance.curGold = 500
+            gold = 500
         };
         row.SetData(init);
 
