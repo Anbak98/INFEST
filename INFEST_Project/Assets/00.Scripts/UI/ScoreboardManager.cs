@@ -26,17 +26,17 @@ public class ScoreboardManager : NetworkBehaviour
     {
         Instance = this;
         scoreboardView = UIScoreboardView.Instance;
-    }    
+    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddKill(PlayerRef player)
     {
-        if(PlayerScores.TryGet(player, out var data))
+        if (PlayerScores.TryGet(player, out var data))
         {
             data.kills++;
             PlayerScores.Set(player, data);
 
-            scoreboardView.UpdatePlayerRow(player,data);
+            scoreboardView.UpdatePlayerRow(player, data);
         }
     }
 
@@ -48,7 +48,7 @@ public class ScoreboardManager : NetworkBehaviour
             data.deaths++;
             PlayerScores.Set(player, data);
 
-            scoreboardView.UpdatePlayerRow(player,data);
+            scoreboardView.UpdatePlayerRow(player, data);
         }
     }
 
@@ -72,7 +72,7 @@ public class ScoreboardManager : NetworkBehaviour
             PlayerScores.Add(player, new PlayerScoreData());
         }
 
-            scoreboardView.AddPlayerRow(player, info);
+        scoreboardView.AddPlayerRow(player, info);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -83,6 +83,6 @@ public class ScoreboardManager : NetworkBehaviour
             PlayerScores.Remove(player);
         }
 
-            scoreboardView.RemovePlayerRow(player);
+        scoreboardView.RemovePlayerRow(player);
     }
 }

@@ -11,9 +11,10 @@ public class UIScoreboardView : UIScreen
 
     private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
 
+    CharacterInfoInstance characterInfoInstance;
+
     [Networked]
     public Profile Info { get; set; }
-
 
     public override void Awake()
     {

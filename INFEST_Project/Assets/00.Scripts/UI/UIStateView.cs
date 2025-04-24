@@ -43,6 +43,7 @@ public class UIStateView : UIScreen
 
         UpdateJobIcon();
         UpdateWeaponIcon();
+        Show();
     }
 
     private void Update()

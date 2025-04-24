@@ -78,7 +78,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
         if (_runner.IsServer)
         {
-            //_scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+            _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
         }
     }
     private void OnGUI()
