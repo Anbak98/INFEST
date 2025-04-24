@@ -28,11 +28,11 @@ public class PlayerSitIdleState : PlayerSitState
     {
         base.OnUpdate(data);
 
-        controller.ApplyGravity();  // 중력
+        //controller.ApplyGravity();  // 중력
 
         if (data.direction != Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.MoveState);
+            stateMachine.ChangeState(stateMachine.WaddleState);
         }
         if (!data.isSitting)
         {

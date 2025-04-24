@@ -12,9 +12,10 @@ public class PlayerAirState : PlayerBaseState
 
     public override void Enter()
     {
-        Debug.Log("Air상태 진입");
+        //Debug.Log("Air상태 진입");
         base.Enter();
 
+        //controller.SetGrounded(false);
         //StartAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
     public override void Exit()
