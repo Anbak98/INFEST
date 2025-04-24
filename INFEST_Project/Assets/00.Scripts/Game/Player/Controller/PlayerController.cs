@@ -82,6 +82,14 @@ public class PlayerController : BaseController
     public override bool IsGrounded() => player.networkCharacterController.Grounded;
     public override float GetVerticalVelocity() => verticalVelocity;
 
+    // 상태가 바뀌면 NetworkCharacterController.Grounded의 시점을 강제로 맞춘다
+    public override void SetGrounded(bool b)
+    {
+        player.networkCharacterController.Grounded = b;
+    }
+
+
+
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     public override void HandleMovement(NetworkInputData data)
     {
@@ -127,6 +135,8 @@ public class PlayerController : BaseController
     public override void StartJump()
     {
         verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+        // 땅에서 떨어졌으므로 Grounded를 false로 강제변경
+        SetGrounded(false);
     }
 
     // 앉는다

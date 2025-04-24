@@ -23,10 +23,11 @@ public class PlayerJumpState : PlayerAirState
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
-        // y방향 속도가 작으면 fallstate로 바꾸어야한다(이건 일단 나중에
-        if (controller.IsGrounded())
-        {            
-            stateMachine.ChangeState(stateMachine.IdleState);
+        // y방향 속도가 작으면 fallstate로 바꾸어야한다
+
+        if (controller.GetVerticalVelocity() < 0)
+        {
+            stateMachine.ChangeState(stateMachine.FallState);
         }
     }
 

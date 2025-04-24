@@ -16,9 +16,10 @@ public class PlayerIdleState : PlayerGroundState
         stateMachine.StatHandler.MoveSpeedModifier = 0;
 
         base.Enter();   // Ground 진입
-        Debug.Log("Idle상태 진입");
+        //Debug.Log("Idle상태 진입");
 
         // Ground && Idle
+        controller.SetGrounded(true);   
         //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
