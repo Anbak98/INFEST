@@ -103,6 +103,9 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         _inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
         _inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
+
+        _inputManager.GetInput(EPlayerInput.interaction).started += OpenMenu;
+        _inputManager.GetInput(EPlayerInput.interaction).canceled += CloseMenu;
     }
 
     private void OnDisable()
@@ -143,6 +146,9 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         _inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
         _inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
+
+        _inputManager.GetInput(EPlayerInput.interaction).started -= OpenMenu;
+        _inputManager.GetInput(EPlayerInput.interaction).canceled -= CloseMenu;
     }
 
     #region Get, Set
@@ -260,6 +266,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     }
     public bool GetIsInteracting() => _isInteracting;
     #endregion
+
     #region UseItem
     private void StartUseItem(InputAction.CallbackContext context)
     {
@@ -321,6 +328,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         _UIController.Show<UIMenuView>();
         _isMenuPopup = true;
+        Invoke(nameof(CancelInteraction), 0.1f);
     }
 
     private void CloseMenu(InputAction.CallbackContext context)
@@ -373,7 +381,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isUsingItem) data.buttons.Set(NetworkInputData.BUTTON_USEITEM, true);
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
-        if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
+        if (_isMenuPopup) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);
+
         // 샷건의 경우 누르고 있어도 발사가 되면 안되니까 막아놓았다
         if (_isShotgunOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);   // 구조체의 변수를 바꾼거고
         _isShotgunOnFiring = false;    // PlayerInputHandler의 변수를 바꾼거다

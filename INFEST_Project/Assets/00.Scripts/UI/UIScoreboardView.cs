@@ -47,7 +47,7 @@ public class UIScoreboardView : UIScreen
         {
             kills = 0,
             deaths = 0,
-            gold = 500
+            characterInfoInstance.curGold = 500
         };
         row.SetData(init);
 

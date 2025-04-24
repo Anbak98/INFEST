@@ -25,7 +25,7 @@ public class PlayerFallState : PlayerAirState
 
 
         // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다
-        if (controller.IsGrounded())
+        if (controller.IsGrounded() )
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }

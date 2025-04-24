@@ -41,7 +41,7 @@ public class Player : NetworkBehaviour
     public bool isInteraction = false;
     public Store store;
     public Inventory inventory;
-    public int gold = 5000;
+    public CharacterInfoInstance characterInfoInstance;
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
@@ -120,6 +120,7 @@ public class Player : NetworkBehaviour
 
                 isInteraction = !isInteraction;
             }
+
         }
     }
 
@@ -127,6 +128,10 @@ public class Player : NetworkBehaviour
     {
         GUILayout.Label(playerController.stateMachine.currentState.ToString());
         GUILayout.Label(DEBUG_DATA.ToString());
+        GUILayout.Label("PlayerController position: " + playerController.transform.position.ToString());
+        GUILayout.Label("PlayerController rotation: " + playerController.transform.rotation.ToString());
+        GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+        GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
         GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
         GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
     }
@@ -266,7 +271,8 @@ public class Player : NetworkBehaviour
         }
 
         /// 디버그용
-        statHandler.Init(200, 3, 2, 5, 8, 50, 60);
+        /// 인스펙터 창에서 값 조절
+        //statHandler.Init(200, 3, 2, 5, 8, 50, 60);
         Debug.LogFormat($"플레이어 hp = {statHandler.CurrentHealth}");
         Debug.LogFormat($"플레이어 speed = {statHandler.MoveSpeed}");
         Debug.LogFormat($"플레이어 speedModifier = {statHandler.MoveSpeedModifier}");
