@@ -14,12 +14,12 @@ public class PlayerAttackState : PlayerGroundState
         Debug.Log("Attack상태 진입");
         base.Enter();
 
-        StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)

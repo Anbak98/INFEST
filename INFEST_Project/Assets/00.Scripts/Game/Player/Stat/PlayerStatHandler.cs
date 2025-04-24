@@ -4,20 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatHandler : MonoBehaviour
+public class PlayerStatHandler : NetworkBehaviour
 {
     public PlayerStatData statData;
 
     // Networked 붙으면 서버로 자동 전송
-    /*[Networked]*/ public int MaxHealth { get; set; }
-    /*[Networked]*/ public int MoveSpeed { get; set; }
-    /*[Networked]*/ public int MoveSpeedModifier { get; set; }
-    /*[Networked]*/ public int RotationDamping { get; set; }
+    [Networked] public int MaxHealth { get; set; }
+    [Networked] public int MoveSpeed { get; set; }
+    [Networked] public int MoveSpeedModifier { get; set; }
+    [Networked] public int RotationDamping { get; set; }
 
-    /*[Networked]*/ public int JumpPower { get; set; }
-    /*[Networked]*/ public int AttackPower { get; set; }
-    /*[Networked]*/ public int DefensePower { get; set; }
-    /*[Networked]*/ public int CurrentHealth { get; set; }
+    [Networked] public int JumpPower { get; set; }
+    [Networked] public int AttackPower { get; set; }
+    [Networked] public int DefensePower { get; set; }
+    [Networked] public int CurrentHealth { get; set; }
 
     public event Action OnDeath;
     public event Action OnHealthChanged;

@@ -16,21 +16,24 @@ public class PlayerIdleState : PlayerGroundState
         stateMachine.StatHandler.MoveSpeedModifier = 0;
 
         base.Enter();   // Ground 진입
-        Debug.Log("Idle상태 진입");
+        //Debug.Log("Idle상태 진입");
 
         // Ground && Idle
-        StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+        controller.SetGrounded(true);   
+        //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
+
     public override void PhysicsUpdate(NetworkInputData data)
     {
         base.PhysicsUpdate(data);
     }
+
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
@@ -39,38 +42,31 @@ public class PlayerIdleState : PlayerGroundState
         if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
-            return;
         }
         if (data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
-            return;
         }
         if (data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
-            return;
         }
         if (data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
-            return;
         }
     }
 }

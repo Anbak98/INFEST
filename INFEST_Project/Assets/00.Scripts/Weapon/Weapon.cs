@@ -105,7 +105,6 @@ public class Weapon : NetworkBehaviour
             IsReloading = false;
             possessionAmmo--;
             curClip++;
-            Debug.Log("장전 완료");
             if (curClip < startClip)
                 Reload();
         }
@@ -115,7 +114,6 @@ public class Weapon : NetworkBehaviour
             possessionAmmo += curClip;
             curClip = Mathf.Min(possessionAmmo, startClip);
             possessionAmmo -= Mathf.Min(possessionAmmo, startClip);
-            Debug.Log("장전 완료");
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         }
     }
@@ -151,11 +149,8 @@ public class Weapon : NetworkBehaviour
 
         if (_reloadingVisible != IsReloading)
         {
-            Debug.Log("장전 애니메이션 실행");
-
             if (IsReloading)
             {
-                Debug.Log("장전 사운드");
             }
 
             _reloadingVisible = IsReloading;
@@ -164,8 +159,6 @@ public class Weapon : NetworkBehaviour
 
     private void PlayFireEffect()
     {
-        Debug.Log("총 쏘는 사운드 실행");
-        Debug.Log("총 쏘는 애니메이션 실행");
         int id = Animator.StringToHash("Fire");
         animator.SetTrigger(id);
         camRecoil.ApplyCamRecoil(IsAiming ? 0.5f : 1f);
@@ -179,10 +172,12 @@ public class Weapon : NetworkBehaviour
     public void Fire(Vector3 pos, Vector3 dir, bool holdingPressed)
     {
         if (!IsCollected) return;
-        if (!holdingPressed && !isAutomatic) return;
+        //if (!holdingPressed && !isAutomatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curClip == 0) return;
         if (IsReloading) return;
+
+        Debug.Log("hd");
 
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
@@ -262,8 +257,6 @@ public class Weapon : NetworkBehaviour
         //  {
         //      o.GetComponent<Bullet>().Init(pos, maxHitDistance);
         //  });
-
-        Debug.Log("총쏜다");
     }
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)

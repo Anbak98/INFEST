@@ -15,12 +15,12 @@ public class PlayerSitAttackState : PlayerSitState
         base.Enter();
 
         // Sit && Attack
-        StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
     public override void Exit()
     {
         base.Exit();    // 상단의 layer로 나간다
-        StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
     public override void OnUpdate(NetworkInputData data)
     {

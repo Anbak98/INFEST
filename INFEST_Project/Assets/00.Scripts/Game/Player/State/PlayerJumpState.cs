@@ -10,9 +10,9 @@ public class PlayerJumpState : PlayerAirState
 
     public override void Enter()
     {
-        Debug.Log("Jump상태 진입");
+        //Debug.Log("Jump상태 진입");
         base.Enter();
-        StartAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
         // 점프는 한번만
         PlayerJump();
     }
@@ -23,17 +23,18 @@ public class PlayerJumpState : PlayerAirState
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
-        // y방향 속도가 작으면 fallstate로 바꾸어야한다(이건 일단 나중에
-        if (controller.IsGrounded())
-        {            
-            stateMachine.ChangeState(stateMachine.IdleState);
+        // y방향 속도가 작으면 fallstate로 바꾸어야한다
+
+        if (controller.GetVerticalVelocity() < 0)
+        {
+            stateMachine.ChangeState(stateMachine.FallState);
         }
     }
 
     public override void Exit()
     {
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
         // 점프가 끝나면 이전 상태로 돌아가야한다
     }
 

@@ -15,12 +15,12 @@ public class PlayerAirState : PlayerBaseState
         Debug.Log("Air상태 진입");
         base.Enter();
 
-        StartAnimation(stateMachine.Player.AnimationData.AimParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
     public override void Exit()
     {
         base.Exit();    // 상단의 layer로 나간다
-        StopAnimation(stateMachine.Player.AnimationData.AimParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)

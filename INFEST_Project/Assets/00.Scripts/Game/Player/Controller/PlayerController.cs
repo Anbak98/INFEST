@@ -18,12 +18,10 @@ using UnityEngine.Windows;
 /// 플레이어의 동작 및 상태 관리
 /// FixedUpdateNetwork()에서 Fusion으로부터 받은 입력 데이터를 기반으로 시뮬레이션 수행.
 /// </summary>
-public abstract class PlayerController : BaseController
+public class PlayerController : BaseController
 {
     // 동적 연결되는 변수 숨기기
-    [HideInInspector]
     public Player player;
-    public InputManager inputManager;
     public Weapons weapons;
 
     /// <summary>
@@ -49,8 +47,6 @@ public abstract class PlayerController : BaseController
 
     public override void Awake()
     {
-        player = GetComponentInParent<Player>();    // 플레이어 먼저 생성
-        inputManager = FindAnyObjectByType<InputManager>();
         weapons = player.GetWeapons();
 
         //inputHandler = player.Input;
@@ -65,19 +61,17 @@ public abstract class PlayerController : BaseController
         //MainCameraTransform = Camera.main.transform;
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        //base.FixedUpdateNetwork();
-        if (GetInput(out NetworkInputData data))
-        {
-            Debug.LogFormat($"{gameObject.name}의 controller FixedUpdate"); // 어느 controller가 들어오는가?
+    //public override void FixedUpdateNetwork()
+    //{
+    //    //base.FixedUpdateNetwork();
+    //    if (GetInput(out NetworkInputData data))
+    //    {
+    //        // 상태머신
 
-            // 상태머신
-
-            //stateMachine.HandleInput();
-            stateMachine.OnUpdate(data);
-        }
-    }
+    //        //stateMachine.HandleInput();
+    //        stateMachine.OnUpdate(data);
+    //    }
+    //}
 
     // 점프 눌렸나
     //public override bool IsJumpInput() => player.Input.GetIsJumping();
@@ -88,11 +82,17 @@ public abstract class PlayerController : BaseController
     public override bool IsGrounded() => player.networkCharacterController.Grounded;
     public override float GetVerticalVelocity() => verticalVelocity;
 
+    // 상태가 바뀌면 NetworkCharacterController.Grounded의 시점을 강제로 맞춘다
+    public override void SetGrounded(bool b)
+    {
+        player.networkCharacterController.Grounded = b;
+    }
+
+
+
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     public override void HandleMovement(NetworkInputData data)
     {
-        Debug.LogFormat($"{gameObject.name}의 이동로직"); // 어느 controller가 들어오는가?
-
         Vector3 input = data.direction;
 
         // ❗ 입력 없으면 아무 것도 하지 않음
@@ -115,6 +115,7 @@ public abstract class PlayerController : BaseController
         // 회전 강제 고정: 카메라가 지정한 forward로
         player.transform.forward = camForward;
     }
+
     public override void ApplyGravity()
     {
         if (IsGrounded() && verticalVelocity < 0)
@@ -134,6 +135,8 @@ public abstract class PlayerController : BaseController
     public override void StartJump()
     {
         verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+        // 땅에서 떨어졌으므로 Grounded를 false로 강제변경
+        SetGrounded(false);
     }
 
     // 앉는다

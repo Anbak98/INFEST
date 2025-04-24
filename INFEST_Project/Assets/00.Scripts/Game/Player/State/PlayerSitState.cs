@@ -18,7 +18,7 @@ public class PlayerSitState : PlayerGroundState
         Debug.Log("Sit상태 진입");
         base.Enter();
         
-        StartAnimation(stateMachine.Player.AnimationData.SitParameterHash);
+        //StartAnimation(stateMachine.Player.AnimationData.SitParameterHash);
         // 앉는다
         controller.StartSit();
     }
@@ -27,7 +27,7 @@ public class PlayerSitState : PlayerGroundState
         // collider의 크기를 2배로 늘린다
 
         base.Exit();
-        StopAnimation(stateMachine.Player.AnimationData.SitParameterHash);
+        //StopAnimation(stateMachine.Player.AnimationData.SitParameterHash);
         // 일어난다
         controller.StartStand();
 

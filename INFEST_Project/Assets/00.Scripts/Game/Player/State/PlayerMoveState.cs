@@ -24,51 +24,45 @@ public class PlayerMoveState : PlayerGroundState
     {
         base.Exit();
         // 방향 초기화
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
-        // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = data.direction;
+        // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다        
+        player.animationController.MoveDirection = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
-        SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
-        if (data.direction != Vector3.zero)
+        if (data.direction == Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.MoveState);
-            return;
+            stateMachine.ChangeState(stateMachine.IdleState);
         }
         if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
-            return;
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
-            return;
         }
         if (data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
-            return;
         }
         if (data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
-            return;
         }
     }
 }
