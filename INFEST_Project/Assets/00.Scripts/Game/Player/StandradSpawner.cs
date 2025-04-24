@@ -22,7 +22,9 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
     private bool _mouseButton0;
     private bool _mouseButton1;
-    public UIScoreboardView scoreboard;
+    //public UIScoreboardView scoreboard;
+    [SerializeField] private NetworkPrefabRef _scoreboardManagerPrefab;
+    private NetworkObject _scoreboardManagerObject;
 
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
@@ -73,6 +75,11 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+
+        if (_runner.IsServer)
+        {
+            _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+        }
     }
     private void OnGUI()
     {
@@ -107,9 +114,13 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             // Keep track of the player avatars for easy access
 
             _spawnedCharacters.Add(player, networkPlayerObject);
-
-            var info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
-            scoreboard.AddPlayerRow(player, info);
+                       
+            CharacterInfo info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
+            CharacterInfoData infoData = new CharacterInfoData
+            {
+                nickname = info.Name
+            };
+            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData);
 
             Global.Instance.NetworkRunner = runner;
         }
@@ -123,7 +134,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
 
-            scoreboard.RemovePlayerRow(player);
+            ScoreboardManager.Instance.RPC_RemovePlayerRow(player);            
         }
     }
 
