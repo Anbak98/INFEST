@@ -40,7 +40,7 @@ public class Player : NetworkBehaviour
     public bool inStoreZoon = false;
     public bool isInteraction = false;
     public Store store;
-    public Inventory inventory = new();
+    public Inventory inventory;
     public int gold = 5000;
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
@@ -92,6 +92,7 @@ public class Player : NetworkBehaviour
         _forward = transform.forward;
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
+        inventory = GetComponent<Inventory>();
     }
     private void Start()
     {
@@ -263,6 +264,7 @@ public class Player : NetworkBehaviour
             local = this;
             Debug.Log("Local Player 설정 완료");
         }
+
         /// 디버그용
         statHandler.Init(200, 3, 2, 5, 8, 50, 60);
         Debug.LogFormat($"플레이어 hp = {statHandler.CurrentHealth}");

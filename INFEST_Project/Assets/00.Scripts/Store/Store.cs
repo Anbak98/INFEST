@@ -167,6 +167,7 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
             _player.inventory.AddConsumeItme(_consumeInstance);
         }
         Debug.Log("구매 후 :" + _player.gold + " ");
+        _storeController.uIShopView.UpdateButtonState();
     }
     /// <summary>
     /// 판매 요청 메소드
