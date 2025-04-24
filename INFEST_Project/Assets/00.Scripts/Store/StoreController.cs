@@ -55,9 +55,9 @@ public class StoreController : NetworkBehaviour
             RPC_Show(_randomIndex);
             storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
             _runingTime = true;
-            uIShopView.StoreInIt(aiiStores[_randomIndex]);
-            
         }
+        uIShopView.StoreInIt(aiiStores[_randomIndex]);
+
     }
 
     /// <summary>

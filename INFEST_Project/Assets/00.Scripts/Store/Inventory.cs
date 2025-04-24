@@ -1,8 +1,7 @@
+using UnityEngine;
 
-using Fusion;
-
-public class Inventory : NetworkBehaviour
-{
+public class Inventory : MonoBehaviour
+{ 
     public WeaponInstance[] weapon = new WeaponInstance[2];
     public WeaponInstance[] auxiliaryWeapon = new WeaponInstance[1];
     public ConsumeInstance[] consume = new ConsumeInstance[3];

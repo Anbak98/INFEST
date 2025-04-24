@@ -22,8 +22,15 @@ public class UIScoreboardRow : MonoBehaviour
     public TextMeshProUGUI deaths;
     public TextMeshProUGUI golds;
 
-    public void SetData(CharacterInfo info)
+    public void SetData(PlayerScoreData data)
     {
-        nickName.text = info.Name;
+        kills.text = data.kills.ToString();
+        deaths.text = data.deaths.ToString();
+        golds.text = data.gold.ToString("N0");
+    }
+
+    public void SetNickname(string name)
+    {
+        nickName.text = name;
     }
 }

@@ -22,6 +22,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
     public NavMeshAgent AIPathing;
 
+    [HideInInspector]
     public Transform target;
 
     public Animator animator;
