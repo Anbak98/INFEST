@@ -26,10 +26,11 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_RUN = 7;       // lShift
     public const byte BUTTON_SIT = 8;       // lCtrl
     public const byte BUTTON_SCOREBOARD = 9;    // Tab
+    public const byte BUTTON_MENU = 10;    // ESC
 
     // 내부에서 사용하는 변수
-    public const byte BUTTON_FIREPRESSED = 10;    // 마우스 왼쪽클릭 지속
-    public const byte BUTTON_ZOOMPRESSED = 11;    // 마우스 오른쪽클릭 지속
+    public const byte BUTTON_FIREPRESSED = 11;    // 마우스 왼쪽클릭 지속
+    public const byte BUTTON_ZOOMPRESSED = 12;    // 마우스 오른쪽클릭 지속
 
     // InputAction과 연결
     public bool isJumping;
