@@ -22,7 +22,7 @@ public class PlayerController : BaseController
 {
     // 동적 연결되는 변수 숨기기
     public Player player;
-    public Weapons weapons;
+    public WeaponSpawner weapons;
 
     /// <summary>
     /// 플레이어가 입력을 받으면 다음 2가지 로직을 수행(2가지 동작은 별개의 동작이다)
@@ -95,6 +95,7 @@ public class PlayerController : BaseController
     {
         Vector3 input = data.direction;
 
+        weapons.OnMoveAnimation(input);
         // Ground이면서 입력 없으면 아무 것도 하지 않음
         // 제자리인 경우 리턴하는 것이 문제다
         // 그냥 너 없어져도 될거같은데?
@@ -109,7 +110,7 @@ public class PlayerController : BaseController
         //Vector3 right = transform.right;
         //Vector3 moveDir = (right * input.x + forward * input.z).normalized;
         moveDir.y = 0f; // 수직 방향 제거
-
+        Debug.Log(moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
         // 회전은 막고, 이동만 한다
         // xz평면상에서만 이동해야한다
         player.networkCharacterController.Move(

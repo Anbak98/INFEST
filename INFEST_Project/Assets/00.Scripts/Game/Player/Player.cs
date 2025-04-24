@@ -45,7 +45,7 @@ public class Player : NetworkBehaviour
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
-    public Weapons Weapons;// SY
+    public WeaponSpawner Weapons;// SY
 
     [Header("Components")]
     //public SimpleKCC KCC;
@@ -133,7 +133,7 @@ public class Player : NetworkBehaviour
         GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
         GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
         GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
-        GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
+        //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
     }
 
 
@@ -237,7 +237,7 @@ public class Player : NetworkBehaviour
     //    }
     //}
 
-    public Weapons GetWeapons()
+    public WeaponSpawner GetWeapons()
     {
         return Weapons;
     }

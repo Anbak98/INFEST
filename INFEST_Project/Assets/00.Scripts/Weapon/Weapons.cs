@@ -36,7 +36,7 @@ public class Weapons : NetworkBehaviour
         if (CurrentWeapon == null || IsSwitching)
             return;
 
-        CurrentWeapon.Fire(fireTransform.position, fireTransform.forward, holdingPressed);
+        CurrentWeapon.Fire();
     }
 
     /// <summary>
