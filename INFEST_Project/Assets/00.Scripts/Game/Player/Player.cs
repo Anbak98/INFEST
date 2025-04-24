@@ -37,7 +37,6 @@ public class Player : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
 
-    public NetworkObject networkObject;
     public bool inStoreZoon = false;
     public bool isInteraction = false;
     public Store store;
@@ -114,9 +113,9 @@ public class Player : NetworkBehaviour
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                if (!isInteraction) store.RPC_RequestInteraction(this, networkObject.InputAuthority);
+                if (!isInteraction) store.RPC_RequestInteraction(this, Runner.LocalPlayer);
 
-                else store.RPC_RequestStopInteraction(networkObject.InputAuthority);
+                else store.RPC_RequestStopInteraction(Runner.LocalPlayer);
 
                 isInteraction = !isInteraction;
             }

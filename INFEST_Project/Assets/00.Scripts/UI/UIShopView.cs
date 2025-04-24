@@ -303,13 +303,13 @@ public class UIShopView : UIScreen
 
     public void OnClickBuyBtn(int index)
     {
-        _store.RPC_RequestTryBuy(Player.local, Player.local.networkObject.InputAuthority, index);
+        _store.RPC_RequestTryBuy(Player.local, Player.local.Runner.LocalPlayer, index);
         UpdateButtonState();
     }
 
     public void OnClickSaleBtn(int index)
     {
-        _store.RPC_RequestTrySale(Player.local, Player.local.networkObject.InputAuthority, index);
+        _store.RPC_RequestTrySale(Player.local, Player.local.Runner.LocalPlayer, index);
         UpdateButtonState();
     }
 

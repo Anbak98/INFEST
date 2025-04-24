@@ -34,7 +34,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
             //{
             Debug.Log("Á¢ÃË " + other.name);
             //_inside.Add(_player);
-            _store.RPC_RequestEnterShopZone(_player, _player.networkObject.InputAuthority);
+            _store.RPC_RequestEnterShopZone(_player, _player.Runner.LocalPlayer);
             _player.inStoreZoon = true;
 
             //}
@@ -76,7 +76,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
             Debug.Log("Á¢ÃË ÇØÁ¦ " + other.name);
 
             //_inside.Remove(_player);
-            _store.RPC_RequestLeaveShopZone(_player, _player.networkObject.InputAuthority);
+            _store.RPC_RequestLeaveShopZone(_player, _player.Runner.LocalPlayer);
 
             //Exit(_player, _store);
         }
@@ -90,7 +90,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
         _player.inStoreZoon = false;
 
 
-        _store.RPC_RequestLeaveShopZone(_player, _player.networkObject.InputAuthority);
+        _store.RPC_RequestLeaveShopZone(_player, _player.Runner.LocalPlayer);
         _player = null;
 
     }
@@ -106,6 +106,6 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
     //{
     //    Debug.Log("Á¢ÃË ÇØÁ¦");
     //    //_inside.Remove(_player);
-    //    _store.RPC_RequestLeaveShopZone(_player, _player.networkObject.InputAuthority);
+    //    _store.RPC_RequestLeaveShopZone(_player, _player.Runner.LocalPlayer);
     //}
 }

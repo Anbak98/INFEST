@@ -234,7 +234,7 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
     {
         if (!HasStateAuthority) return;
         Vector3 spawnPosition = player.transform.position + player.transform.forward * 2f;
-        NetworkObject item = player.Runner.Spawn(itemPrefabList[index], spawnPosition, Quaternion.identity, player.networkObject.InputAuthority, (runner, obj) => obj.transform.SetParent(player.transform));
+        NetworkObject item = player.Runner.Spawn(itemPrefabList[index], spawnPosition, Quaternion.identity, player.Runner.LocalPlayer, (runner, obj) => obj.transform.SetParent(player.transform));
 
     }
 
