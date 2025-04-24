@@ -2589,8 +2589,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.3893266, z: 1}
-  m_Center: {x: 0, y: 0.6946634, z: 0}
+  m_Size: {x: 1, y: 1.8393406, z: 1}
+  m_Center: {x: 0, y: 0.9696565, z: 0}
 --- !u!1 &5927205480185614161
 GameObject:
   m_ObjectHideFlags: 0
@@ -3534,7 +3534,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &2204635897523245189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4844,7 +4844,18 @@ PrefabInstance:
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'root'\n\tTransform 'lowerarm_l'\n\tTransform
+        'root'\n\tTransform 'neck_01'\n\tTransform 'clavicle_l'\n\tTransform 'hand_l'\n\tTransform
+        'spine_02'\n\tTransform 'upperarm_r'\n\tTransform 'upperarm_l'\n\tTransform
+        'thigh_l'\n\tand more ...\n\tFrom animation clip 'Idle'\n\tFrom animation
+        clip 'Idle Crouching'\n\tFrom animation clip 'Walk Crouching Forward'\n\tFrom
+        animation clip 'Walk Crouching Backward'\n\tFrom animation clip 'Walk Crouching
+        Left'\n\tFrom animation clip 'Walk Crouching Right'\n\tFrom animation clip
+        'Walk Crouching Forward Left'\n\tFrom animation clip 'Walk Crouching Forward
+        Right'\n\tFrom animation clip 'Walk Crouching Backward Left'\n\tFrom animation
+        clip 'Walk Crouching Backward Right'\n\tand more ..."
       objectReference: {fileID: 0}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
