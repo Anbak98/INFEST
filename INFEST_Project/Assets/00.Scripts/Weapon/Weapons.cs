@@ -28,6 +28,8 @@ public class Weapons : NetworkBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 발사
     /// </summary>
