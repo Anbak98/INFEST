@@ -19,5 +19,7 @@ public class UIMenuView : UIScreen{
     public void OnClickBackBtn()
     {
         Hide();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }    
 }
