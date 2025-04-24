@@ -1,5 +1,6 @@
 using Cinemachine;
 using Fusion;
+using System.IO.Pipes;
 using UnityEngine;
 
 public enum EWeaponType
@@ -177,8 +178,6 @@ public class Weapon : NetworkBehaviour
         if (curClip == 0) return;
         if (IsReloading) return;
 
-        Debug.Log("hd");
-
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
         for (int i = 0; i < ProjectilesPerShot; i++)
@@ -202,11 +201,47 @@ public class Weapon : NetworkBehaviour
         curClip--;
     }
 
+    private Vector3 firePositionForGizmo;
+    private Vector3 fireDirectionForGizmo;
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying) return;
+
+        // Ray 정보
+        Vector3 rayOrigin = firePositionForGizmo;
+        Vector3 rayDir = fireDirectionForGizmo.normalized;
+
+        // Raycast 시각화
+        if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, maxHitDistance,
+            Object.InputAuthority, out var hit, HitMask, HitOptions.None))
+        {
+            // Ray
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(rayOrigin, hit.Point);
+
+            // Hit point
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(hit.Point, 0.1f);
+
+            // Normal
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
+        }
+        else
+        {
+            // Missed ray
+            Gizmos.color = Color.gray;
+            Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * maxHitDistance);
+        }
+    }
+
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
         var projectileData = new ProjectileData();
         Vector3 origin = _fireTransform.position;
         Vector3 direction = _fireTransform.forward;
+        firePositionForGizmo = firePosition;
+        fireDirectionForGizmo = fireDirection;
 
         var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
 
@@ -218,8 +253,9 @@ public class Weapon : NetworkBehaviour
                 projectileData.hitPosition = hit.Point;
                 projectileData.hitNormal = hit.Normal;
 
+                Debug.Log(hit.GameObject.name + " - " + hit.Hitbox);
                 if (hit.Hitbox != null)
-                {
+                {                    
                     ApplyDamage(hit.Hitbox, hit.Point, fireDirection);                    
                 }
                 else
@@ -283,7 +319,6 @@ public class Weapon : NetworkBehaviour
         //{
         //    _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
         //}
-        Debug.Log("적 타격");
     }
 
     /// <summary>

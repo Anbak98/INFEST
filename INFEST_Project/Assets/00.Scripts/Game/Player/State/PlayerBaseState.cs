@@ -88,27 +88,21 @@ public abstract class PlayerBaseState : IState
     protected void Reload(NetworkInputData data)
     {
         // 장전
-        Debug.Log("Reload");
     }
 
     protected void PlayerRun(NetworkInputData data)
     {
-        Debug.Log("Run");
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
         controller.HandleMovement(data);    // 이동
 
     }
     protected void PlayerJump()
     {
-        Debug.Log("Jump");
-
         // Junp 키입력하면 내부에서 1번만 y축 힘받고 그 외는 땅에 닿을 때까지 중력만 받을것이다
         controller.StartJump();
     }
     protected void PlayerSit(NetworkInputData data)
     {
-        Debug.Log("Sit");
-
     }
 
     // 앉아서 걷기

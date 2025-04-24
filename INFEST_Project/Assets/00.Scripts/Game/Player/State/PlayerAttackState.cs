@@ -11,7 +11,6 @@ public class PlayerAttackState : PlayerGroundState
 
     public override void Enter()
     {
-        Debug.Log("Attack상태 진입");
         base.Enter();
 
         //StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
