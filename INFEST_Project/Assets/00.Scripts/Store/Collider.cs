@@ -9,7 +9,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
     private Player _player;
     //public readonly HashSet<Player> _inside = new ();
     public Store _store;
-    public StoreController _storeController;
+    //public StoreController _storeController;
 
     private int _playerLayer = 7;
 
@@ -34,7 +34,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
             //{
             Debug.Log("Á¢ÃË " + other.name);
             //_inside.Add(_player);
-            _store.RPC_RequestEnterShopZone(_player, _player.Runner.LocalPlayer);
+            _store.RPC_RequestEnterShopZone(_player, _player.Object.InputAuthority);
             _player.inStoreZoon = true;
 
             //}
@@ -76,7 +76,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
             Debug.Log("Á¢ÃË ÇØÁ¦ " + other.name);
 
             //_inside.Remove(_player);
-            _store.RPC_RequestLeaveShopZone(_player, _player.Runner.LocalPlayer);
+            _store.RPC_RequestLeaveShopZone(player, _player.Object.InputAuthority);
 
             //Exit(_player, _store);
         }
@@ -90,7 +90,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
         _player.inStoreZoon = false;
 
 
-        _store.RPC_RequestLeaveShopZone(_player, _player.Runner.LocalPlayer);
+        _store.RPC_RequestLeaveShopZone(_player, _player.Object.InputAuthority);
         _player = null;
 
     }
