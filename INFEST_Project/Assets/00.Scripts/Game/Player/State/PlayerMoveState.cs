@@ -15,10 +15,17 @@ public class PlayerMoveState : PlayerGroundState
         stateMachine.StatHandler.MoveSpeedModifier = 4;
         Debug.Log("Move상태 진입");
         base.Enter();
+
+        ///// blend tree 애니메이션에 적용
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
         base.Exit();
+        // 방향 초기화
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, 0f);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, 0f);
     }
 
     public override void OnUpdate(NetworkInputData data)
@@ -26,6 +33,9 @@ public class PlayerMoveState : PlayerGroundState
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다        
         player.animationController.MoveDirection = data.direction;
 
+        // 지속적으로 Blend Tree 파라미터 업데이트
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
+        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         PlayerMove(data);
         //controller.ApplyGravity();  // 중력
@@ -34,23 +44,23 @@ public class PlayerMoveState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-        else if (controller.IsGrounded() && data.isRunning)
+        if (controller.IsGrounded() && data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
         }
-        else if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
         }
-        else if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
-        else if ((controller.IsGrounded()) && data.isJumping)
+        if ((controller.IsGrounded()) && data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        else if (controller.IsGrounded() && data.isSitting)
+        if (controller.IsGrounded() && data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }

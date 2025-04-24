@@ -28,9 +28,6 @@ public class PlayerReloadState : PlayerBaseState
     {
         // 장전 애니메이션 1회 실행 이 되고 바로 나가야하는데... 이를 어떻게 확인?
         bool currentIsReloading = data.isReloading; // 외부에서 bool 가져오기
-        // 애니메이션 진행시간으로 수정해야한다
-
-
 
         // 이동하면서 재장전 가능하다
         PlayerMove(data);

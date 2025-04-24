@@ -755,7 +755,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 5984569209288009230}
-  _LookDirection: {x: 0, y: 0}
   _MoveDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &5682475787935417660
 GameObject:
@@ -2360,7 +2359,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 6dad0eb84f75f844286ae240f91a19f7, type: 2}
+      objectReference: {fileID: 9100000, guid: 7502e2c60225dd7499c294d4c0ec948d, type: 2}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_WarningMessage

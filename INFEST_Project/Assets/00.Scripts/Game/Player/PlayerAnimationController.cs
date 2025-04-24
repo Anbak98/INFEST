@@ -4,16 +4,11 @@ using UnityEngine;
 public class PlayerAnimationController : NetworkBehaviour
 {
     public Animator playerAnimator;
-    [Networked] public Vector2 LookDirection { get; set; }
     [Networked] public Vector3 MoveDirection { get; set; }
 
     private string _groundParameterName = "@Ground";    // 
     private string _idleParameterName = "Idle";
-
-    // idle일때는 look하는 방향으로 회전하는 모션이 존재한다
-    private string _lookXParameterName = "LookX";    // look
-    private string _lookZParameterName = "LookZ";    // look
-
+    //private string _moveParameterName = "Move";    // walk
     private string _moveXParameterName = "MoveX";    // walk
     private string _moveZParameterName = "MoveZ";    // walk
     private string _runParameterName = "Run";
@@ -56,13 +51,10 @@ public class PlayerAnimationController : NetworkBehaviour
 
     // string 비교는 연산이 많으므로 int로 바꾸어 비교한다
     public int GroundParameterHash { get; private set; }
-
-    public int LookXParameterHash { get; private set; }
-    public int LookZParameterHash { get; private set; }
-
+    public int IdleParameterHash { get; private set; }
+    //public int MoveParameterHash { get; private set; }
     public int MoveXParameterHash { get; private set; }
     public int MoveZParameterHash { get; private set; }
-
     public int RunParameterHash { get; private set; }
     public int AttackParameterHash { get; private set; }
     public int ReloadParameterHash { get; private set; }
@@ -78,12 +70,10 @@ public class PlayerAnimationController : NetworkBehaviour
     {
         GroundParameterHash = Animator.StringToHash(_groundParameterName);
 
-        LookXParameterHash = Animator.StringToHash(_lookXParameterName);
-        LookZParameterHash = Animator.StringToHash(_lookZParameterName);
-
+        //IdleParameterHash = Animator.StringToHash(_idleParameterName);
+        //MoveParameterHash = Animator.StringToHash(_moveParameterName);
         MoveXParameterHash = Animator.StringToHash(_moveXParameterName);
         MoveZParameterHash = Animator.StringToHash(_moveZParameterName);
-
         RunParameterHash = Animator.StringToHash(_runParameterName);
         JumpParameterHash = Animator.StringToHash(_jumpParameterName);
         SitParameterHash = Animator.StringToHash(_sitParameterName);
@@ -101,9 +91,6 @@ public class PlayerAnimationController : NetworkBehaviour
     public override void Render()
     {
         base.Render();
-        playerAnimator.SetFloat(LookXParameterHash, LookDirection.x);
-        playerAnimator.SetFloat(LookZParameterHash, LookDirection.y);
-
         playerAnimator.SetFloat(MoveXParameterHash, MoveDirection.x);
         playerAnimator.SetFloat(MoveZParameterHash, MoveDirection.z);
     }
