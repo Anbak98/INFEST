@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
 
 public struct PlayerScoreData : INetworkStruct
 {
@@ -23,11 +20,12 @@ public class ScoreboardManager : NetworkBehaviour
     [Networked]
     public NetworkDictionary<PlayerRef, PlayerScoreData> PlayerScores => default;
 
-    public UIScoreboardView scoreboardView;
+    private UIScoreboardView scoreboardView;
 
     public override void Spawned()
     {
-        Instance = this;        
+        Instance = this;
+        scoreboardView = UIScoreboardView.Instance;
     }    
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
