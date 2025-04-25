@@ -42,6 +42,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Cursor.lockState = CursorLockMode.None;
 
         _storeController.uIShopView.UpdateButtonState();
+
         //isInteraction = false;
         _storeController.uIShopView.bg.gameObject.SetActive(true);
         _storeController.uIShopView.profile.gameObject.SetActive(true);
@@ -168,12 +169,11 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         Debug.Log("±¸¸Å Àü :" + _player.characterInfoInstance.curGold + " ");
 
-        if (idList[index] % 10000 < 600) // ¹«±â
+        if (idList[index] % 10000 < 700) // ¹«±â
         {
             WeaponInstance _weaponInstance = new(idList[index]);
 
             _player.characterInfoInstance.curGold -= _weaponInstance.data.Price;
-            //SpawnWeapon(_player,index);
             _player.inventory.AddWeponItme(_weaponInstance);
         }
         else if (idList[index] % 10000 < 1000) // ¾ÆÀÌÅÛ
@@ -187,10 +187,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         var inv = _player.inventory;
         int[] invKey = {inv.auxiliaryWeapon[0] != null? inv.auxiliaryWeapon[0].data.key : 0,
                         inv.weapon[0] != null? inv.weapon[0].data.key : 0,
-                        inv.weapon[1] != null? inv.weapon[0].data.key : 0,
+                        inv.weapon[1] != null? inv.weapon[1].data.key : 0,
                         inv.consume[0] != null? inv.consume[0].data.key : 0,
-                        inv.consume[1] != null? inv.consume[0].data.key : 0,
-                        inv.consume[2] != null? inv.consume[0].data.key : 0};
+                        inv.consume[1] != null? inv.consume[1].data.key : 0,
+                        inv.consume[2] != null? inv.consume[2].data.key : 0};
 
         for (int i = 0; i < invKey.Length; i++)
         {
@@ -201,13 +201,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 _storeController.uIShopView.WeaponSet(i);
                 else
                 _storeController.uIShopView.ItemSet(i-3);
-                break;
             }
         }
         Debug.Log("±¸¸Å ÈÄ :" + _player.characterInfoInstance.curGold + " ");
         _storeController.uIShopView.UpdateButtonState();
-
-
     }
     #endregion
 
@@ -392,6 +389,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Player.local.characterInfoInstance.curGold -= 500;
         Player.local.characterInfoInstance.curDefGear += 200;
         Player.local.characterInfoInstance.curDefGear = Mathf.Min(Player.local.characterInfoInstance.curDefGear, 200);
+        _storeController.uIShopView.UpdateButtonState();
     }
 
     #endregion
@@ -414,6 +412,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MagazineBullet - weaponInv[index].curBullet);
         weaponInv[index].SupplementBullet();
         _storeController.uIShopView.WeaponSet(index);
+        _storeController.uIShopView.UpdateButtonState();
     }
     #endregion
 

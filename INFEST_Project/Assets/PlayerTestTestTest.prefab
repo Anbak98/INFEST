@@ -3095,7 +3095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022f0e9663ece0f45812d8aa7e830bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSettings: {fileID: 11400000, guid: 471fc2bb93a27514ea480e144b60d064, type: 2}
+  playerSettings: {fileID: 11400000, guid: fb9ad5e060ed0c0438e8c8434b9c9887, type: 2}
   skeletonRoot: {fileID: 6624489042419820702}
   weaponBone: {fileID: 2831176873799362131}
   weaponBoneAdditive: {fileID: 8717121100861774970}
@@ -3302,6 +3302,7 @@ GameObject:
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 3724504915549296076}
   - component: {fileID: 3072078453906701333}
+  - component: {fileID: 7505745575404224780}
   m_Layer: 6
   m_Name: PlayerTestTestTest
   m_TagString: Untagged
@@ -3453,7 +3454,7 @@ MonoBehaviour:
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
   _MaxHealth: 0
-  _MoveSpeed: 0
+  _MoveSpeed: 10
   _MoveSpeedModifier: 0
   _RotationDamping: 0
   _JumpPower: 0
@@ -3501,7 +3502,7 @@ MonoBehaviour:
   inStoreZoon: 0
   isInteraction: 0
   store: {fileID: 0}
-  gold: 5000
+  inventory: {fileID: 0}
   Weapons: {fileID: 7032259557335484116}
   MoveSpeed: 6
   JumpForce: 10
@@ -3510,6 +3511,18 @@ MonoBehaviour:
   ThirdPersonRoot: {fileID: 1055682366495237838}
   _spawnedProjectile: 0
   _material: {fileID: 0}
+--- !u!114 &7505745575404224780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b65b8b1ef3b6c14680665c74b349650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7930812640411088447
 GameObject:
   m_ObjectHideFlags: 0

@@ -263,7 +263,7 @@ public class UIShopView : UIScreen
 
   
 
-    public void SetBuyItem(Store stpre)
+    public void BuyItemSet(Store stpre)
     {
         for (int i = 0; i < weaponNames.Length; i++)
         {
@@ -341,11 +341,8 @@ public class UIShopView : UIScreen
 
     public void StoreInIt(Store store)
     {
-        _store = store;
-        SetBuyItem(store);
-        UpdateButtonState();
-        DefSet();
-
+        _store = store; 
+        BuyItemSet(store);
     }
     /// <summary>
     /// 구매버튼 업데이트
@@ -378,20 +375,20 @@ public class UIShopView : UIScreen
                     buyButton[i].interactable = false;
 
                 else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
-                {
-                    if (_inv.consume[0].data.key != _store.idList[i] || _inv.consume[0].curNum == _inv.consume[0].data.MaxNum)
+                {   
+                    if (_inv.consume[0]?.data.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.data.MaxNum)
                         buyButton[i].interactable = false;
                 }
 
                 else if ((recoveryItem && _inv.consume[1] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
                 {
-                    if (_inv.consume[1].data.key != _store.idList[i] || _inv.consume[1].curNum == _inv.consume[1].data.MaxNum)
+                    if (_inv.consume[1]?.data.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.data.MaxNum)
                         buyButton[i].interactable = false;
                 }
 
                 else if ((shieldItme && _inv.consume[2] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
                 {
-                    if (_inv.consume[2].data.key != _store.idList[i] || _inv.consume[2].curNum == _inv.consume[2].data.MaxNum)
+                    if (_inv.consume[2]?.data.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.data.MaxNum)
                         buyButton[i].interactable = false;
                 }
 
@@ -408,6 +405,7 @@ public class UIShopView : UIScreen
                 buyButtonText[i].color = Color.red;   // 비활성화 시 빨간색
             }
             GoldSet();
+            DefSet();
         }
     }
     public void SaleSet(int index)
@@ -415,11 +413,9 @@ public class UIShopView : UIScreen
         WeaponInstance[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
         ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
 
-
-        if (weaponInv[index] == null) return;
-
         if(index < 3)
-            saleButtonText[index].text = $"판매\n{weaponInv[index].data.Price/2}G";
+            saleButtonText[index].text = $"판매\n{weaponInv[index].data.Price / 2}G";
+        
         else
             saleButtonText[index-3].text = $"판매\n{ItemInv[index-3].data.Price/2}G";
     }
