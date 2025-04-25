@@ -19,7 +19,6 @@ public class PlayerIdleState : PlayerGroundState
         //Debug.Log("Idle상태 진입");
 
         // Ground && Idle
-        controller.SetGrounded(true);   
         //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
@@ -37,34 +36,36 @@ public class PlayerIdleState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-        controller.ApplyGravity();  // 중력
+        //controller.ApplyGravity();  // 중력
 
-        if (data.direction != Vector3.zero)
+        if (controller.IsGrounded() && data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
         }
-        if (data.isJumping)
+        if ((controller.IsGrounded()) && data.isJumping)
         {
+            player.animationController.MoveDirection = data.direction;
+
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (data.isReloading)
+        if (controller.IsGrounded() && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
-        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
         }
-        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        if (controller.IsGrounded() &&(stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
-        if (data.isRunning)
+        if (controller.IsGrounded() && data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
         }
-        if (data.isSitting)
+        if (controller.IsGrounded() && data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }

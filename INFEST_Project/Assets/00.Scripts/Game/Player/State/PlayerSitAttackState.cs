@@ -28,7 +28,7 @@ public class PlayerSitAttackState : PlayerSitState
 
         // 사격
         PlayerSitFire(data);
-        controller.ApplyGravity();  // 중력
+        //controller.ApplyGravity();  // 중력
 
         // 이동 입력이 없으면 Idle 상태로
         if (!data.isFiring)

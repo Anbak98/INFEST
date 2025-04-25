@@ -12,6 +12,7 @@ public class PlayerJumpState : PlayerAirState
     {
         //Debug.Log("Jump상태 진입");
         base.Enter();
+
         //StartAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
         // 점프는 한번만
         PlayerJump();
@@ -23,9 +24,7 @@ public class PlayerJumpState : PlayerAirState
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
-        // y방향 속도가 작으면 fallstate로 바꾸어야한다
-
-        if (controller.GetVerticalVelocity() < 0)
+        if (controller.GetVerticalVelocity() <= 0)
         {
             stateMachine.ChangeState(stateMachine.FallState);
         }

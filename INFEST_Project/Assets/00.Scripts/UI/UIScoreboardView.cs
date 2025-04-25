@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class UIScoreboardView : UIScreen
 {
-    public Transform rowParent;
+    public static UIScoreboardView Instance { get; private set; }
+
+    public RectTransform rowParent;
     public UIScoreboardRow rowPrefab;
 
     private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
@@ -12,14 +14,14 @@ public class UIScoreboardView : UIScreen
     [Networked]
     public Profile Info { get; set; }
 
-
     public override void Awake()
     {
-        base.Awake();                
+        base.Awake();        
     }
 
     public override void Init()
     {
+        Instance = this;
         base.Init();
         Hide();
     }
@@ -32,11 +34,11 @@ public class UIScoreboardView : UIScreen
     public override void Hide()
     {
         base.Hide();
-    }    
+    }
 
     public void AddPlayerRow(PlayerRef player, CharacterInfoData info)
-    {        
-        UIScoreboardRow row = Instantiate(rowPrefab, rowParent);        
+    {
+        UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
         row.SetNickname(info.nickname.ToString());
 
         PlayerScoreData init = new PlayerScoreData
@@ -52,16 +54,16 @@ public class UIScoreboardView : UIScreen
 
     public void RemovePlayerRow(PlayerRef player)
     {
-        if(activeRows.TryGetValue(player, out var row))
+        if (activeRows.TryGetValue(player, out var row))
         {
             Destroy(row.gameObject);
             activeRows.Remove(player);
         }
-    }    
+    }
 
-   public void UpdatePlayerRow(PlayerRef player, PlayerScoreData data)
+    public void UpdatePlayerRow(PlayerRef player, PlayerScoreData data)
     {
-        if(activeRows.TryGetValue(player, out var row))
+        if (activeRows.TryGetValue(player, out var row))
         {
             row.SetData(data);
         }

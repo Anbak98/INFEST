@@ -14,8 +14,8 @@ public class WeaponInstance
         concentration = data.Concentration;
     }
 
-    public float curMagazineBullet { get; private set; }                        // 현재 탄창의 총알
-    public float curBullet { get; private set; }                                // 현재 보유중인 총알
+    public int curMagazineBullet { get; private set; }                          // 현재 탄창의 총알
+    public int curBullet { get; private set; }                                  // 현재 보유중인 총알
     public float RecoilForce { get; private set; }                              // 반동 (조준시 변경)
     public float concentration { get; private set; }                            // 집탄율 (조준시 변경)
     public Image icon { get; set; }                                             // UI에 사용될 아이콘
@@ -45,5 +45,13 @@ public class WeaponInstance
     public void StopAiming()
     {
         concentration -= 0.3f;
+    }
+
+    public void SupplementBullet()
+    {
+        curMagazineBullet += data.MagazineBullet;
+        curMagazineBullet = Mathf.Min(curMagazineBullet, data.MagazineBullet);
+        curBullet += curMagazineBullet;
+        curBullet = Mathf.Min(curBullet, data.MaxBullet);
     }
 }

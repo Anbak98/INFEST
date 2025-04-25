@@ -12,10 +12,10 @@ public class PlayerGroundState : PlayerBaseState
     }
     public override void Enter()
     {
-        Debug.Log("Ground상태 진입");
+        //Debug.Log("Ground상태 진입");
         base.Enter();
 
-
+        //controller.SetGrounded(true);
         //StartAnimation(stateMachine.Player.AnimationData.GroundParameterHash);
     }
     public override void Exit()

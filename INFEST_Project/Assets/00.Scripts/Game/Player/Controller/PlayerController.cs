@@ -22,7 +22,7 @@ public class PlayerController : BaseController
 {
     // 동적 연결되는 변수 숨기기
     public Player player;
-    public Weapons weapons;
+    public WeaponSpawner weapons;
 
     /// <summary>
     /// 플레이어가 입력을 받으면 다음 2가지 로직을 수행(2가지 동작은 별개의 동작이다)
@@ -39,7 +39,7 @@ public class PlayerController : BaseController
 
     // FSM 상태 머신 인스턴스
     protected float verticalVelocity;
-    protected float gravity = -9.81f;
+    //protected float gravity = -9.81f; // player.networkCharacterController.gravity를 사용해야한다
 
     public string playerId;
     protected bool hitSuccess;
@@ -95,48 +95,70 @@ public class PlayerController : BaseController
     {
         Vector3 input = data.direction;
 
-        // ❗ 입력 없으면 아무 것도 하지 않음
-        if (input.sqrMagnitude < 0.01f) return;
+        weapons.OnMoveAnimation(input);
+
+        // Ground이면서 입력 없으면 아무 것도 하지 않음
+        // 제자리인 경우 리턴하는 것이 문제다
+        // 그냥 너 없어져도 될거같은데?
+        //if (IsGrounded() && (input.sqrMagnitude < 0.01f)) return;
 
         // 카메라 기준 방향 가져오기
         Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
         Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
-
         Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
+
+        //Vector3 forward = transform.forward;
+        //Vector3 right = transform.right;
+        //Vector3 moveDir = (right * input.x + forward * input.z).normalized;
         moveDir.y = 0f; // 수직 방향 제거
-
-        //player.networkCharacterController.Move(camForward * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
-
+        Debug.Log(moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
         // 회전은 막고, 이동만 한다
+        // xz평면상에서만 이동해야한다
         player.networkCharacterController.Move(
             moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
         );
 
         // 회전 강제 고정: 카메라가 지정한 forward로
         player.transform.forward = camForward;
+        //player.transform.forward = forward;
     }
 
     public override void ApplyGravity()
     {
-        if (IsGrounded() && verticalVelocity < 0)
+        if (IsGrounded())
         {
-            verticalVelocity = -2f;
+            verticalVelocity = 0f;
+            Debug.Log("착지 verticalVelocity:" + verticalVelocity);
         }
         else
         {
-            verticalVelocity += gravity * Time.deltaTime;
+            // 해당 gravity를 사용해서 점프력의 차이가 발생했던 것
+            // NetworkCharacterController의 gravity를 사용해야 한다
+            //player.networkCharacterController.gravity
+            //verticalVelocity += gravity * Time.deltaTime;
+            verticalVelocity += player.networkCharacterController.gravity * Time.deltaTime;
         }
-        Vector3 gravityMove = new Vector3(0f, verticalVelocity, 0f);
-        player.characterController.Move(gravityMove * Time.deltaTime);
+
+        player.networkCharacterController.Jump(false, verticalVelocity);
+        Debug.Log("매 프레임 verticalVelocity:" + verticalVelocity);
     }
     /// <summary>
     /// 점프 시작 시 수직 속도 계산
     /// </summary>
     public override void StartJump()
     {
-        verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+        //verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
+        Debug.Log("점프 시작:" + verticalVelocity);
+
+        //verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * player.networkCharacterController.gravity);
+        verticalVelocity = Mathf.Sqrt(player.networkCharacterController.jumpImpulse * -1f * player.networkCharacterController.gravity);
         // 땅에서 떨어졌으므로 Grounded를 false로 강제변경
-        SetGrounded(false);
+        //SetGrounded(false);
+
+
+        player.networkCharacterController.Jump(false, verticalVelocity);
+
+        Debug.Log("점프 시작속도:" + verticalVelocity);
     }
 
     // 앉는다
@@ -145,7 +167,7 @@ public class PlayerController : BaseController
         // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
         float playerYpos = player.transform.position.y;
         playerYpos /= 2;
-        player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+        player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - playerYpos + 0.01f, player.transform.position.z);
     }
     // 일어난다
     public override void StartStand()
@@ -153,7 +175,7 @@ public class PlayerController : BaseController
         // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
         float playerYpos = player.transform.position.y;
         playerYpos *= 2;
-        player.transform.position = new Vector3(player.transform.position.x, playerYpos, player.transform.position.z);
+        player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + playerYpos + 0.01f, player.transform.position.z);
     }
 
 

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
 
 public struct PlayerScoreData : INetworkStruct
 {
@@ -23,22 +20,23 @@ public class ScoreboardManager : NetworkBehaviour
     [Networked]
     public NetworkDictionary<PlayerRef, PlayerScoreData> PlayerScores => default;
 
-    public UIScoreboardView scoreboardView;
+    private UIScoreboardView scoreboardView;
 
     public override void Spawned()
     {
-        Instance = this;        
-    }    
+        Instance = this;
+        scoreboardView = UIScoreboardView.Instance;
+    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddKill(PlayerRef player)
     {
-        if(PlayerScores.TryGet(player, out var data))
+        if (PlayerScores.TryGet(player, out var data))
         {
             data.kills++;
             PlayerScores.Set(player, data);
 
-            scoreboardView.UpdatePlayerRow(player,data);
+            scoreboardView.UpdatePlayerRow(player, data);
         }
     }
 
@@ -50,19 +48,25 @@ public class ScoreboardManager : NetworkBehaviour
             data.deaths++;
             PlayerScores.Set(player, data);
 
-            scoreboardView.UpdatePlayerRow(player,data);
+            scoreboardView.UpdatePlayerRow(player, data);
         }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddGold(PlayerRef player, int amount)
     {
-        if (PlayerScores.TryGet(player, out var data))
+        if (Runner.TryGetPlayerObject(player, out var playerObj))
         {
-            data.gold += amount;
-            PlayerScores.Set(player, data);
+            var characterInfo = playerObj.GetComponent<CharacterInfoInstance>();
+            characterInfo.curGold += amount;
 
-            scoreboardView.UpdatePlayerRow(player, data);
+            if (PlayerScores.TryGet(player, out var data))
+            {
+                data.gold += amount;
+                PlayerScores.Set(player, data);
+
+                scoreboardView.UpdatePlayerRow(player, data);
+            }
         }
     }
 
@@ -74,7 +78,7 @@ public class ScoreboardManager : NetworkBehaviour
             PlayerScores.Add(player, new PlayerScoreData());
         }
 
-            scoreboardView.AddPlayerRow(player, info);
+        scoreboardView.AddPlayerRow(player, info);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -85,6 +89,6 @@ public class ScoreboardManager : NetworkBehaviour
             PlayerScores.Remove(player);
         }
 
-            scoreboardView.RemovePlayerRow(player);
+        scoreboardView.RemovePlayerRow(player);
     }
 }

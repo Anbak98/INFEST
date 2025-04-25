@@ -12,13 +12,10 @@ public class PlayerMoveState : PlayerGroundState
     public override void Enter()
     {
         // 일단 숫자대입. 나중에 PlayStatData.WalkSpeedModifier 변수 추가해서 그,값으로 바꾼다
-        stateMachine.StatHandler.MoveSpeedModifier = 2;
+        stateMachine.StatHandler.MoveSpeedModifier = 4;
         Debug.Log("Move상태 진입");
         base.Enter();
 
-        ///// blend tree 애니메이션에 적용
-        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
-        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
@@ -38,8 +35,7 @@ public class PlayerMoveState : PlayerGroundState
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         PlayerMove(data);
-        controller.ApplyGravity();  // 중력
-
+        //controller.ApplyGravity();  // 중력
         if (data.direction == Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
@@ -47,14 +43,6 @@ public class PlayerMoveState : PlayerGroundState
         if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
-        }
-        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
-        {
-            stateMachine.ChangeState(stateMachine.AttackState);
-        }
-        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.ReloadState);
         }
         if (data.isJumping)
         {
@@ -64,5 +52,15 @@ public class PlayerMoveState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }
+
+        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.ReloadState);
+        }
+
     }
 }
