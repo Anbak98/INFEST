@@ -102,17 +102,6 @@ public class UIShopView : UIScreen
         profile.gameObject.SetActive(false);
     }
 
-    private void Update()
-    {
-        //DefSet();
-        //SubWeaponSet();
-        //MainWeapon1Set();
-        //MainWeapon2Set();
-        //ItemSet();
-        //AllSupplementSet();
-        //GoldSet();
-    }
-
     public override void Show()
     {
         base.Show();
@@ -183,9 +172,15 @@ public class UIShopView : UIScreen
     public void WeaponSet(int index)
     {
         WeaponInstance[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
-
-        weaponText[index].text = $"{weaponInv[index].curBullet}/{weaponInv[index].data.MagazineBullet}";
-        weaponBullet[index].text = $"탄창\n{(weaponInv[index].data.MagazineBullet - weaponInv[index].curBullet) * weaponInv[index].data.BulletPrice}G";
+        if (weaponInv[index] == null)
+        {
+            weaponText[index].text = $"미보유";
+            weaponBullet[index].text = $"탄창\n - G";
+            weaponName[index].text = $"미보유";
+            return;
+        }
+        weaponText[index].text = $"{weaponInv[index].curBullet}/{weaponInv[index].data.MaxBullet}";
+        weaponBullet[index].text = $"탄창\n{(weaponInv[index].data.MagazineBullet - weaponInv[index].curMagazineBullet) * weaponInv[index].data.BulletPrice}G";
         weaponName[index].text = $"{weaponInv[index].data.Name}";
 
     }
@@ -193,6 +188,14 @@ public class UIShopView : UIScreen
     public void ItemSet(int index)
     {
         ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
+
+        if (ItemInv[index] == null)
+        {
+            itemWeaponText[index].text = $"미보유";
+            itemPrice[index].text = $"낱개 구매\n - G";
+            itemName[index].text = $"미보유";
+            return;
+        }
 
         itemWeaponText[index].text = $"{ItemInv[index].curNum}/{ItemInv[index].data.MaxNum}";
         itemPrice[index].text = $"낱개 구매\n{ItemInv[index].data.Price}G";
@@ -212,22 +215,38 @@ public class UIShopView : UIScreen
     //}
 
 
-    //private void AllSupplementSet()
-    //{
-    //    int subPrice = (_subWeaponInfo.MagazineBullet - subCurBullet) * _subWeaponInfo.BulletPrice;
-    //    int main1Price = (_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice;
-    //    int main2Price = (_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice;
-    //    int itemPrice = (_itemInfo.MaxNum - consumeItem) * _itemInfo.Price;
+    private void AllSupplementSet()
+    {
+        var inv = Player.local.inventory;
+        int subPrice = 0;
+        int main1Price = 0;
+        int main2Price = 0;
+        int item1Price = 0;
+        int item2Price = 0;
+        int item3Price = 0;
 
-    //    if (_characterInfo.DefGear >= 200)
-    //    {
-    //        allSupplement.text = $"모두 보충\n({subPrice + main1Price + main2Price + itemPrice}G)";
-    //    }
-    //    else
-    //    {
-    //        allSupplement.text = $"모두 보충\n({500 + subPrice + main1Price + main2Price + itemPrice}G)";
-    //    }
-    //}
+        if (inv.auxiliaryWeapon[0] != null)
+            subPrice = (inv.auxiliaryWeapon[0].data.MagazineBullet - inv.auxiliaryWeapon[0].curMagazineBullet) * inv.auxiliaryWeapon[0].data.BulletPrice;
+        if (inv.weapon[0] != null)
+            main1Price = (inv.weapon[0].data.MagazineBullet - inv.weapon[0].curMagazineBullet) * inv.weapon[0].data.BulletPrice;
+        if (inv.weapon[1] != null)
+            main2Price = (inv.weapon[1].data.MagazineBullet - inv.weapon[1].curMagazineBullet) * inv.weapon[1].data.BulletPrice;
+        if (inv.consume[0] != null)
+            item1Price = (inv.consume[0].data.MaxNum - inv.consume[0].curNum) * inv.consume[0].data.Price;
+        if (inv.consume[1] != null)
+            item2Price = (inv.consume[1].data.MaxNum - inv.consume[1].curNum) * inv.consume[1].data.Price;
+        if (inv.consume[2] != null)
+            item3Price = (inv.consume[2].data.MaxNum - inv.consume[2].curNum) * inv.consume[2].data.Price;
+
+        if (Player.local.characterInfoInstance.curDefGear >= 200)
+        {
+            allSupplement.text = $"모두 보충\n({subPrice + main1Price + main2Price + item1Price + item2Price + item3Price}G)";
+        }
+        else
+        {
+            allSupplement.text = $"모두 보충\n({500 + subPrice + main1Price + main2Price + item1Price + item2Price + item3Price}G)";
+        }
+    }
 
     //public void OnClickAllBtn()
     //{
@@ -261,7 +280,7 @@ public class UIShopView : UIScreen
     //    consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
     //}
 
-  
+
 
     public void BuyItemSet(Store stpre)
     {
@@ -341,7 +360,7 @@ public class UIShopView : UIScreen
 
     public void StoreInIt(Store store)
     {
-        _store = store; 
+        _store = store;
         BuyItemSet(store);
     }
     /// <summary>
@@ -375,7 +394,7 @@ public class UIShopView : UIScreen
                     buyButton[i].interactable = false;
 
                 else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
-                {   
+                {
                     if (_inv.consume[0]?.data.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.data.MaxNum)
                         buyButton[i].interactable = false;
                 }
@@ -404,19 +423,42 @@ public class UIShopView : UIScreen
             {
                 buyButtonText[i].color = Color.red;   // 비활성화 시 빨간색
             }
-            GoldSet();
-            DefSet();
         }
+        GoldSet();
+        DefSet();
+        AllSupplementSet();
+        ResetText();
     }
     public void SaleSet(int index)
     {
         WeaponInstance[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
         ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
 
-        if(index < 3)
-            saleButtonText[index].text = $"판매\n{weaponInv[index].data.Price / 2}G";
-        
-        else
-            saleButtonText[index-3].text = $"판매\n{ItemInv[index-3].data.Price/2}G";
+
+        if (index < 3)
+        {
+            if(weaponInv[index] != null)
+                saleButtonText[index].text = $"판매\n{weaponInv[index].data.Price / 2}G";
+            else
+                saleButtonText[index].text = $"판매\n - G";
+        }
+        else if (index > 2)
+        {
+            if(ItemInv[index - 3] != null)
+                saleButtonText[index].text = $"판매\n{ItemInv[index - 3].data.Price / 2}G";
+            else
+                saleButtonText[index].text = $"판매\n - G";
+        }
+    }
+
+    public void ResetText()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            WeaponSet(i);
+            ItemSet(i);
+            SaleSet(i);
+            SaleSet(i+3);
+        }
     }
 }

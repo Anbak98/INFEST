@@ -49,7 +49,9 @@ public class WeaponInstance
 
     public void SupplementBullet()
     {
-        curBullet += data.MagazineBullet;
-        curBullet = Mathf.Min(curBullet, data.MagazineBullet);
+        curMagazineBullet += data.MagazineBullet;
+        curMagazineBullet = Mathf.Min(curMagazineBullet, data.MagazineBullet);
+        curBullet += curMagazineBullet;
+        curBullet = Mathf.Min(curBullet, data.MaxBullet);
     }
 }
