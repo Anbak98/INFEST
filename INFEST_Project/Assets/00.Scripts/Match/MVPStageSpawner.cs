@@ -13,6 +13,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [Header("NetworkPrefabRef for Spawn")]
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     [SerializeField] private NetworkPrefabRef _monsterSpawnerPrefab;
+    [SerializeField] private NetworkPrefabRef _scoreboardManagerPrefab;
 
     [Header("InputActionHandler for OnInput")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
@@ -23,6 +24,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     private NetworkRunner _runner;
+    private NetworkObject _scoreboardManagerObject;
 
     public void Start()
     {
@@ -55,6 +57,11 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+
+        if (_runner.IsServer)
+        {
+            _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+        }
     }
     private void OnGUI()
     {
@@ -85,6 +92,13 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 MonsterSpawner monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, new Vector3(-20,10,0)).GetComponent<MonsterSpawner>();
                 monsterSpawner.SpawnMonsterOnWave();
             }
+
+            CharacterInfo info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
+            CharacterInfoData infoData = new CharacterInfoData
+            {
+                nickname = info.Name
+            };
+            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData);
         }
     }
 
@@ -94,6 +108,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
+            ScoreboardManager.Instance.RPC_RemovePlayerRow(player);
         }
     }
 

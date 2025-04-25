@@ -296,8 +296,8 @@ public class Weapon : NetworkBehaviour
     {
         if (enemyHitbox == null) return;
 
-        var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
-        if (enemyHealth == null || enemyHealth.isAlive == false)
+        var enemyHealth = enemyHitbox.Root.GetComponent<MonsterNetworkBehaviour>();
+        if (enemyHealth == null || enemyHealth.IsDead == true)
             return;
 
         float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;

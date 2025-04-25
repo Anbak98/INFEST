@@ -111,7 +111,6 @@ public class PlayerController : BaseController
         //Vector3 right = transform.right;
         //Vector3 moveDir = (right * input.x + forward * input.z).normalized;
         moveDir.y = 0f; // 수직 방향 제거
-        Debug.Log(moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
         // 회전은 막고, 이동만 한다
         // xz평면상에서만 이동해야한다
         player.networkCharacterController.Move(
@@ -191,7 +190,7 @@ public class PlayerController : BaseController
                 //Debug.Log("공격");
                 weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
-                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+                //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
             }
         }
     }
