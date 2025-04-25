@@ -44,6 +44,8 @@ public class PlayerIdleState : PlayerGroundState
         }
         if ((controller.IsGrounded()) && data.isJumping)
         {
+            player.animationController.MoveDirection = data.direction;
+
             stateMachine.ChangeState(stateMachine.JumpState);
         }
         if (controller.IsGrounded() && data.isReloading)

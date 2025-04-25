@@ -2175,6 +2175,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 5984569209288009230}
   _MoveDirection: {x: 0, y: 0, z: 0}
+  _lookDelta: {x: 0, y: 0}
+  _isJumping: 0
+  _isReloading: 0
+  _isFiring: 0
+  _isRunning: 0
+  _isSitting: 0
 --- !u!1 &5426357078451052174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,7 +3309,7 @@ GameObject:
   - component: {fileID: 3724504915549296076}
   - component: {fileID: 3072078453906701333}
   m_Layer: 6
-  m_Name: PlayerTestTestTest
+  m_Name: PlayerTestTest2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3339,7 +3345,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 1297947319
+  SortKey: 1576436230
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -3453,7 +3459,7 @@ MonoBehaviour:
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
   _MaxHealth: 0
-  _MoveSpeed: 0
+  _MoveSpeed: 20
   _MoveSpeedModifier: 0
   _RotationDamping: 0
   _JumpPower: 0
@@ -4222,7 +4228,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 7502e2c60225dd7499c294d4c0ec948d, type: 2}
+      objectReference: {fileID: 9100000, guid: 3bb054297a5c38247b9227afbec9213e, type: 2}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_WarningMessage

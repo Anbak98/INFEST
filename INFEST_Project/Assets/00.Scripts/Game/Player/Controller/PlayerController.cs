@@ -96,6 +96,7 @@ public class PlayerController : BaseController
         Vector3 input = data.direction;
 
         weapons.OnMoveAnimation(input);
+
         // Ground이면서 입력 없으면 아무 것도 하지 않음
         // 제자리인 경우 리턴하는 것이 문제다
         // 그냥 너 없어져도 될거같은데?

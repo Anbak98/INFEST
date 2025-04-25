@@ -23,11 +23,11 @@ public class PlayerAttackState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
-        // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
+        PlayerMove(data);
 
         // 사격
         PlayerFire(data);
-        controller.ApplyGravity();  // 중력
+        //controller.ApplyGravity();  // 중력
 
         // 이동 입력이 없으면 Idle 상태로
         if (!data.isFiring)
@@ -35,5 +35,10 @@ public class PlayerAttackState : PlayerGroundState
             stateMachine.ChangeState(stateMachine.IdleState);
             return;
         }
+        if (data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.ReloadState);
+        }
+
     }
 }
