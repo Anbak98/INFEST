@@ -2175,6 +2175,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 5984569209288009230}
   _MoveDirection: {x: 0, y: 0, z: 0}
+  _lookDelta: {x: 0, y: 0}
+  _isJumping: 0
+  _isReloading: 0
+  _isFiring: 0
+  _isRunning: 0
+  _isSitting: 0
 --- !u!1 &5426357078451052174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3302,6 +3308,7 @@ GameObject:
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 3724504915549296076}
   - component: {fileID: 3072078453906701333}
+  - component: {fileID: 8280481667216219239}
   m_Layer: 6
   m_Name: PlayerTestTestTest
   m_TagString: Untagged
@@ -3510,6 +3517,18 @@ MonoBehaviour:
   ThirdPersonRoot: {fileID: 1055682366495237838}
   _spawnedProjectile: 0
   _material: {fileID: 0}
+--- !u!114 &8280481667216219239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812586951838351475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b65b8b1ef3b6c14680665c74b349650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7930812640411088447
 GameObject:
   m_ObjectHideFlags: 0
