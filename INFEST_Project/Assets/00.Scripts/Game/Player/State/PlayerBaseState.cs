@@ -87,6 +87,7 @@ public abstract class PlayerBaseState : IState
     }
     protected void Reload(NetworkInputData data)
     {
+        controller.weapons.Reload();
         // ÀåÀü
     }
 

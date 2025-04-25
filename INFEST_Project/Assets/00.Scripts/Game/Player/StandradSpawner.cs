@@ -22,7 +22,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
     private bool _mouseButton0;
     private bool _mouseButton1;
-    //public UIScoreboardView scoreboard;
+    
     [SerializeField] private NetworkPrefabRef _scoreboardManagerPrefab;
     private NetworkObject _scoreboardManagerObject;
 
@@ -78,7 +78,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
         if (_runner.IsServer)
         {
-            //_scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+            _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
         }
     }
     private void OnGUI()

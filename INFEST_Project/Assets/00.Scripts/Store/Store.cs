@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼öÇàÇØÁØ´Ù.
 {
@@ -11,7 +10,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     public List<int> idList;
     public List<NetworkObject> itemPrefabList;
     public Transform weaponPibot;
-    private int[] _buyArr = new int[6];
     
     #region  »óÁ¡ ÄÝ¶óÀÌ´õ Æ®¸®°Å ¸Þ¼Òµå
     /// <summary>
@@ -43,6 +41,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         _storeController.uIShopView.UpdateButtonState();
         //isInteraction = false;
         _storeController.uIShopView.bg.gameObject.SetActive(true);
+        _storeController.uIShopView.profile.gameObject.SetActive(true);
         _storeController.uIShopView.interactionText.gameObject.SetActive(false);
         
     }
@@ -71,6 +70,8 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
         _storeController.uIShopView.bg.gameObject.SetActive(false);
+        _storeController.uIShopView.profile.gameObject.SetActive(false);
+
     }
     /// <summary>
     /// »óÁ¡ÀÇ ¿µ¿ª¿¡ µé¾î°¬À»¶§ ¿äÃ»ÇÏ´Â ¸Þ¼Òµå
@@ -92,6 +93,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     public void RPC_EnterShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
         _storeController.uIShopView.bg.gameObject.SetActive(false);
+        _storeController.uIShopView.profile.gameObject.SetActive(false);
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
     }
 
@@ -119,11 +121,14 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         _player.isInteraction = false;
         _storeController.uIShopView.bg.gameObject.SetActive(false);
+        _storeController.uIShopView.profile.gameObject.SetActive(false);
         _storeController.uIShopView.interactionText.gameObject.SetActive(false);
     }
     #endregion
 
     #region »óÁ¡ ±¸¸Å & ÆÇ¸Å ¸Þ¼Òµå
+
+        #region ±¸¸Å
     /// <summary>
     /// ±¸¸Å ¿äÃ» ¸Þ¼Òµå
     /// </summary>
@@ -135,6 +140,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     {
         RPC_TryBuy(_player, _playerRef, index);
     }
+
     /// <summary>
     /// ±¸¸Å ¸Þ¼Òµå
     /// </summary>
@@ -148,27 +154,31 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         if (_player == null) return;
 
-        Debug.Log("±¸¸Å Àü :" + _player.gold + " ");
+        Debug.Log("±¸¸Å Àü :" + _player.characterInfoInstance.curGold + " ");
 
         if (idList[index] % 10000 < 600) // ¹«±â
         {
             WeaponInstance _weaponInstance = new(idList[index]);
 
-            _player.gold -= _weaponInstance.data.Price;
+            _player.characterInfoInstance.curGold -= _weaponInstance.data.Price;
             //SpawnWeapon(_player,index);
             _player.inventory.AddWeponItme(_weaponInstance);
         }
         else if (idList[index] % 10000 < 1000) // ¾ÆÀÌÅÛ
         {
-            ConsumeInstance _consumeInstance = new(idList[index]);
+            ConsumeInstance _consumeInstance    = new(idList[index]);
 
-            _player.gold -= _consumeInstance.data.Price;
+            _player.characterInfoInstance.curGold -= _consumeInstance.data.Price;
 
             _player.inventory.AddConsumeItme(_consumeInstance);
         }
-        Debug.Log("±¸¸Å ÈÄ :" + _player.gold + " ");
+        Debug.Log("±¸¸Å ÈÄ :" + _player.characterInfoInstance.curGold + " ");
         _storeController.uIShopView.UpdateButtonState();
     }
+    #endregion
+
+        #region ÆÇ¸Å
+
     /// <summary>
     /// ÆÇ¸Å ¿äÃ» ¸Þ¼Òµå
     /// </summary>
@@ -180,6 +190,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     {
         RPC_TrySale(_player, _playerRef, index);
     }
+
     /// <summary>
     /// ÆÇ¸Å ¸Þ¼Òµå
     /// </summary>
@@ -195,40 +206,46 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         {
             case 0: // º¸Á¶¹«±â
                 if (_player.inventory.auxiliaryWeapon[0] == null) return;
-                _player.gold += DataManager.Instance.GetByKey<WeaponInfo>(_player.inventory.auxiliaryWeapon[0].data.key).Price;
+                _player.characterInfoInstance.curGold += DataManager.Instance.GetByKey<WeaponInfo>(_player.inventory.auxiliaryWeapon[0].data.key).Price;
                 _player.inventory.RemoveWeaponItem(_player.inventory.auxiliaryWeapon[0], 0);
                 break;
             case 1: // ÁÖ¹«±â 1
                 if (_player.inventory.weapon[0] == null) return;
-                _player.gold += DataManager.Instance.GetByKey<WeaponInfo>(_player.inventory.weapon[0].data.key).Price;
+                _player.characterInfoInstance.curGold += DataManager.Instance.GetByKey<WeaponInfo>(_player.inventory.weapon[0].data.key).Price;
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[0], 0);
                 break;
             case 2: // ÁÖ¹«±â 2
                 if (_player.inventory.weapon[1] == null) return;
-                _player.gold += DataManager.Instance.GetByKey<WeaponInfo>(_player.inventory.weapon[1].data.key).Price;
+                _player.characterInfoInstance.curGold += DataManager.Instance.GetByKey<WeaponInfo>(_player.inventory.weapon[1].data.key).Price;
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[1], 1);
                 break;
             case 3: // ¾ÆÀÌÅÛ 1
                 if (_player.inventory.consume[0] == null) return;
-                _player.gold += DataManager.Instance.GetByKey<ConsumeItem>(_player.inventory.consume[0].data.key).Price;
+                _player.characterInfoInstance.curGold += DataManager.Instance.GetByKey<ConsumeItem>(_player.inventory.consume[0].data.key).Price;
                 _player.inventory.RemoveConsumeItem(0);
                 break;
             case 4: // ¾ÆÀÌÅÛ 2
                 if (_player.inventory.consume[1] == null) return;
-                _player.gold += DataManager.Instance.GetByKey<ConsumeItem>(_player.inventory.consume[1].data.key).Price;
+                _player.characterInfoInstance.curGold += DataManager.Instance.GetByKey<ConsumeItem>(_player.inventory.consume[1].data.key).Price;
                 _player.inventory.RemoveConsumeItem(1);
                 break;
             case 5: // ¾ÆÀÌÅÛ 3
                 if (_player.inventory.consume[2] == null) return;
-                _player.gold += DataManager.Instance.GetByKey<ConsumeItem>(_player.inventory.consume[2].data.key).Price;
+                _player.characterInfoInstance.curGold += DataManager.Instance.GetByKey<ConsumeItem>(_player.inventory.consume[2].data.key).Price;
                 _player.inventory.RemoveConsumeItem(2);
                 break;
         }
          
-        Debug.Log("ÆÇ¸Å ÈÄ :" + _player.gold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
-
+        Debug.Log("ÆÇ¸Å ÈÄ :" + _player.characterInfoInstance.curGold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
+        _storeController.uIShopView.UpdateButtonState();
     }
+    #endregion
 
+    /// <summary>
+    /// ¾ÆÀÌÅÛ ½ºÆù
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="index"></param>
     public void SpawnWeapon(Player player, int index)
     {
         if (!HasStateAuthority) return;
@@ -238,5 +255,130 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     }
 
     #endregion
+
+
+#region º¸Ãæ ¸Þ¼Òµå
+    #region Åº¾à º¸Ãæ
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_RequestTryBulletSupplement(Player _player, PlayerRef _playerRef, int index)
+    {
+        RPC_TryBulletSupplement(_player, _playerRef, index);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_TryBulletSupplement(Player _player, [RpcTarget] PlayerRef _playerRef, int index)
+    {
+        WeaponInstance[] weaponInv = { _player.inventory.auxiliaryWeapon[0], _player.inventory.weapon[0], _player.inventory.weapon[1] };
+
+        if (weaponInv[index] == null) return;
+        if (weaponInv[index].curBullet >= weaponInv[index].data.MagazineBullet) return;
+
+        _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MagazineBullet - weaponInv[index].curBullet);
+        weaponInv[index].SupplementBullet();
+        _storeController.uIShopView.WeaponSet(index);
+    }
+    #endregion
+
+        #region ¾ÆÀÌÅÛ º¸Ãæ
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_RequestTryItmeSupplement(Player _player, PlayerRef _playerRef, int index)
+    {
+        RPC_TryItmeSupplement(_player, _playerRef, index);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_TryItmeSupplement(Player _player, [RpcTarget] PlayerRef _playerRef, int index)
+    {
+        ConsumeInstance[] itemInv = { _player.inventory.consume[0], _player.inventory.consume[1], _player.inventory.consume[2] };
+
+        if (itemInv[index] == null) return;
+        if (itemInv[index].curNum >= itemInv[index].data.MaxNum) return;
+
+        _player.characterInfoInstance.curGold -= itemInv[index].data.Price;
+        itemInv[index].AddNum();
+        _storeController.uIShopView.ItemSet(index);
+    }
+    #endregion
+
+        #region ÀüºÎ º¸Ãæ
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_RequestTryAllSupplement(Player _player, PlayerRef _playerRef, int index)
+    {
+        RPC_TrySale(_player, _playerRef, index);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_TryAllSupplement(Player _player, [RpcTarget] PlayerRef _playerRef, int index)
+    {
+        WeaponInstance[] weaponInv = { _player.inventory.auxiliaryWeapon[0], _player.inventory.weapon[0], _player.inventory.weapon[1] };
+        ConsumeInstance[] itemInv = { _player.inventory.consume[0], _player.inventory.consume[1], _player.inventory.consume[2] };
+
+        int weaponPrice = 0;
+        int itemPrice  = 0;
+        int totalprice = 0;
+
+        #region ¹«±â
+        if (weaponInv[0] != null)
+        {
+            weaponPrice += (weaponInv[0].data.MagazineBullet - weaponInv[0].curBullet) * weaponInv[0].data.BulletPrice;
+        }
+
+        if (weaponInv[1] != null)
+        {
+            weaponPrice += (weaponInv[1].data.MagazineBullet - weaponInv[1].curBullet) * weaponInv[1].data.BulletPrice;
+        }
+
+        if (weaponInv[2] != null)
+        {
+            weaponPrice += (weaponInv[2].data.MagazineBullet - weaponInv[2].curBullet) * weaponInv[2].data.BulletPrice;
+        }
+        #endregion
+        #region ¾ÆÀÌÅÛ
+        if (itemInv[0] != null)
+        {
+            itemPrice += (itemInv[0].data.MaxNum - itemInv[0].curNum) * itemInv[0].data.Price;
+        }
+
+        if (itemInv[1] != null)
+        {
+            itemPrice += (itemInv[1].data.MaxNum - itemInv[1].curNum) * itemInv[index].data.Price;
+        }
+
+        if (itemInv[2] != null)
+        {
+            itemPrice += (itemInv[2].data.MaxNum - itemInv[2].curNum) * itemInv[index].data.Price;
+        }
+        #endregion
+        if(_player.characterInfoInstance.curDefGear >= _player.characterInfoInstance.data.DefGear)
+        {
+            totalprice += weaponPrice + itemPrice;
+        }
+        else
+        {
+            totalprice += 500 + weaponPrice + itemPrice;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (weaponInv[i] != null)
+                weaponInv[i].SupplementBullet();
+            if(itemInv[i] != null)
+                itemInv[i].AddNum();
+        }
+
+
+
+    }
+    #endregion
+#endregion
+
+
+
+
+
+
+
+
+
 
 }

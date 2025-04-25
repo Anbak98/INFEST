@@ -57,6 +57,8 @@ public class PlayerInputActionHandler : MonoBehaviour
     [SerializeField]
     private InputManager _inputManager;
 
+    [SerializeField] private UIController _UIController;
+
     private void Start()
     {
         /// performed: 키가 눌렸을 때 호출된다
@@ -310,13 +312,13 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Scoreboard
     private void OpenScoreboard(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
+        _UIController.Show<UIScoreboardView>();
         _isScoreBoardPopup = true;
     }
 
     private void CloseScoreboard(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
+        _UIController.Hide();
         _isScoreBoardPopup = false;
     }
     public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
@@ -324,14 +326,14 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Menu
     private void OpenMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
+        _UIController.Show<UIMenuView>();
         _isMenuPopup = true;
         Invoke(nameof(CancelInteraction), 0.1f);
     }
 
     private void CloseMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
+        _UIController.Hide();
         _isMenuPopup = false;
     }
     public bool GetIsMenuPopup() => _isMenuPopup;
