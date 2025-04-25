@@ -28,6 +28,8 @@ public class Weapons : NetworkBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 발사
     /// </summary>
@@ -36,7 +38,7 @@ public class Weapons : NetworkBehaviour
         if (CurrentWeapon == null || IsSwitching)
             return;
 
-        CurrentWeapon.Fire(fireTransform.position, fireTransform.forward, holdingPressed);
+        CurrentWeapon.Fire();
     }
 
     /// <summary>

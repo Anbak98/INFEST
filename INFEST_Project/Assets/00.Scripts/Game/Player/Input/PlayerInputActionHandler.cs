@@ -57,6 +57,8 @@ public class PlayerInputActionHandler : MonoBehaviour
     [SerializeField]
     private InputManager _inputManager;
 
+    [SerializeField] private UIController _UIController;
+
     private void Start()
     {
         /// performed: 키가 눌렸을 때 호출된다
@@ -102,8 +104,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
         _inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
 
-        _inputManager.GetInput(EPlayerInput.interaction).started += OpenMenu;
-        _inputManager.GetInput(EPlayerInput.interaction).canceled += CloseMenu;
+        _inputManager.GetInput(EPlayerInput.menu).started += OpenMenu;
+        //_inputManager.GetInput(EPlayerInput.menu).canceled += CloseMenu;
     }
 
     private void OnDisable()
@@ -145,8 +147,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
         _inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
 
-        _inputManager.GetInput(EPlayerInput.interaction).started -= OpenMenu;
-        _inputManager.GetInput(EPlayerInput.interaction).canceled -= CloseMenu;
+        _inputManager.GetInput(EPlayerInput.menu).started -= OpenMenu;
+        //_inputManager.GetInput(EPlayerInput.menu).canceled -= CloseMenu;
     }
 
     #region Get, Set
@@ -310,13 +312,13 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Scoreboard
     private void OpenScoreboard(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
+        _UIController.Show<UIScoreboardView>();
         _isScoreBoardPopup = true;
     }
 
     private void CloseScoreboard(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
+        _UIController.Hide();
         _isScoreBoardPopup = false;
     }
     public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
@@ -324,16 +326,27 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Menu
     private void OpenMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("[Input] OpenScoreboard - Scoreboard opened");
-        _isMenuPopup = true;
-        Invoke(nameof(CancelInteraction), 0.1f);
+        if (!_isMenuPopup)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            _UIController.Show<UIMenuView>();
+            _isMenuPopup = true;
+        }
+        else
+        {            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            _UIController.Hide();
+            _isMenuPopup = false;
+        }
     }
 
-    private void CloseMenu(InputAction.CallbackContext context)
-    {
-        Debug.Log("[Input] CloseScoreboard - Scoreboard closed");
-        _isMenuPopup = false;
-    }
+    //private void CloseMenu(InputAction.CallbackContext context)
+    //{
+    //    _UIController.Hide();
+    //    _isMenuPopup = false;
+    //}
     public bool GetIsMenuPopup() => _isMenuPopup;
 
     #endregion
@@ -353,17 +366,17 @@ public class PlayerInputActionHandler : MonoBehaviour
 
 
             isRunning = _isRunning,
-            isJumping=_isJumping,
-            isFiring=_isFiring,
-            isZooming=_isZooming,
-            isReloading=_isReloading,
-            isInteracting=_isInteracting,
-            isUsingItem=_isUsingItem,
-            isSitting=_isSitting,
+            isJumping = _isJumping,
+            isFiring = _isFiring,
+            isZooming = _isZooming,
+            isReloading = _isReloading,
+            isInteracting = _isInteracting,
+            isUsingItem = _isUsingItem,
+            isSitting = _isSitting,
             isMenuPopup = _isMenuPopup,
-            isScoreBoardPopup=_isScoreBoardPopup,
+            isScoreBoardPopup = _isScoreBoardPopup,
 
-            isShotgunOnFiring =_isShotgunOnFiring,
+            isShotgunOnFiring = _isShotgunOnFiring,
             isOnZoom = _isOnZoom,
 
             scrollValue = _isSwapVelue
