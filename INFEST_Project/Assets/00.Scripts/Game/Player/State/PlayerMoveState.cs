@@ -16,9 +16,6 @@ public class PlayerMoveState : PlayerGroundState
         Debug.Log("Move상태 진입");
         base.Enter();
 
-        ///// blend tree 애니메이션에 적용
-        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, stateMachine.InputHandler.MoveInput.x);
-        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, stateMachine.InputHandler.MoveInput.y);
     }
     public override void Exit()
     {
@@ -39,30 +36,31 @@ public class PlayerMoveState : PlayerGroundState
 
         PlayerMove(data);
         //controller.ApplyGravity();  // 중력
-
-        if (controller.IsGrounded() && data.direction == Vector3.zero)
+        if (data.direction == Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-        if (controller.IsGrounded() && data.isRunning)
+        if (data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.RunState);
         }
-        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
-        {
-            stateMachine.ChangeState(stateMachine.AttackState);
-        }
-        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.ReloadState);
-        }
-        if ((controller.IsGrounded()) && data.isJumping)
+        if (data.isJumping)
         {
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (controller.IsGrounded() && data.isSitting)
+        if (data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }
+
+        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.ReloadState);
+        }
+
     }
 }

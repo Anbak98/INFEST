@@ -4,7 +4,16 @@ using UnityEngine;
 public class PlayerAnimationController : NetworkBehaviour
 {
     public Animator playerAnimator;
+
+    // 입력한 값을 네트워크로 전달받는다
     [Networked] public Vector3 MoveDirection { get; set; }
+    [Networked] public Vector2 lookDelta { get; set; }
+    [Networked] public bool isJumping { get; set; }
+    [Networked] public bool isReloading { get; set; }
+    [Networked] public bool isFiring { get; set; }
+    [Networked] public bool isRunning { get; set; }
+    [Networked]  public bool isSitting { get; set; }
+
 
     private string _groundParameterName = "@Ground";    // 
     private string _idleParameterName = "Idle";
@@ -29,10 +38,8 @@ public class PlayerAnimationController : NetworkBehaviour
     // 앉아서 이동(105)하는건 새로운 애니메이션이 필요하지만 파라미터는 Sit && Move로 처리할 수 있다
     //[SerializeField] private string _waddleParameterName = "Waddle";
 
-
     // 사격 중 이동(107)
     // Move && Attack일 때 애니메이션을 blend해야 할 것 같다
-
 
     // 조준 상태 이동(109)
     // Move && Aim
@@ -46,25 +53,29 @@ public class PlayerAnimationController : NetworkBehaviour
     // 앉아서 공격 또한 
     // Sit && Attack 으로 처리 가능
 
+    // 입력을 받는 것은 아니지만, 죽으면 bool값이 변하는 식으로 만든다
     private string _dieParameterName = "Die";
 
 
     // string 비교는 연산이 많으므로 int로 바꾸어 비교한다
-    public int GroundParameterHash { get; private set; }
-    public int IdleParameterHash { get; private set; }
+    public int GroundParameterHash { get; set; }
+    public int IdleParameterHash { get; set; }
     //public int MoveParameterHash { get; private set; }
-    public int MoveXParameterHash { get; private set; }
-    public int MoveZParameterHash { get; private set; }
-    public int RunParameterHash { get; private set; }
-    public int AttackParameterHash { get; private set; }
-    public int ReloadParameterHash { get; private set; }
-    public int AimParameterHash { get; private set; }
+    public int MoveXParameterHash { get; set; }
+    public int MoveZParameterHash { get; set; }
+    public int RunParameterHash { get; set; }
+    public int AttackParameterHash { get; set; }
+    public int ReloadParameterHash { get; set; }
+    public int AimParameterHash { get; set; }
     //
-    public int JumpParameterHash { get; private set; }
+    public int JumpParameterHash { get; set; }
     //
-    public int SitParameterHash { get; private set; }
+    public int SitParameterHash { get; set; }
     //
-    public int DieParameterHash { get; private set; }
+    public int DieParameterHash { get; set; }
+
+
+
 
     private void Start()
     {
@@ -93,5 +104,11 @@ public class PlayerAnimationController : NetworkBehaviour
         base.Render();
         playerAnimator.SetFloat(MoveXParameterHash, MoveDirection.x);
         playerAnimator.SetFloat(MoveZParameterHash, MoveDirection.z);
+
+        playerAnimator.SetBool(JumpParameterHash, isJumping);
+        playerAnimator.SetBool(ReloadParameterHash, isReloading);
+        playerAnimator.SetBool(AttackParameterHash, isFiring);
+        playerAnimator.SetBool(RunParameterHash, isRunning);
+        playerAnimator.SetBool(SitParameterHash, isSitting);
     }
 }
