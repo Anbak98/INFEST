@@ -270,12 +270,27 @@ public class Player : NetworkBehaviour
             Debug.Log("Local Player 설정 완료");
         }
 
-        if(characterInfoInstance == null)
+        if(characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
         {
             characterInfoInstance = new(1);
             characterInfoInstance.curGold = 5000;
+            inventory.auxiliaryWeapon[0] = new WeaponInstance(characterInfoInstance.data.StartAuxiliaryWeapon);
+            inventory.weapon[0] = new WeaponInstance(characterInfoInstance.data.StartWeapon1);
+            #region 체크용 bool 값
+            int itemChk = characterInfoInstance.data.StartConsumeItem1 % 10000;
+            bool throwingWeapon = itemChk < 800 && itemChk > 700;
+            bool recoveryItem = itemChk < 900 && itemChk > 800;
+            bool shieldItme = itemChk < 1000 && itemChk > 900;
+            #endregion
+            if (throwingWeapon)
+                inventory.consume[0] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
+            if (recoveryItem)
+                inventory.consume[1] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
+            if (shieldItme)
+                inventory.consume[2] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
         }
-        
+
+
 
         /// 디버그용
         /// 인스펙터 창에서 값 조절
