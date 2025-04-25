@@ -12,6 +12,7 @@ public class PlayerJumpState : PlayerAirState
     {
         //Debug.Log("Jump상태 진입");
         base.Enter();
+
         //StartAnimation(stateMachine.Player.AnimationData.JumpParameterHash);
         // 점프는 한번만
         PlayerJump();

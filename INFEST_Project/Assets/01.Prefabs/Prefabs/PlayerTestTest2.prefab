@@ -2175,6 +2175,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 5984569209288009230}
   _MoveDirection: {x: 0, y: 0, z: 0}
+  _lookDelta: {x: 0, y: 0}
+  _isJumping: 0
+  _isReloading: 0
+  _isFiring: 0
+  _isRunning: 0
+  _isSitting: 0
 --- !u!1 &5426357078451052174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3453,7 +3459,7 @@ MonoBehaviour:
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
   _MaxHealth: 0
-  _MoveSpeed: 0
+  _MoveSpeed: 20
   _MoveSpeedModifier: 0
   _RotationDamping: 0
   _JumpPower: 0
@@ -4222,7 +4228,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 7502e2c60225dd7499c294d4c0ec948d, type: 2}
+      objectReference: {fileID: 9100000, guid: 3bb054297a5c38247b9227afbec9213e, type: 2}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_WarningMessage
