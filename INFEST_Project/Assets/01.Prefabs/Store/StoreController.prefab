@@ -49,7 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
-  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
+  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000052900006a290000cd290000ce290000cf290000312a0000952a0000
+  itemPrefabList:
+  - {fileID: -5553270421971808599, guid: 43ee4ff4a81ba5e4ebe9eb07b19674f0, type: 3}
+  weaponPibot: {fileID: 0}
 --- !u!114 &2110317807926065959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,10 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersInShop: []
   _store: {fileID: 8427605602746010791}
-  _storeController: {fileID: 4794176077292064070}
-  usePlaeyr: []
 --- !u!114 &6543401977252535076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +155,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
-  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
+  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000052900006a290000cd290000ce290000cf290000312a0000952a0000
+  itemPrefabList:
+  - {fileID: -5553270421971808599, guid: 43ee4ff4a81ba5e4ebe9eb07b19674f0, type: 3}
+  weaponPibot: {fileID: 0}
 --- !u!114 &9092279742298597837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,10 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersInShop: []
   _store: {fileID: 4897618131034360334}
-  _storeController: {fileID: 4794176077292064070}
-  usePlaeyr: []
 --- !u!114 &6023383679261240141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +344,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
-  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000a22800000529000006290000cd290000ce290000cf290000312a0000952a0000
+  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000052900006a290000cd290000ce290000cf290000312a0000952a0000
+  itemPrefabList:
+  - {fileID: -5553270421971808599, guid: 43ee4ff4a81ba5e4ebe9eb07b19674f0, type: 3}
+  weaponPibot: {fileID: 0}
 --- !u!114 &4272308528996907498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,10 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51cdced3c8a84eb3faad826dac221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersInShop: []
   _store: {fileID: 1920124757334832661}
-  _storeController: {fileID: 4794176077292064070}
-  usePlaeyr: []
 --- !u!114 &437710535164121376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,7 +622,7 @@ MonoBehaviour:
   - {fileID: 8427605602746010791}
   - {fileID: 4897618131034360334}
   - {fileID: 1920124757334832661}
-  newStoreTime: 300
+  newStoreTime: 30
   activateTime: 120
 --- !u!114 &5427930470031718088
 MonoBehaviour:
