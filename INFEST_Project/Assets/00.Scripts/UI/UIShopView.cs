@@ -362,8 +362,8 @@ public class UIShopView : UIScreen
                 int _itemKey = _store.idList[i] % 10000;
                 #region 체크용 bool 값
                 bool auxiliaryWeaponChk = _itemKey < 200;
-                bool weaponChk = _itemKey < 600 && _itemKey > 200;
-                bool throwingWeapon = _itemKey < 800 && _itemKey > 600;
+                bool weaponChk = _itemKey < 700 && _itemKey > 200;
+                bool throwingWeapon = _itemKey < 800 && _itemKey > 700;
                 bool recoveryItem = _itemKey < 900 && _itemKey > 800;
                 bool shieldItme = _itemKey < 1000 && _itemKey > 900;
                 #endregion
