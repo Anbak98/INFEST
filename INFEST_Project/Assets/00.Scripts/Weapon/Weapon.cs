@@ -17,8 +17,6 @@ public enum EWeaponType
 public class Weapon : NetworkBehaviour
 {
     public int key;
-    public WeaponInstance instance;
-
     public FPSWeapon FPSWeapon;
     public EWeaponType Type; // 무기 종류
     public Sprite icon;
