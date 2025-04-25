@@ -110,7 +110,7 @@ public class PlayerAnimationController : NetworkBehaviour
         DieParameterHash = Animator.StringToHash(_dieParameterName);
 
 
-        // Layer 설정
+        // Layer 저장
         baseLayerIndex = playerAnimator.GetLayerIndex("Base");
         upperBodyLayerIndex = playerAnimator.GetLayerIndex("UpperBody");
         lookLayerIndex = playerAnimator.GetLayerIndex("Look");

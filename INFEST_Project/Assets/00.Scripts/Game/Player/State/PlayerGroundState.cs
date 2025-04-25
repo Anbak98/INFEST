@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,8 @@ using UnityEngine.InputSystem;
 // Idle, Move, Run, Attack, Reload
 public class PlayerGroundState : PlayerBaseState
 {
-    float lookThreshold = 0.3f; // 얼마나 좌우로 보는지를 판단할 기준 값 (조절 가능)
+    // 가만히 있는 플레이어의 forward를 저장
+    Vector3 prevForward;
 
     public PlayerGroundState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
@@ -18,27 +20,35 @@ public class PlayerGroundState : PlayerBaseState
     }
     public override void Exit()
     {
-        base.Exit();    
+        base.Exit();
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
         player.animationController.lookDelta = data.lookDelta;
-        if (data.lookDelta.y != 0f)
-        {
-            // 위 또는 아래를 내려본다
-            player.animationController.playerAnimator.GetLayerIndex("Look");    // Layer를 변경한다
-        }
-        // lookDelta.x의 범위에 따라
-        // 회전각을 -30도에서 +30도일때는 상체(UpperBody)만 회전할지
-        // 그 밖의 범위에서는 
-        // 몸 전체(Base)가 회전할지 Layer로 구분한다
-        if (Mathf.Abs(data.lookDelta.x) < lookThreshold)
-        {
-            // 상체만 회전한다
-            player.animationController.playerAnimator.GetLayerIndex()
-        }
 
+        // 플레이어의 카메라에 접근하여 카메라의 forward와 플레이어의 forward의 사이각을 비교하여 90도면 1이 되어야하니까
+        Vector3 camForward = player.cameraHandler.transform.forward;
+        Vector3 playerForward = player.transform.forward;
+
+        // 두 벡터 간의 각도
+        float angleY = Vector3.Angle(camForward, playerForward);  // 0 ~ 180
+
+        // angle이 0도이면 정면, 90도이면 수직, 180도면 반대 방향
+        // 그런데 여기에 부호를 붙여야 한다! (내적을 이용하여 위/아래 방향 구분)
+        float dotY = Vector3.Dot(camForward, Vector3.up); // y축 방향 내적을 구하면 위쪽일 때 1, 아래쪽일 때 -1
+
+
+        if (data.lookDelta.x != 0f)
+        {
+            // player의 forward를 저장한다
+            prevForward = player.transform.forward;
+        }
+        // 그 forward.x와 나중의 player의 forward.x를 내적해야한다
+        float dotX = Vector3.Dot(Vector3.forward, playerForward); 
+        
+        // 애니메이터에 값전달
+        player.animationController.lookDelta = new Vector2(dotX, dotY);
     }
     public override void PhysicsUpdate(NetworkInputData data)
     {
