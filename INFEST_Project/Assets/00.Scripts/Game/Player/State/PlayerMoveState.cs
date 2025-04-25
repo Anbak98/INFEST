@@ -42,10 +42,12 @@ public class PlayerMoveState : PlayerGroundState
         }
         if (data.isRunning)
         {
+            player.animationController.isRunning = data.isRunning;
             stateMachine.ChangeState(stateMachine.RunState);
         }
         if (data.isJumping)
         {
+            player.animationController.isJumping = data.isJumping;
             stateMachine.ChangeState(stateMachine.JumpState);
         }
         if (data.isSitting)

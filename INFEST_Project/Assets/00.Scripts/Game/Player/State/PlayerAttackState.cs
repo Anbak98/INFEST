@@ -26,6 +26,7 @@ public class PlayerAttackState : PlayerGroundState
         PlayerMove(data);
 
         // 사격
+        player.animationController.isFiring = data.isFiring;
         PlayerFire(data);
         //controller.ApplyGravity();  // 중력
 
