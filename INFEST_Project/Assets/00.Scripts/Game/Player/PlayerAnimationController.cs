@@ -12,7 +12,7 @@ public class PlayerAnimationController : NetworkBehaviour
     [Networked] public bool isReloading { get; set; }
     [Networked] public bool isFiring { get; set; }
     [Networked] public bool isRunning { get; set; }
-    [Networked]  public bool isSitting { get; set; }
+    [Networked] public bool isSitting { get; set; }
 
 
     private string _groundParameterName = "@Ground";    // 
@@ -20,6 +20,10 @@ public class PlayerAnimationController : NetworkBehaviour
     //private string _moveParameterName = "Move";    // walk
     private string _moveXParameterName = "MoveX";    // walk
     private string _moveZParameterName = "MoveZ";    // walk
+
+    private string _lookXParameterName = "LookX";    // look
+    private string _lookYParameterName = "LookY";    // look
+
     private string _runParameterName = "Run";
     private string _attackParameterName = "Fire";
     private string _reloadParameterName = "IsReloading";    // 장전하는 상태가 있어야 할 것 같기도 하다
@@ -63,6 +67,10 @@ public class PlayerAnimationController : NetworkBehaviour
     //public int MoveParameterHash { get; private set; }
     public int MoveXParameterHash { get; set; }
     public int MoveZParameterHash { get; set; }
+
+    public int LookXParameterHash { get; set; }
+    public int LookYParameterHash { get; set; }
+
     public int RunParameterHash { get; set; }
     public int AttackParameterHash { get; set; }
     public int ReloadParameterHash { get; set; }
@@ -74,6 +82,10 @@ public class PlayerAnimationController : NetworkBehaviour
     //
     public int DieParameterHash { get; set; }
 
+    // Layer 인덱스
+    public int baseLayerIndex;
+    public int upperBodyLayerIndex;
+    public int lookLayerIndex;
 
 
 
@@ -85,6 +97,10 @@ public class PlayerAnimationController : NetworkBehaviour
         //MoveParameterHash = Animator.StringToHash(_moveParameterName);
         MoveXParameterHash = Animator.StringToHash(_moveXParameterName);
         MoveZParameterHash = Animator.StringToHash(_moveZParameterName);
+
+        LookXParameterHash = Animator.StringToHash(_lookXParameterName);
+        LookYParameterHash = Animator.StringToHash(_lookYParameterName);
+
         RunParameterHash = Animator.StringToHash(_runParameterName);
         JumpParameterHash = Animator.StringToHash(_jumpParameterName);
         SitParameterHash = Animator.StringToHash(_sitParameterName);
@@ -92,6 +108,12 @@ public class PlayerAnimationController : NetworkBehaviour
         ReloadParameterHash = Animator.StringToHash(_reloadParameterName);
         AimParameterHash = Animator.StringToHash(_aimParameterName);
         DieParameterHash = Animator.StringToHash(_dieParameterName);
+
+
+        // Layer 저장
+        baseLayerIndex = playerAnimator.GetLayerIndex("Base");
+        upperBodyLayerIndex = playerAnimator.GetLayerIndex("UpperBody");
+        lookLayerIndex = playerAnimator.GetLayerIndex("Look");
     }
 
     public override void Spawned()
@@ -104,6 +126,9 @@ public class PlayerAnimationController : NetworkBehaviour
         base.Render();
         playerAnimator.SetFloat(MoveXParameterHash, MoveDirection.x);
         playerAnimator.SetFloat(MoveZParameterHash, MoveDirection.z);
+
+        playerAnimator.SetFloat(LookXParameterHash, lookDelta.x);
+        playerAnimator.SetFloat(LookYParameterHash, lookDelta.y);
 
         playerAnimator.SetBool(JumpParameterHash, isJumping);
         playerAnimator.SetBool(ReloadParameterHash, isReloading);

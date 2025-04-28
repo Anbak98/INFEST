@@ -7830,6 +7830,8 @@ MonoBehaviour:
     RawGuidValue: ea449d5e1204699458f99f610e7a6f0a
   _monsterSpawnerPrefab:
     RawGuidValue: c599246f0e0a3414f88a5b53600b82fb
+  _scoreboardManagerPrefab:
+    RawGuidValue: 00000000000000000000000000000000
   _playerInputActionHandler: {fileID: 1059157647}
   _playerSpawnPoint: {fileID: 2030050488}
 --- !u!114 &387648418
@@ -20592,6 +20594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43bd6813e08c1c43bae5c6ce27a23c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraHandler: {fileID: 0}
   _inputManager: {fileID: 1059157648}
   _UIController: {fileID: 0}
 --- !u!114 &1059157648
@@ -31034,6 +31037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43bd6813e08c1c43bae5c6ce27a23c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraHandler: {fileID: 0}
   _inputManager: {fileID: 1596829295}
   _UIController: {fileID: 0}
 --- !u!114 &1596829295

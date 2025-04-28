@@ -58,10 +58,13 @@ public class PlayerCameraHandler : NetworkBehaviour
             // 좌우 회전 (플레이어)
             _parentTransform.Rotate(Vector3.up * mouseX);
 
-            // 상하 회전 (카메라 홀더)
-            xRotation -= mouseY;
-            xRotation = Mathf.Clamp(xRotation, -80f, 80f); // 상하 회전 제한
-            _cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            // 상하 회전
+            //if (_cameraHolder.rotation.eulerAngles.x > 80f)
+            //    return;
+            //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
+            //    return;
+            //else
+                _cameraHolder.Rotate(Vector3.right * -mouseY);
         }
         //}
     }
@@ -76,7 +79,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     public Vector3 GetCameraRightOnXZ()
     {
-        Vector3 camRight = _mainCam.transform.right;
+        Vector3 camRight = transform.right;
         camRight.y = 0f;
         return camRight.normalized;
     }
