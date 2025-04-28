@@ -1,7 +1,8 @@
+using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponInstance
+public class WeaponInstance 
 {
     public readonly WeaponInfo data;
 
@@ -24,17 +25,21 @@ public class WeaponInstance
     public int projectilesPerShot { get; private set; } = 1;                    // 사격당 나가는 탄환 갯수
     public EWeaponType weaponType { get; private set; } = EWeaponType.Rifle;    // 무기 종류 (라이플, 샷권 등)
 
-    public void ReloadShotgun()
+    public void ReloadShotgun(int _curBullet, int _curMagazineBullet)
     {
-        curBullet--;
-        curMagazineBullet++;
+        curBullet = _curBullet;
+        curMagazineBullet = _curMagazineBullet;
     }
 
-    public void Reload()
+    public void Reload(int _curBullet, int _curMagazineBullet)
     {
-        curBullet += curMagazineBullet;
-        curMagazineBullet = Mathf.Min(curBullet, data.MagazineBullet);
-        curBullet -= Mathf.Min(curBullet, data.MagazineBullet);
+        curBullet = _curBullet;
+        curMagazineBullet = _curMagazineBullet;
+    }
+
+    public void Fire(int _curBullet)
+    {
+        curMagazineBullet = _curBullet;
     }
 
     public void IsAiming()
@@ -49,9 +54,7 @@ public class WeaponInstance
 
     public void SupplementBullet()
     {
-        curMagazineBullet += data.MagazineBullet;
-        curMagazineBullet = Mathf.Min(curMagazineBullet, data.MagazineBullet);
-        curBullet += curMagazineBullet;
+        curBullet += data.MagazineBullet;
         curBullet = Mathf.Min(curBullet, data.MaxBullet);
     }
 }

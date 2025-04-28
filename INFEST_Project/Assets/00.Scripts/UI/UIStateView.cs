@@ -48,7 +48,8 @@ public class UIStateView : UIScreen
 
     private void Update()
     {
-        UpdatePlayerState();
+        if(Player.local != null)
+            UpdatePlayerState();
     }
 
     public override void Show()
@@ -101,12 +102,45 @@ public class UIStateView : UIScreen
 
     public void UpdatePlayerState()
     {
-        if (_characterInfo == null) return;
+        if (Player.local.characterInfoInstance == null) return; 
 
-        hpText.text = _characterInfo.Health.ToString();
-        defText.text = _characterInfo.Def.ToString();
-        goldText.text = _characterInfo.StartGold.ToString();
-        bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";        
+        CharacterInfoInstance _info = Player.local.characterInfoInstance;
+
+        hpText.text = _info.curHealth.ToString();
+        defText.text = _info.curDefGear.ToString();
+        goldText.text = _info.curGold.ToString();
+
+        if (Player.local.inventory.equippedWeapon == 0)
+        {
+            bulletText.text = " - / - ";
+            return;
+        }
+
+        if (Player.local.inventory.equippedWeapon % 10000 < 600)
+        {
+            if(Player.local.inventory.equippedWeapon == Player.local.inventory.auxiliaryWeapon[0]?.data.key)
+                bulletText.text = $"{Player.local.inventory.auxiliaryWeapon[0].curMagazineBullet}/{Player.local.inventory.auxiliaryWeapon[0].curBullet}";
+            else if(Player.local.inventory.equippedWeapon == Player.local.inventory.weapon[0]?.data.key)
+                bulletText.text = $"{Player.local.inventory.weapon[0].curMagazineBullet}/{Player.local.inventory.weapon[0].curBullet}";
+            else if (Player.local.inventory.equippedWeapon == Player.local.inventory.weapon[1]?.data.key)
+                bulletText.text = $"{Player.local.inventory.weapon[1].curMagazineBullet}/{Player.local.inventory.weapon[1].curBullet}";
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (Player.local.inventory.equippedWeapon == Player.local.inventory.consume[i].data.key)
+                    bulletText.text = $"1/{Player.local.inventory.consume[i].curNum}";
+            }
+        }
+
+
+        //if (_characterInfo == null) return;
+
+        //hpText.text = _characterInfo.Health.ToString();
+        //defText.text = _characterInfo.Def.ToString();
+        //goldText.text = _characterInfo.StartGold.ToString();
+        //bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";        
     }
 
     

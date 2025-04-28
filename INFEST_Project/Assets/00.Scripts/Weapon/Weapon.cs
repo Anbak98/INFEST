@@ -1,7 +1,6 @@
 using Cinemachine;
 using Fusion;
 using KINEMATION.FPSAnimationPack.Scripts.Weapon;
-using System.IO.Pipes;
 using UnityEngine;
 
 public enum EWeaponType
@@ -11,22 +10,27 @@ public enum EWeaponType
     Rifle,
     Sniper,
     Shotgun,
-    Special
+    Launcher,
+    Special,
 }
 
 public class Weapon : NetworkBehaviour
 {
     public int key;
+    public WeaponInstance instance;
     public FPSWeapon FPSWeapon;
     public EWeaponType Type; // 무기 종류
     public Sprite icon;
 
     [Header("Firing")]
     public bool isAutomatic = false; // 연사 or 단발
-    public float damage = 10f; // 공격력
+    public float damage; // 공격력
     public float fireRate = 100f; // 공격 속도
     public float maxHitDistance = 100f; // 사거리
-    public float Dispersion = 0; // 집탄율
+    public float dispersion = 0; // 집탄율
+    public float recoilForce;
+    public float recoilReturnTime = 0.5f;
+    public float splash;
     public LayerMask HitMask;
 
     [Header("Ammo")]
@@ -67,6 +71,10 @@ public class Weapon : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (HasInputAuthority)
+        {
+            instance.Fire(curClip);
+        }
         if (!IsCollected) return;
 
         if (curClip == 0)
@@ -101,6 +109,8 @@ public class Weapon : NetworkBehaviour
             IsReloading = false;
             possessionAmmo--;
             curClip++;
+            if (HasInputAuthority)
+                instance.ReloadShotgun(possessionAmmo, curClip);
             if (curClip < startClip)
                 Reload();
         }
@@ -110,19 +120,43 @@ public class Weapon : NetworkBehaviour
             possessionAmmo += curClip;
             curClip = Mathf.Min(possessionAmmo, startClip);
             possessionAmmo -= Mathf.Min(possessionAmmo, startClip);
+            if (HasInputAuthority)
+                instance.Reload(possessionAmmo, curClip);
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         }
     }
 
     public override void Spawned()
     {
-        if (HasStateAuthority)
-        {
-            _basicDispersion = Dispersion;
-            //curClip = Mathf.Clamp(curClip, 0, startClip);
-            possessionAmmo = maxAmmo;
-            curClip = startClip;
-        }
+
+        if (key == Player.local.inventory.auxiliaryWeapon[0]?.data.key)
+            instance = Player.local.inventory.auxiliaryWeapon[0];
+        else if (key == Player.local.inventory.weapon[0]?.data.key)
+            instance = Player.local.inventory.weapon[0];
+        else if (key == Player.local.inventory.weapon[1]?.data.key)
+            instance = Player.local.inventory.weapon[1];
+
+        //_basicDispersion = Dispersion;
+        ////curClip = Mathf.Clamp(curClip, 0, startClip);
+        //possessionAmmo = maxAmmo;
+        //curClip = startClip;
+        if (instance == null) return;
+
+        damage = instance.data.Atk;
+        maxHitDistance = instance.data.WeaponRange;
+        Type = (EWeaponType)instance.data.WeaponType;
+        startClip = instance.data.MagazineBullet;
+        curClip = startClip;
+        maxAmmo = instance.data.MaxBullet;
+        possessionAmmo = maxAmmo;
+        recoilForce = instance.data.RecoilForce;
+        recoilReturnTime = instance.data.RecoilReturnTime;
+        dispersion = instance.data.Concentration;
+        splash = instance.data.Splash;
+        isAutomatic = instance.data.IsAutpmatic;
+        fireRate = instance.data.FireRate * 100f;
+        ProjectilesPerShot = instance.data.ProjectilesPerShot;
+
 
         _visibleFireCount = _fireCount;
         _reloadingVisible = IsReloading;
@@ -172,16 +206,17 @@ public class Weapon : NetworkBehaviour
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curClip == 0) return;
         if (IsReloading) return;
-        FPSWeapon.RPC_OnFirePressed();
+
+        FPSWeapon.OnFirePressed();
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
         for (int i = 0; i < ProjectilesPerShot; i++)
         {
             var projectileDirection = firstPersonMuzzleTransform.forward;
 
-            if (Dispersion > 0f)
+            if (dispersion > 0f)
             {
-                var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * Dispersion);
+                var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * dispersion);
                 projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward; // 탄퍼짐
             }
 
@@ -249,8 +284,8 @@ public class Weapon : NetworkBehaviour
                 projectileData.hitNormal = hit.Normal;
 
                 if (hit.Hitbox != null)
-                {                    
-                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);                    
+                {
+                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
                 }
                 else
                 {

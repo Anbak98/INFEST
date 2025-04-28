@@ -178,7 +178,7 @@ public class PlayerController : BaseController
     public override void StartFire(NetworkInputData data)
     {
         // 네트워크 객체는 StateAuthority(호스트)만 생성할 수 있기 때문에 StateAuthority에 대한 확인이 필요
-        // 호스트에서만 실행되고 클라이언트에서는 예측되지 않는다
+        // 호스트에서만 실행되고 클라이언트에서는 예측되지 않는다0
         if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
         {
             // 마우스 좌클릭(공격)

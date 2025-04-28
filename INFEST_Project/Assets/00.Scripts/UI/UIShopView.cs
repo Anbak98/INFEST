@@ -179,9 +179,19 @@ public class UIShopView : UIScreen
             weaponName[index].text = $"¹Ìº¸À¯";
             return;
         }
+
+        int differenceBullet = 0;
+        if (weaponInv[index].curBullet + weaponInv[index].data.MagazineBullet >= weaponInv[index].data.MaxBullet)
+            differenceBullet = weaponInv[index].curBullet % weaponInv[index].data.MagazineBullet;
+
         weaponText[index].text = $"{weaponInv[index].curBullet}/{weaponInv[index].data.MaxBullet}";
-        weaponBullet[index].text = $"ÅºÃ¢\n{(weaponInv[index].data.MagazineBullet - weaponInv[index].curMagazineBullet) * weaponInv[index].data.BulletPrice}G";
+        weaponBullet[index].text = $"ÅºÃ¢\n{(weaponInv[index].data.MagazineBullet - differenceBullet) * weaponInv[index].data.BulletPrice}G";
         weaponName[index].text = $"{weaponInv[index].data.Name}";
+
+        if (weaponInv[index].data.MaxBullet <= weaponInv[index].curBullet)
+        {
+            weaponBullet[index].text = $"ÅºÃ¢\n - G";
+        }
 
     }
 
@@ -200,6 +210,11 @@ public class UIShopView : UIScreen
         itemWeaponText[index].text = $"{ItemInv[index].curNum}/{ItemInv[index].data.MaxNum}";
         itemPrice[index].text = $"³¹°³ ±¸¸Å\n{ItemInv[index].data.Price}G";
         itemName[index].text = $"{ItemInv[index].data.Name}";
+
+        if (ItemInv[index].data.MaxNum <= ItemInv[index].curNum)
+        {
+            itemPrice[index].text = $"³¹°³ ±¸¸Å\n - G";
+        }
     }
     //private void MainWeapon1Set()
     //{
@@ -226,11 +241,11 @@ public class UIShopView : UIScreen
         int item3Price = 0;
 
         if (inv.auxiliaryWeapon[0] != null)
-            subPrice = (inv.auxiliaryWeapon[0].data.MagazineBullet - inv.auxiliaryWeapon[0].curMagazineBullet) * inv.auxiliaryWeapon[0].data.BulletPrice;
+            subPrice = (inv.auxiliaryWeapon[0].data.MaxBullet - inv.auxiliaryWeapon[0].curBullet) * inv.auxiliaryWeapon[0].data.BulletPrice;
         if (inv.weapon[0] != null)
-            main1Price = (inv.weapon[0].data.MagazineBullet - inv.weapon[0].curMagazineBullet) * inv.weapon[0].data.BulletPrice;
+            main1Price = (inv.weapon[0].data.MaxBullet - inv.weapon[0].curBullet) * inv.weapon[0].data.BulletPrice;
         if (inv.weapon[1] != null)
-            main2Price = (inv.weapon[1].data.MagazineBullet - inv.weapon[1].curMagazineBullet) * inv.weapon[1].data.BulletPrice;
+            main2Price = (inv.weapon[1].data.MaxBullet - inv.weapon[1].curBullet) * inv.weapon[1].data.BulletPrice;
         if (inv.consume[0] != null)
             item1Price = (inv.consume[0].data.MaxNum - inv.consume[0].curNum) * inv.consume[0].data.Price;
         if (inv.consume[1] != null)

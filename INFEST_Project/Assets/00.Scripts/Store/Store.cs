@@ -314,17 +314,17 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         #region ¹«±â
         if (weaponInv[0] != null)
         {
-            weaponPrice += (weaponInv[0].data.MagazineBullet - weaponInv[0].curMagazineBullet) * weaponInv[0].data.BulletPrice;
+            weaponPrice += (weaponInv[0].data.MaxBullet - weaponInv[0].curBullet) * weaponInv[0].data.BulletPrice;
         }
 
         if (weaponInv[1] != null)
         {
-            weaponPrice += (weaponInv[1].data.MagazineBullet - weaponInv[1].curMagazineBullet) * weaponInv[1].data.BulletPrice;
+            weaponPrice += (weaponInv[1].data.MaxBullet - weaponInv[1].curBullet) * weaponInv[1].data.BulletPrice;
         }
 
         if (weaponInv[2] != null)
         {
-            weaponPrice += (weaponInv[2].data.MagazineBullet - weaponInv[2].curMagazineBullet) * weaponInv[2].data.BulletPrice;
+            weaponPrice += (weaponInv[2].data.MaxBullet - weaponInv[2].curBullet) * weaponInv[2].data.BulletPrice;
         }
         #endregion
         #region ¾ÆÀÌÅÛ
@@ -344,7 +344,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         }
         #endregion
 
-        if (_player.characterInfoInstance.curDefGear >= _player.characterInfoInstance.data.DefGear)
+        if (_player.characterInfoInstance.curDefGear >= 200)
         {
             totalprice += weaponPrice + itemPrice;
         }
@@ -379,7 +379,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         _player.characterInfoInstance.curGold -= totalprice;
         _player.characterInfoInstance.curDefGear += 200;
-        _player.characterInfoInstance.curDefGear = Mathf.Min(Player.local.characterInfoInstance.curDefGear, 200);
+        _player.characterInfoInstance.curDefGear = Mathf.Min(_player.characterInfoInstance.curDefGear, 200);
         _storeController.uIShopView.UpdateButtonState();
     }
     #endregion
@@ -420,8 +420,8 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         if (weaponInv[index] == null) return;
         if (weaponInv[index].curBullet >= weaponInv[index].data.MaxBullet) return;
 
-        if (weaponInv[index].curMagazineBullet >= weaponInv[index].data.MagazineBullet)
-            _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MagazineBullet - weaponInv[index].curMagazineBullet);
+        if (weaponInv[index].curBullet + weaponInv[index].data.MagazineBullet >= weaponInv[index].data.MaxBullet)
+            _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MaxBullet - weaponInv[index].curBullet);
         else
             _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MagazineBullet);
 

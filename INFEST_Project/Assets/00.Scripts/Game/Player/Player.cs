@@ -275,9 +275,8 @@ public class Player : NetworkBehaviour
         if(characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
         {
             characterInfoInstance = new(1);
-            characterInfoInstance.curGold = 5000;
             inventory.auxiliaryWeapon[0] = new WeaponInstance(characterInfoInstance.data.StartAuxiliaryWeapon);
-            inventory.weapon[0] = new WeaponInstance(characterInfoInstance.data.StartWeapon1);
+            inventory.weapon[0] =  new WeaponInstance(characterInfoInstance.data.StartWeapon1);
             #region 체크용 bool 값
             int itemChk = characterInfoInstance.data.StartConsumeItem1 % 10000;
             bool throwingWeapon = itemChk < 800 && itemChk > 700;
@@ -290,6 +289,8 @@ public class Player : NetworkBehaviour
                 inventory.consume[1] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
             if (shieldItme)
                 inventory.consume[2] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
+
+            inventory.equippedWeapon = inventory.auxiliaryWeapon[0].data.key;
         }
 
 
