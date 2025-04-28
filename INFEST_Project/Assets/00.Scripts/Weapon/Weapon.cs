@@ -174,7 +174,7 @@ public class Weapon : NetworkBehaviour
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curClip == 0) return;
         if (IsReloading) return;
-        FPSWeapon.RPC_OnFirePressed();
+        //FPSWeapon.RPC_OnFirePressed();
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // ·£´ý°ª °íÁ¤
 
         for (int i = 0; i < ProjectilesPerShot; i++)
