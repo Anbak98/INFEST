@@ -1,4 +1,5 @@
 using Fusion;
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -34,18 +35,6 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         Underground
     }
 
-    public string GenerateSessionCode(int length = 8)
-    {
-        const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ123456789";
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++)
-        {
-            sb.Append(chars[Random.Range(0, chars.Length)]);
-        }
-
-        return sb.ToString();
-    }
-
     public async void QuickMatch()
     {
         if (Runner != null)
@@ -55,7 +44,6 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         var runnerGO = new GameObject("Runner (Shared)");
         Runner = runnerGO.AddComponent<NetworkRunner>();
         runnerGO.AddComponent<PlayGameListener>();
-
 
         var customProps = new Dictionary<string, SessionProperty>();
 
@@ -71,13 +59,16 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         });
 
         if (!result.Ok)
-            CreateNewSession(true, SelectedGameType, SelectedGameMap);
+            CreateNewSession(true);
+        else
+        {
+            RoomUI.UpdateUIWhenJoinRoom();
+        }
     }
 
-    public async void CreateNewSession(bool IsPublic, GameType type, GameMap map, string code = "")
+    public async void CreateNewSession(bool IsPublic, string code = "")
     {
         do {
-
             if (Runner != null)
                 await Runner.Shutdown();
 
@@ -89,8 +80,8 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
             var customProps = new Dictionary<string, SessionProperty>();
 
-            customProps["map"] = (int)map;
-            customProps["type"] = (int)type;
+            customProps["map"] = (int)SelectedGameMap;
+            customProps["type"] = (int)SelectedGameType;
 
             if (code == "")
                 code = GenerateSessionCode();
@@ -111,9 +102,15 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         }
     }
 
-    public void PlayGame()
+    public void PlayerSoloGame()
     {
-        Room.HostPlayGame();
+        Runner.LoadScene("PlayStage(MVP)");
+    }
+
+    public void PlayPartyGame()
+    {
+        if (Room != null)
+            Room.HostPlayGame();
     }
 
     public bool JoinSession(string code)
@@ -141,5 +138,17 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
         if (Runner.SessionInfo.PlayerCount == 1)
             await Runner.Shutdown();
+    }
+
+    private string GenerateSessionCode(int length = 6)
+    {
+        const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ123456789";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++)
+        {
+            sb.Append(chars[Random.Range(0, chars.Length)]);
+        }
+
+        return sb.ToString();
     }
 }

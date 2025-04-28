@@ -13,6 +13,8 @@ public class ScreenRoom : UIScreen
     [SerializeField] private TMP_Text _roomName;
     [SerializeField] private TMP_InputField _joinSessionCode;
     [SerializeField] private MatchManager _matchManager;
+    [SerializeField] private GameObject _playButtonObject;
+    [SerializeField] private GameObject _quickMatchButtonObject;
 
     protected override void Start()
     {
@@ -29,6 +31,18 @@ public class ScreenRoom : UIScreen
             UpdateTeamProfiles(teamProfiles);
     }
 
+    public void UpdateUIWhenJoinRoom()
+    {
+        foreach(var ui in _uiTeamProfiles)
+        {
+            ui.gameObject.SetActive(true);
+        }
+
+        _playButtonObject.SetActive(true);
+        _quickMatchButtonObject.SetActive(false);
+    }
+
+    #region Private
     private void UpdateTeamProfiles(List<PlayerProfile> teamProfiles)
     {
         for (int i = 0; i < _uiTeamProfiles.Length; ++i)
@@ -50,6 +64,7 @@ public class ScreenRoom : UIScreen
         if (Room != null)
             _roomName.text = Room.Runner.SessionInfo.Name;
     }
+    #endregion
 
     #region Button Methode
     public void OnPressedMedicButton()
@@ -90,7 +105,7 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedCreateSession()
     {
-        _matchManager.CreateNewSession(true, GameType.BossHunt, GameMap.MVP);
+        _matchManager.CreateNewSession(true);
     }
 
     public void OnPressedJoinSession()
@@ -105,12 +120,17 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedPlayGame()
     {
-        _matchManager.PlayGame();   
+        _matchManager.PlayPartyGame();   
+    }
+
+    public void OnPressedCreateRoom()
+    {
+        _matchManager.CreateNewSession(false);
     }
 
     public void OnPressedInviteFriend()
     {
-        _matchManager.CreateNewSession(false, GameType.BossHunt, GameMap.MVP);
+        _matchManager.CreateNewSession(false);
     }
     #endregion
 }

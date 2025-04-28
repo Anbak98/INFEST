@@ -16,7 +16,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     public PlayerProfile MyProfile;
     [SerializeField] private List<PlayerProfile> _teamProfiles = new();
 
-    private bool _isPrivate = false;
+    //private bool _isPrivate = false;
 
     public override void Spawned()
     {
@@ -33,6 +33,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
         }
 
         Runner.Spawn(_profilePrefab, inputAuthority: Runner.LocalPlayer).GetComponent<PlayerProfile>();
+        PlayerPrefs.SetString("RoomCode", Runner.SessionInfo.Name);
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -85,6 +86,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
         if (MyProfile != playerProfile && !_teamProfiles.Contains(playerProfile))
             _teamProfiles.Add(playerProfile);
 
+        MatchManager.Instance.RoomUI.UpdateUIWhenJoinRoom();
         MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
     }
 
@@ -99,7 +101,10 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
     public void HostPlayGame()
     {
-        RPC_BrodcastPlayGame();
+        if (Runner.LocalPlayer == HostPlayer)
+        {
+            RPC_BrodcastPlayGame();
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -116,8 +121,6 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     {
         MatchManager.Instance.CreateNewSession(
             false,
-            (MatchManager.GameType)(int)Runner.SessionInfo.Properties["type"],
-            (MatchManager.GameMap)(int)Runner.SessionInfo.Properties["map"],
             Runner.SessionInfo.Name);
     }
 
