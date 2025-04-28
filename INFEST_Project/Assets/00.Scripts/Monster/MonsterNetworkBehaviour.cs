@@ -22,13 +22,17 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [HideInInspector]
     public Transform target;
 
-    public Animator animator; 
+    public Animator animator;
     [Networked]
     private int HitCount { get; set; }
     [Networked]
     private Vector3 LastHitPosition { get; set; }
     [Networked]
     private Vector3 LastHitDirection { get; set; }
+
+    public GameObject hitEffectPrefab;
+    public AudioSource hitSound;
+    public AudioClip hitSoundClip;
 
     public override void Spawned()
     {
@@ -49,7 +53,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             return false;
 
         //if (isImmortal)
-            //return false;
+        //return false;
 
         CurrentHealth -= damage;
 
@@ -66,8 +70,28 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         LastHitPosition = position - transform.position;
         LastHitDirection = -direction;
 
+        RPC_PlayDamageEffect(LastHitPosition, LastHitDirection);
+
         HitCount++;
 
         return true;
+    }    
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayDamageEffect(Vector3 relativePosition, Vector3 direction)
+    {
+        if (hitEffectPrefab != null)
+        {
+            var hitPosition = transform.position + relativePosition;
+            var hitRotation = Quaternion.LookRotation(direction);
+            GameObject effect = Instantiate(hitEffectPrefab, hitPosition, hitRotation);
+
+            Destroy(effect, 2.0f);
+        }
+
+        if (hitSound != null && hitSoundClip != null)
+        {
+            hitSound.PlayOneShot(hitSoundClip);
+        }
     }
 }

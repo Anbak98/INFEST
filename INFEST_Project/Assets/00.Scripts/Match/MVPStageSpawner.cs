@@ -137,6 +137,8 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             await newRunner.StartGame(new StartGameArgs
             {
                 GameMode = GameMode.AutoHostOrClient,
+                SessionName = PlayerPrefs.GetString("RoomCode"),
+                IsVisible = false
             });
 
             newRunner.AddCallbacks(this);
