@@ -94,8 +94,9 @@ public class PlayerController : BaseController
     public override void HandleMovement(NetworkInputData data)
     {
         Vector3 input = data.direction;
-
         weapons.OnMoveAnimation(input);
+        if (input == Vector3.zero)
+            return;
 
         // Ground이면서 입력 없으면 아무 것도 하지 않음
         // 제자리인 경우 리턴하는 것이 문제다
@@ -111,11 +112,10 @@ public class PlayerController : BaseController
         //Vector3 right = transform.right;
         //Vector3 moveDir = (right * input.x + forward * input.z).normalized;
         moveDir.y = 0f; // 수직 방향 제거
-        Debug.Log(moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime);
         // 회전은 막고, 이동만 한다
         // xz평면상에서만 이동해야한다
         player.networkCharacterController.Move(
-            moveDir * player.statHandler.MoveSpeed * player.statHandler.MoveSpeedModifier * Time.deltaTime
+            moveDir
         );
 
         // 회전 강제 고정: 카메라가 지정한 forward로
@@ -128,7 +128,6 @@ public class PlayerController : BaseController
         if (IsGrounded())
         {
             verticalVelocity = 0f;
-            Debug.Log("착지 verticalVelocity:" + verticalVelocity);
         }
         else
         {
@@ -140,7 +139,6 @@ public class PlayerController : BaseController
         }
 
         player.networkCharacterController.Jump(false, verticalVelocity);
-        Debug.Log("매 프레임 verticalVelocity:" + verticalVelocity);
     }
     /// <summary>
     /// 점프 시작 시 수직 속도 계산
@@ -148,7 +146,6 @@ public class PlayerController : BaseController
     public override void StartJump()
     {
         //verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
-        Debug.Log("점프 시작:" + verticalVelocity);
 
         //verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * player.networkCharacterController.gravity);
         verticalVelocity = Mathf.Sqrt(player.networkCharacterController.jumpImpulse * -1f * player.networkCharacterController.gravity);
@@ -158,7 +155,6 @@ public class PlayerController : BaseController
 
         player.networkCharacterController.Jump(false, verticalVelocity);
 
-        Debug.Log("점프 시작속도:" + verticalVelocity);
     }
 
     // 앉는다
@@ -188,10 +184,9 @@ public class PlayerController : BaseController
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
-                //Debug.Log("공격");
                 weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
-                delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+                //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
             }
         }
     }

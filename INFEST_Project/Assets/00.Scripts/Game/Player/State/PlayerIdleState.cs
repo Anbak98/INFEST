@@ -36,8 +36,9 @@ public class PlayerIdleState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-        //controller.ApplyGravity();  // 중력
+        
 
+        // 정지한 상태에서 좌우회전
         if (controller.IsGrounded() && data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);

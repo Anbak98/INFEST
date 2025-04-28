@@ -174,7 +174,7 @@ public class Weapon : NetworkBehaviour
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curClip == 0) return;
         if (IsReloading) return;
-        FPSWeapon.OnFirePressed();
+        FPSWeapon.RPC_OnFirePressed();
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // ·£´ý°ª °íÁ¤
 
         for (int i = 0; i < ProjectilesPerShot; i++)
@@ -250,7 +250,6 @@ public class Weapon : NetworkBehaviour
                 projectileData.hitPosition = hit.Point;
                 projectileData.hitNormal = hit.Normal;
 
-                Debug.Log(hit.GameObject.name + " - " + hit.Hitbox);
                 if (hit.Hitbox != null)
                 {                    
                     ApplyDamage(hit.Hitbox, hit.Point, fireDirection);                    
@@ -296,8 +295,8 @@ public class Weapon : NetworkBehaviour
     {
         if (enemyHitbox == null) return;
 
-        var enemyHealth = enemyHitbox.Root.GetComponent<TestHp>();
-        if (enemyHealth == null || enemyHealth.isAlive == false)
+        var enemyHealth = enemyHitbox.Root.GetComponent<MonsterNetworkBehaviour>();
+        if (enemyHealth == null || enemyHealth.IsDead == true)
             return;
 
         float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;

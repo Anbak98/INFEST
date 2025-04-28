@@ -18,6 +18,25 @@ public struct IKTransforms
 
 public class WeaponSpawner : NetworkBehaviour
 {
+
+    [SerializeField] private List<Weapon> Weapons;
+
+    public void OnMoveAnimation(Vector3 direction)
+    {
+        _moveInput = direction;
+    }
+
+    public void Fire(bool holdingPressed)
+    {
+        _weapons[_activeWeaponIndex].Fire();
+    }
+
+    public void Reload()
+    {
+        _weapons[_activeWeaponIndex].Reload();
+    }
+
+    #region Model
     public float AdsWeight => _adsWeight;
 
     public FPSPlayerSettings playerSettings;
@@ -35,8 +54,6 @@ public class WeaponSpawner : NetworkBehaviour
 
     private RecoilAnimation _recoilAnimation;
     private float _adsWeight;
-
-    [SerializeField] private List<Weapon> Weapons;
     private List<Weapon> _weapons = new List<Weapon>();
     private List<Weapon> _prefabComponents = new List<Weapon>();
     private int _activeWeaponIndex = 0;
@@ -58,7 +75,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     private bool _isAiming;
 
-    private Vector3 _moveInput;
+    [Networked] private Vector3 _moveInput { get; set; }
     private float _smoothGait;
 
     private bool _bSprinting;
@@ -70,23 +87,6 @@ public class WeaponSpawner : NetworkBehaviour
     private KTransform _ikMotion = KTransform.Identity;
     private KTransform _cachedIkMotion = KTransform.Identity;
     private IKMotion _activeMotion;
-
-    public void OnMoveAnimation(Vector3 direction)
-    {
-        _moveInput = direction;
-    }
-
-    public void Fire(bool holdingPressed)
-    {
-        _weapons[_activeWeaponIndex].Fire();
-    }
-
-    public void Reload()
-    {
-        _weapons[_activeWeaponIndex].Reload();
-    }
-
-    #region Model
     private void SetWeaponVisible()
     {
         GetActiveWeapon().gameObject.SetActive(true);
