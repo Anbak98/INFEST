@@ -57,7 +57,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7192831214207265328}
   - component: {fileID: 2042557164248471945}
-  - component: {fileID: 524328025828620532}
   m_Layer: 0
   m_Name: Ch10
   m_TagString: Untagged
@@ -126,7 +125,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -497688465526345628, guid: f402df61056da1b4b807580add9dd75c, type: 3}
+  m_Mesh: {fileID: -497688465526345628, guid: 94271f5b4682aee4895a4735922ba4e1, type: 3}
   m_Bones:
   - {fileID: 8378998114158991541}
   - {fileID: 7531580920547252058}
@@ -199,27 +198,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00016030669, y: -0.23836797, z: 0.023211658}
     m_Extent: {x: 0.90435874, y: 0.9570362, z: 0.27628618}
   m_DirtyAABB: 0
---- !u!114 &524328025828620532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151529199559607564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0dde4e14b78a7c24abb71ef8645e159c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 1
-  SphereRadius: 0
-  CapsuleRadius: 0
-  BoxExtents: {x: 0.3, y: 1, z: 0.3}
-  CapsuleExtents: 0
-  Offset: {x: 0, y: 0, z: 0}
-  Root: {fileID: 2018823644459947275}
-  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  DamageMultiplier: 1
 --- !u!1 &351869176990665235
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1515649285212041226}
+  - component: {fileID: 3414650535947347109}
   m_Layer: 0
   m_Name: mixamorig5:RightLeg
   m_TagString: Untagged
@@ -444,6 +423,26 @@ Transform:
   - {fileID: 7960103183776119119}
   m_Father: {fileID: 5519369449710802706}
   m_LocalEulerAnglesHint: {x: -14.174725, y: -45.546932, z: 8.095574}
+--- !u!114 &3414650535947347109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964496080013315744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.06
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.5
+  Offset: {x: 0, y: 0.25, z: -0.01}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1268209695988953783
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,6 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6150669233026870689}
+  - component: {fileID: 1041156051793079882}
   m_Layer: 0
   m_Name: mixamorig5:LeftLeg
   m_TagString: Untagged
@@ -476,6 +476,26 @@ Transform:
   - {fileID: 8228849939512427561}
   m_Father: {fileID: 1653298514976540838}
   m_LocalEulerAnglesHint: {x: -55.80304, y: 52.083294, z: -60.79225}
+--- !u!114 &1041156051793079882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268209695988953783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.06
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.5
+  Offset: {x: 0, y: 0.25, z: -0.01}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1437616354229993422
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,6 +869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2251819979789314082}
+  - component: {fileID: 6973359882226475605}
   m_Layer: 0
   m_Name: mixamorig5:Spine1
   m_TagString: Untagged
@@ -872,6 +893,26 @@ Transform:
   - {fileID: 1512060726138304701}
   m_Father: {fileID: 7531580920547252058}
   m_LocalEulerAnglesHint: {x: -0.99568355, y: -4.9738073, z: 0.45251125}
+--- !u!114 &6973359882226475605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2391944372609806302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.15
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.4
+  Offset: {x: 0, y: -0.2, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2602689197877577199
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5519369449710802706}
+  - component: {fileID: 9093981411210920832}
   m_Layer: 0
   m_Name: mixamorig5:RightUpLeg
   m_TagString: Untagged
@@ -936,6 +978,26 @@ Transform:
   - {fileID: 1515649285212041226}
   m_Father: {fileID: 8378998114158991541}
   m_LocalEulerAnglesHint: {x: 13.4577055, y: 7.240812, z: 169.88684}
+--- !u!114 &9093981411210920832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2739376964700666820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.07
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.5
+  Offset: {x: 0, y: 0.25, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2784435785035087788
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +1007,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2402123005031311403}
+  - component: {fileID: 3627981605192036150}
   m_Layer: 0
   m_Name: mixamorig5:LeftArm
   m_TagString: Untagged
@@ -968,6 +1031,26 @@ Transform:
   - {fileID: 5617012517340669114}
   m_Father: {fileID: 2253659905309411323}
   m_LocalEulerAnglesHint: {x: 33.013077, y: 16.65211, z: -36.536385}
+--- !u!114 &3627981605192036150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2784435785035087788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.05
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.4
+  Offset: {x: 0, y: 0.13, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2853995714781909408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8887469658526733529}
+  - component: {fileID: 2801098052342808127}
   m_Layer: 0
   m_Name: mixamorig5:RightArm
   m_TagString: Untagged
@@ -1064,6 +1148,26 @@ Transform:
   - {fileID: 4958383280434649486}
   m_Father: {fileID: 7550842891800343782}
   m_LocalEulerAnglesHint: {x: 32.412792, y: 24.45285, z: -10.310962}
+--- !u!114 &2801098052342808127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029395694200068028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.05
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.4
+  Offset: {x: 0, y: 0.13, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &3057197448693998084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,6 +1244,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 781329310454207882}
+  - component: {fileID: 7299259346688601142}
   m_Layer: 0
   m_Name: mixamorig5:LeftHand
   m_TagString: Untagged
@@ -1167,6 +1272,26 @@ Transform:
   - {fileID: 4193541094012484859}
   m_Father: {fileID: 5617012517340669114}
   m_LocalEulerAnglesHint: {x: -48.117863, y: -5.2160497, z: -6.168111}
+--- !u!114 &7299259346688601142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104220567837638103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.04
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.4
+  Offset: {x: 0, y: 0, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &3105043158258257559
 GameObject:
   m_ObjectHideFlags: 0
@@ -1634,6 +1759,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4544592939376556457}
+  - component: {fileID: 3667624559071425815}
   m_Layer: 0
   m_Name: mixamorig5:Head
   m_TagString: Untagged
@@ -1657,6 +1783,26 @@ Transform:
   - {fileID: 4193285982419745148}
   m_Father: {fileID: 7731029698578907818}
   m_LocalEulerAnglesHint: {x: -4.1503525, y: 0.22469726, z: 0.77403367}
+--- !u!114 &3667624559071425815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281076310338547539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0.12
+  CapsuleRadius: 0.09
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.25
+  Offset: {x: 0, y: 0.09, z: 0.05}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &5314309908229481976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1793,6 +1939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7103127902793122692}
+  - component: {fileID: 8357321618041405346}
   m_Layer: 0
   m_Name: mixamorig5:RightHand
   m_TagString: Untagged
@@ -1820,6 +1967,26 @@ Transform:
   - {fileID: 1307829114464216248}
   m_Father: {fileID: 4958383280434649486}
   m_LocalEulerAnglesHint: {x: 26.999285, y: 0.5318387, z: -1.984691}
+--- !u!114 &8357321618041405346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5727964338918991919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.04
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.4
+  Offset: {x: 0, y: 0, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &5914971994581815166
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,7 +2557,7 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:
-  - {fileID: 524328025828620532}
+  - {fileID: 0}
 --- !u!114 &724601637293990325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2545,6 +2712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1512060726138304701}
+  - component: {fileID: 8034058703909803772}
   m_Layer: 0
   m_Name: mixamorig5:Spine2
   m_TagString: Untagged
@@ -2570,6 +2738,26 @@ Transform:
   - {fileID: 7550842891800343782}
   m_Father: {fileID: 2251819979789314082}
   m_LocalEulerAnglesHint: {x: -1.2781905, y: -4.8136926, z: 0.58862954}
+--- !u!114 &8034058703909803772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476548819895095987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.16
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.45
+  Offset: {x: 0, y: -0.04, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &7596005134736654789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,6 +3098,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1653298514976540838}
+  - component: {fileID: 7671296837006041845}
   m_Layer: 0
   m_Name: mixamorig5:LeftUpLeg
   m_TagString: Untagged
@@ -2933,6 +3122,26 @@ Transform:
   - {fileID: 6150669233026870689}
   m_Father: {fileID: 8378998114158991541}
   m_LocalEulerAnglesHint: {x: -36.196354, y: 10.225706, z: 144.25067}
+--- !u!114 &7671296837006041845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8430746079355437880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 3
+  SphereRadius: 0
+  CapsuleRadius: 0.07
+  BoxExtents: {x: 0, y: 0, z: 0}
+  CapsuleExtents: 0.5
+  Offset: {x: 0, y: 0.25, z: 0}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8498094562419402430
 GameObject:
   m_ObjectHideFlags: 0
