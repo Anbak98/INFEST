@@ -6,7 +6,7 @@ public class TestHp : NetworkBehaviour
     public float maxHealth = 100f;
     public float immortalDurationAfterSpawn = 2f;
     //public GameObject immortalityIndicator;
-    //public GameObject hitEffectPrefab;
+    public GameObject hitEffectPrefab;
 
     public bool isAlive => CurrentHealth > 0f;
     public bool isImmortal => ImmortalTimer.ExpiredOrNotRunning(Runner) == false;
@@ -96,7 +96,7 @@ public class TestHp : NetworkBehaviour
         if (_visibleHitCount < HitCount)
         {
             // Network hit counter changed in FUN, play damage effect.
-            //PlayDamageEffect();
+            PlayDamageEffect();            
         }
 
         //immortalityIndicator.SetActive(isImmortal);
@@ -105,14 +105,14 @@ public class TestHp : NetworkBehaviour
         _visibleHitCount = HitCount;
     }
 
-    //private void PlayDamageEffect()
-    //{
-    //    if (hitEffectPrefab != null)
-    //    {
-    //        var hitPosition = transform.position + LastHitPosition;
-    //        var hitRotation = Quaternion.LookRotation(LastHitDirection);
+    private void PlayDamageEffect()
+    {
+        if (hitEffectPrefab != null)
+        {
+            var hitPosition = transform.position + LastHitPosition;
+            var hitRotation = Quaternion.LookRotation(LastHitDirection);
 
-    //        Instantiate(hitEffectPrefab, hitPosition, hitRotation);
-    //    }
-    //}
+            Instantiate(hitEffectPrefab, hitPosition, hitRotation);
+        }
+    }
 }

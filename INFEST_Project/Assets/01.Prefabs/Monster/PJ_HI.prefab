@@ -2368,6 +2368,8 @@ MonoBehaviour:
   AIPathing: {fileID: 8541060984460718935}
   target: {fileID: 0}
   animator: {fileID: 6900176941767614314}
+  hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
+    type: 3}
 --- !u!114 &2018823644459947275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2400,6 +2402,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   immortalDurationAfterSpawn: 2
+  hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
+    type: 3}
   _CurrentHealth: 0
 --- !u!1 &7426032713725516538
 GameObject:
