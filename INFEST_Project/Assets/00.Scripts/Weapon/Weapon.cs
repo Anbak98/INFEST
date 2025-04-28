@@ -56,15 +56,15 @@ public class Weapon : NetworkBehaviour
 
     private int _fireTicks; // 재사격 시간
     private float _basicDispersion;
-    private Vector3 _startPosition = new Vector3(0.15f, 0.5f, 1f);
-    private Vector3 _targetPosition = new Vector3(0, 0.6f, 0.5f);
+    //private Vector3 _startPosition = new Vector3(0.15f, 0.5f, 1f);
+    //private Vector3 _targetPosition = new Vector3(0, 0.6f, 0.5f);
 
     public Transform firstPersonMuzzleTransform;
     public Transform thirdPersonMuzzleTransform;
     public DummyProjectile dummyProjectilePrefab; // 총알 프리팹
     private DummyProjectile dummyProjectile; // 총알 인스턴스
     private bool _reloadingVisible; // 보이는 리로딩 상태
-    [SerializeField] private Transform _fireTransform; // 총구 위치
+    //[SerializeField] private Transform _fireTransform; // 총구 위치
     [SerializeField] private NetworkPrefabRef _realProjectilePrefab;
 
     public override void FixedUpdateNetwork()
@@ -235,8 +235,10 @@ public class Weapon : NetworkBehaviour
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
         var projectileData = new ProjectileData();
-        Vector3 origin = _fireTransform.position;
-        Vector3 direction = _fireTransform.forward;
+        //Vector3 origin = _fireTransform.position;
+        //Vector3 direction = _fireTransform.forward;
+        Vector3 origin = firePosition;
+        Vector3 direction = fireDirection;
         firePositionForGizmo = firePosition;
         fireDirectionForGizmo = fireDirection;
 
@@ -296,7 +298,7 @@ public class Weapon : NetworkBehaviour
     {
         if (enemyHitbox == null) return;
 
-        var enemyHealth = enemyHitbox.Root.GetComponent<MonsterNetworkBehaviour>();
+        var enemyHealth = enemyHitbox.Root.GetComponent<MonsterNetworkBehaviour>();        
         if (enemyHealth == null || enemyHealth.IsDead == true)
             return;
 
