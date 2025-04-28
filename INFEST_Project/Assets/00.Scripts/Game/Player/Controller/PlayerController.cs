@@ -95,8 +95,6 @@ public class PlayerController : BaseController
     {
         Vector3 input = data.direction;
         weapons.OnMoveAnimation(input);
-        if (input == Vector3.zero)
-            return;
 
         // Ground이면서 입력 없으면 아무 것도 하지 않음
         // 제자리인 경우 리턴하는 것이 문제다

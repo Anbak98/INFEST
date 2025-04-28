@@ -9,6 +9,7 @@ public class PlayerMoveState : PlayerGroundState
     public PlayerMoveState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
+
     public override void Enter()
     {
         // 일단 숫자대입. 나중에 PlayStatData.WalkSpeedModifier 변수 추가해서 그,값으로 바꾼다
@@ -17,6 +18,7 @@ public class PlayerMoveState : PlayerGroundState
         base.Enter();
 
     }
+
     public override void Exit()
     {
         base.Exit();
@@ -57,7 +59,9 @@ public class PlayerMoveState : PlayerGroundState
 
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
-            stateMachine.ChangeState(stateMachine.AttackState);
+            //stateMachine.ChangeState(stateMachine.AttackState);
+            player.animationController.isFiring = data.isFiring;
+            PlayerFire(data);
         }
         if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         {

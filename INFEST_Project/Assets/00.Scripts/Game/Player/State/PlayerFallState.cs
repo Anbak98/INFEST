@@ -23,6 +23,8 @@ public class PlayerFallState : PlayerAirState
         PlayerMove(data);
         controller.ApplyGravity();  // 중력
 
+        if(data.isFiring)
+            PlayerFire(data);
 
         // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다
         if (controller.IsGrounded())

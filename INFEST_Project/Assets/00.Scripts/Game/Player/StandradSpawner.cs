@@ -122,7 +122,7 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             };
             ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData);
 
-            Global.Instance.NetworkRunner = runner;
+            //Global.Instance.NetworkRunner = runner;
         }
 
     }

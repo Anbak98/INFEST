@@ -22,6 +22,9 @@ public class PlayerJumpState : PlayerAirState
         base.OnUpdate(data);
         // 플레이어 이동
         PlayerMove(data);
+
+        if(data.isFiring)
+            PlayerFire(data);
         controller.ApplyGravity();  // 중력
 
         if (controller.GetVerticalVelocity() <= 0)

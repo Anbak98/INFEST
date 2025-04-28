@@ -36,10 +36,11 @@ public class PlayerIdleState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-        
+
+        PlayerMove(data);
 
         // 정지한 상태에서 좌우회전
-        if (controller.IsGrounded() && data.direction != Vector3.zero)
+        if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
         }
@@ -49,16 +50,18 @@ public class PlayerIdleState : PlayerGroundState
 
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (controller.IsGrounded() && data.isReloading)
+        if (data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
-        if (controller.IsGrounded() && (stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if (stateMachine.Player.GetWeapons() != null&& data.isFiring)
         {
-            stateMachine.ChangeState(stateMachine.AttackState);
+            //stateMachine.ChangeState(stateMachine.AttackState);
+            player.animationController.isFiring = data.isFiring;
+            PlayerFire(data);
         }
-        if (controller.IsGrounded() &&(stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        if (stateMachine.Player.GetWeapons() != null && data.isReloading)
         {
             stateMachine.ChangeState(stateMachine.ReloadState);
         }
