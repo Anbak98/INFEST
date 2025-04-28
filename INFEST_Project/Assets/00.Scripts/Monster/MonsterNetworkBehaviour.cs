@@ -22,7 +22,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [HideInInspector]
     public Transform target;
 
-    public Animator animator; 
+    public Animator animator;
     [Networked]
     private int HitCount { get; set; }
     [Networked]
@@ -31,7 +31,8 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     private Vector3 LastHitDirection { get; set; }
 
     public GameObject hitEffectPrefab;
-    private int _visibleHitCount;
+    public AudioSource hitSound;
+    public AudioClip hitSoundClip;
 
     public override void Spawned()
     {
@@ -52,7 +53,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             return false;
 
         //if (isImmortal)
-            //return false;
+        //return false;
 
         CurrentHealth -= damage;
 
@@ -69,29 +70,28 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         LastHitPosition = position - transform.position;
         LastHitDirection = -direction;
 
+        RPC_PlayDamageEffect(LastHitPosition, LastHitDirection);
+
         HitCount++;
 
         return true;
-    }
+    }    
 
-    public override void Render()
-    {
-        if (_visibleHitCount < HitCount)
-        {
-            PlayDamageEffect();
-        }
-       
-        _visibleHitCount = HitCount;
-    }
-
-    private void PlayDamageEffect()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayDamageEffect(Vector3 relativePosition, Vector3 direction)
     {
         if (hitEffectPrefab != null)
         {
-            var hitPosition = transform.position + LastHitPosition;
-            var hitRotation = Quaternion.LookRotation(LastHitDirection);
+            var hitPosition = transform.position + relativePosition;
+            var hitRotation = Quaternion.LookRotation(direction);
+            GameObject effect = Instantiate(hitEffectPrefab, hitPosition, hitRotation);
 
-            Instantiate(hitEffectPrefab, hitPosition, hitRotation);
+            Destroy(effect, 2.0f);
+        }
+
+        if (hitSound != null && hitSoundClip != null)
+        {
+            hitSound.PlayOneShot(hitSoundClip);
         }
     }
 }
