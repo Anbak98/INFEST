@@ -30,6 +30,9 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Networked]
     private Vector3 LastHitDirection { get; set; }
 
+    public GameObject hitEffectPrefab;
+    private int _visibleHitCount;
+
     public override void Spawned()
     {
         base.Spawned();
@@ -69,5 +72,26 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         HitCount++;
 
         return true;
+    }
+
+    public override void Render()
+    {
+        if (_visibleHitCount < HitCount)
+        {
+            PlayDamageEffect();
+        }
+       
+        _visibleHitCount = HitCount;
+    }
+
+    private void PlayDamageEffect()
+    {
+        if (hitEffectPrefab != null)
+        {
+            var hitPosition = transform.position + LastHitPosition;
+            var hitRotation = Quaternion.LookRotation(LastHitDirection);
+
+            Instantiate(hitEffectPrefab, hitPosition, hitRotation);
+        }
     }
 }
