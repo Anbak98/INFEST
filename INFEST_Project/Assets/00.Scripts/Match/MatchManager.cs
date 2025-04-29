@@ -100,9 +100,36 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         }
     }
 
-    public void PlayerSoloGame()
+    public async void PlayerSoloGame()
     {
-        Runner.LoadScene("PlayStage(MVP)");
+        do
+        {
+            if (Runner != null)
+                await Runner.Shutdown();
+
+            // 货肺款 Runner 积己
+            var runnerGO = new GameObject("Runner (Shared)");
+            Runner = runnerGO.AddComponent<NetworkRunner>();
+            runnerGO.AddComponent<PlayGameListener>();
+
+
+            var customProps = new Dictionary<string, SessionProperty>();
+
+            customProps["map"] = (int)SelectedGameMap;
+            customProps["type"] = (int)SelectedGameType;
+
+            await Runner.StartGame(new StartGameArgs()
+            {
+                GameMode = GameMode.Single,
+                SessionName = GenerateSessionCode(),
+                IsVisible = false,
+                IsOpen = false,
+                SessionProperties = customProps,
+                SceneManager = gameObject.AddGetComponent<NetworkSceneManagerDefault>()
+            });
+        } while (Runner.SessionInfo.PlayerCount > 1);
+
+        await Runner.LoadScene("PlayStage(MVP)");
     }
 
     public void PlayPartyGame()
