@@ -17,8 +17,9 @@ public class PlayerCameraHandler : NetworkBehaviour
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
-    public float xRotation { get; set; } = 0f;
-    public float yRotation { get; set; } = 0f;
+
+    [Networked] public float xRotation { get; set; } = 0f;
+    [Networked] public float yRotation { get; set; } = 0f;
 
     private Camera _mainCam;    // 1인칭 카메라
 
@@ -71,11 +72,10 @@ public class PlayerCameraHandler : NetworkBehaviour
                 // 상하 회전 (카메라 홀더만)
                 xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
                 xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-
-                _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
             }
-            //}
         }
+
+        _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
     }
 
     public Vector3 GetCameraForwardOnXZ()
