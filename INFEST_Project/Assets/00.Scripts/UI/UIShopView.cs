@@ -171,7 +171,7 @@ public class UIShopView : UIScreen
 
     public void WeaponSet(int index)
     {
-        WeaponInstance[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
+        Weapon[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
         if (weaponInv[index] == null)
         {
             weaponText[index].text = $"¹Ìº¸À¯";
@@ -181,14 +181,14 @@ public class UIShopView : UIScreen
         }
 
         int differenceBullet = 0;
-        if (weaponInv[index].curBullet + weaponInv[index].data.MagazineBullet >= weaponInv[index].data.MaxBullet)
-            differenceBullet = weaponInv[index].curBullet % weaponInv[index].data.MagazineBullet;
+        if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
+            differenceBullet = weaponInv[index].curBullet % weaponInv[index].instance.data.MagazineBullet;
 
-        weaponText[index].text = $"{weaponInv[index].curBullet}/{weaponInv[index].data.MaxBullet}";
-        weaponBullet[index].text = $"ÅºÃ¢\n{(weaponInv[index].data.MagazineBullet - differenceBullet) * weaponInv[index].data.BulletPrice}G";
-        weaponName[index].text = $"{weaponInv[index].data.Name}";
+        weaponText[index].text = $"{weaponInv[index].curBullet}/{weaponInv[index].instance.data.MaxBullet}";
+        weaponBullet[index].text = $"ÅºÃ¢\n{(weaponInv[index].instance.data.MagazineBullet - differenceBullet) * weaponInv[index].instance.data.BulletPrice}G";
+        weaponName[index].text = $"{weaponInv[index].instance.data.Name}";
 
-        if (weaponInv[index].data.MaxBullet <= weaponInv[index].curBullet)
+        if (weaponInv[index].instance.data.MaxBullet <= weaponInv[index].curBullet)
         {
             weaponBullet[index].text = $"ÅºÃ¢\n - G";
         }
@@ -241,11 +241,11 @@ public class UIShopView : UIScreen
         int item3Price = 0;
 
         if (inv.auxiliaryWeapon[0] != null)
-            subPrice = (inv.auxiliaryWeapon[0].data.MaxBullet - inv.auxiliaryWeapon[0].curBullet) * inv.auxiliaryWeapon[0].data.BulletPrice;
+            subPrice = (inv.auxiliaryWeapon[0].instance.data.MaxBullet - inv.auxiliaryWeapon[0].curBullet) * inv.auxiliaryWeapon[0].instance.data.BulletPrice;
         if (inv.weapon[0] != null)
-            main1Price = (inv.weapon[0].data.MaxBullet - inv.weapon[0].curBullet) * inv.weapon[0].data.BulletPrice;
+            main1Price = (inv.weapon[0].instance.data.MaxBullet - inv.weapon[0].curBullet) * inv.weapon[0].instance.data.BulletPrice;
         if (inv.weapon[1] != null)
-            main2Price = (inv.weapon[1].data.MaxBullet - inv.weapon[1].curBullet) * inv.weapon[1].data.BulletPrice;
+            main2Price = (inv.weapon[1].instance.data.MaxBullet - inv.weapon[1].curBullet) * inv.weapon[1].instance.data.BulletPrice;
         if (inv.consume[0] != null)
             item1Price = (inv.consume[0].data.MaxNum - inv.consume[0].curNum) * inv.consume[0].data.Price;
         if (inv.consume[1] != null)
@@ -446,14 +446,14 @@ public class UIShopView : UIScreen
     }
     public void SaleSet(int index)
     {
-        WeaponInstance[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
+        Weapon[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
         ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
 
 
         if (index < 3)
         {
             if(weaponInv[index] != null)
-                saleButtonText[index].text = $"ÆÇ¸Å\n{weaponInv[index].data.Price / 2}G";
+                saleButtonText[index].text = $"ÆÇ¸Å\n{weaponInv[index].instance.data.Price / 2}G";
             else
                 saleButtonText[index].text = $"ÆÇ¸Å\n - G";
         }
