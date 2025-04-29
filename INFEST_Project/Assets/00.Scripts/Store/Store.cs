@@ -168,13 +168,22 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         if (_player == null) return;
 
         Debug.Log("±¸¸Å Àü :" + _player.characterInfoInstance.curGold + " ");
+        Weapon _buyWeapon = null;
 
         if (idList[index] % 10000 < 700) // ¹«±â
         {
-            WeaponInstance _weaponInstance = new(idList[index]);
 
-            _player.characterInfoInstance.curGold -= _weaponInstance.data.Price;
-            _player.inventory.AddWeponItme(_weaponInstance);
+            for (int i = 0; i< _player.Weapons.Weapons.Count; i++)
+            {
+                if (_player.Weapons.Weapons[i].key == idList[index])
+                {
+                    _buyWeapon = _player.Weapons.Weapons[i];
+                    break;
+                }
+            }
+
+            _player.characterInfoInstance.curGold -= _buyWeapon.instance.data.Price;
+            _player.inventory.AddWeponItme(_buyWeapon);
         }
         else if (idList[index] % 10000 < 1000) // ¾ÆÀÌÅÛ
         {
@@ -185,9 +194,9 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             _player.inventory.AddConsumeItme(_consumeInstance);
         }
         var inv = _player.inventory;
-        int[] invKey = {inv.auxiliaryWeapon[0] != null? inv.auxiliaryWeapon[0].data.key : 0,
-                        inv.weapon[0] != null? inv.weapon[0].data.key : 0,
-                        inv.weapon[1] != null? inv.weapon[1].data.key : 0,
+        int[] invKey = {inv.auxiliaryWeapon[0] != null? inv.auxiliaryWeapon[0].instance.data.key : 0,
+                        inv.weapon[0] != null? inv.weapon[0].instance.data.key : 0,
+                        inv.weapon[1] != null? inv.weapon[1].instance.data.key : 0,
                         inv.consume[0] != null? inv.consume[0].data.key : 0,
                         inv.consume[1] != null? inv.consume[1].data.key : 0,
                         inv.consume[2] != null? inv.consume[2].data.key : 0};
@@ -236,19 +245,19 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         {
             case 0: // º¸Á¶¹«±â
                 if (_player.inventory.auxiliaryWeapon[0] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.auxiliaryWeapon[0].data.Price / 2;
+                _player.characterInfoInstance.curGold += _player.inventory.auxiliaryWeapon[0].instance.data.Price / 2;
                 _player.inventory.RemoveWeaponItem(_player.inventory.auxiliaryWeapon[0], 0);
                 _storeController.uIShopView.WeaponSet(0);
                 break;
             case 1: // ÁÖ¹«±â 1
                 if (_player.inventory.weapon[0] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.weapon[0].data.Price / 2;
+                _player.characterInfoInstance.curGold += _player.inventory.weapon[0].instance.data.Price / 2;
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[0], 0);
                 _storeController.uIShopView.WeaponSet(1);
                 break;
             case 2: // ÁÖ¹«±â 2
                 if (_player.inventory.weapon[1] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.weapon[1].data.Price / 2;
+                _player.characterInfoInstance.curGold += _player.inventory.weapon[1].instance.data.Price / 2;
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[1], 1);
                 _storeController.uIShopView.WeaponSet(2);
                 break;
@@ -304,7 +313,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_TryAllSupplement(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        WeaponInstance[] weaponInv = { _player.inventory.auxiliaryWeapon[0], _player.inventory.weapon[0], _player.inventory.weapon[1] };
+        Weapon[] weaponInv = { _player.inventory.auxiliaryWeapon[0], _player.inventory.weapon[0], _player.inventory.weapon[1] };
         ConsumeInstance[] itemInv = { _player.inventory.consume[0], _player.inventory.consume[1], _player.inventory.consume[2] };
 
         int weaponPrice = 0;
@@ -314,17 +323,17 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         #region ¹«±â
         if (weaponInv[0] != null)
         {
-            weaponPrice += (weaponInv[0].data.MaxBullet - weaponInv[0].curBullet) * weaponInv[0].data.BulletPrice;
+            weaponPrice += (weaponInv[0].instance.data.MaxBullet - weaponInv[0].curBullet) * weaponInv[0].instance.data.BulletPrice;
         }
 
         if (weaponInv[1] != null)
         {
-            weaponPrice += (weaponInv[1].data.MaxBullet - weaponInv[1].curBullet) * weaponInv[1].data.BulletPrice;
+            weaponPrice += (weaponInv[1].instance.data.MaxBullet - weaponInv[1].curBullet) * weaponInv[1].instance.data.BulletPrice;
         }
 
         if (weaponInv[2] != null)
         {
-            weaponPrice += (weaponInv[2].data.MaxBullet - weaponInv[2].curBullet) * weaponInv[2].data.BulletPrice;
+            weaponPrice += (weaponInv[2].instance.data.MaxBullet - weaponInv[2].curBullet) * weaponInv[2].instance.data.BulletPrice;
         }
         #endregion
         #region ¾ÆÀÌÅÛ
@@ -359,7 +368,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         {
             if (weaponInv[i] != null)
             {
-                while (weaponInv[i].data.MaxBullet > weaponInv[i].curBullet)
+                while (weaponInv[i].instance.data.MaxBullet > weaponInv[i].curBullet)
                 {
                     weaponInv[i].SupplementBullet();
                 }
@@ -415,15 +424,15 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_TryBulletSupplement(Player _player, [RpcTarget] PlayerRef _playerRef, int index)
     {
-        WeaponInstance[] weaponInv = { _player.inventory.auxiliaryWeapon[0], _player.inventory.weapon[0], _player.inventory.weapon[1] };
+        Weapon[] weaponInv = { _player.inventory.auxiliaryWeapon[0], _player.inventory.weapon[0], _player.inventory.weapon[1] };
 
         if (weaponInv[index] == null) return;
-        if (weaponInv[index].curBullet >= weaponInv[index].data.MaxBullet) return;
+        if (weaponInv[index].curBullet >= weaponInv[index].instance.data.MaxBullet) return;
 
-        if (weaponInv[index].curBullet + weaponInv[index].data.MagazineBullet >= weaponInv[index].data.MaxBullet)
-            _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MaxBullet - weaponInv[index].curBullet);
+        if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
+            _player.characterInfoInstance.curGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MaxBullet - weaponInv[index].curBullet);
         else
-            _player.characterInfoInstance.curGold -= weaponInv[index].data.BulletPrice * (weaponInv[index].data.MagazineBullet);
+            _player.characterInfoInstance.curGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MagazineBullet);
 
         weaponInv[index].SupplementBullet();
         _storeController.uIShopView.WeaponSet(index);

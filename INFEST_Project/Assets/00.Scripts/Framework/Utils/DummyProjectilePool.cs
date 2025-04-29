@@ -24,11 +24,11 @@ public class DummyProjectilePool : MonoBehaviour
 
     public DummyProjectile Get()
     {
-        DummyProjectile proj; 
+        DummyProjectile proj;
 
-        if(_pool.Count > 0)
+        if (_pool.Count > 0)
         {
-            proj = _pool.Dequeue();            
+            proj = _pool.Dequeue();
         }
         else
         {

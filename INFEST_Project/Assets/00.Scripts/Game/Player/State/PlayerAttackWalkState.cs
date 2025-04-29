@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerAttackState : PlayerGroundState
+public class PlayerAttackWalkState : PlayerGroundState
 {
-    public PlayerAttackState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerAttackWalkState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
 
@@ -20,9 +19,15 @@ public class PlayerAttackState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        player.animationController.MoveDirection = data.direction;
+        PlayerMove(data);
+
+        // 사격
         player.animationController.isFiring = data.isFiring;
         PlayerFire(data);
+        //controller.ApplyGravity();  // 중력
 
+        // 이동 입력이 없으면 Idle 상태로
         if (!data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.IdleState);

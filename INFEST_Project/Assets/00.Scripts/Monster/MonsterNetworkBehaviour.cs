@@ -21,6 +21,8 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     [HideInInspector]
     public Transform target;
+    [HideInInspector]
+    public PlayerStatHandler targetStatHandler;
 
     public Animator animator;
     [Networked]

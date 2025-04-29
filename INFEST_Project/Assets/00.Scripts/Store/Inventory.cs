@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 { 
-    public WeaponInstance[] weapon = new WeaponInstance[2];
-    public WeaponInstance[] auxiliaryWeapon = new WeaponInstance[1];
+    public Weapon[] weapon = new Weapon[2];
+    public Weapon[] auxiliaryWeapon = new Weapon[1];
     public ConsumeInstance[] consume = new ConsumeInstance[3];
-    public int equippedWeapon;
+    public Weapon equippedWeapon;
 
-    public void AddWeponItme(WeaponInstance item)
+    public void AddWeponItme(Weapon item)
     {
-        if (item.data.key % 10000 > 200)
+        if (item.instance.data.key % 10000 > 200)
         {
             if (weapon[0] == null)
                 weapon[0] = item;
@@ -54,9 +54,9 @@ public class Inventory : MonoBehaviour
             
     }
 
-    public void RemoveWeaponItem(WeaponInstance item, int index)
+    public void RemoveWeaponItem(Weapon item, int index)
     {
-        if (item.data.key % 10000 < 200)
+        if (item.instance.data.key % 10000 < 200)
             auxiliaryWeapon[index] = null; 
         else
             weapon[index] = null;

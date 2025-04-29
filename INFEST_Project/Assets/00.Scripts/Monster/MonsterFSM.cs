@@ -32,6 +32,10 @@ public class MonsterFSM : NetworkBehaviour
 
     public void ChangePhase<T>() where T : MonsterPhase
     {
+        if(currentPhase == phaseMap[typeof(T)])
+        {
+            return;
+        }
         currentPhase?.MachineExit();
         currentPhase = phaseMap[typeof(T)];
         currentPhase.MachineEnter();

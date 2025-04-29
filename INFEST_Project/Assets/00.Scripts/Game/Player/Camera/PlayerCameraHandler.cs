@@ -17,8 +17,9 @@ public class PlayerCameraHandler : NetworkBehaviour
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
-    public float xRotation { get; set; } = 0f;
-    public float yRotation { get; set; } = 0f;
+
+    [Networked] public float xRotation { get; set; } = 0f;
+    [Networked] public float yRotation { get; set; } = 0f;
 
     private Camera _mainCam;    // 1인칭 카메라
 
@@ -44,29 +45,37 @@ public class PlayerCameraHandler : NetworkBehaviour
     {
         base.FixedUpdateNetwork();
 
-        // 권한설정을 하면 host만 내부에 진입한다
-        //if (HasInputAuthority)
-        //{
-        if (GetInput(out NetworkInputData data))
+        if (HasStateAuthority)
         {
+            // 권한설정을 하면 host만 내부에 진입한다
+            //if (HasInputAuthority)
+            //{
+            if (GetInput(out NetworkInputData data))
+            {
 
-            Vector2 mouseDelta = data.lookDelta;
+                Vector2 mouseDelta = data.lookDelta;
 
-            float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
-            float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
+                float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
+                float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
 
-            // 좌우 회전 (플레이어)
-            _parentTransform.Rotate(Vector3.up * mouseX);
+                // 좌우 회전 (플레이어)
+                _parentTransform.Rotate(Vector3.up * mouseX);
 
-            // 상하 회전
-            //if (_cameraHolder.rotation.eulerAngles.x > 80f)
-            //    return;
-            //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
-            //    return;
-            //else
-                _cameraHolder.Rotate(Vector3.right * -mouseY);
+                // 상하 회전
+                //if (_cameraHolder.rotation.eulerAngles.x > 80f)
+                //    return;
+                //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
+                //    return;
+                //else
+                //  _cameraHolder.Rotate(Vector3.right * -mouseY);
+
+                // 상하 회전 (카메라 홀더만)
+                xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
+                xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+            }
         }
-        //}
+
+        _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
     }
 
     public Vector3 GetCameraForwardOnXZ()

@@ -6,13 +6,11 @@ using UnityEngine;
 
 public enum EWeaponType
 {
-    None,
     Pistol,
     Rifle,
     Sniper,
     Shotgun,
     Launcher,
-    Special,
 }
 
 public class Weapon : NetworkBehaviour
@@ -24,30 +22,30 @@ public class Weapon : NetworkBehaviour
     public Sprite icon;
 
     [Header("Firing")]
-    public bool isAutomatic = false; // 연사 or 단발
-    public float damage; // 공격력
-    public float fireRate = 100f; // 공격 속도
-    public float maxHitDistance = 100f; // 사거리
-    public float dispersion = 0; // 집탄율
-    public float recoilForce;
-    public float recoilReturnTime = 0.5f;
-    public float splash;
+    //public bool isAutomatic = false; // 연사 or 단발
+    //public float damage; // 공격력
+    //public float fireRate = 100f; // 공격 속도
+    //public float maxHitDistance = 100f; // 사거리
+    //public float dispersion = 0; // 집탄율
+    //public float recoilForce;
+    //public float recoilReturnTime = 0.5f;
+    //public float splash;
     public LayerMask HitMask;
+        public float reloadTime = 2.0f; // 장전 속도
 
-    [Header("Ammo")]
-    public int startClip = 30; // 시작 탄창의 탄약
+    //[Header("Ammo")]
+    //public int startClip = 30; // 시작 탄창의 탄약
     //public int curClip = 30; // 현재 탄창의 탄약
     //public int possessionAmmo = 0; // 보유 탄약
-    [Networked] public int curClip { get; set; } // 현재 탄창의 탄약
-    [Networked] public int possessionAmmo { get; set; } // 보유 탄약
-    public int maxAmmo = 360; // 최대 탄약
-    public float reloadTime = 2.0f; // 장전 속도
-    [Range(1, 20)] public int ProjectilesPerShot = 1; // 발사체 당 총알수
 
-    [Header("Shop")]
-    public int weaponPrice; // 총 가격
-    public int ammoPrice; // 탄약 가격
+    //public int maxAmmo = 360; // 최대 탄약
+    //[Range(1, 20)] public int ProjectilesPerShot = 1; // 발사체 당 총알수
 
+    //[Header("Shop")]
+    //public int weaponPrice; // 총 가격
+    //public int ammoPrice; // 탄약 가격
+    [Networked] public int curMagazineBullet { get; set; } // 현재 탄창의 탄약
+    [Networked] public int curBullet { get; set; } // 보유 탄약
     [Networked] public NetworkBool IsCollected { get; set; } = false; // 보유중인가?
     [Networked] public NetworkBool IsReloading { get; set; } = false; // 장전중인가?
     [Networked] public NetworkBool IsAiming { get; set; } = false; // 장전중인가?
@@ -68,17 +66,17 @@ public class Weapon : NetworkBehaviour
     private DummyProjectile dummyProjectile; // 총알 인스턴스
     private bool _reloadingVisible; // 보이는 리로딩 상태
     //[SerializeField] private Transform _fireTransform; // 총구 위치
-    [SerializeField] private NetworkPrefabRef _realProjectilePrefab;
+    //[SerializeField] private NetworkPrefabRef _realProjectilePrefab;
 
     public override void FixedUpdateNetwork()
     {
-        if (HasInputAuthority)
-        {
-            instance.Fire(curClip);
-        }
+        //if (HasInputAuthority)
+        //{
+        //    instance.Fire(curClip);
+        //}
         if (!IsCollected) return;
 
-        if (curClip == 0)
+        if (curMagazineBullet == 0)
         {
             StopAiming();
             Reload();
@@ -105,24 +103,25 @@ public class Weapon : NetworkBehaviour
         //        _cam = null;
         //    }
         //}
+
         if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
         {
             IsReloading = false;
-            possessionAmmo--;
-            curClip++;
-            if (HasInputAuthority)
-                instance.ReloadShotgun(possessionAmmo, curClip);
-            if (curClip < startClip)
+            curBullet--;
+            curMagazineBullet++;
+            //if (HasInputAuthority)
+            //    instance.ReloadShotgun(possessionAmmo, curClip);
+            if (curMagazineBullet < instance.data.MagazineBullet)
                 Reload();
         }
         else if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
         {
             IsReloading = false;
-            possessionAmmo += curClip;
-            curClip = Mathf.Min(possessionAmmo, startClip);
-            possessionAmmo -= Mathf.Min(possessionAmmo, startClip);
-            if (HasInputAuthority)
-                instance.Reload(possessionAmmo, curClip);
+            curBullet += curMagazineBullet;
+            curMagazineBullet = Mathf.Min(curBullet, instance.data.MagazineBullet);
+            curBullet -= Mathf.Min(curBullet, instance.data.MagazineBullet);
+            //if (HasInputAuthority)
+            //    instance.Reload(possessionAmmo, curClip);
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         }
     }
@@ -130,12 +129,7 @@ public class Weapon : NetworkBehaviour
     public override void Spawned()
     {
 
-        if (key == Player.local.inventory.auxiliaryWeapon[0]?.data.key)
-            instance = Player.local.inventory.auxiliaryWeapon[0];
-        else if (key == Player.local.inventory.weapon[0]?.data.key)
-            instance = Player.local.inventory.weapon[0];
-        else if (key == Player.local.inventory.weapon[1]?.data.key)
-            instance = Player.local.inventory.weapon[1];
+        instance = new(key);
 
         //_basicDispersion = Dispersion;
         ////curClip = Mathf.Clamp(curClip, 0, startClip);
@@ -143,30 +137,28 @@ public class Weapon : NetworkBehaviour
         //curClip = startClip;
         if (instance == null) return;
 
-        damage = instance.data.Atk;
-        maxHitDistance = instance.data.WeaponRange;
+        //damage = instance.data.Atk;
+        //maxHitDistance = instance.data.WeaponRange;
         Type = (EWeaponType)instance.data.WeaponType;
-        startClip = instance.data.MagazineBullet;
-        curClip = startClip;
-        maxAmmo = instance.data.MaxBullet;
-        possessionAmmo = maxAmmo;
-        recoilForce = instance.data.RecoilForce;
-        recoilReturnTime = instance.data.RecoilReturnTime;
-        dispersion = instance.data.Concentration;
-        splash = instance.data.Splash;
-        isAutomatic = instance.data.IsAutpmatic;
-        fireRate = instance.data.FireRate * 100f;
-        ProjectilesPerShot = instance.data.ProjectilesPerShot;
+        curMagazineBullet = instance.data.MagazineBullet;
+        curBullet = instance.data.MaxBullet;
+        //recoilForce = instance.data.RecoilForce;
+        //recoilReturnTime = instance.data.RecoilReturnTime;
+        //dispersion = instance.data.Concentration;
+        //splash = instance.data.Splash;
+        //isAutomatic = instance.data.IsAutpmatic;
+        //fireRate = instance.data.FireRate * 100f;
+        //ProjectilesPerShot = instance.data.ProjectilesPerShot;
 
 
         _visibleFireCount = _fireCount;
         _reloadingVisible = IsReloading;
 
-        float fireTime = 60f / fireRate;
+        float fireTime = 60f / (instance.data.FireRate * 100);
         _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime); // 반올림
 
-        dummyProjectile = Instantiate(dummyProjectilePrefab, HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform);
-        dummyProjectile.FinishProjectile();
+        //dummyProjectile = Instantiate(dummyProjectilePrefab, HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform);
+        //dummyProjectile.FinishProjectile();
     }
 
     public override void Render()
@@ -203,20 +195,20 @@ public class Weapon : NetworkBehaviour
     public void Fire()
     {
         if (!IsCollected) return;
-        //if (!holdingPressed && !isAutomatic) return;
+        //if (!holdingPressed && !instance.data.IsAutpmatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
-        if (curClip == 0) return;
+        if (curMagazineBullet == 0) return;
         if (IsReloading) return;
         //FPSWeapon.RPC_OnFirePressed();
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
-        for (int i = 0; i < ProjectilesPerShot; i++)
+        for (int i = 0; i < instance.data.ProjectilesPerShot; i++)
         {
             var projectileDirection = firstPersonMuzzleTransform.forward;
 
-            if (dispersion > 0f)
+            if (instance.data.Concentration > 0f)
             {
-                var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * dispersion);
+                var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * instance.data.Concentration);
                 projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward; // 탄퍼짐
             }
 
@@ -228,42 +220,42 @@ public class Weapon : NetworkBehaviour
         }
 
         _fireCooldown = TickTimer.CreateFromTicks(Runner, _fireTicks);
-        curClip--;
+        curMagazineBullet--;
     }
 
     private Vector3 firePositionForGizmo;
     private Vector3 fireDirectionForGizmo;
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying) return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (!Application.isPlaying) return;
 
-        // Ray 정보
-        Vector3 rayOrigin = firePositionForGizmo;
-        Vector3 rayDir = fireDirectionForGizmo.normalized;
+    //    // Ray 정보
+    //    Vector3 rayOrigin = firePositionForGizmo;
+    //    Vector3 rayDir = fireDirectionForGizmo.normalized;
 
-        // Raycast 시각화
-        if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, maxHitDistance,
-            Object.InputAuthority, out var hit, HitMask, HitOptions.None))
-        {
-            // Ray
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(rayOrigin, hit.Point);
+    //    // Raycast 시각화
+    //    if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
+    //        Object.InputAuthority, out var hit, HitMask, HitOptions.None))
+    //    {
+    //        // Ray
+    //        Gizmos.color = Color.green;
+    //        Gizmos.DrawLine(rayOrigin, hit.Point);
 
-            // Hit point
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(hit.Point, 0.1f);
+    //        // Hit point
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawSphere(hit.Point, 0.1f);
 
-            // Normal
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
-        }
-        else
-        {
-            // Missed ray
-            Gizmos.color = Color.gray;
-            Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * maxHitDistance);
-        }
-    }
+    //        // Normal
+    //        Gizmos.color = Color.yellow;
+    //        Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
+    //    }
+    //    else
+    //    {
+    //        // Missed ray
+    //        Gizmos.color = Color.gray;
+    //        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * instance.data.WeaponRange);
+    //    }
+    //}
 
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
@@ -279,7 +271,7 @@ public class Weapon : NetworkBehaviour
 
         if (HasStateAuthority)
         {
-            if (Runner.LagCompensation.Raycast(firePosition, fireDirection, maxHitDistance,
+            if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
                     Object.InputAuthority, out var hit, HitMask, hitOptions))
             {
                 projectileData.hitPosition = hit.Point;
@@ -296,7 +288,7 @@ public class Weapon : NetworkBehaviour
             }
             else
             {
-                projectileData.hitPosition = origin + direction * maxHitDistance;
+                projectileData.hitPosition = origin + direction * instance.data.WeaponRange;
                 projectileData.hitNormal = -direction;
                 projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
             }
@@ -304,15 +296,15 @@ public class Weapon : NetworkBehaviour
 
         Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
 
-        if (HasStateAuthority)
-        {
-            Runner.Spawn(_realProjectilePrefab, origin, Quaternion.LookRotation(direction),
-                Object.InputAuthority,
-                (runner, obj) =>
-                {
-                    obj.GetComponent<RealProjectile>().Init(direction);
-                });
-        }
+        //if (HasStateAuthority)
+        //{
+        //    Runner.Spawn(_realProjectilePrefab, origin, Quaternion.LookRotation(direction),
+        //        Object.InputAuthority,
+        //        (runner, obj) =>
+        //        {
+        //            obj.GetComponent<RealProjectile>().Init(direction);
+        //        });
+        //}
 
         _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
         _fireCount++;
@@ -337,13 +329,13 @@ public class Weapon : NetworkBehaviour
         float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
         bool isCriticalHit = damageMultiplier > 1f;
 
-        float hitdamage = damage * damageMultiplier;
+        float hitdamage = instance.data.Atk * damageMultiplier;
         //if (_sceneObjects.Gameplay.DoubleDamageActive)
         //{
         //    damage *= 2f;
         //}
 
-        if (enemyHealth.ApplyDamage(Object.InputAuthority, damage, pos, dir, Type, isCriticalHit) == false)
+        if (enemyHealth.ApplyDamage(Object.InputAuthority, instance.data.Atk, pos, dir, Type, isCriticalHit) == false)
             return;
 
         //if (HasInputAuthority && Runner.IsForward)
@@ -358,8 +350,8 @@ public class Weapon : NetworkBehaviour
     public void Reload()
     {
         if (!IsCollected) return; // 보유중이지 않으면
-        if (curClip == startClip) return; // 현재 탄창의 탄약이 최대면
-        if (possessionAmmo <= 0) return; // 보유중인 탄약이 없으면
+        if (curMagazineBullet == instance.data.MagazineBullet) return; // 현재 탄창의 탄약이 최대면
+        if (curBullet <= 0) return; // 보유중인 탄약이 없으면
         if (IsReloading) return; // 장전중이면
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동 쿨타임중이면
 
@@ -368,12 +360,12 @@ public class Weapon : NetworkBehaviour
 
         if (Type == EWeaponType.Shotgun)
         {
-            int id = curClip == startClip - 1 ? Animator.StringToHash("Reload_End") : Animator.StringToHash("Reload_Start");
+            int id = curMagazineBullet == instance.data.MagazineBullet - 1 ? Animator.StringToHash("Reload_End") : Animator.StringToHash("Reload_Start");
             //animator.SetTrigger(id);
         }
         else
         {
-            int id = curClip == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
+            int id = curMagazineBullet == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
             //animator.SetTrigger(id);
         }
         Debug.Log("장전 시작");
@@ -387,7 +379,7 @@ public class Weapon : NetworkBehaviour
     public void Aiming(CinemachineVirtualCamera cam)
     {
         if (!IsCollected) return; // 보유중이지 않으면
-        if (curClip <= 0) return; // 현재 탄창에 탄약이 없으면
+        if (curMagazineBullet <= 0) return; // 현재 탄창에 탄약이 없으면
         if (IsAiming) return; // 조준중인가?
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동중인가?
 
@@ -423,5 +415,11 @@ public class Weapon : NetworkBehaviour
         public Vector3 hitPosition;
         public Vector3 hitNormal;
         public NetworkBool showHitEffect;
+    }
+
+    public void SupplementBullet()
+    {
+        curBullet += instance.data.MagazineBullet;
+        curBullet = Mathf.Min(curBullet, instance.data.MaxBullet);
     }
 }

@@ -19,7 +19,7 @@ public struct IKTransforms
 public class WeaponSpawner : NetworkBehaviour
 {
 
-    [SerializeField] private List<Weapon> Weapons;
+    public List<Weapon> Weapons;
 
     public void OnMoveAnimation(Vector3 direction)
     {
