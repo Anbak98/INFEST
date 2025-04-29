@@ -38,7 +38,7 @@ public class Weapons : NetworkBehaviour
         if (CurrentWeapon == null || IsSwitching)
             return;
 
-        CurrentWeapon.Fire();
+        //CurrentWeapon.Fire();
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class Weapons : NetworkBehaviour
         if (CurrentWeapon == null || IsSwitching)
             return;
 
-        CurrentWeapon.Aiming(camera);
+        //CurrentWeapon.Aiming(/*camera*/);
     }
 
     public void StopAiming()

@@ -21,6 +21,8 @@ public class WeaponSpawner : NetworkBehaviour
 {
 
     public List<Weapon> Weapons;
+    public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
+    private TickTimer _switchTimer { get; set; }
 
     public void OnMoveAnimation(Vector3 direction)
     {
@@ -29,20 +31,26 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void Fire(bool holdingPressed)
     {
-        _weapons[_activeWeaponIndex].Fire();
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+        _weapons[_activeWeaponIndex].Fire(holdingPressed);
     }
 
     public void Reload()
     {
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+
         _weapons[_activeWeaponIndex].Reload();
     }
 
     public void Swap(float value)
     {
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (value == 0f) return;
 
+        float delay = GetActiveWeapon().OnUnEquipped();
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, delay);
         //GetActiveWeapon().gameObject.SetActive(false);
-        RPC_OnChangeWeapon();
+        RPC_OnChangeWeapon(delay);
         //_activeWeaponIndex += value > 0f ? 1 : -1;
 
         //if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
@@ -54,13 +62,11 @@ public class WeaponSpawner : NetworkBehaviour
         //GetActiveWeapon().RPC_OnEquipped();
 
     }
-
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-
-    public void RPC_OnChangeWeapon()
+    public void RPC_OnChangeWeapon(float delay)
     {
         if (_weapons.Count <= 1) return;
-        float delay = GetActiveWeapon().OnUnEquipped();
+        //float delay = GetActiveWeapon().OnUnEquipped();
         Invoke(nameof(EquipWeapon_Incremental), delay);
     }
     private void EquipWeapon_Incremental()
@@ -68,9 +74,30 @@ public class WeaponSpawner : NetworkBehaviour
         GetActiveWeapon().gameObject.SetActive(false);
         _activeWeaponIndex = _activeWeaponIndex + 1 > _weapons.Count - 1 ? 0 : _activeWeaponIndex + 1;
         GetActiveWeapon().OnEquipped();
-        Invoke(nameof(SetWeaponVisible), 0.05f);
+        Invoke(nameof(SetWeaponVisible), 0.1f);
         Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+    }
 
+    public void Aiming(bool _isAiming)
+    {
+        RPC_OnAim(_isAiming);
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnAim(bool value)
+    {
+        bool wasAiming = _isAiming;
+        _isAiming = value;
+        _recoilAnimation.isAiming = _isAiming;
+
+        _weapons[_activeWeaponIndex].Aiming();
+
+        if (wasAiming != _isAiming)
+        {
+            _weapons[_activeWeaponIndex].StopAiming();
+
+            _playerSound.PlayAimSound(_isAiming);
+            PlayIkMotion(playerSettings.aimingMotion);
+        }
     }
 
     #region Model

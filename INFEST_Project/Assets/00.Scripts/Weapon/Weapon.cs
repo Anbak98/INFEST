@@ -193,10 +193,10 @@ public class Weapon : NetworkBehaviour
     /// <summary>
     /// 발사
     /// </summary>
-    public void Fire()
+    public void Fire(bool holdingPressed)
     {
         if (!IsCollected) return;
-        //if (!holdingPressed && !instance.data.IsAutpmatic) return;
+        if (!holdingPressed && !instance.data.IsAutpmatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curMagazineBullet == 0) return;
         if (IsReloading) return;
@@ -378,18 +378,21 @@ public class Weapon : NetworkBehaviour
     /// <summary>
     /// 조준
     /// </summary>
-    public void Aiming(CinemachineVirtualCamera cam)
+    public void Aiming(/*CinemachineVirtualCamera cam*/)
     {
         if (!IsCollected) return; // 보유중이지 않으면
         if (curMagazineBullet <= 0) return; // 현재 탄창에 탄약이 없으면
         if (IsAiming) return; // 조준중인가?
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동중인가?
 
+
         //gunRecoil.ChangePosition(_targetPosition);
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.5f);
         IsAiming = true;
+        instance.IsAiming();
+
         //_cam = cam;
-        Debug.Log("조준중");
+        Debug.Log("조준중\n 집탄율 : " + instance.concentration);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -410,7 +413,10 @@ public class Weapon : NetworkBehaviour
         //gunRecoil.ChangePosition(_startPosition);
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         IsAiming = false;
-        Debug.Log("조준끝");
+        StopAiming();
+
+
+        Debug.Log("조준끝\n 집탄율 : " + instance.concentration);
     }
     private struct ProjectileData : INetworkStruct
     {

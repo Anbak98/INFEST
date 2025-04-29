@@ -129,6 +129,16 @@ public class Player : NetworkBehaviour
                     Debug.Log("½º¿Ò");
                     Weapons.Swap(data.scrollValue.y);
                 }
+
+                if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                {
+                    Weapons.Aiming(true);
+                }
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+                {
+                    Weapons.Aiming(false);
+
+                }
             }
         }
     }
