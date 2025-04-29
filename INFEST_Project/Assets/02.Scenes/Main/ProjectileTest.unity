@@ -20243,6 +20243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 1059157648}
   _UIController: {fileID: 835766688}
+  playerController: {fileID: 3724504915549296076, guid: c0d4bee796562324e9fbf9d99f89544d,
+    type: 3}
 --- !u!114 &1059157648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23447,6 +23449,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5726485183455278097, guid: b3be4c3ddd130ca4593a2142a272ecd3,
+        type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 3724504915549296076, guid: c0d4bee796562324e9fbf9d99f89544d,
+        type: 3}
     - target: {fileID: 5801322112559818194, guid: b3be4c3ddd130ca4593a2142a272ecd3,
         type: 3}
       propertyPath: m_Name
@@ -31009,6 +31017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 1596829295}
   _UIController: {fileID: 835766688}
+  playerController: {fileID: 0}
 --- !u!114 &1596829295
 MonoBehaviour:
   m_ObjectHideFlags: 0
