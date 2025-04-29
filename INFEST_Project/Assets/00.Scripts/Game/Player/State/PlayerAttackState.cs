@@ -26,7 +26,8 @@ public class PlayerAttackState : PlayerGroundState
         PlayerMove(data);
 
         player.animationController.isFiring = data.isFiring;
-        PlayerFire(data);
+        if (data.isFiring)
+            PlayerFire(data);
 
         if (data.direction != Vector3.zero)
         {
@@ -36,5 +37,12 @@ public class PlayerAttackState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
+        if ((controller.IsGrounded()) && data.isJumping)
+        {
+            player.animationController.MoveDirection = data.direction;
+
+            stateMachine.ChangeState(stateMachine.JumpState);
+        }
+
     }
 }
