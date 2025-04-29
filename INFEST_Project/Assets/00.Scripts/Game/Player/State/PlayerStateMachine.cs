@@ -47,6 +47,11 @@ public class PlayerStateMachine : StateMachine
     public PlayerMoveState MoveState { get; private set; }
     public PlayerRunState RunState { get; private set; }
     public PlayerAttackState AttackState { get; private set; }
+    public PlayerAttackWalkState AttackWalkState { get; private set; }
+    public PlayerAimState AimState { get; private set; }
+    public PlayerAimAttackState AimAttackState { get; private set; }
+    public PlayerAimAttackWalkState AimAttackWalkState { get; private set; }
+
     public PlayerReloadState ReloadState { get; private set; }
     // Air
     public PlayerJumpState JumpState { get; private set; }

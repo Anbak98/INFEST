@@ -53,9 +53,9 @@ public class PlayerIdleState : PlayerGroundState
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if (stateMachine.Player.GetWeapons() != null && data.isFiring)
         {
-            //stateMachine.ChangeState(stateMachine.AttackState);
-            player.animationController.isFiring = data.isFiring;
-            PlayerFire(data);
+            stateMachine.ChangeState(stateMachine.AttackState);
+            //player.animationController.isFiring = data.isFiring;
+            //PlayerFire(data);
         }
         if (stateMachine.Player.GetWeapons() != null && data.isReloading)
         {

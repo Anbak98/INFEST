@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerAttackState : PlayerGroundState
+public class PlayerAttackWalkState : PlayerGroundState
 {
-    public PlayerAttackState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
+    public PlayerAttackWalkState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
 
@@ -23,7 +22,7 @@ public class PlayerAttackState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
-        //PlayerMove(data);
+        PlayerMove(data);
 
         // »ç°Ý
         player.animationController.isFiring = data.isFiring;
@@ -41,4 +40,5 @@ public class PlayerAttackState : PlayerGroundState
         }
 
     }
+
 }
