@@ -8,7 +8,7 @@ public class MonsterPhase : NetworkBehaviour
     [SerializeField]
     private List<MonsterStateNetworkBehaviour> states;
     private Dictionary<Type, MonsterStateNetworkBehaviour> stateMap = new();
-    private MonsterStateNetworkBehaviour currentState;
+    public MonsterStateNetworkBehaviour currentState;
 
     private MonsterNetworkBehaviour monster;
 

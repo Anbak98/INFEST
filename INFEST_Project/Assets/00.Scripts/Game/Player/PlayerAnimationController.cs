@@ -13,6 +13,7 @@ public class PlayerAnimationController : NetworkBehaviour
     [Networked] public bool isFiring { get; set; }
     [Networked] public bool isRunning { get; set; }
     [Networked] public bool isSitting { get; set; }
+    [Networked] public bool Die { get; set; } = false;
 
 
     private string _groundParameterName = "@Ground";    // 
@@ -135,5 +136,6 @@ public class PlayerAnimationController : NetworkBehaviour
         playerAnimator.SetBool(AttackParameterHash, isFiring);
         playerAnimator.SetBool(RunParameterHash, isRunning);
         playerAnimator.SetBool(SitParameterHash, isSitting);
+        playerAnimator.SetBool("Die", Die);
     }
 }

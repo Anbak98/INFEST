@@ -37,6 +37,7 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.OnUpdate(data);
 
+        player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 
         // 정지한 상태에서 좌우회전
@@ -50,28 +51,28 @@ public class PlayerIdleState : PlayerGroundState
 
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.ReloadState);
-        }
         // 일단 샷건(isShotgunOnFiring)은 미작성
-        if (stateMachine.Player.GetWeapons() != null&& data.isFiring)
+        if (stateMachine.Player.GetWeapons() != null && data.isFiring)
         {
-            //stateMachine.ChangeState(stateMachine.AttackState);
-            player.animationController.isFiring = data.isFiring;
-            PlayerFire(data);
+            stateMachine.ChangeState(stateMachine.AttackState);
+            //player.animationController.isFiring = data.isFiring;
+            //PlayerFire(data);
         }
-        if (stateMachine.Player.GetWeapons() != null && data.isReloading)
+        if (controller.IsGrounded() && data.isZooming)
         {
-            stateMachine.ChangeState(stateMachine.ReloadState);
-        }
-        if (controller.IsGrounded() && data.isRunning)
-        {
-            stateMachine.ChangeState(stateMachine.RunState);
+            stateMachine.ChangeState(stateMachine.AimState);
         }
         if (controller.IsGrounded() && data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }
+        //if (stateMachine.Player.GetWeapons() != null && data.isReloading)
+        //{
+        //    stateMachine.ChangeState(stateMachine.ReloadState);
+        //}
+        //if (controller.IsGrounded() && data.isRunning)
+        //{
+        //    stateMachine.ChangeState(stateMachine.RunState);
+        //}
     }
 }
