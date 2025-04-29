@@ -7,27 +7,42 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour
     public override void Enter()
     {
         base.Enter();
+        monster.MovementSpeed = 0f;
         monster.IsAttack = true;
-        Invoke(nameof(OnEndAttack), 0.2f);
+        monster.targetStatHandler.TakeDamage(10);
+        Invoke(nameof(OnEndAttack), 2f);
     }
-    
+
+    public override void Execute()
+    {
+        base.Execute();
+        monster.AIPathing.SetDestination(monster.target.position);
+        if (!monster.AIPathing.pathPending)
+        {
+            if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance && !monster.IsAttack)
+            {
+                phase.ChangeState<PJ_HI_Run>();
+            }
+        }
+    }
 
     public override void Exit()
     {
-        monster.IsAttack = false;
-        base.Exit();
+        base.Exit(); 
     }
+
     private void OnEndAttack()
     {
+        monster.IsAttack = false;
         if (!monster.AIPathing.pathPending)
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
                 phase.ChangeState<PJ_HI_Attack>();
             }
-            else if (monster.AIPathing.remainingDistance > 10f)
+            else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
             {
-                monster.FSM.ChangePhase<PJ_HI_ChasePhase>();
+                phase.ChangeState<PJ_HI_Run>();
             }
         }
     }

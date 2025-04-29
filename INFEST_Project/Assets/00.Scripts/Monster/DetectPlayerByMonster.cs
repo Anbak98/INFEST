@@ -9,6 +9,7 @@ public class DetectPlayerByMonster : MonoBehaviour
         if (other.gameObject.layer == 6)
         {
             monster.target = other.gameObject.transform;
+            monster.targetStatHandler = other.GetComponent<PlayerStatHandler>();
             monster.FSM.ChangePhase<PJ_HI_ChasePhase>();
         }
     }
