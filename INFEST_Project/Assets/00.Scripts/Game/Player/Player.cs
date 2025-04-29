@@ -74,6 +74,14 @@ public class Player : NetworkBehaviour
         _material = GetComponentInChildren<MeshRenderer>().material;
         inventory = GetComponent<Inventory>();
         statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
+        statHandler.OnDeath += OnDeath;
+    }
+
+    private void OnDeath()
+    {
+        FirstPersonRoot.SetActive(false);
+        ThirdPersonRoot.SetActive(true);
+        stateMachine.ChangeState(stateMachine.DeadState);
     }
 
     private void Start()

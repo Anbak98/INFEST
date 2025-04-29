@@ -2,6 +2,7 @@ using static MatchManager;
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using Fusion;
 
 public class ScreenRoom : UIScreen
 {
@@ -13,7 +14,8 @@ public class ScreenRoom : UIScreen
     [SerializeField] private TMP_Text _roomName;
     [SerializeField] private TMP_InputField _joinSessionCode;
     [SerializeField] private MatchManager _matchManager;
-    [SerializeField] private GameObject _playButtonObject;
+    [SerializeField] private GameObject _playSoloButtonObject;
+    [SerializeField] private GameObject _playPartyButtonObject;
     [SerializeField] private GameObject _quickMatchButtonObject;
 
     protected override void Start()
@@ -38,8 +40,13 @@ public class ScreenRoom : UIScreen
             ui.gameObject.SetActive(true);
         }
 
-        _playButtonObject.SetActive(true);
+        _playSoloButtonObject.SetActive(false);
         _quickMatchButtonObject.SetActive(false);
+    }
+
+    public void SetVisualablePlayPartyButtonOnHost(bool IsHost)
+    {
+        _playPartyButtonObject.SetActive(IsHost);
     }
 
     #region Private
@@ -118,9 +125,14 @@ public class ScreenRoom : UIScreen
         _matchManager.QuickMatch();
     }
 
-    public void OnPressedPlayGame()
+    public void OnPressedPlaySoloGame()
     {
-        _matchManager.PlayPartyGame();   
+        _matchManager.PlayerSoloGame();
+    }
+
+    public void OnPressedPlayPartyGame()
+    {
+        _matchManager.PlayPartyGame();
     }
 
     public void OnPressedCreateRoom()
