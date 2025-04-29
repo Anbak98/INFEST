@@ -19,6 +19,7 @@ public class PlayerJumpState : PlayerAirState
     }
     public override void OnUpdate(NetworkInputData data)
     {
+        player.animationController.isJumping = data.isJumping; 
         base.OnUpdate(data);
         // 플레이어 이동
         PlayerMove(data);

@@ -24,20 +24,8 @@ public class PlayerController : BaseController
     public Player player;
     public WeaponSpawner weapons;
 
-    /// <summary>
-    /// 플레이어가 입력을 받으면 다음 2가지 로직을 수행(2가지 동작은 별개의 동작이다)
-    /// 1.서버로 보내야 하니 PlayerInputHandler에 저장
-    /// 2.PlayerInputSender에서 최종으로 확인 후 서버로 보낸다
-    /// 3.FixedUpdateNetwork에서 값을 받아서 사용한다
-    /// </summary>
-
-    //public PlayerInputHandler inputHandler;
     public PlayerCameraHandler cameraHandler;
-    //public Transform MainCameraTransform { get; set; }
 
-    //protected CharacterController controller;
-
-    // FSM 상태 머신 인스턴스
     protected float verticalVelocity;
     //protected float gravity = -9.81f; // player.networkCharacterController.gravity를 사용해야한다
 
@@ -48,37 +36,10 @@ public class PlayerController : BaseController
     public override void Awake()
     {
         weapons = player.GetWeapons();
-
-        //inputHandler = player.Input;
-        // inputManager에 더 잘 연결하는 방법을 생각해보자
-        //if (inputManager == null)
-        //    inputManager = FindObjectOfType<InputManager>();
-
-        //controller = GetComponentInParent<CharacterController>();
-
         stateMachine = new PlayerStateMachine(player, this);
-
-        //MainCameraTransform = Camera.main.transform;
     }
 
-    //public override void FixedUpdateNetwork()
-    //{
-    //    //base.FixedUpdateNetwork();
-    //    if (GetInput(out NetworkInputData data))
-    //    {
-    //        // 상태머신
-
-    //        //stateMachine.HandleInput();
-    //        stateMachine.OnUpdate(data);
-    //    }
-    //}
-
-    // 점프 눌렸나
-    //public override bool IsJumpInput() => player.Input.GetIsJumping();
-    //public override bool IsSitInput() => player.Input.GetIsSitting();
-
     // 플레이어가 땅 위에 있는지?
-    //public override bool IsGrounded() => player.characterController.isGrounded;
     public override bool IsGrounded() => player.networkCharacterController.Grounded;
     public override float GetVerticalVelocity() => verticalVelocity;
 
@@ -88,18 +49,11 @@ public class PlayerController : BaseController
         player.networkCharacterController.Grounded = b;
     }
 
-
-
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     public override void HandleMovement(NetworkInputData data)
     {
         Vector3 input = data.direction;
         weapons.OnMoveAnimation(input);
-
-        // Ground이면서 입력 없으면 아무 것도 하지 않음
-        // 제자리인 경우 리턴하는 것이 문제다
-        // 그냥 너 없어져도 될거같은데?
-        //if (IsGrounded() && (input.sqrMagnitude < 0.01f)) return;
 
         // 카메라 기준 방향 가져오기
         Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
@@ -150,9 +104,7 @@ public class PlayerController : BaseController
         // 땅에서 떨어졌으므로 Grounded를 false로 강제변경
         //SetGrounded(false);
 
-
         player.networkCharacterController.Jump(false, verticalVelocity);
-
     }
 
     // 앉는다
@@ -171,7 +123,6 @@ public class PlayerController : BaseController
         playerYpos *= 2;
         player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + playerYpos + 0.01f, player.transform.position.z);
     }
-
 
     public override void StartFire(NetworkInputData data)
     {
@@ -193,7 +144,4 @@ public class PlayerController : BaseController
     {
         // TODO
     }
-
-
-
 }

@@ -64,7 +64,13 @@ public class PlayerCameraHandler : NetworkBehaviour
             //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
             //    return;
             //else
-                _cameraHolder.Rotate(Vector3.right * -mouseY);
+            //  _cameraHolder.Rotate(Vector3.right * -mouseY);
+            
+            // 상하 회전 (카메라 홀더만)
+            xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
+            xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+
+            _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
         }
         //}
     }
