@@ -60,21 +60,22 @@ public class PlayerCameraHandler : NetworkBehaviour
                 // 좌우 회전 (플레이어)
                 _parentTransform.Rotate(Vector3.up * mouseX);
 
-            // 상하 회전
-            //if (_cameraHolder.rotation.eulerAngles.x > 80f)
-            //    return;
-            //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
-            //    return;
-            //else
-            //  _cameraHolder.Rotate(Vector3.right * -mouseY);
-            
-            // 상하 회전 (카메라 홀더만)
-            xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
-            xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+                // 상하 회전
+                //if (_cameraHolder.rotation.eulerAngles.x > 80f)
+                //    return;
+                //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
+                //    return;
+                //else
+                //  _cameraHolder.Rotate(Vector3.right * -mouseY);
 
-            _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
+                // 상하 회전 (카메라 홀더만)
+                xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
+                xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+
+                _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
+            }
+            //}
         }
-        //}
     }
 
     public Vector3 GetCameraForwardOnXZ()
