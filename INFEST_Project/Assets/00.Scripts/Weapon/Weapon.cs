@@ -66,7 +66,7 @@ public class Weapon : NetworkBehaviour
     private DummyProjectile dummyProjectile; // 총알 인스턴스
     private bool _reloadingVisible; // 보이는 리로딩 상태
     //[SerializeField] private Transform _fireTransform; // 총구 위치
-    [SerializeField] private NetworkPrefabRef _realProjectilePrefab;
+    //[SerializeField] private NetworkPrefabRef _realProjectilePrefab;
 
     public override void FixedUpdateNetwork()
     {
@@ -157,8 +157,8 @@ public class Weapon : NetworkBehaviour
         float fireTime = 60f / (instance.data.FireRate * 100);
         _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime); // 반올림
 
-        dummyProjectile = Instantiate(dummyProjectilePrefab, HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform);
-        dummyProjectile.FinishProjectile();
+        //dummyProjectile = Instantiate(dummyProjectilePrefab, HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform);
+        //dummyProjectile.FinishProjectile();
     }
 
     public override void Render()
@@ -296,15 +296,15 @@ public class Weapon : NetworkBehaviour
 
         Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
 
-        if (HasStateAuthority)
-        {
-            Runner.Spawn(_realProjectilePrefab, origin, Quaternion.LookRotation(direction),
-                Object.InputAuthority,
-                (runner, obj) =>
-                {
-                    obj.GetComponent<RealProjectile>().Init(direction);
-                });
-        }
+        //if (HasStateAuthority)
+        //{
+        //    Runner.Spawn(_realProjectilePrefab, origin, Quaternion.LookRotation(direction),
+        //        Object.InputAuthority,
+        //        (runner, obj) =>
+        //        {
+        //            obj.GetComponent<RealProjectile>().Init(direction);
+        //        });
+        //}
 
         _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
         _fireCount++;
