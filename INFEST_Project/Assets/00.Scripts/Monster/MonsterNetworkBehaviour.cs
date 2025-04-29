@@ -3,12 +3,35 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class MonsterNetworkBehaviour : NetworkBehaviour
-{
-    [Networked, Tooltip("The networked amount of health that monster has")]
-    public float CurrentHealth { get; private set; } = 100;
+{            
+    //"Name": "PJ_H I",
+    //"MonsterType": 0,
+    //"MinHealth": 150,
+    //"MaxHealth": 250,
+    //"HealthPer5Min": 25,
+    //"MinAtk": 30,
+    //"MaxAtk": 42,
+    //"AtkPer5Min": 3,
+    //"MinDef": 20,
+    //"MaxDef": 28,
+    //"DefPer5Min": 2,
+    //"SpeedMove": 50,
+    //"SpeedAtk": 0.7,
+    //"DetectAreaNormal": 5,
+    //"DetectAreaWave": 500,
+    //"State": 200,
+    //"DropGold": 30,
+    //"FieldSpawn": true,
+    //"LimitSpawnCount": 9999
+    public MonsterInfo info;
+
+    public int key = -1;
 
     [Networked, Tooltip("The networked amount of health that monster has")]
-    public float MovementSpeed { get; set; } = 0.0f;
+    public float CurrentHealth { get; private set; } = -1;
+
+    [Networked, Tooltip("The networked amount of health that monster has")]
+    public float MovementSpeed { get; set; } = -1;
 
     [Networked] public NetworkBool IsAttack { get; set; } = false;
     [Networked] public NetworkBool IsDead { get; set; } = false;
@@ -39,6 +62,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public override void Spawned()
     {
         base.Spawned();
+
+        info = DataManager.Instance.GetByKey<MonsterInfo>(key);
+
+        CurrentHealth = Random.Range(info.MinHealth, info.MaxHealth);
+        MovementSpeed = info.SpeedMove;
     }
 
     protected virtual void Update()
