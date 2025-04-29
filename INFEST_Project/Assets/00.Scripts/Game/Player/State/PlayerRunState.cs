@@ -31,20 +31,12 @@ public class PlayerRunState : PlayerGroundState
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
         //Vector3 moveInput = data.direction;
 
-        // 지속적으로 Blend Tree 파라미터 업데이트
-        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
-        //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.z);
+        base.OnUpdate(data);
 
         player.animationController.isFiring = data.isFiring;
         PlayerRun(data);
         //controller.ApplyGravity();  // 중력
 
-        if (data.direction != Vector3.zero)
-        {
-            stateMachine.ChangeState(stateMachine.MoveState);
-            return;
-        }
-        // run 다시 눌렀다면 걷기
         if (!data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.MoveState);

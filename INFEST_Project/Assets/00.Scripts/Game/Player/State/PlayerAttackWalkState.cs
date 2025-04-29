@@ -19,6 +19,8 @@ public class PlayerAttackWalkState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
         player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 
@@ -27,11 +29,14 @@ public class PlayerAttackWalkState : PlayerGroundState
         PlayerFire(data);
         //controller.ApplyGravity();  // 중력
 
-        // 이동 입력이 없으면 Idle 상태로
+        // 이동 입력이 없으면 Attack 상태로
+        if (data.direction == Vector3.zero)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
         if (!data.isFiring)
         {
-            stateMachine.ChangeState(stateMachine.IdleState);
+            stateMachine.ChangeState(stateMachine.AimState);
         }
-
     }
 }
