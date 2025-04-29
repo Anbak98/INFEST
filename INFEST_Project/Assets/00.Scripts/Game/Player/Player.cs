@@ -109,18 +109,21 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData data))
         {
-            DEBUG_DATA = data;
-            playerController.stateMachine.OnUpdate(data);
-
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
+            if(HasStateAuthority)
             {
-                if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
+                DEBUG_DATA = data;
+                playerController.stateMachine.OnUpdate(data);
+                //cameraHandler.RoateCamera(data);
 
-                else store.RPC_RequestStopInteraction(Object.InputAuthority);
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
+                {
+                    if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
 
-                isInteraction = !isInteraction;
+                    else store.RPC_RequestStopInteraction(Object.InputAuthority);
+
+                    isInteraction = !isInteraction;
+                }
             }
-
         }
     }
 
