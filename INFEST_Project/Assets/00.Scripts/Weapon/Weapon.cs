@@ -10,6 +10,7 @@ public enum EWeaponType
     Rifle,
     Sniper,
     Shotgun,
+    Machinegun,
     Launcher,
 }
 
@@ -130,7 +131,7 @@ public class Weapon : NetworkBehaviour
     {
 
         instance = new(key);
-
+        FPSWeapon.activeAmmo = curMagazineBullet;
         //_basicDispersion = Dispersion;
         ////curClip = Mathf.Clamp(curClip, 0, startClip);
         //possessionAmmo = maxAmmo;
@@ -199,7 +200,7 @@ public class Weapon : NetworkBehaviour
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curMagazineBullet == 0) return;
         if (IsReloading) return;
-        //FPSWeapon.RPC_OnFirePressed();
+        FPSWeapon.RPC_OnFirePressed();
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
         for (int i = 0; i < instance.data.ProjectilesPerShot; i++)
@@ -355,7 +356,8 @@ public class Weapon : NetworkBehaviour
         if (IsReloading) return; // 장전중이면
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동 쿨타임중이면
 
-        FPSWeapon.OnReload();
+        if (HasStateAuthority) FPSWeapon.RPC_OnReload();
+
         IsReloading = true;
 
         if (Type == EWeaponType.Shotgun)

@@ -11,8 +11,8 @@ public class WeaponInstance
         data = DataManager.Instance.GetByKey<WeaponInfo>(key);  
         //curMagazineBullet = data.MagazineBullet;
         //curBullet = data.MaxBullet;
-        RecoilForce = data.RecoilForce;
-        concentration = data.Concentration;
+        //RecoilForce = data.RecoilForce;
+        //concentration = data.Concentration;
     }
 
     //public int curMagazineBullet { get; private set; }                          // ÇöÀç ÅºÃ¢ÀÇ ÃÑ¾Ë

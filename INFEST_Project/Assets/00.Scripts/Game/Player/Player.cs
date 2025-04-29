@@ -123,6 +123,12 @@ public class Player : NetworkBehaviour
 
                     isInteraction = !isInteraction;
                 }
+
+                if (data.scrollValue.y != 0)
+                {
+                    Debug.Log("½º¿Ò");
+                    Weapons.Swap(data.scrollValue.y);
+                }
             }
         }
     }
@@ -282,9 +288,16 @@ public class Player : NetworkBehaviour
             for(int i=0; i< Weapons.Weapons.Count; i++)
             {
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartAuxiliaryWeapon)
+                {
                     inventory.auxiliaryWeapon[0] = Weapons.Weapons[i];
+                    inventory.auxiliaryWeapon[0].IsCollected = true;
+                }
+                    
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartWeapon1)
+                {
                     inventory.weapon[0] = Weapons.Weapons[i];
+                    inventory.weapon[0].IsCollected = true;
+                }
 
                 if (inventory.auxiliaryWeapon[0] != null && inventory.weapon[0] != null)
                     break;
