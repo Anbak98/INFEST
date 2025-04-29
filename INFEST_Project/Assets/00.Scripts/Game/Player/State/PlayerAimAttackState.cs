@@ -11,19 +11,26 @@ public class PlayerAimAttackState : PlayerGroundState
     public override void Enter()
     {
         base.Enter();
-
-        //StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        //StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
-
+        // AimAttack 상태에서는 Aim, Attack, AimAttackWalk, 
+        if (data.direction != Vector3.zero)
+        {
+            stateMachine.ChangeState(stateMachine.AimAttackWalkState);
+        }
+        if (!data.isZooming)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        if (!data.isFiring)
+        {
+            stateMachine.ChangeState(stateMachine.AimState);
+        }
     }
-
-
 }
