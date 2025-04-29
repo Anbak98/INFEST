@@ -24,10 +24,9 @@ public class PlayerAttackWalkState : PlayerGroundState
         player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 
-        // 사격
         player.animationController.isFiring = data.isFiring;
-        PlayerFire(data);
-        //controller.ApplyGravity();  // 중력
+        if (data.isFiring)
+            PlayerFire(data);
 
         // 이동 입력이 없으면 Attack 상태로
         if (data.direction == Vector3.zero)
@@ -37,6 +36,12 @@ public class PlayerAttackWalkState : PlayerGroundState
         if (!data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.AimState);
+        }
+        if ((controller.IsGrounded()) && data.isJumping)
+        {
+            player.animationController.MoveDirection = data.direction;
+
+            stateMachine.ChangeState(stateMachine.JumpState);
         }
     }
 }

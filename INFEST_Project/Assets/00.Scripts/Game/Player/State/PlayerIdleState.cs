@@ -40,6 +40,10 @@ public class PlayerIdleState : PlayerGroundState
         player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 
+        //player.animationController.isFiring = data.isFiring;
+        //if (data.isFiring)
+        //    PlayerFire(data);
+
         // 정지한 상태에서 좌우회전
         if (data.direction != Vector3.zero)
         {
