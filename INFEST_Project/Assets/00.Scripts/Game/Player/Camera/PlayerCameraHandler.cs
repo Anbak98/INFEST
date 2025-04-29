@@ -21,11 +21,12 @@ public class PlayerCameraHandler : NetworkBehaviour
     public float yRotation { get; set; } = 0f;
 
     private Camera _mainCam;    // 1인칭 카메라
-
+    public bool isMenu;
 
     private void Awake()
     {
         InitCamera();
+        isMenu = false;
     }
 
     public Camera GetCamera(bool scopeCam)
@@ -43,6 +44,8 @@ public class PlayerCameraHandler : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
+
+        if (isMenu) return;
 
         // 권한설정을 하면 host만 내부에 진입한다
         //if (HasInputAuthority)
@@ -82,5 +85,22 @@ public class PlayerCameraHandler : NetworkBehaviour
         Vector3 camRight = transform.right;
         camRight.y = 0f;
         return camRight.normalized;
+    }
+
+    public void LockCamera(bool active)
+    {
+        isMenu = active;
+
+        if (active)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
     }
 }

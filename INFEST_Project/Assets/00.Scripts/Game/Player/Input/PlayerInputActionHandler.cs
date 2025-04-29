@@ -325,18 +325,14 @@ public class PlayerInputActionHandler : MonoBehaviour
     #endregion
     #region Menu
     private void OpenMenu(InputAction.CallbackContext context)
-    {
+    {        
         if (!_isMenuPopup)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+        {   
             _UIController.Show<UIMenuView>();
             _isMenuPopup = true;
         }
         else
-        {            
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+        {
             _UIController.Hide();
             _isMenuPopup = false;
         }

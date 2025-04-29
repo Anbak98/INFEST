@@ -81,6 +81,7 @@ public class StoreController : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EndTImer()
     {
+        if (!Player.local.inStoreZoon) return;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
