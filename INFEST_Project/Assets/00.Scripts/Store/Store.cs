@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼öÇàÇØÁØ´Ù.
 {
@@ -167,7 +168,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         if (_player == null) return;
 
-        Debug.Log("±¸¸Å Àü :" + _player.characterInfoInstance.curGold + " ");
         Weapon _buyWeapon = null;
 
         if (idList[index] % 10000 < 700) // ¹«±â
@@ -181,9 +181,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                     break;
                 }
             }
-
             _player.characterInfoInstance.curGold -= _buyWeapon.instance.data.Price;
             _player.inventory.AddWeponItme(_buyWeapon);
+            _buyWeapon.IsCollected = true;
+            _player.Weapons._weapons.Add(_buyWeapon);
         }
         else if (idList[index] % 10000 < 1000) // ¾ÆÀÌÅÛ
         {
@@ -212,8 +213,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 _storeController.uIShopView.ItemSet(i-3);
             }
         }
-        Debug.Log("±¸¸Å ÈÄ :" + _player.characterInfoInstance.curGold + " ");
         _storeController.uIShopView.UpdateButtonState();
+
+        
+        
     }
     #endregion
 
@@ -241,24 +244,46 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     {
         if (_player == null) return;
 
+
         switch (index)
         {
             case 0: // º¸Á¶¹«±â
                 if (_player.inventory.auxiliaryWeapon[0] == null) return;
                 _player.characterInfoInstance.curGold += _player.inventory.auxiliaryWeapon[0].instance.data.Price / 2;
+                
+                if (_player.inventory.auxiliaryWeapon[0] == _player.inventory.equippedWeapon) _player.Weapons.Swap(-1);
+                _player.inventory.auxiliaryWeapon[0].curBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
+                _player.inventory.auxiliaryWeapon[0].curMagazineBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
+                _player.inventory.auxiliaryWeapon[0].IsCollected = false;
+                _player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
                 _player.inventory.RemoveWeaponItem(_player.inventory.auxiliaryWeapon[0], 0);
+                
                 _storeController.uIShopView.WeaponSet(0);
                 break;
             case 1: // ÁÖ¹«±â 1
                 if (_player.inventory.weapon[0] == null) return;
                 _player.characterInfoInstance.curGold += _player.inventory.weapon[0].instance.data.Price / 2;
+
+                if (_player.inventory.weapon[0] == _player.inventory.equippedWeapon) _player.Weapons.Swap(-1); 
+                _player.inventory.weapon[0].curBullet = _player.inventory.weapon[0].instance.data.MaxBullet;
+                _player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
+                _player.inventory.weapon[0].IsCollected = false;
+                _player.Weapons._weapons.Remove(_player.inventory.weapon[0]); 
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[0], 0);
+
                 _storeController.uIShopView.WeaponSet(1);
                 break;
             case 2: // ÁÖ¹«±â 2
                 if (_player.inventory.weapon[1] == null) return;
                 _player.characterInfoInstance.curGold += _player.inventory.weapon[1].instance.data.Price / 2;
+                
+                if (_player.inventory.weapon[1] == _player.inventory.equippedWeapon) _player.Weapons.Swap(-1);
+                _player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
+                _player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
+                _player.inventory.weapon[1].IsCollected = false;
+                _player.Weapons._weapons.Remove(_player.inventory.weapon[1]);
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[1], 1);
+
                 _storeController.uIShopView.WeaponSet(2);
                 break;
             case 3: // ¾ÆÀÌÅÛ 1

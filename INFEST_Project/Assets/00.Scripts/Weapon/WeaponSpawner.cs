@@ -7,6 +7,7 @@ using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public struct IKTransforms
@@ -20,6 +21,8 @@ public class WeaponSpawner : NetworkBehaviour
 {
 
     public List<Weapon> Weapons;
+    public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
+    private TickTimer _switchTimer { get; set; }
 
     public void OnMoveAnimation(Vector3 direction)
     {
@@ -28,12 +31,73 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void Fire(bool holdingPressed)
     {
-        _weapons[_activeWeaponIndex].Fire();
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+        _weapons[_activeWeaponIndex].Fire(holdingPressed);
     }
 
     public void Reload()
     {
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+
         _weapons[_activeWeaponIndex].Reload();
+    }
+
+    public void Swap(float value)
+    {
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+        if (value == 0f) return;
+
+        float delay = GetActiveWeapon().OnUnEquipped();
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, delay);
+        //GetActiveWeapon().gameObject.SetActive(false);
+        RPC_OnChangeWeapon(delay);
+        //_activeWeaponIndex += value > 0f ? 1 : -1;
+
+        //if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
+        //if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
+        //SetWeaponVisible();
+
+        //GetActiveWeapon().gameObject.SetActive(true);
+        //GetActiveWeapon().OnEquipped_Immediate();
+        //GetActiveWeapon().RPC_OnEquipped();
+
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnChangeWeapon(float delay)
+    {
+        if (_weapons.Count <= 1) return;
+        //float delay = GetActiveWeapon().OnUnEquipped();
+        Invoke(nameof(EquipWeapon_Incremental), delay);
+    }
+    private void EquipWeapon_Incremental()
+    {
+        GetActiveWeapon().gameObject.SetActive(false);
+        _activeWeaponIndex = _activeWeaponIndex + 1 > _weapons.Count - 1 ? 0 : _activeWeaponIndex + 1;
+        GetActiveWeapon().OnEquipped();
+        Invoke(nameof(SetWeaponVisible), 0.1f);
+        Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+    }
+
+    public void Aiming(bool _isAiming)
+    {
+        RPC_OnAim(_isAiming);
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnAim(bool value)
+    {
+        bool wasAiming = _isAiming;
+        _isAiming = value;
+        _recoilAnimation.isAiming = _isAiming;
+
+        _weapons[_activeWeaponIndex].Aiming();
+
+        if (wasAiming != _isAiming)
+        {
+            _weapons[_activeWeaponIndex].StopAiming();
+
+            _playerSound.PlayAimSound(_isAiming);
+            PlayIkMotion(playerSettings.aimingMotion);
+        }
     }
 
     #region Model
@@ -54,7 +118,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     private RecoilAnimation _recoilAnimation;
     private float _adsWeight;
-    private List<Weapon> _weapons = new List<Weapon>();
+    public List<Weapon> _weapons = new List<Weapon>();
     private List<Weapon> _prefabComponents = new List<Weapon>();
     private int _activeWeaponIndex = 0;
 
@@ -87,6 +151,12 @@ public class WeaponSpawner : NetworkBehaviour
     private KTransform _ikMotion = KTransform.Identity;
     private KTransform _cachedIkMotion = KTransform.Identity;
     private IKMotion _activeMotion;
+
+    public void RemoveWeapon(Weapon weapon)
+    {
+        _weapons.Remove(weapon);
+    }
+
     private void SetWeaponVisible()
     {
         GetActiveWeapon().gameObject.SetActive(true);
@@ -299,10 +369,19 @@ public class WeaponSpawner : NetworkBehaviour
             component.adsPose.position = localCamera.position - localWeapon.position;
             component.adsPose.rotation = Quaternion.Inverse(localWeapon.rotation);
 
-            _weapons.Add(weaponComponent);
+            if(prefabComponent.IsCollected)
+                _weapons.Add(weaponComponent);
+
+            prefab.gameObject.SetActive(false);
         }
 
+        for(int i = 0; i< _weapons.Count; i++)
+        {
+            if (_weapons[i].key == Player.local.characterInfoInstance.data.StartAuxiliaryWeapon)
+                _activeWeaponIndex = i;
+        }
         GetActiveWeapon().gameObject.SetActive(true);
+        
         GetActiveWeapon().OnEquipped();
     }
 

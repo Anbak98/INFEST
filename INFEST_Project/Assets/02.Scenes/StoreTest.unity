@@ -1498,12 +1498,12 @@ PrefabInstance:
     - target: {fileID: 6374961010014655109, guid: 5171f669c7fc3d94f9beeefe86679187,
         type: 3}
       propertyPath: _playerPrefab.RawGuidValue.Array.data[0]
-      value: 2604020215683404992
+      value: 2640110338061979061
       objectReference: {fileID: 0}
     - target: {fileID: 6374961010014655109, guid: 5171f669c7fc3d94f9beeefe86679187,
         type: 3}
       propertyPath: _playerPrefab.RawGuidValue.Array.data[1]
-      value: 5572229958613990377
+      value: 2721834326324459816
       objectReference: {fileID: 0}
     - target: {fileID: 6374961010014655109, guid: 5171f669c7fc3d94f9beeefe86679187,
         type: 3}
@@ -2363,15 +2363,20 @@ PrefabInstance:
       propertyPath: SortKey
       value: 2021243081
       objectReference: {fileID: 0}
+    - target: {fileID: 1920124757334832661, guid: 21f5abb87c790e442bd2b4f0ccfad6f4,
+        type: 3}
+      propertyPath: idList.Array.data[16]
+      value: 10601
+      objectReference: {fileID: 0}
     - target: {fileID: 4794176077292064070, guid: 21f5abb87c790e442bd2b4f0ccfad6f4,
         type: 3}
       propertyPath: uIShopView
       value: 
       objectReference: {fileID: 1527398251142971377}
-    - target: {fileID: 4794176077292064070, guid: 21f5abb87c790e442bd2b4f0ccfad6f4,
+    - target: {fileID: 4897618131034360334, guid: 21f5abb87c790e442bd2b4f0ccfad6f4,
         type: 3}
-      propertyPath: newStoreTime
-      value: 10
+      propertyPath: idList.Array.data[16]
+      value: 10601
       objectReference: {fileID: 0}
     - target: {fileID: 5427930470031718088, guid: 21f5abb87c790e442bd2b4f0ccfad6f4,
         type: 3}
@@ -2442,6 +2447,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StoreController
+      objectReference: {fileID: 0}
+    - target: {fileID: 8427605602746010791, guid: 21f5abb87c790e442bd2b4f0ccfad6f4,
+        type: 3}
+      propertyPath: idList.Array.data[16]
+      value: 10601
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

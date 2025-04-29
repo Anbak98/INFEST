@@ -8,6 +8,10 @@ public class PlayerAnimationController : NetworkBehaviour
     // 입력한 값을 네트워크로 전달받는다
     [Networked] public Vector3 MoveDirection { get; set; }
     [Networked] public Vector2 lookDelta { get; set; }
+
+    [Networked] public float look { get; set; } // 임시
+
+
     [Networked] public bool isJumping { get; set; }
     [Networked] public bool isReloading { get; set; }
     [Networked] public bool isFiring { get; set; }
@@ -22,6 +26,7 @@ public class PlayerAnimationController : NetworkBehaviour
     private string _moveXParameterName = "MoveX";    // walk
     private string _moveZParameterName = "MoveZ";    // walk
 
+    private string _lookParameterName = "Look";    // look
     private string _lookXParameterName = "LookX";    // look
     private string _lookYParameterName = "LookY";    // look
 
@@ -69,6 +74,8 @@ public class PlayerAnimationController : NetworkBehaviour
     public int MoveXParameterHash { get; set; }
     public int MoveZParameterHash { get; set; }
 
+
+    public int LookParameterHash { get; set; }  // 임시
     public int LookXParameterHash { get; set; }
     public int LookYParameterHash { get; set; }
 
@@ -99,6 +106,7 @@ public class PlayerAnimationController : NetworkBehaviour
         MoveXParameterHash = Animator.StringToHash(_moveXParameterName);
         MoveZParameterHash = Animator.StringToHash(_moveZParameterName);
 
+        LookParameterHash = Animator.StringToHash(_lookParameterName);  // 임시
         LookXParameterHash = Animator.StringToHash(_lookXParameterName);
         LookYParameterHash = Animator.StringToHash(_lookYParameterName);
 

@@ -25,6 +25,8 @@ public class PlayerMoveState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다        
         player.animationController.MoveDirection = data.direction;
         PlayerMove(data);

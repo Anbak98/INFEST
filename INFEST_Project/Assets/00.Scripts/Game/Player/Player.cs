@@ -26,6 +26,7 @@ public class Player : NetworkBehaviour
 
     public CharacterController characterController; // collider, rigidbody 등 내장되어있다
     public NetworkCharacterController networkCharacterController;
+    public PlayerAttackedEffectController attackedEffectController;
 
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
@@ -72,7 +73,9 @@ public class Player : NetworkBehaviour
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
         inventory = GetComponent<Inventory>();
+        statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
     }
+
     private void Start()
     {
         stateMachine = new PlayerStateMachine(this, playerController);
@@ -96,6 +99,22 @@ public class Player : NetworkBehaviour
                     else store.RPC_RequestStopInteraction(Object.InputAuthority);
 
                     isInteraction = !isInteraction;
+                }
+
+                if (data.scrollValue.y != 0)
+                {
+                    Debug.Log("스왑");
+                    Weapons.Swap(data.scrollValue.y);
+                }
+
+                if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                {
+                    Weapons.Aiming(true);
+                }
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+                {
+                    Weapons.Aiming(false);
+
                 }
             }
         }
@@ -156,9 +175,16 @@ public class Player : NetworkBehaviour
             for(int i=0; i< Weapons.Weapons.Count; i++)
             {
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartAuxiliaryWeapon)
+                {
                     inventory.auxiliaryWeapon[0] = Weapons.Weapons[i];
+                    inventory.auxiliaryWeapon[0].IsCollected = true;
+                }
+                    
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartWeapon1)
+                {
                     inventory.weapon[0] = Weapons.Weapons[i];
+                    inventory.weapon[0].IsCollected = true;
+                }
 
                 if (inventory.auxiliaryWeapon[0] != null && inventory.weapon[0] != null)
                     break;

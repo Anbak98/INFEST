@@ -2181,6 +2181,9 @@ MonoBehaviour:
   _isFiring: 0
   _isRunning: 0
   _isSitting: 0
+  baseLayerIndex: 0
+  upperBodyLayerIndex: 0
+  lookLayerIndex: 0
 --- !u!1 &5426357078451052174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3101,6 +3104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022f0e9663ece0f45812d8aa7e830bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Weapons:
+  - {fileID: 3453097354739267759}
   playerSettings: {fileID: 11400000, guid: f142cf22a04ae574a8343d68b688caf0, type: 2}
   skeletonRoot: {fileID: 6624489042419820702}
   weaponBone: {fileID: 2831176873799362131}
@@ -3114,8 +3119,7 @@ MonoBehaviour:
     tip: {fileID: 5233610847187254215}
     mid: {fileID: 9046081200736098680}
     root: {fileID: 4700908811004839295}
-  Weapons:
-  - {fileID: 3453097354739267759}
+  _weapons: []
 --- !u!114 &1094091920553174609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3357,6 +3361,7 @@ MonoBehaviour:
   - {fileID: 686141162492240600}
   - {fileID: 3268070573558879607}
   - {fileID: 7032259557335484116}
+  - {fileID: 200972823645920203}
   - {fileID: 3453097354739267759}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &1036566270813735001
@@ -4232,7 +4237,14 @@ PrefabInstance:
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'root'\n\tTransform 'lowerarm_l'\n\tTransform
+        'root'\n\tTransform 'neck_01'\n\tTransform 'clavicle_l'\n\tTransform 'ring_02_l'\n\tTransform
+        'hand_l'\n\tTransform 'middle_01_l'\n\tTransform 'ring_01_r'\n\tTransform
+        'spine_02'\n\tand more ...\n\tFrom animation clip 'NoWeaponLeftTurn'\n\tFrom
+        animation clip 'NoWeaponRightTurn'\n\tFrom animation clip 'RifleLeftTurn'\n\tFrom
+        animation clip 'RifleRightTurn'"
       objectReference: {fileID: 0}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}
@@ -4971,6 +4983,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cce562ecd6ea1b1429d03f67fb441004, type: 3}
+--- !u!114 &200972823645920203 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7784558525833575978, guid: cce562ecd6ea1b1429d03f67fb441004,
+    type: 3}
+  m_PrefabInstance: {fileID: 7980854678757860833}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c149b996165a69744920ebcc1cb14805, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3453097354739267759 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
