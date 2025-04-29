@@ -11,9 +11,13 @@ public abstract class StateMachine
     // PlayerStateMachine에 PlayerController를 바로 선언할 수도 있지만 이때는 확장성이 줄어든다는 단점이 있다
     protected BaseController controller;
 
+    public bool IsDead = false;
+
     // 현재의 상태를 종료하고 새로운 상태를 실행
     public void ChangeState(IState newState)
     {
+        if (IsDead) 
+            return;
         if (currentState?.GetType() == newState?.GetType()) return;
 
         /// 가장 처음으로 들어가는 State는 IdleState
@@ -26,11 +30,15 @@ public abstract class StateMachine
     // 생명주기함수 아니다
     public void OnUpdate(NetworkInputData data)
     {
+        if (IsDead)
+            return;
         currentState?.OnUpdate(data);
     }
 
     public void PhysicsUpdate(NetworkInputData data)
     {
+        if (IsDead)
+            return;
         currentState?.PhysicsUpdate(data);
     }
 }
