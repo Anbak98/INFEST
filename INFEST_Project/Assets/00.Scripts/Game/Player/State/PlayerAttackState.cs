@@ -20,6 +20,8 @@ public class PlayerAttackState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
         player.animationController.isFiring = data.isFiring;
         PlayerFire(data);
 

@@ -19,6 +19,8 @@ public class PlayerAttackWalkState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
         player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 

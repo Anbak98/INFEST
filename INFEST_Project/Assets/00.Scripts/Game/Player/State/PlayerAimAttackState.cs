@@ -19,6 +19,8 @@ public class PlayerAimAttackState : PlayerGroundState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
         // AimAttack 상태에서는 Aim, Attack, AimAttackWalk, 
         if (data.direction != Vector3.zero)
         {
