@@ -9,10 +9,7 @@ public class UIScoreboardView : UIScreen
     public RectTransform rowParent;
     public UIScoreboardRow rowPrefab;
 
-    private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
-
-    [Networked]
-    public Profile Info { get; set; }
+    private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();  
 
     public override void Awake()
     {
@@ -38,18 +35,11 @@ public class UIScoreboardView : UIScreen
 
     public void AddPlayerRow(PlayerRef player, CharacterInfoData info)
     {
+        if (activeRows.ContainsKey(player)) return;
+
         UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
         row.SetNickname(info.nickname.ToString());
-
-        PlayerScoreData init = new PlayerScoreData
-        {
-            kills = 0,
-            deaths = 0,
-            gold = 500
-        };
-        row.SetData(init);
-
-        activeRows[player] = row;
+        activeRows[player] = row;        
     }
 
     public void RemovePlayerRow(PlayerRef player)
@@ -67,5 +57,5 @@ public class UIScoreboardView : UIScreen
         {
             row.SetData(data);
         }
-    }
+    }    
 }

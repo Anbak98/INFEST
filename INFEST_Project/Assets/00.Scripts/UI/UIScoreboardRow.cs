@@ -1,3 +1,4 @@
+using Fusion;
 using TMPro;
 using UnityEngine;
 

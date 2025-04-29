@@ -98,7 +98,8 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             {
                 nickname = info.Name
             };
-            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData);
+            var scoreData = new PlayerScoreData();            
+            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData, scoreData);
         }
     }
 
