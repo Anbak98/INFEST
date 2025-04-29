@@ -47,10 +47,10 @@ public class PlayerGroundState : PlayerBaseState
             prevForward = player.transform.forward;
         }
         // 그 forward.x와 나중의 player의 forward.x를 내적해야한다
-        float dotX = Vector3.Dot(Vector3.forward, playerForward); 
+        //float dotX = Vector3.Dot(Vector3.forward, playerForward); 
         
         // 애니메이터에 값전달
-        player.animationController.lookDelta = new Vector2(dotX, dotY);
+        player.animationController.lookDelta = new Vector2(data.lookDelta.x, dotY);
     }
     public override void PhysicsUpdate(NetworkInputData data)
     {
