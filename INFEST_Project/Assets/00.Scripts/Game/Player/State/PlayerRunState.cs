@@ -35,7 +35,7 @@ public class PlayerRunState : PlayerGroundState
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.z);
 
-
+        player.animationController.isFiring = data.isFiring;
         PlayerRun(data);
         //controller.ApplyGravity();  // ม฿ทย
 
