@@ -46,8 +46,10 @@ public class PlayerStateMachine : StateMachine
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
     public PlayerRunState RunState { get; private set; }
+
     public PlayerAttackState AttackState { get; private set; }
     public PlayerAttackWalkState AttackWalkState { get; private set; }
+
     public PlayerAimState AimState { get; private set; }
     public PlayerAimAttackState AimAttackState { get; private set; }
     public PlayerAimAttackWalkState AimAttackWalkState { get; private set; }
@@ -74,7 +76,14 @@ public class PlayerStateMachine : StateMachine
         IdleState = new PlayerIdleState(controller, this);
         MoveState = new PlayerMoveState(controller, this);
         RunState = new PlayerRunState(controller, this);
+
         AttackState = new PlayerAttackState(controller, this);
+        AttackWalkState = new PlayerAttackWalkState(controller, this);
+
+        AimState = new PlayerAimState(controller, this);
+        AimAttackState = new PlayerAimAttackState(controller, this);
+        AimAttackWalkState = new PlayerAimAttackWalkState(controller, this);
+
         ReloadState = new PlayerReloadState(controller, this);
         
         JumpState = new PlayerJumpState(controller, this);
@@ -87,8 +96,9 @@ public class PlayerStateMachine : StateMachine
 
 
         // 처음에는 IdleState시작
-        //currentState = IdleState; 
-        currentState = FallState;         // 처음에 떠있는 상태에서 떨어진다
+        currentState = IdleState;
+
+        //currentState = FallState;         // 처음에 떠있는 상태에서 떨어진다
     }
 }
 
