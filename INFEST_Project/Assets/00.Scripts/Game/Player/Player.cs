@@ -26,6 +26,7 @@ public class Player : NetworkBehaviour
 
     public CharacterController characterController; // collider, rigidbody 등 내장되어있다
     public NetworkCharacterController networkCharacterController;
+    public PlayerAttackedEffectController attackedEffectController;
 
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
@@ -72,7 +73,9 @@ public class Player : NetworkBehaviour
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
         inventory = GetComponent<Inventory>();
+        statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
     }
+
     private void Start()
     {
         stateMachine = new PlayerStateMachine(this, playerController);
