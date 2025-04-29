@@ -56,10 +56,10 @@ public class PlayerWaddleState : PlayerSitState
             return;
         }
         // isSitting && isReloading
-        if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.SitReloadState);
-            return;
-        }
+        //if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+        //{
+        //    stateMachine.ChangeState(stateMachine.SitReloadState);
+        //    return;
+        //}
     }
 }

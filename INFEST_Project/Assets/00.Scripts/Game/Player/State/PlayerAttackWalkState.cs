@@ -11,17 +11,15 @@ public class PlayerAttackWalkState : PlayerGroundState
     public override void Enter()
     {
         base.Enter();
-
-        //StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        //StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
+        player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 
         // »ç°Ý
@@ -34,11 +32,6 @@ public class PlayerAttackWalkState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.IdleState);
         }
-        if (data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.ReloadState);
-        }
 
     }
-
 }
