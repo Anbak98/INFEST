@@ -1734,6 +1734,7 @@ MonoBehaviour:
   _parentTransform: {fileID: 3834324505224384244}
   _xRotation: 0
   _yRotation: 0
+  isMenu: 0
 --- !u!114 &6802146964932237305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2390,6 +2391,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 5984569209288009230}
   _MoveDirection: {x: 0, y: 0, z: 0}
   _lookDelta: {x: 0, y: 0}
+  _look: 0
   _isJumping: 0
   _isReloading: 0
   _isFiring: 0
@@ -3646,10 +3648,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
   gravity: -20
-  jumpImpulse: 8
+  jumpImpulse: 4
   acceleration: 10
   braking: 0
-  maxSpeed: 5
+  maxSpeed: 15
   rotationSpeed: 0
 --- !u!114 &3147526191137004029
 MonoBehaviour:
@@ -3678,7 +3680,7 @@ MonoBehaviour:
     startWeapon1Id: 0
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
-  _MaxHealth: 0
+  _MaxHealth: 100
   _MoveSpeed: 10
   _MoveSpeedModifier: 0
   _RotationDamping: 0
@@ -3723,6 +3725,7 @@ MonoBehaviour:
   statHandler: {fileID: 3147526191137004029}
   characterController: {fileID: 7081860901902442314}
   networkCharacterController: {fileID: 2204635897523245189}
+  attackedEffectController: {fileID: 8335810917877115477}
   cameraHandler: {fileID: 3268070573558879607}
   inStoreZoon: 0
   isInteraction: 0
