@@ -3,7 +3,10 @@ public class Monster_PJ_HI : MonsterNetworkBehaviour
     public override void Render()
     {
         animator.SetFloat("MovementSpeed", MovementSpeed);
-        animator.SetBool("IsAttack", IsAttack);
+        if(IsAttack)
+        {
+            animator.SetTrigger("IsAttack");
+        }
         if (IsDead)
         {
             FSM.ChangePhase<PJ_HI_DeadPhase>();

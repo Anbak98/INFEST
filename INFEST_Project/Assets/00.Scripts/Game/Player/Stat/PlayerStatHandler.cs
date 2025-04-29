@@ -101,6 +101,7 @@ public class PlayerStatHandler : NetworkBehaviour
         // MyDebug.Log($"PlayerStatHandler HandleDeath : {CurrentHealth}"); 
         OnDeath?.Invoke();
     }
+
     // 지속시간 스탯 버프 처리
     public void ApplyTemporaryBuff(
     int? speedDelta = null,

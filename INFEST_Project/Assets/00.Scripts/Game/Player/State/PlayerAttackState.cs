@@ -12,34 +12,29 @@ public class PlayerAttackState : PlayerGroundState
     public override void Enter()
     {
         base.Enter();
-
-        //StartAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
     public override void Exit()
     {
         base.Exit();
-        //StopAnimation(stateMachine.Player.AnimationData.AttackParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
+        player.animationController.MoveDirection = data.direction;
         PlayerMove(data);
 
-        // 사격
         player.animationController.isFiring = data.isFiring;
         PlayerFire(data);
-        //controller.ApplyGravity();  // 중력
 
-        // 이동 입력이 없으면 Idle 상태로
+        if (data.direction != Vector3.zero)
+        {
+            stateMachine.ChangeState(stateMachine.AttackWalkState);
+        }
         if (!data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
-            return;
         }
-        if (data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.ReloadState);
-        }
-
     }
 }
