@@ -195,6 +195,7 @@ public class Weapon : NetworkBehaviour
     /// </summary>
     public void Fire(bool holdingPressed)
     {
+        Debug.Log("holdingPressed: " + holdingPressed);
         if (!IsCollected) return;
         if (!holdingPressed && !instance.data.IsAutpmatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;

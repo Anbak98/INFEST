@@ -26,8 +26,7 @@ public class PlayerAttackState : PlayerGroundState
         //PlayerMove(data);
 
         player.animationController.isFiring = data.isFiring;
-        if (data.isFiring)
-            PlayerFire(data);
+        PlayerFire(data);
 
         if (data.direction != Vector3.zero)
         {
