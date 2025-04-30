@@ -30,6 +30,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         ReconnectionWithSwitchingSharedToHost();
     }
+
     async void StartGame(GameMode mode)
     {
         // Create the Fusion runner and let it know that we will be providing user input
@@ -63,6 +64,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
         }
     }
+
     private void OnGUI()
     {
         if (_runner == null)
@@ -134,12 +136,31 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             var runnerGO = new GameObject("Runner (Host)");
             var newRunner = runnerGO.AddComponent<NetworkRunner>();
 
+            _runner = newRunner;
+            _runner.ProvideInput = true;
+
+            // Create the NetworkSceneInfo from the current scene
+            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+            var sceneInfo = new NetworkSceneInfo();
+
+            if (scene.IsValid)
+            {
+                sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+            }
+
             await newRunner.StartGame(new StartGameArgs
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = PlayerPrefs.GetString("RoomCode"),
-                IsVisible = false
+                IsVisible = false,
+                Scene = scene,
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
+
+            if (_runner.IsServer)
+            {
+                _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+            }
 
             newRunner.AddCallbacks(this);
         }

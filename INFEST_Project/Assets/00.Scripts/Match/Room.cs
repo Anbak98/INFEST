@@ -46,6 +46,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             Debug.Log($"[Room] Host reassigned to {player}");
         }
 
+        MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -71,6 +72,8 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
                 Debug.Log($"[Room] No players left, host cleared.");
             }
         }
+
+        MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

@@ -62,7 +62,8 @@ public class PlayerStateMachine : StateMachine
     public PlayerSitIdleState SitIdleState { get; private set; }
     public PlayerSitAttackState SitAttackState { get; private set; }
     public PlayerWaddleState WaddleState { get; private set; }
-    
+    public PlayerDeadState DeadState { get; private set; }
+
 
     public PlayerStateMachine(Player player, PlayerController controller)
     {
@@ -92,6 +93,7 @@ public class PlayerStateMachine : StateMachine
         SitIdleState = new PlayerSitIdleState(controller, this);
         WaddleState = new PlayerWaddleState(controller, this);
         SitAttackState = new PlayerSitAttackState(controller, this);
+        DeadState = new PlayerDeadState(controller, this);
         //SitReloadState = new PlayerSitReloadState(controller, this);
 
 

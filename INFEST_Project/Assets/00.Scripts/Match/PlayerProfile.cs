@@ -33,6 +33,9 @@ public class PlayerProfile : NetworkBehaviour
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         Debug.Log($"[Room] Player left: {Runner.TryGetNetworkedBehaviourId(this)}");
+        var Room = FindObjectOfType<Room>();
+        if ( Room != null )
+            Room.RPC_RemoveProfileToAll(this);
         base.Despawned(runner, hasState);
     }
 
