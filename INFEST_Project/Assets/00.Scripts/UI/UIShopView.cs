@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Fusion;
 using TMPro;
@@ -39,6 +38,9 @@ public class UIShopView : UIScreen
     [Header("BuyItme")]
     public TextMeshProUGUI[] weaponNames;
     public TextMeshProUGUI[] ItmePrice;
+    public Image[] itmeNameBG;
+    public Image[] itmePriceBG;
+
 
     [Header("Button")]
     public List<Button> buyButton;                      // 구매 버튼
@@ -88,10 +90,10 @@ public class UIShopView : UIScreen
         //main2CurBullet = _mainWeaponInfo2.MagazineBullet;
         //consumeItem = _itemInfo.MaxNum;
 
-        ChoiceJob();
-        SetJobIcon();
+        //ChoiceJob();
+        //SetJobIcon();
         //DefSet();
-        UpdateJobIcon();
+        //UpdateJobIcon();
     }
 
     protected override void Start()
@@ -386,49 +388,73 @@ public class UIShopView : UIScreen
         var _inv = Player.local.inventory;
         for (int i = 0; i < buyButton.Count; i++)
         {
+
+            if (Player.local == null || Player.local.inventory == null || _store == null || i >= _store.idList.Count)
+                return;
+
+            int weaponPrice = DataManager.Instance.GetByKey<WeaponInfo>(_store.idList[i])?.Price ?? 0;
+            int consumePrice = DataManager.Instance.GetByKey<ConsumeItem>(_store.idList[i])?.Price ?? 0;
+
+            int _itemKey = _store.idList[i] % 10000;
+            #region 체크용 bool 값
+            bool auxiliaryWeaponChk = _itemKey < 200;
+            bool weaponChk = _itemKey < 700 && _itemKey > 200;
+            bool throwingWeapon = _itemKey < 800 && _itemKey > 700;
+            bool recoveryItem = _itemKey < 900 && _itemKey > 800;
+            bool shieldItme = _itemKey < 1000 && _itemKey > 900;
+            #endregion
+
+            Color32 color = Color.white;
+
+            if (auxiliaryWeaponChk)
             {
-                if (Player.local == null || Player.local.inventory == null || _store == null || i >= _store.idList.Count)
-                    return;
-
-                int weaponPrice = DataManager.Instance.GetByKey<WeaponInfo>(_store.idList[i])?.Price ?? 0;
-                int consumePrice = DataManager.Instance.GetByKey<ConsumeItem>(_store.idList[i])?.Price ?? 0;
-
-                int _itemKey = _store.idList[i] % 10000;
-                #region 체크용 bool 값
-                bool auxiliaryWeaponChk = _itemKey < 200;
-                bool weaponChk = _itemKey < 700 && _itemKey > 200;
-                bool throwingWeapon = _itemKey < 800 && _itemKey > 700;
-                bool recoveryItem = _itemKey < 900 && _itemKey > 800;
-                bool shieldItme = _itemKey < 1000 && _itemKey > 900;
-                #endregion
-
-                if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.characterInfoInstance.curGold < weaponPrice))
-                    buyButton[i].interactable = false;
-
-                else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.curGold < weaponPrice)
-                    buyButton[i].interactable = false;
-
-                else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
-                {
-                    if (_inv.consume[0]?.data.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.data.MaxNum)
-                        buyButton[i].interactable = false;
-                }
-
-                else if ((recoveryItem && _inv.consume[1] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
-                {
-                    if (_inv.consume[1]?.data.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.data.MaxNum)
-                        buyButton[i].interactable = false;
-                }
-
-                else if ((shieldItme && _inv.consume[2] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
-                {
-                    if (_inv.consume[2]?.data.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.data.MaxNum)
-                        buyButton[i].interactable = false;
-                }
-
-                else
-                    buyButton[i].interactable = true;
+                color = new Color32(209, 219, 189, 255);
             }
+            else if (weaponChk)
+            {
+                color = new Color32(145, 170, 157, 255);
+            }
+            else if (throwingWeapon)
+            {
+                color = new Color32(103, 151, 157, 255);
+            }
+            else if (recoveryItem || shieldItme)
+            {
+                color = new Color32(103, 129, 156, 255);
+            }
+            itmeNameBG[i].color = color;
+            itmePriceBG[i].color = color;
+
+
+            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.characterInfoInstance.curGold < weaponPrice))
+                buyButton[i].interactable = false;
+
+            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.curGold < weaponPrice)
+                buyButton[i].interactable = false;
+
+            else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
+            {
+                if (_inv.consume[0]?.data.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.data.MaxNum)
+                    buyButton[i].interactable = false;
+            }
+
+            else if ((recoveryItem && _inv.consume[1] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
+            {
+                if (_inv.consume[1]?.data.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.data.MaxNum)
+                    buyButton[i].interactable = false;
+            }
+
+            else if ((shieldItme && _inv.consume[2] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
+            {
+                if (_inv.consume[2]?.data.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.data.MaxNum)
+                    buyButton[i].interactable = false;
+            }
+
+            else
+            {
+                buyButton[i].interactable = true;
+            }
+
 
             if (buyButton[i].interactable)
             {
@@ -438,6 +464,8 @@ public class UIShopView : UIScreen
             {
                 buyButtonText[i].color = Color.red;   // 비활성화 시 빨간색
             }
+
+
         }
         GoldSet();
         DefSet();
@@ -452,14 +480,14 @@ public class UIShopView : UIScreen
 
         if (index < 3)
         {
-            if(weaponInv[index] != null)
+            if (weaponInv[index] != null)
                 saleButtonText[index].text = $"판매\n{weaponInv[index].instance.data.Price / 2}G";
             else
                 saleButtonText[index].text = $"판매\n - G";
         }
         else if (index > 2)
         {
-            if(ItemInv[index - 3] != null)
+            if (ItemInv[index - 3] != null)
                 saleButtonText[index].text = $"판매\n{ItemInv[index - 3].data.Price / 2}G";
             else
                 saleButtonText[index].text = $"판매\n - G";
@@ -473,7 +501,7 @@ public class UIShopView : UIScreen
             WeaponSet(i);
             ItemSet(i);
             SaleSet(i);
-            SaleSet(i+3);
+            SaleSet(i + 3);
         }
     }
 }
