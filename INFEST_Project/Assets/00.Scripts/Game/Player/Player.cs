@@ -135,10 +135,10 @@ public class Player : NetworkBehaviour
             GUILayout.Label(playerController.stateMachine.currentState.ToString());
             GUILayout.Label(DEBUG_DATA.ToString());
             //
-            //GUILayout.Label("PlayerController position: " + playerController.transform.position.ToString());
-            //GUILayout.Label("PlayerController rotation: " + playerController.transform.rotation.ToString());
-            //GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-            //GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+            GUILayout.Label("PlayerController position: " + playerController.transform.position.ToString());
+            GUILayout.Label("PlayerController rotation: " + playerController.transform.rotation.ToString());
+            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
             //
             GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
             //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
