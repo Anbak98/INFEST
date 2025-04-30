@@ -26,6 +26,7 @@ public class PlayerGroundState : PlayerBaseState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
+
         player.animationController.lookDelta = data.lookDelta;
         //player.animationController.look= data.look;
 
