@@ -43,6 +43,5 @@ public class PlayerAttackState : PlayerGroundState
 
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-
     }
 }

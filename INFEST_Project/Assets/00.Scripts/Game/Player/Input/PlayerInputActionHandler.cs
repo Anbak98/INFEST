@@ -296,13 +296,13 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Sit
     private void StartSitState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] StartSitState - Sitting Started");
+        //Debug.Log($"[Input] StartSitState - Sitting Started");
         _isSitting = true;
     }
 
     private void CancelSitState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] CancelSitState - Sitting Canceled");
+        //Debug.Log($"[Input] CancelSitState - Sitting Canceled");
         _isSitting = false;
     }
     public bool GetIsSitting() => _isSitting;
