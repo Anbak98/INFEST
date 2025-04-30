@@ -73,7 +73,7 @@ public class Player : NetworkBehaviour
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
         inventory = GetComponent<Inventory>();
-        statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
+        //statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
         statHandler.OnDeath += OnDeath;
     }
 
@@ -107,6 +107,7 @@ public class Player : NetworkBehaviour
                     else store.RPC_RequestStopInteraction(Object.InputAuthority);
 
                     isInteraction = !isInteraction;
+
                 }
 
                 if (data.scrollValue.y != 0)
