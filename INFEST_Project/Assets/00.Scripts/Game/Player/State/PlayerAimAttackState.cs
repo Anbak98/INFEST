@@ -24,7 +24,6 @@ public class PlayerAimAttackState : PlayerGroundState
         //PlayerMove(data);
 
         player.animationController.isFiring = data.isFiring;
-        //if (data.isFiring)
         PlayerFire(data);
 
         // AimAttack 상태에서는 Aim, Attack, AimAttackWalk, 
