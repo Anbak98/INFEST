@@ -25,8 +25,7 @@ public class PlayerAttackWalkState : PlayerGroundState
         PlayerMove(data);
 
         player.animationController.isFiring = data.isFiring;
-        if (data.isFiring)
-            PlayerFire(data);
+        PlayerFire(data);
 
         // 이동 입력이 없으면 Attack 상태로
         if (data.direction == Vector3.zero)

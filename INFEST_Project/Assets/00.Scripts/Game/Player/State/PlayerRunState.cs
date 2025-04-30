@@ -42,5 +42,12 @@ public class PlayerRunState : PlayerGroundState
             stateMachine.ChangeState(stateMachine.MoveState);
             return;
         }
+        if ((controller.IsGrounded()) && data.isJumping)
+        {
+            player.animationController.MoveDirection = data.direction;
+
+            stateMachine.ChangeState(stateMachine.JumpState);
+        }
+
     }
 }
