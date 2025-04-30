@@ -114,13 +114,13 @@ public class StandradSpawner : MonoBehaviour, INetworkRunnerCallbacks
             // Keep track of the player avatars for easy access
 
             _spawnedCharacters.Add(player, networkPlayerObject);
-                       
-            CharacterInfo info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
+
             CharacterInfoData infoData = new CharacterInfoData
             {
-                nickname = info.Name
+                nickname = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId).Name
             };
-            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData);
+
+            ScoreboardManager.Instance.OnPlayerJoined(player, infoData);
 
             //Global.Instance.NetworkRunner = runner;
         }

@@ -64,5 +64,5 @@ public class PlayerProfile : NetworkBehaviour
     public void RPC_SetInfo(Profile profile)
     {
         Info = profile;
-    }
+    }    
 }

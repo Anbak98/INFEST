@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -95,12 +96,12 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 monsterSpawner.SpawnMonsterOnWave();
             }
 
-            CharacterInfo info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
             CharacterInfoData infoData = new CharacterInfoData
             {
-                nickname = info.Name
+                nickname = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId).Name
             };
-            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData);
+
+            ScoreboardManager.Instance.OnPlayerJoined(player, infoData);
         }
     }
 
