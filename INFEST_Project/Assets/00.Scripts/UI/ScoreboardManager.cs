@@ -59,7 +59,7 @@ public class ScoreboardManager : NetworkBehaviour
     }
 
     // 새로 들어온 클라이언트에게 기존 플레이어 정보를 알려 줌
-    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_AddExistingPlayerRow(PlayerRef target, PlayerRef player, CharacterInfoData info, PlayerScoreData score)
     {
         scoreboardView.AddPlayerRow(player, info);
