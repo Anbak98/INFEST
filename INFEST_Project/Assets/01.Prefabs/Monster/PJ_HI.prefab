@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   states:
   - {fileID: 2076936536513076566}
+  currentState: {fileID: 0}
 --- !u!1 &151529199559607564
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,6 +577,7 @@ MonoBehaviour:
   states:
   - {fileID: 8997006691826139486}
   - {fileID: 3886321037832447252}
+  currentState: {fileID: 0}
 --- !u!1 &1741154042307800759
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,6 +766,7 @@ MonoBehaviour:
   states:
   - {fileID: 3448436483225655571}
   - {fileID: 2871920451668100158}
+  currentState: {fileID: 0}
 --- !u!1 &2274032164515893443
 GameObject:
   m_ObjectHideFlags: 0
@@ -2526,6 +2529,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ad65013fd82c043ba7d630c1530baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info:
+    key: 0
+    Name: 
+    MonsterType: 0
+    MinHealth: 0
+    MaxHealth: 0
+    HealthPer5Min: 0
+    MinAtk: 0
+    MaxAtk: 0
+    AtkPer5Min: 0
+    MinDef: 0
+    MaxDef: 0
+    DefPer5Min: 0
+    SpeedMove: 0
+    SpeedAtk: 0
+    DetectAreaNormal: 0
+    DetectAreaWave: 0
+    State: 0
+    DropGold: 0
+    FieldSpawn: 0
+    LimitSpawnCount: 0
+  key: 1001
   _CurrentHealth: 100
   _MovementSpeed: 0
   _IsAttack:
@@ -2535,6 +2560,7 @@ MonoBehaviour:
   FSM: {fileID: 5334992375036982847}
   AIPathing: {fileID: 8541060984460718935}
   target: {fileID: 0}
+  targetStatHandler: {fileID: 0}
   animator: {fileID: 6900176941767614314}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
@@ -2898,6 +2924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0fd245aca0fd1a499e0337068f836dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obj: {fileID: 7006171198609829961}
 --- !u!1 &7915722613485771992
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 public class Monster_PJ_HI : MonsterNetworkBehaviour
-{
+{    
     public override void Render()
     {
         animator.SetFloat("MovementSpeed", MovementSpeed);

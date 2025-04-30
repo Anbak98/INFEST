@@ -4,6 +4,7 @@ using UnityEngine;
 public class PJ_HI_Dead : MonsterStateNetworkBehaviour
 {
     public TickTimer _tickTimer;
+    public NetworkObject obj;
 
     public override void Enter()
     {
@@ -20,8 +21,7 @@ public class PJ_HI_Dead : MonsterStateNetworkBehaviour
         {
             if(HasStateAuthority)
             {
-                NetworkObject networkObject = gameObject.AddComponent<NetworkObject>();
-                Runner.Despawn(networkObject);
+                Runner.Despawn(obj);
             }
         }
     }

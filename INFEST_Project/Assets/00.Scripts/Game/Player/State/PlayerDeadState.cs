@@ -13,6 +13,8 @@ public class PlayerDeadState : PlayerGroundState
     public override void Enter()
     {
         player.animationController.Die = true;
+        player.stateMachine.IsDead = true;
+        Debug.Log("????");
     }
 
     public override void Exit()

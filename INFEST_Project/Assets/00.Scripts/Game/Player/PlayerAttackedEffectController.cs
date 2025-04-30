@@ -43,26 +43,29 @@ public class PlayerAttackedEffectController : MonoBehaviour
 
     private IEnumerator ShowUIEffectAttacked()
     {
-        _uiAttackEffect.SetActive(true);
-
-        // 페이드 아웃 시작
-        CanvasGroup canvasGroup = _uiAttackEffect.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
+        if (!_uiAttackEffect.activeSelf)
         {
-            canvasGroup = _uiAttackEffect.AddComponent<CanvasGroup>();
+            _uiAttackEffect.SetActive(true);
+
+            // 페이드 아웃 시작
+            CanvasGroup canvasGroup = _uiAttackEffect.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = _uiAttackEffect.AddComponent<CanvasGroup>();
+            }
+
+            canvasGroup.alpha = 1.0f;
+
+            float elapsed = 0f;
+            while (elapsed < _fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0f, elapsed / _fadeDuration);
+                yield return null;
+            }
+
+            canvasGroup.alpha = 0f;
+            _uiAttackEffect.SetActive(false);
         }
-
-        canvasGroup.alpha = 1.0f;
-
-        float elapsed = 0f;
-        while (elapsed < _fadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0f, elapsed / _fadeDuration);
-            yield return null;
-        }
-
-        canvasGroup.alpha = 0f;
-        _uiAttackEffect.SetActive(false);
     }
 }
