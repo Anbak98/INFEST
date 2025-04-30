@@ -4,7 +4,9 @@ using UnityEngine.UI;
 public class UIMenuView : UIScreen
 {
     public Button setBtn;
-    public Button backBtn;        
+    public Button backBtn;
+
+    public InputManager inputManager;
 
     public override void Awake()
     {
@@ -15,15 +17,17 @@ public class UIMenuView : UIScreen
     public override void Show()
     {
         base.Show();
-        PlayerCameraHandler playerCameraHandler = FindObjectOfType<PlayerCameraHandler>();
-        playerCameraHandler.LockCamera(true);        
+        inputManager.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public override void Hide()
     {
         base.Hide();
-        PlayerCameraHandler playerCameraHandler = FindObjectOfType<PlayerCameraHandler>();
-        playerCameraHandler.LockCamera(false);
+        inputManager.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void OnClickSetBtn()

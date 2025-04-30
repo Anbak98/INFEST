@@ -40,7 +40,10 @@ public class InputManager : MonoBehaviour
     /// 
     /// </summary>
     public PlayerActionMap PlayerAction { get; private set; }
+
+    public PlayerActionMap PlayerMoveAction { get; private set; }
     public PlayerActionMap.PlayerActions playerActions { get; private set; }
+    public PlayerActionMap.PlayerActions playerMoveActions { get; private set; }
     // PlayerAction.Player.Move.performed += 이벤트함수
     // 무엇이 있는지는 PlayerActionMap을 참고
 
@@ -48,25 +51,30 @@ public class InputManager : MonoBehaviour
     {
         /// 이런 연결 방식은 심화강의 1-11 참고
         PlayerAction = new PlayerActionMap();
-        playerActions = PlayerAction.Player;        
+        playerActions = PlayerAction.Player;
+
+        PlayerMoveAction = new PlayerActionMap();
+        playerMoveActions = PlayerMoveAction.Player;
     }
 
     private void OnEnable()
     {
         PlayerAction?.Enable();
+        PlayerMoveAction?.Enable();
     }
 
     private void OnDisable()
     {
         PlayerAction?.Disable();
+        PlayerMoveAction.Disable();
     }
 
     public void SetActive(bool active)
     {
         if (active)
-            PlayerAction?.Enable();
+            PlayerMoveAction?.Enable();
         else
-            PlayerAction?.Disable();
+            PlayerMoveAction?.Disable();
     }
     /// <summary>    
     /// PlayerController에서 호출하여 해당 InputAction에 맞는 이벤트를 추가한다
@@ -76,20 +84,28 @@ public class InputManager : MonoBehaviour
     public InputAction GetInput(EPlayerInput input)
     {
         return input switch
-        {
-            EPlayerInput.move => PlayerAction.Player.Move,
-            EPlayerInput.look => PlayerAction.Player.Look,
-            EPlayerInput.jump => PlayerAction.Player.Jump,
-            EPlayerInput.fire => PlayerAction.Player.Fire,
-            EPlayerInput.zoom => PlayerAction.Player.Zoom,
-            EPlayerInput.reload => PlayerAction.Player.Reload,
+        {           
             EPlayerInput.interaction => PlayerAction.Player.Interaction,
-            EPlayerInput.useItem => PlayerAction.Player.UseItem,
-            EPlayerInput.run => PlayerAction.Player.Run,
-            EPlayerInput.sit => PlayerAction.Player.Sit,
-            EPlayerInput.scoreboard => PlayerAction.Player.ScoreBoard,
-            EPlayerInput.swap => PlayerAction.Player.Swap,
+            EPlayerInput.useItem => PlayerAction.Player.UseItem,           
+            EPlayerInput.scoreboard => PlayerAction.Player.ScoreBoard,            
             EPlayerInput.menu => PlayerAction.Player.Menu,
+            _ => null
+        };
+    }
+
+    public InputAction MoveGetInput(EPlayerInput input)
+    {
+        return input switch
+        {
+            EPlayerInput.move => PlayerMoveAction.Player.Move,
+            EPlayerInput.look => PlayerMoveAction.Player.Look,
+            EPlayerInput.jump => PlayerMoveAction.Player.Jump,
+            EPlayerInput.fire => PlayerMoveAction.Player.Fire,
+            EPlayerInput.zoom => PlayerMoveAction.Player.Zoom,
+            EPlayerInput.reload => PlayerMoveAction.Player.Reload,
+            EPlayerInput.run => PlayerMoveAction.Player.Run,
+            EPlayerInput.sit => PlayerMoveAction.Player.Sit,
+            EPlayerInput.swap => PlayerMoveAction.Player.Swap,
             _ => null
         };
     }

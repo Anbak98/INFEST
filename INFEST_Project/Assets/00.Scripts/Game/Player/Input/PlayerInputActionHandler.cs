@@ -62,30 +62,30 @@ public class PlayerInputActionHandler : MonoBehaviour
         /// performed: 키가 눌렸을 때 호출된다
         /// canceled: 키가 뗴졌을 때 호출
         //inputManager.GetInput(EPlayerInput.move).started += SetMoveInput;
-        _inputManager.GetInput(EPlayerInput.move).performed += SetMoveInput; // 여러 방향키 동시입력을 위해 추가
-        _inputManager.GetInput(EPlayerInput.move).canceled += SetMoveInput;
+        _inputManager.MoveGetInput(EPlayerInput.move).performed += SetMoveInput; // 여러 방향키 동시입력을 위해 추가
+        _inputManager.MoveGetInput(EPlayerInput.move).canceled += SetMoveInput;
 
-        _inputManager.GetInput(EPlayerInput.look).started += SetLookInput;
-        _inputManager.GetInput(EPlayerInput.look).canceled += SetLookInput;
+        _inputManager.MoveGetInput(EPlayerInput.look).started += SetLookInput;
+        _inputManager.MoveGetInput(EPlayerInput.look).canceled += SetLookInput;
 
-        _inputManager.GetInput(EPlayerInput.swap).performed += SetSwapInput;
-        _inputManager.GetInput(EPlayerInput.swap).canceled += SetSwapInput;
+        _inputManager.MoveGetInput(EPlayerInput.swap).performed += SetSwapInput;
+        _inputManager.MoveGetInput(EPlayerInput.swap).canceled += SetSwapInput;
 
 
         /// started, performed // canceled 에는 bool값을 반대로 바꾸는 메서드가 들어가야한다
         /// 
         //inputManager.GetInput(EPlayerInput.jump).started += StartJumpInput;
-        _inputManager.GetInput(EPlayerInput.jump).performed += StartJumpInput;
-        _inputManager.GetInput(EPlayerInput.jump).canceled += CancelJumpInput;
+        _inputManager.MoveGetInput(EPlayerInput.jump).performed += StartJumpInput;
+        _inputManager.MoveGetInput(EPlayerInput.jump).canceled += CancelJumpInput;
 
-        _inputManager.GetInput(EPlayerInput.fire).started += StartFireState;
-        _inputManager.GetInput(EPlayerInput.fire).canceled += CancelFireState;
+        _inputManager.MoveGetInput(EPlayerInput.fire).started += StartFireState;
+        _inputManager.MoveGetInput(EPlayerInput.fire).canceled += CancelFireState;
 
-        _inputManager.GetInput(EPlayerInput.zoom).started += StartZoomState;
-        _inputManager.GetInput(EPlayerInput.zoom).canceled += CancelZoomState;
+        _inputManager.MoveGetInput(EPlayerInput.zoom).started += StartZoomState;
+        _inputManager.MoveGetInput(EPlayerInput.zoom).canceled += CancelZoomState;
 
-        _inputManager.GetInput(EPlayerInput.reload).started += StartReloadState;
-        _inputManager.GetInput(EPlayerInput.reload).canceled += CancelReloadState;
+        _inputManager.MoveGetInput(EPlayerInput.reload).started += StartReloadState;
+        _inputManager.MoveGetInput(EPlayerInput.reload).canceled += CancelReloadState;
 
         _inputManager.GetInput(EPlayerInput.interaction).started += StartInteraction;
         _inputManager.GetInput(EPlayerInput.interaction).canceled += CancelInteraction;
@@ -93,11 +93,11 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.useItem).started += StartUseItem;
         _inputManager.GetInput(EPlayerInput.useItem).canceled += CancelUseItem;
 
-        _inputManager.GetInput(EPlayerInput.run).started += StartRunState;
-        _inputManager.GetInput(EPlayerInput.run).canceled += CancelRunState;
+        _inputManager.MoveGetInput(EPlayerInput.run).started += StartRunState;
+        _inputManager.MoveGetInput(EPlayerInput.run).canceled += CancelRunState;
 
-        _inputManager.GetInput(EPlayerInput.sit).started += StartSitState;
-        _inputManager.GetInput(EPlayerInput.sit).canceled += CancelSitState;
+        _inputManager.MoveGetInput(EPlayerInput.sit).started += StartSitState;
+        _inputManager.MoveGetInput(EPlayerInput.sit).canceled += CancelSitState;
 
         _inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
         _inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
@@ -108,27 +108,27 @@ public class PlayerInputActionHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        _inputManager.GetInput(EPlayerInput.move).started -= SetMoveInput;
-        _inputManager.GetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
-        _inputManager.GetInput(EPlayerInput.move).canceled -= SetMoveInput;
+        _inputManager.MoveGetInput(EPlayerInput.move).started -= SetMoveInput;
+        _inputManager.MoveGetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
+        _inputManager.MoveGetInput(EPlayerInput.move).canceled -= SetMoveInput;
 
-        _inputManager.GetInput(EPlayerInput.look).started -= SetLookInput;
-        _inputManager.GetInput(EPlayerInput.look).canceled -= SetLookInput;
+        _inputManager.MoveGetInput(EPlayerInput.look).started -= SetLookInput;
+        _inputManager.MoveGetInput(EPlayerInput.look).canceled -= SetLookInput;
 
-        _inputManager.GetInput(EPlayerInput.swap).performed -= SetSwapInput;
-        _inputManager.GetInput(EPlayerInput.swap).canceled -= SetSwapInput;
+        _inputManager.MoveGetInput(EPlayerInput.swap).performed -= SetSwapInput;
+        _inputManager.MoveGetInput(EPlayerInput.swap).canceled -= SetSwapInput;
 
-        _inputManager.GetInput(EPlayerInput.jump).started -= StartJumpInput;
-        _inputManager.GetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
+        _inputManager.MoveGetInput(EPlayerInput.jump).started -= StartJumpInput;
+        _inputManager.MoveGetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
 
-        _inputManager.GetInput(EPlayerInput.fire).started -= StartFireState;
-        _inputManager.GetInput(EPlayerInput.fire).canceled -= CancelFireState;
+        _inputManager.MoveGetInput(EPlayerInput.fire).started -= StartFireState;
+        _inputManager.MoveGetInput(EPlayerInput.fire).canceled -= CancelFireState;
 
-        _inputManager.GetInput(EPlayerInput.zoom).started -= StartZoomState;
-        _inputManager.GetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
+        _inputManager.MoveGetInput(EPlayerInput.zoom).started -= StartZoomState;
+        _inputManager.MoveGetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
 
-        _inputManager.GetInput(EPlayerInput.reload).started -= StartReloadState;
-        _inputManager.GetInput(EPlayerInput.reload).canceled -= CancelReloadState;
+        _inputManager.MoveGetInput(EPlayerInput.reload).started -= StartReloadState;
+        _inputManager.MoveGetInput(EPlayerInput.reload).canceled -= CancelReloadState;
 
         _inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
         _inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
@@ -136,11 +136,11 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.useItem).started -= StartUseItem;
         _inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelUseItem;
 
-        _inputManager.GetInput(EPlayerInput.run).started -= StartRunState;
-        _inputManager.GetInput(EPlayerInput.run).canceled -= CancelRunState;
+        _inputManager.MoveGetInput(EPlayerInput.run).started -= StartRunState;
+        _inputManager.MoveGetInput(EPlayerInput.run).canceled -= CancelRunState;
 
-        _inputManager.GetInput(EPlayerInput.sit).started -= StartSitState;
-        _inputManager.GetInput(EPlayerInput.sit).canceled -= CancelSitState;
+        _inputManager.MoveGetInput(EPlayerInput.sit).started -= StartSitState;
+        _inputManager.MoveGetInput(EPlayerInput.sit).canceled -= CancelSitState;
 
         _inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
         _inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
@@ -323,9 +323,9 @@ public class PlayerInputActionHandler : MonoBehaviour
     #endregion
     #region Menu
     private void OpenMenu(InputAction.CallbackContext context)
-    {        
+    {
         if (!_isMenuPopup)
-        {   
+        {
             _UIController.Show<UIMenuView>();
             _isMenuPopup = true;
         }
