@@ -134,6 +134,7 @@ public class PlayerController : BaseController
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
+                //data.isShotgunOnFiring = true;
                 weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
                 //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
