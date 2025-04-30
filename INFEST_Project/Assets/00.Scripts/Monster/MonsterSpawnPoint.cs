@@ -20,7 +20,7 @@ public class MonsterSpawnPoint : NetworkBehaviour
         {
             for (int i = 0; i < num; i++)
             {
-                Runner.Spawn(Monster, transform.position);
+                //Runner.Spawn(Monster, transform.position);
             }
         }
     }
