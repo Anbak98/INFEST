@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using TMPro;
@@ -368,13 +369,56 @@ public class UIShopView : UIScreen
     public void OnClickBuyBtn(int index)
     {
         _store.RPC_RequestTryBuy(Player.local, Player.local.Runner.LocalPlayer, index);
+
+
     }
 
     public void OnClickSaleBtn(int index)
     {
         _store.RPC_RequestTrySale(Player.local, Player.local.Runner.LocalPlayer, index);
+
     }
 
+    public void UpdateSaleButtonState()
+    {
+        if (HasOnlyOneNonNullInAllArrays())
+        {
+            for (int i = 0; i < saleButton.Count; i++)
+            {
+                saleButton[i].interactable = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < saleButton.Count; i++)
+            {
+                saleButton[i].interactable = true;
+
+            }
+        }
+    }
+
+    public bool HasOnlyOneNonNullInAllArrays()
+    {
+        int count = 0;
+
+        foreach (var weapon in Player.local.inventory.weapon)
+        {
+            if (weapon != null) count++;
+        }
+
+        foreach (var weapon in Player.local.inventory.auxiliaryWeapon)
+        {
+            if (weapon != null) count++;
+        }
+
+        foreach (var itme in Player.local.inventory.consume)
+        {
+            if (itme != null) count++;
+        }
+
+        return count == 1;
+    }
     public void StoreInIt(Store store)
     {
         _store = store;
@@ -507,7 +551,7 @@ public class UIShopView : UIScreen
 
     public void OnClickTypeBtn(int index)
     {
-        int _itemKey; 
+        int _itemKey;
 
         for (int i = 0; i < buyTaps.Length; i++)
         {
@@ -518,7 +562,7 @@ public class UIShopView : UIScreen
         {
 
             case 0:
-                for(int i=0; i< buyTaps.Length; i++)
+                for (int i = 0; i < buyTaps.Length; i++)
                 {
                     buyTaps[i].gameObject.SetActive(true);
                 }

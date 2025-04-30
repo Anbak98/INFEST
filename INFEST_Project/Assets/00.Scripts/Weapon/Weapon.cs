@@ -356,7 +356,8 @@ public class Weapon : NetworkBehaviour
         if (IsReloading) return; // 장전중이면
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동 쿨타임중이면
 
-        FPSWeapon.RPC_OnReload();
+        if(HasStateAuthority)
+            FPSWeapon.RPC_OnReload();
 
         IsReloading = true;
 

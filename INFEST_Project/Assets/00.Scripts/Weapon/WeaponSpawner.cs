@@ -6,8 +6,12 @@ using KINEMATION.KAnimationCore.Runtime.Core;
 using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public struct IKTransforms
@@ -41,20 +45,21 @@ public class WeaponSpawner : NetworkBehaviour
 
         _weapons[_activeWeaponIndex].Reload();
     }
-
-    public void Swap(float value)
+    private float _value = 0;
+    int _removeIndex = -1;
+    bool _saleChk = false;
+    public void Swap(float value, bool Sale = false)
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (value == 0f) return;
-
+        if (_weapons.Count == 1) return;
         float delay = GetActiveWeapon().OnUnEquipped();
-        _switchTimer = TickTimer.CreateFromSeconds(Runner, delay);
         //GetActiveWeapon().gameObject.SetActive(false);
+        _value = value;
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, delay);
+        _saleChk = Sale;
         RPC_OnChangeWeapon(delay);
-        //_activeWeaponIndex += value > 0f ? 1 : -1;
 
-        //if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
-        //if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
         //SetWeaponVisible();
 
         //GetActiveWeapon().gameObject.SetActive(true);
@@ -72,11 +77,34 @@ public class WeaponSpawner : NetworkBehaviour
     private void EquipWeapon_Incremental()
     {
         GetActiveWeapon().gameObject.SetActive(false);
-        _activeWeaponIndex = _activeWeaponIndex + 1 > _weapons.Count - 1 ? 0 : _activeWeaponIndex + 1;
-        GetActiveWeapon().OnEquipped();
-        Invoke(nameof(SetWeaponVisible), 0.1f);
+
+        //Invoke(nameof(Delay), delay);
+        //int _intValue = _value > 0f ? 1 : -1;
+        //_activeWeaponIndex += _activeWeaponIndex + _intValue > _weapons.Count - 1 ? 0 : _activeWeaponIndex + _intValue < 0 ? _weapons.Count - 1 : _intValue;
+        Debug.Log("전 : " + _activeWeaponIndex);
+        _removeIndex = _activeWeaponIndex;
+        _activeWeaponIndex += _value > 0f ? 1 : -1;
+
+        if (_saleChk)
+        {
+            _weapons[_removeIndex].curBullet = _weapons[_removeIndex].instance.data.MaxBullet;
+            _weapons[_removeIndex].curMagazineBullet = _weapons[_removeIndex].instance.data.MagazineBullet;
+            _weapons[_removeIndex].IsCollected = false;
+            _weapons.Remove(_weapons[_removeIndex]);
+        }
+            
+
+        if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
+        if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
+        Debug.Log("후 : "+_activeWeaponIndex);
+        
+        GetActiveWeapon().OnEquipped(); 
         Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+        Invoke(nameof(SetWeaponVisible), 0.1f);
+
+        _saleChk = false;
     }
+
 
     public void Aiming(bool _isAiming)
     {
@@ -190,9 +218,11 @@ public class WeaponSpawner : NetworkBehaviour
         _animator.SetLayerWeight(_tacSprintLayerIndex, Mathf.Clamp01(_smoothGait - 2f));
 
         bool triggerAllowed = GetActiveWeapon().weaponSettings.useSprintTriggerDiscipline;
+        
+            
 
         _animator.SetLayerWeight(_triggerDisciplineLayerIndex,
-            triggerAllowed ? _animator.GetFloat(TAC_SPRINT_WEIGHT) : 0f);
+        triggerAllowed ? _animator.GetFloat(TAC_SPRINT_WEIGHT) : 0f);
 
         _animator.SetLayerWeight(_rightHandLayerIndex, _animator.GetFloat(RIGHT_HAND_WEIGHT));
     }
