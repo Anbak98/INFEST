@@ -369,8 +369,6 @@ public class UIShopView : UIScreen
     public void OnClickBuyBtn(int index)
     {
         _store.RPC_RequestTryBuy(Player.local, Player.local.Runner.LocalPlayer, index);
-
-
     }
 
     public void OnClickSaleBtn(int index)
@@ -447,7 +445,7 @@ public class UIShopView : UIScreen
             bool recoveryItem = _itemKey < 900 && _itemKey > 800;
             bool shieldItme = _itemKey < 1000 && _itemKey > 900;
             #endregion
-
+            bool weaponDuplication = _inv.weapon[0]?.instance.data.key == _store.idList[i] || _inv.weapon[1]?.instance.data.key == _store.idList[i];
             Color32 color = Color.white;
 
             if (auxiliaryWeaponChk)
@@ -473,7 +471,7 @@ public class UIShopView : UIScreen
             if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.characterInfoInstance.curGold < weaponPrice))
                 buyButton[i].interactable = false;
 
-            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.curGold < weaponPrice)
+            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.curGold < weaponPrice || weaponDuplication)
                 buyButton[i].interactable = false;
 
             else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
