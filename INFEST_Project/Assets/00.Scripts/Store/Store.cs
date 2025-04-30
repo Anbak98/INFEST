@@ -428,8 +428,9 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_TryDefSupplement(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        if (Player.local.characterInfoInstance.curDefGear >= 200)
-            return;
+        if (Player.local.characterInfoInstance.curDefGear >= 200) return;
+        if (Player.local.characterInfoInstance.curGold < 500) return;
+
 
         Player.local.characterInfoInstance.curGold -= 500;
         Player.local.characterInfoInstance.curDefGear += 200;
