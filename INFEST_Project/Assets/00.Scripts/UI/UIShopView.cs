@@ -40,7 +40,7 @@ public class UIShopView : UIScreen
     public TextMeshProUGUI[] ItmePrice;
     public Image[] itmeNameBG;
     public Image[] itmePriceBG;
-
+    public GameObject[] buyTaps;
 
     [Header("Button")]
     public List<Button> buyButton;                      // 구매 버튼
@@ -502,6 +502,81 @@ public class UIShopView : UIScreen
             ItemSet(i);
             SaleSet(i);
             SaleSet(i + 3);
+        }
+    }
+
+    public void OnClickTypeBtn(int index)
+    {
+        int _itemKey; 
+
+        for (int i = 0; i < buyTaps.Length; i++)
+        {
+            buyTaps[i].gameObject.SetActive(false);
+        }
+
+        switch (index)
+        {
+
+            case 0:
+                for(int i=0; i< buyTaps.Length; i++)
+                {
+                    buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < buyTaps.Length; i++)
+                {
+                    _itemKey = _store.idList[i] % 10000;
+
+                    if (_itemKey < 200)
+                        buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < buyTaps.Length; i++)
+                {
+                    _itemKey = _store.idList[i] % 10000;
+
+                    if (_itemKey > 200 && _itemKey < 300)
+                        buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < buyTaps.Length; i++)
+                {
+                    _itemKey = _store.idList[i] % 10000;
+
+                    if (_itemKey > 300 && _itemKey < 400)
+                        buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
+            case 4:
+                for (int i = 0; i < buyTaps.Length; i++)
+                {
+                    _itemKey = _store.idList[i] % 10000;
+
+                    if (_itemKey > 400 && _itemKey < 500)
+                        buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
+            case 5:
+                for (int i = 0; i < buyTaps.Length; i++)
+                {
+                    _itemKey = _store.idList[i] % 10000;
+
+                    if (_itemKey > 500 && _itemKey < 700)
+                        buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
+            case 6:
+                for (int i = 0; i < buyTaps.Length; i++)
+                {
+                    _itemKey = _store.idList[i] % 10000;
+
+                    if (_itemKey > 700 && _itemKey < 1000)
+                        buyTaps[i].gameObject.SetActive(true);
+                }
+                break;
         }
     }
 }
