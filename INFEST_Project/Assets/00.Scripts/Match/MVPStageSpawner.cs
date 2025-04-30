@@ -93,13 +93,12 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 monsterSpawner.SpawnMonsterOnWave();
             }
 
-            CharacterInfo info = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId);
             CharacterInfoData infoData = new CharacterInfoData
             {
-                nickname = info.Name
+                nickname = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId).Name
             };
-            var scoreData = new PlayerScoreData();            
-            ScoreboardManager.Instance.RPC_AddPlayerRow(player, infoData, scoreData);
+
+            ScoreboardManager.Instance.OnPlayerJoined(player, infoData);
         }
     }
 

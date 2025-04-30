@@ -32,42 +32,39 @@ public class ScoreboardManager : NetworkBehaviour
         scoreboardView = UIScoreboardView.Instance;
     }
 
-    public void OnPlayerJoined(PlayerRef joinedPlayer, PlayerProfile profile)
+    public void OnPlayerJoined(PlayerRef newPlayer, CharacterInfoData info)
     {
-        if (!Object.HasInputAuthority) return;
+        if (!Runner.IsServer) return;
 
-        var info = new CharacterInfoData
-        {
-            nickname = profile.Info.NickName
-        };
+        PlayerScores.Set(newPlayer, new PlayerScoreData());
+        _playerInfos[newPlayer] = info;
 
-        _playerInfos[joinedPlayer] = info;
-        PlayerScores.Set(joinedPlayer, new PlayerScoreData());
+        RPC_BroadcastAddPlayerRow(newPlayer, info, PlayerScores[newPlayer]);
 
         foreach (var kvp in _playerInfos)
         {
-            RPC_SendPlayerInfoToTarget(joinedPlayer, kvp.Key, kvp.Value, PlayerScores[kvp.Key]);
-        }
+            var existing = kvp.Key;
+            if (existing == newPlayer) continue;
 
-        RPC_AddPlayerRow(joinedPlayer, info, new PlayerScoreData());
+            RPC_AddExistingPlayerRow(newPlayer, existing, kvp.Value, PlayerScores[existing]);
+        }
     }
 
+    // 모든 클라이언트에게 새 플레이어 행 추가
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_SendPlayerInfoToTarget(PlayerRef target, PlayerRef player, CharacterInfoData info, PlayerScoreData score)
+    private void RPC_BroadcastAddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
     {
-        if (!PlayerScores.ContainsKey(player))
-        {
-            PlayerScores.Add(player, score);
-        }
-
-        if (!_playerInfos.ContainsKey(player))
-        {
-            _playerInfos[player] = info;
-        }
-
         scoreboardView.AddPlayerRow(player, info);
         scoreboardView.UpdatePlayerRow(player, score);
     }
+
+    // 새로 들어온 클라이언트에게 기존 플레이어 정보를 알려 줌
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    private void RPC_AddExistingPlayerRow(PlayerRef target, PlayerRef player, CharacterInfoData info, PlayerScoreData score)
+    {
+        scoreboardView.AddPlayerRow(player, info);
+        scoreboardView.UpdatePlayerRow(player, score);
+    }    
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddKill(PlayerRef player)
@@ -108,22 +105,22 @@ public class ScoreboardManager : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_AddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
-    {
-        if (!PlayerScores.ContainsKey(player))
-        {
-            PlayerScores.Add(player, score);
-        }
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    //public void RPC_AddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
+    //{
+    //    if (!PlayerScores.ContainsKey(player))
+    //    {
+    //        PlayerScores.Add(player, score);
+    //    }
 
-        if (!_playerInfos.ContainsKey(player))
-        {
-            _playerInfos[player] = info;
-        }
+    //    if (!_playerInfos.ContainsKey(player))
+    //    {
+    //        _playerInfos[player] = info;
+    //    }
 
-        scoreboardView.AddPlayerRow(player, info);
-        scoreboardView.UpdatePlayerRow(player, score);
-    }
+    //    scoreboardView.AddPlayerRow(player, info);
+    //    scoreboardView.UpdatePlayerRow(player, score);
+    //}
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_RemovePlayerRow(PlayerRef player)
@@ -139,5 +136,5 @@ public class ScoreboardManager : NetworkBehaviour
         }
 
         scoreboardView.RemovePlayerRow(player);
-    }    
+    }
 }
