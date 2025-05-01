@@ -4,6 +4,7 @@ using Fusion.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -15,6 +16,8 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     [SerializeField] private NetworkPrefabRef _monsterSpawnerPrefab;
     [SerializeField] private NetworkPrefabRef _scoreboardManagerPrefab;
+    [SerializeField] private NetworkPrefabRef _storePrefab;
+    [SerializeField] private NetworkPrefabRef _fieldMonsterSpawnPrefab;
 
     [Header("InputActionHandler for OnInput")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
@@ -22,10 +25,21 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [Header("Spawn Point")]
     [SerializeField] private Transform _playerSpawnPoint;
 
+    [Header("Loding UI")]
+    [SerializeField] private GameObject _loadingUI;
+    [SerializeField] private TMP_Text _loadingTextUI;
+
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     private NetworkRunner _runner;
     private NetworkObject _scoreboardManagerObject;
+
+    [HideInInspector] public MonsterSpawner monsterSpawner;
+
+    public void SpawnMonster()
+    {
+        monsterSpawner.SpawnMonsterOnWave();
+    }
 
     public void Start()
     {
@@ -92,9 +106,16 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Add(player, networkPlayerObject);
             if (runner.LocalPlayer == player)
             {
-                MonsterSpawner monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, new Vector3(-20,10,0)).GetComponent<MonsterSpawner>();
-                monsterSpawner.SpawnMonsterOnWave();
+                monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
+                //monsterSpawner.SpawnMonsterOnWave();
+
+                runner.Spawn(_storePrefab, Vector3.zero);
+
+                runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
+                
             }
+
+
 
             CharacterInfoData infoData = new CharacterInfoData
             {
@@ -103,6 +124,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
             ScoreboardManager.Instance.OnPlayerJoined(player, infoData);
         }
+        _loadingUI.SetActive(false);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -129,41 +151,61 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private async void ReconnectionWithSwitchingSharedToHost()
     {
         _runner = FindAnyObjectByType<NetworkRunner>();
+        _loadingUI.SetActive(true);
+        StartGameResult result;
+        int retryCount = 0;
 
         if (_runner != null)
         {
-            await _runner.Shutdown();
+            GameMode gameMode;
 
-            var runnerGO = new GameObject("Runner (Host)");
-            var newRunner = runnerGO.AddComponent<NetworkRunner>();
-
-            _runner = newRunner;
-            _runner.ProvideInput = true;
-
-            // Create the NetworkSceneInfo from the current scene
-            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-            var sceneInfo = new NetworkSceneInfo();
-
-            if (scene.IsValid)
+            if (PlayerPrefs.GetInt("Host") == 1)
             {
-                sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+                gameMode = GameMode.Host;
+                _loadingTextUI.text = $"게임을 생성 중입니다... {retryCount}";
+            }
+            else
+            {
+                gameMode = GameMode.Client;
+                _loadingTextUI.text = $"호스트가 게임을 생성 중입니다... {retryCount}";
             }
 
-            await newRunner.StartGame(new StartGameArgs
+            do
             {
-                GameMode = GameMode.AutoHostOrClient,
-                SessionName = PlayerPrefs.GetString("RoomCode"),
-                IsVisible = false,
-                Scene = scene,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-            });
+                await _runner.Shutdown();
 
-            if (_runner.IsServer)
-            {
-                _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
-            }
+                var runnerGO = new GameObject("Runner (Host)");
+                var newRunner = runnerGO.AddComponent<NetworkRunner>();
 
-            newRunner.AddCallbacks(this);
+                _runner = newRunner;
+                _runner.ProvideInput = true;
+
+                // Create the NetworkSceneInfo from the current scene
+                //var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+                //var sceneInfo = new NetworkSceneInfo();
+
+                //if (scene.IsValid)
+                //{
+                //    sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+                //}
+
+                result = await newRunner.StartGame(new StartGameArgs
+                {
+                    GameMode = gameMode,
+                    SessionName = PlayerPrefs.GetString("RoomCode"),
+                    IsVisible = false,
+                    //Scene = scene,
+                    SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+                });
+
+                if (_runner.IsServer)
+                {
+                    _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+                }
+
+                newRunner.AddCallbacks(this);
+
+            } while (!result.Ok && retryCount < 15);
         }
     }
 

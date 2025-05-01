@@ -14,7 +14,7 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour
             return;
         monster.MovementSpeed = 0f;
         monster.IsAttack = true;
-        Debug.Log("Attack");
+        monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
         monster.targetStatHandler.TakeDamage(10);
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }

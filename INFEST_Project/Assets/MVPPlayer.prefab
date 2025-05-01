@@ -2409,6 +2409,7 @@ MonoBehaviour:
   _lookDelta: {x: 0, y: 0}
   _look: 0
   _isJumping: 0
+  _isGrounded: 0
   _isReloading: 0
   _isFiring: 0
   _isRunning: 0
@@ -3714,7 +3715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
   gravity: -20
-  jumpImpulse: 4
+  jumpImpulse: 2
   acceleration: 10
   braking: 0
   maxSpeed: 20
@@ -3747,7 +3748,7 @@ MonoBehaviour:
     startAuxiliaryId: 0
     startConsumeItem1Id: 0
   _MaxHealth: 100
-  _MoveSpeed: 10
+  _MoveSpeed: 20
   _MoveSpeedModifier: 0
   _RotationDamping: 0
   _JumpPower: 0
@@ -5189,8 +5190,10 @@ PrefabInstance:
         'hand_l'\n\tTransform 'middle_01_l'\n\tTransform 'ring_01_r'\n\tTransform
         'spine_02'\n\tand more ...\n\tFrom animation clip 'NoWeaponLeftTurn'\n\tFrom
         animation clip 'NoWeaponRightTurn'\n\tFrom animation clip 'RifleTurnLeft45Degrees'\n\tFrom
-        animation clip 'RifleTurnRight45Degrees'\n\tFrom animation clip 'TmpTurnLeft'\n\tFrom
-        animation clip 'TmpTurnRight'"
+        animation clip 'RifleTurnRight45Degrees'\n\tFrom animation clip 'NoWeaponLeftTurn'\n\tFrom
+        animation clip 'NoWeaponRightTurn'\n\tFrom animation clip 'RifleTurnLeft45Degrees'\n\tFrom
+        animation clip 'RifleTurnRight45Degrees'\n\tFrom animation clip 'NoWeaponLeftTurn'\n\tFrom
+        animation clip 'NoWeaponRightTurn'\n\tand more ..."
       objectReference: {fileID: 0}
     - target: {fileID: 5224551939979628551, guid: 889d24f8fc349cf45b463fb9b13b0143,
         type: 3}

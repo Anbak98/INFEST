@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class MonsterSpawner : NetworkBehaviour
 {
+    // TickTimer timer; // 나중에 타이머로 경보기하면 될듯
     private int SpawnMonsterNumberOnEachWave = 50;
-
     public List<MonsterSpawnPoint> pointRefs;
 
     public void SpawnMonsterOnWave()
     {
+        foreach (var point in pointRefs)
+        {
+            Debug.Log(point.transform.position);
+        }
         if (Runner.IsServer)
         {
             int remainSpawnNumber = SpawnMonsterNumberOnEachWave;
@@ -23,6 +27,15 @@ public class MonsterSpawner : NetworkBehaviour
                 remainSpawnNumber -= num;
                 iteral--; 
             }
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_WaveStart()
+    {
+        if (Runner.IsServer)
+        {
+            SpawnMonsterOnWave();
         }
     }
 }

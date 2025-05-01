@@ -36,6 +36,7 @@ public class Player : NetworkBehaviour
     public Store store;
     public Inventory inventory;
     public CharacterInfoInstance characterInfoInstance;
+
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
@@ -102,6 +103,7 @@ public class Player : NetworkBehaviour
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
                 {
+
                     if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
 
                     else store.RPC_RequestStopInteraction(Object.InputAuthority);
@@ -136,6 +138,7 @@ public class Player : NetworkBehaviour
             GUILayout.Label(playerController.stateMachine.currentState.ToString());
             GUILayout.Label(DEBUG_DATA.ToString());
             //
+            GUILayout.Label("Player HP: " + statHandler.CurrentHealth.ToString());
             GUILayout.Label("PlayerController position: " + playerController.transform.position.ToString());
             GUILayout.Label("PlayerController rotation: " + playerController.transform.rotation.ToString());
             GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());

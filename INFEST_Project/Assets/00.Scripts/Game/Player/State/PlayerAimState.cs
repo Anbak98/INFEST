@@ -36,6 +36,9 @@ public class PlayerAimState : PlayerGroundState
         }
         if (data.isFiring)
         {
+            player.animationController.isFiring = data.isFiring;
+            PlayerFire(data);
+
             stateMachine.ChangeState(stateMachine.AimAttackState);
         }
         if (!data.isZooming)

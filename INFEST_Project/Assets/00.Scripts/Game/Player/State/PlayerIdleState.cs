@@ -37,12 +37,6 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.OnUpdate(data);
 
-        //player.animationController.MoveDirection = data.direction;
-        //PlayerMove(data);
-
-        //player.animationController.isFiring = data.isFiring;
-        //if (data.isFiring)
-        //    PlayerFire(data);
 
         // 정지한 상태에서 좌우회전
         if (data.direction != Vector3.zero)
@@ -58,14 +52,25 @@ public class PlayerIdleState : PlayerGroundState
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if (stateMachine.Player.GetWeapons() != null && data.isFiring)
         {
+            // 이전 frame의 정보와 state가 바뀐 다음 frame의 정보가 다르기 때문에
+            // 이전 frame에서 _isShotgunOnFiring true라도 다음 frame에서 false가 되기 때문이다
+            // 따라서 이번 프레임에서 1번 쏘고 넘어가야한다
+            // rifle인 경우에 다음프레임에서도 계속 발사하며
+            // pistol인 경우에는 다음 프레임에 발사하지 않는다
+            player.animationController.isFiring = data.isFiring;
+            PlayerFire(data);
+
             stateMachine.ChangeState(stateMachine.AttackState);
-            //player.animationController.isFiring = data.isFiring;
-            //PlayerFire(data);
         }
         if (controller.IsGrounded() && data.isZooming)
         {
             stateMachine.ChangeState(stateMachine.AimState);
         }
+        if (statHandler.CurrentHealth <= 0)
+        {
+            stateMachine.ChangeState(stateMachine.DeadState);
+        }
+
 
         // 앉는 상태는 잠금
         //if (controller.IsGrounded() && data.isSitting)
