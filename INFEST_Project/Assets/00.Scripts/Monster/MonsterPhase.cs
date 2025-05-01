@@ -10,7 +10,7 @@ public class MonsterPhase : NetworkBehaviour
     private Dictionary<Type, MonsterStateNetworkBehaviour> stateMap = new();
     public MonsterStateNetworkBehaviour currentState;
 
-    private MonsterNetworkBehaviour monster;
+    protected MonsterNetworkBehaviour monster;
 
     public void Init(MonsterNetworkBehaviour monster)
     {
@@ -25,17 +25,22 @@ public class MonsterPhase : NetworkBehaviour
         currentState = states[0];
     }
 
-    public void ExecuteState()
+    public virtual void MachineExecute()
+    {
+
+    }
+
+    public virtual void ExecuteState()
     {
         currentState.Execute();
     }
 
-    public void MachineEnter()
+    public virtual void MachineEnter()
     {
         currentState.Enter();
     }
 
-    public void MachineExit()
+    public virtual void MachineExit()
     {
         currentState.Exit();
     }

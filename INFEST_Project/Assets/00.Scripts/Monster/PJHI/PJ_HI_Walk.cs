@@ -10,7 +10,7 @@ public class PJ_HI_Walk : MonsterStateNetworkBehaviour
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 1.5f;
+        monster.MovementSpeed = monster.info.SpeedMove;
         randomPosition = GetRandomPositionOnNavMesh(); // NavMesh 위의 랜덤한 위치를 가져옵니다.
         monster.AIPathing.SetDestination(randomPosition); // NavMeshAgent의 목표 위치를 랜덤 위치로 설정합니다.
     }
@@ -22,8 +22,7 @@ public class PJ_HI_Walk : MonsterStateNetworkBehaviour
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
-                    phase.ChangeState<PJ_HI_Idle>();
-                
+                    phase.ChangeState<PJ_HI_Idle>();                
             }
         }
     }

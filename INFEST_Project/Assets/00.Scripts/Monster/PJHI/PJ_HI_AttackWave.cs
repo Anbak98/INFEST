@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PJ_HI_Attack : MonsterStateNetworkBehaviour
+public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour
 {
     private TickTimer _tickTimer;
 
@@ -33,11 +33,11 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour
             {
                 if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_Attack>();
+                    phase.ChangeState<PJ_HI_AttackWave>();
                 }
                 else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_Run>();
+                    phase.ChangeState<PJ_HI_RunWave>();
                 }
             }
         }

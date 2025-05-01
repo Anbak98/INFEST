@@ -30,12 +30,12 @@ public class MonsterSpawner : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_WaveStart()
-    {
-        if (Runner.IsServer)
-        {
-            SpawnMonsterOnWave();
-        }
-    }
+    //[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    //public void RPC_WaveStart()
+    //{
+    //    if (Runner.IsServer)
+    //    {
+    //        SpawnMonsterOnWave();
+    //    }
+    //}
 }

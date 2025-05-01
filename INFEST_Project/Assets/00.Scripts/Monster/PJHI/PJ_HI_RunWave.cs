@@ -1,28 +1,29 @@
 using UnityEngine;
 
-public class PJ_HI_Run : MonsterStateNetworkBehaviour
+public class PJ_HI_RunWave : MonsterStateNetworkBehaviour
 {
-    Transform _target;
-
     public override void Enter()
     {
         base.Enter();
-        _target = monster.target;
         monster.MovementSpeed = monster.info.SpeedMoveWave;
+
     }
 
     public override void Execute()
     {
-        base .Execute();
+        base.Execute();
+
+        monster.AIPathing.SetDestination(monster.target.position);
 
         // 아직 경로가 계산되지 않았거나 도착한 경우
         if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)
         {
-            monster.AIPathing.SetDestination(_target.position);
 
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
-                phase.ChangeState<PJ_HI_Attack>();
+                Debug.Log(monster.target.position + "  " + transform.position);
+                Debug.Log(monster.AIPathing.remainingDistance + "  " + monster.AIPathing.stoppingDistance);
+                phase.ChangeState<PJ_HI_AttackWave>();
             }
             //else if (monster.AIPathing.remainingDistance > 10f)
             //{
@@ -35,5 +36,6 @@ public class PJ_HI_Run : MonsterStateNetworkBehaviour
     {
         base.Exit();
         monster.MovementSpeed = 0;
+
     }
 }
