@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) 수행해준다.
 {
     public StoreController _storeController;
     public Action<string> changeUI;
     public List<int> idList;
+    public InputManager inputManager;
 
-#region  상점 콜라이더 트리거 메소드
+    #region  상점 콜라이더 트리거 메소드
 
     #region 상호작용시
     /// <summary>
@@ -45,8 +45,7 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
         //isInteraction = false;
         _storeController.uIShopView.bg.gameObject.SetActive(true);
         _storeController.uIShopView.profile.gameObject.SetActive(true);
-        _storeController.uIShopView.interactionText.gameObject.SetActive(false);
-
+        _storeController.uIShopView.interactionText.gameObject.SetActive(false); 
     }
     #endregion
 
@@ -73,10 +72,10 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
         _storeController.uIShopView.bg.gameObject.SetActive(false);
         _storeController.uIShopView.profile.gameObject.SetActive(false);
-
     }
     #endregion
 
