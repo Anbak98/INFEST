@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 7114451199791110205}
+  _UIController: {fileID: 0}
 --- !u!114 &7114451199791110205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _runner: {fileID: 0}
+  _scoreboardManagerPrefab:
+    RawGuidValue: 2d00b10f504adec41aee63e8f10c451d
   _playerPrefab:
-    RawGuidValue: 163506e14459bd54bb0dd2d35a57925d
+    RawGuidValue: b54d05545d8ea32428b9081ee6e5c525
   _playerInputActionHandler: {fileID: 3679175693129275854}

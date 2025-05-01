@@ -177,7 +177,7 @@ public class UIShopView : UIScreen
         if (weaponInv[index] == null)
         {
             weaponText[index].text = $"미보유";
-            weaponBullet[index].text = $"탄창\n - G";
+            weaponBullet[index].text = $"- G";
             weaponName[index].text = $"미보유";
             return;
         }
@@ -187,12 +187,12 @@ public class UIShopView : UIScreen
             differenceBullet = weaponInv[index].curBullet % weaponInv[index].instance.data.MagazineBullet;
 
         weaponText[index].text = $"{weaponInv[index].curBullet}/{weaponInv[index].instance.data.MaxBullet}";
-        weaponBullet[index].text = $"탄창\n{(weaponInv[index].instance.data.MagazineBullet - differenceBullet) * weaponInv[index].instance.data.BulletPrice}G";
+        weaponBullet[index].text = $"{(weaponInv[index].instance.data.MagazineBullet - differenceBullet) * weaponInv[index].instance.data.BulletPrice}G";
         weaponName[index].text = $"{weaponInv[index].instance.data.Name}";
 
         if (weaponInv[index].instance.data.MaxBullet <= weaponInv[index].curBullet)
         {
-            weaponBullet[index].text = $"탄창\n - G";
+            weaponBullet[index].text = $"- G";
         }
 
     }
@@ -204,18 +204,18 @@ public class UIShopView : UIScreen
         if (ItemInv[index] == null)
         {
             itemWeaponText[index].text = $"미보유";
-            itemPrice[index].text = $"낱개 구매\n - G";
+            itemPrice[index].text = $"- G";
             itemName[index].text = $"미보유";
             return;
         }
 
         itemWeaponText[index].text = $"{ItemInv[index].curNum}/{ItemInv[index].data.MaxNum}";
-        itemPrice[index].text = $"낱개 구매\n{ItemInv[index].data.Price}G";
+        itemPrice[index].text = $"{ItemInv[index].data.Price}G";
         itemName[index].text = $"{ItemInv[index].data.Name}";
 
         if (ItemInv[index].data.MaxNum <= ItemInv[index].curNum)
         {
-            itemPrice[index].text = $"낱개 구매\n - G";
+            itemPrice[index].text = $"- G";
         }
     }
     //private void MainWeapon1Set()
@@ -520,16 +520,16 @@ public class UIShopView : UIScreen
         if (index < 3)
         {
             if (weaponInv[index] != null)
-                saleButtonText[index].text = $"판매\n{weaponInv[index].instance.data.Price / 2}G";
+                saleButtonText[index].text = $"{weaponInv[index].instance.data.Price / 2}G";
             else
-                saleButtonText[index].text = $"판매\n - G";
+                saleButtonText[index].text = $"- G";
         }
         else if (index > 2)
         {
             if (ItemInv[index - 3] != null)
-                saleButtonText[index].text = $"판매\n{ItemInv[index - 3].data.Price / 2}G";
+                saleButtonText[index].text = $"{ItemInv[index - 3].data.Price / 2}G";
             else
-                saleButtonText[index].text = $"판매\n - G";
+                saleButtonText[index].text = $"- G";
         }
     }
 
