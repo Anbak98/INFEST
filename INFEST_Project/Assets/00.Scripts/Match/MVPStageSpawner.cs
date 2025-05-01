@@ -23,13 +23,13 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
 
     [Header("Spawn Point")]
-    [SerializeField] private Transform _playerSpawnPoint;
+    [SerializeField] public Transform playerSpawnPoint;
 
     [Header("Loding UI")]
     [SerializeField] private GameObject _loadingUI;
     [SerializeField] private TMP_Text _loadingTextUI;
 
-    private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+    [SerializeField] public Dictionary<PlayerRef, NetworkObject> spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     private NetworkRunner _runner;
     private NetworkObject _scoreboardManagerObject;
@@ -95,6 +95,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    #region INetworkRunnerCallbacks 인터페이스 구현
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
@@ -103,7 +104,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Vector3 spawnPosition = new Vector3(27, 1, -27);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
-            _spawnedCharacters.Add(player, networkPlayerObject);
+            spawnedCharacters.Add(player, networkPlayerObject);
             if (runner.LocalPlayer == player)
             {
                 monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
@@ -129,10 +130,10 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
+        if (spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
         {
             runner.Despawn(networkObject);
-            _spawnedCharacters.Remove(player);
+            spawnedCharacters.Remove(player);
             ScoreboardManager.Instance.RPC_RemovePlayerRow(player);
         }
     }
@@ -225,5 +226,5 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-
+    #endregion
 }
