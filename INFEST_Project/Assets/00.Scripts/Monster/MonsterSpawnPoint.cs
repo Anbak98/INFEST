@@ -30,7 +30,6 @@ public class MonsterSpawnPoint : NetworkBehaviour
                 MonsterNetworkBehaviour mnb = Runner.Spawn(Monster, transform.position).GetComponent<MonsterNetworkBehaviour>();
                 mnb.GetComponent<NavMeshAgent>().enabled = true;
                 mnb.target = players[Random.Range(0, players.Length)].transform;
-                mnb.FSM.ChangePhase<PJ_HI_ChasePhase>();
             }
         }
     }

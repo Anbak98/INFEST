@@ -28,5 +28,5 @@ public class MonsterSpawner : NetworkBehaviour
                 iteral--; 
             }
         }
-    }
+    }        
 }
