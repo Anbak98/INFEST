@@ -7376,8 +7376,15 @@ MonoBehaviour:
     RawGuidValue: c599246f0e0a3414f88a5b53600b82fb
   _scoreboardManagerPrefab:
     RawGuidValue: 2d00b10f504adec41aee63e8f10c451d
+  _storePrefab:
+    RawGuidValue: 00000000000000000000000000000000
+  _fieldMonsterSpawnPrefab:
+    RawGuidValue: 00000000000000000000000000000000
   _playerInputActionHandler: {fileID: 1059157647}
   _playerSpawnPoint: {fileID: 2030050488}
+  _loadingUI: {fileID: 0}
+  _loadingTextUI: {fileID: 0}
+  monsterSpawner: {fileID: 0}
 --- !u!114 &387648418
 MonoBehaviour:
   m_ObjectHideFlags: 0

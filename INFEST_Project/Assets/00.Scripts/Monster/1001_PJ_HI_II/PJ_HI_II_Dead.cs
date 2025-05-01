@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Fusion;
 
-public class PJ_HI_II_Dead : MonoBehaviour
+public class PJ_HI_II_Dead : MonsterStateNetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public TickTimer _tickTimer;
+    public NetworkObject obj;
+
+    public override void Enter()
     {
-        
+        base.Enter();
+        monster.MovementSpeed = 0f;
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute()
     {
-        
+        base.Execute();
+
+        if (_tickTimer.Expired(Runner))
+        {
+            if (HasStateAuthority)
+            {
+                Runner.Despawn(obj);
+            }
+        }
     }
 }
