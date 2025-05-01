@@ -10,6 +10,10 @@ public class MonsterSpawner : NetworkBehaviour
 
     public void SpawnMonsterOnWave()
     {
+        foreach (var point in pointRefs)
+        {
+            Debug.Log(point.transform.position);
+        }
         if (Runner.IsServer)
         {
             int remainSpawnNumber = SpawnMonsterNumberOnEachWave;
@@ -24,5 +28,5 @@ public class MonsterSpawner : NetworkBehaviour
                 iteral--; 
             }
         }
-    }
+    }        
 }

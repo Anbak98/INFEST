@@ -17,19 +17,20 @@ public class PJ_HI_Run : MonsterStateNetworkBehaviour
     public override void Execute()
     {
         base .Execute();
-        monster.AIPathing.SetDestination(target.position);
 
         // 아직 경로가 계산되지 않았거나 도착한 경우
-        if (!monster.AIPathing.pathPending)
+        if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)
         {
+            monster.AIPathing.SetDestination(target.position);
+
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
                 phase.ChangeState<PJ_HI_Attack>();
             }
-            else if (monster.AIPathing.remainingDistance > 10f)
-            {
-                monster.FSM.ChangePhase<PJ_HI_WonderPhase>();
-            }
+            //else if (monster.AIPathing.remainingDistance > 10f)
+            //{
+            //    monster.FSM.ChangePhase<PJ_HI_WonderPhase>();
+            //}
         }
     }
 }

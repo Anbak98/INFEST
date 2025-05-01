@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼öÇàÇØÁØ´Ù.
 {
     public StoreController _storeController;
     public Action<string> changeUI;
     public List<int> idList;
-    public List<NetworkObject> itemPrefabList;
-    public Transform weaponPibot;
+    public InputManager inputManager;
 
-#region  »óÁ¡ ÄÝ¶óÀÌ´õ Æ®¸®°Å ¸Þ¼Òµå
+    #region  »óÁ¡ ÄÝ¶óÀÌ´õ Æ®¸®°Å ¸Þ¼Òµå
 
     #region »óÈ£ÀÛ¿ë½Ã
     /// <summary>
@@ -47,8 +45,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         //isInteraction = false;
         _storeController.uIShopView.bg.gameObject.SetActive(true);
         _storeController.uIShopView.profile.gameObject.SetActive(true);
-        _storeController.uIShopView.interactionText.gameObject.SetActive(false);
-
+        _storeController.uIShopView.interactionText.gameObject.SetActive(false); 
     }
     #endregion
 
@@ -75,10 +72,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+
         _storeController.uIShopView.interactionText.gameObject.SetActive(true);
         _storeController.uIShopView.bg.gameObject.SetActive(false);
         _storeController.uIShopView.profile.gameObject.SetActive(false);
-
     }
     #endregion
 
@@ -244,7 +241,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     public void RPC_TrySale(Player _player, [RpcTarget] PlayerRef _playerRef, int index)
     {
         if (_player == null) return;
-
+        
 
         switch (index)
         {
@@ -303,8 +300,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 //        _player.Weapons.Swap(-1);
                 //    else
                 //        _player.Weapons.Swap(0);
-                
-
                 //_player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
                 //_player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
                 //_player.inventory.weapon[1].IsCollected = false;
@@ -339,20 +334,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
     }
     #endregion
-
-    /// <summary>
-    /// ¾ÆÀÌÅÛ ½ºÆù
-    /// </summary>
-    /// <param name="player"></param>
-    /// <param name="index"></param>
-    public void SpawnWeapon(Player player, int index)
-    {
-        if (!HasStateAuthority) return;
-        Vector3 spawnPosition = player.transform.position + player.transform.forward * 2f;
-        NetworkObject item = player.Runner.Spawn(itemPrefabList[index], spawnPosition, Quaternion.identity, player.Object.InputAuthority, (runner, obj) => obj.transform.SetParent(player.transform));
-
-    }
-
 #endregion
 
 #region º¸Ãæ ¸Þ¼Òµå
