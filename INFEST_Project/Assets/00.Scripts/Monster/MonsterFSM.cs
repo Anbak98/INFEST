@@ -27,6 +27,7 @@ public class MonsterFSM : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        currentPhase.MachineExecute();
         currentPhase.ExecuteState();
     }
 

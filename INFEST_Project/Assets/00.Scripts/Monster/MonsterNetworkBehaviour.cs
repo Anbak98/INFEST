@@ -1,49 +1,59 @@
 using Fusion;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class MonsterNetworkBehaviour : NetworkBehaviour
-{            
-    //"Name": "PJ_H I",
-    //"MonsterType": 0,
-    //"MinHealth": 150,
-    //"MaxHealth": 250,
-    //"HealthPer5Min": 25,
-    //"MinAtk": 30,
-    //"MaxAtk": 42,
-    //"AtkPer5Min": 3,
-    //"MinDef": 20,
-    //"MaxDef": 28,
-    //"DefPer5Min": 2,
-    //"SpeedMove": 50,
-    //"SpeedAtk": 0.7,
-    //"DetectAreaNormal": 5,
-    //"DetectAreaWave": 500,
-    //"State": 200,
-    //"DropGold": 30,
-    //"FieldSpawn": true,
-    //"LimitSpawnCount": 9999
+{
+    //  key": 1001,
+    //  "Name": "PJ_H I",
+    //  "MonsterType": 0,
+    //  "MinHealth": 150,
+    //  "MaxHealth": 250,
+    //  "HealthPer5Min": 25,
+    //  "MinAtk": 30,
+    //  "MaxAtk": 42,
+    //  "AtkPer5Min": 3,
+    //  "MinDef": 20,
+    //  "MaxDef": 28,
+    //  "DefPer5Min": 2,
+    //  "SpeedMove": 1.7,
+    //  "SpeedMoveWave": 2.5,
+    //  "SpeedAtk": 0.7,
+    //  "DetectAreaNormal": 5,
+    //  "DetectAreaWave": 100,
+    //  "State": 200,
+    //  "DropGold": 30,
+    //  "FieldSpawn": true,
+    //  "LimitSpawnCount": 9999
     public MonsterInfo info;
 
     public int key = -1;
 
-    [Networked, Tooltip("The networked amount of health that monster has")]
+    [field: Header("Stat")]
+    [Networked, HideInInspector, Tooltip("The networked amount of health that monster has")]
     public float CurrentHealth { get; private set; } = -1;
 
-    [Networked, Tooltip("The networked amount of health that monster has")]
+    [Networked, HideInInspector, Tooltip("The networked amount of health that monster has")]
     public float MovementSpeed { get; set; } = -1;
 
-    [Networked] public NetworkBool IsAttack { get; set; } = false;
-    [Networked] public NetworkBool IsDead { get; set; } = false;
-
+    [Header("Components")]
     [Tooltip("Reference to the enemy's FSM.")]
     public MonsterFSM FSM;
 
     [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
     public NavMeshAgent AIPathing;
 
+    [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
+    public SphereCollider PlayerDetectorCollider;
+
+    [Networked] public NetworkBool IsAttack { get; set; } = false;
+    [Networked] public NetworkBool IsDead { get; set; } = false;
+
     [HideInInspector]
     public Transform target;
+    [HideInInspector]
+    public List<Transform> targets = new();
     [HideInInspector]
     public PlayerStatHandler targetStatHandler;
 
@@ -61,20 +71,41 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public override void Spawned()
     {
-        base.Spawned();
-
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
 
         CurrentHealth = Random.Range(info.MinHealth, info.MaxHealth);
         MovementSpeed = info.SpeedMove;
-    }
 
-    protected virtual void Update()
-    {
+        if (PlayerDetectorCollider.radius != info.DetectAreaWave)
+            PlayerDetectorCollider.radius = info.DetectAreaNormal;
     }
 
     public virtual void PlayerDetectedListnerByPlayer()
     {
+    }
+
+    public bool IsLookPlayer()
+    {
+        foreach(var _target in targets)
+        {
+            Vector3 dirToTarget = (target.transform.position - transform.position).normalized;
+            float dot = Vector3.Dot(dirToTarget, transform.forward.normalized);
+            if( dot > Mathf.Cos(30f * Mathf.Deg2Rad))
+            {
+                target = _target;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void SetTargetRandomly()
+    {
+        if (targets.Count > 0)
+        {
+            target = targets[Random.Range(0, targets.Count)];
+        }
     }
 
     public bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
@@ -105,7 +136,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         HitCount++;
 
         return true;
-    }    
+    }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_PlayDamageEffect(Vector3 relativePosition, Vector3 direction)

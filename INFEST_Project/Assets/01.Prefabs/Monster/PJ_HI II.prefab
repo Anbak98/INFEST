@@ -45,9 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1099a5e8c469274786e33184c8686bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states:
-  - {fileID: 8167469892693574182}
-  currentState: {fileID: 8167469892693574182}
+  states: []
+  currentState: {fileID: 0}
 --- !u!1 &161854494915197840
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,10 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b2695e8a414d5242a1371921527f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states:
-  - {fileID: 5762701507219356529}
-  - {fileID: 8510009786235527759}
-  currentState: {fileID: 5762701507219356529}
+  states: []
+  currentState: {fileID: 0}
 --- !u!1 &1457944791837504633
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,10 +694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfe6ca63a6007f4d99ee5dc4e4d6a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states:
-  - {fileID: 6879599492605754529}
-  - {fileID: 8664520746787655931}
-  currentState: {fileID: 6879599492605754529}
+  states: []
+  currentState: {fileID: 0}
 --- !u!1 &2139997767793222236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2654,13 +2649,15 @@ MonoBehaviour:
   key: 1002
   _CurrentHealth: 180
   _MovementSpeed: 0
+  FSM: {fileID: 5334992375036982847}
+  AIPathing: {fileID: 8541060984460718935}
+  PlayerDetectorCollider: {fileID: 0}
   _IsAttack:
     _value: 0
   _IsDead:
     _value: 0
-  FSM: {fileID: 5334992375036982847}
-  AIPathing: {fileID: 8541060984460718935}
   target: {fileID: 0}
+  targets: []
   targetStatHandler: {fileID: 0}
   animator: {fileID: 6900176941767614314}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,

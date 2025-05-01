@@ -9,7 +9,7 @@ public class Monster_PJ_HI : MonsterNetworkBehaviour
         }
         if (IsDead)
         {
-            FSM.ChangePhase<PJ_HI_II_DeadPhase>();
+            FSM.ChangePhase<PJ_HI_Phase_Dead>();
             animator.SetBool("IsDead", IsDead);
         }
 
