@@ -26,6 +26,7 @@ public class PlayerAirState : PlayerBaseState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
     }
     public override void PhysicsUpdate(NetworkInputData data)
     {
