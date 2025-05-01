@@ -22,7 +22,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
 
     //private string _groundParameterName = "@Ground";    // 
-    private string _idleParameterName = "Idle";
+    //private string _idleParameterName = "Idle";
     //private string _moveParameterName = "Move";    // walk
     private string _moveXParameterName = "MoveX";    // walk
     private string _moveZParameterName = "MoveZ";    // walk
@@ -40,7 +40,7 @@ public class PlayerAnimationController : NetworkBehaviour
     //private string _airParameterName = "@Air";
     private string _jumpParameterName = "Jump";
     private string _groundedParameterName = "IsGrounded";    // 땅에 닿았을 때 true
-    private string _fallParameterName = "Fall";
+    //private string _fallParameterName = "Fall";
     // jump상태와 분명히 다르다
     // isGround가 false && isjumping이 false인 것으로 표현할 수 있어서 파라미터는 없어도 된다
     // 문제는 parameter가 없을때 idle과 구분해야한다는거
@@ -150,7 +150,7 @@ public class PlayerAnimationController : NetworkBehaviour
         playerAnimator.SetBool(ReloadParameterHash, isReloading);
         playerAnimator.SetBool(AttackParameterHash, isFiring);
         playerAnimator.SetBool(RunParameterHash, isRunning);
-        playerAnimator.SetBool(SitParameterHash, isSitting);
+        //playerAnimator.SetBool(SitParameterHash, isSitting);
         playerAnimator.SetBool("Die", Die);
     }
 }
