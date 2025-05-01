@@ -23,6 +23,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     private Camera _mainCam;    // 1인칭 카메라
     public bool isMenu;
+    public PlayerStatHandler statHandler;
 
     private void Awake()
     {
@@ -47,6 +48,8 @@ public class PlayerCameraHandler : NetworkBehaviour
         base.FixedUpdateNetwork();
 
         if (isMenu) return;
+
+        if (statHandler.CurrentHealth <= 0) return;
 
         if (HasStateAuthority)
         {            
