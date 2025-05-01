@@ -33,6 +33,13 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private NetworkRunner _runner;
     private NetworkObject _scoreboardManagerObject;
 
+    MonsterSpawner monsterSpawner;
+
+    public void SpawnMonster()
+    {
+        monsterSpawner.SpawnMonsterOnWave();
+    }
+
     public void Start()
     {
         ReconnectionWithSwitchingSharedToHost();
@@ -98,7 +105,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Add(player, networkPlayerObject);
             if (runner.LocalPlayer == player)
             {
-                MonsterSpawner monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
+                monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
                 monsterSpawner.SpawnMonsterOnWave();
 
                 runner.Spawn(_storePrefab, Vector3.zero);

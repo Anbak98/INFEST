@@ -37,12 +37,6 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.OnUpdate(data);
 
-        //player.animationController.MoveDirection = data.direction;
-        //PlayerMove(data);
-
-        //player.animationController.isFiring = data.isFiring;
-        //if (data.isFiring)
-        //    PlayerFire(data);
 
         // 정지한 상태에서 좌우회전
         if (data.direction != Vector3.zero)
@@ -66,6 +60,11 @@ public class PlayerIdleState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.AimState);
         }
+        if (statHandler.CurrentHealth <= 0)
+        {
+            stateMachine.ChangeState(stateMachine.DeadState);
+        }
+
 
         // 앉는 상태는 잠금
         //if (controller.IsGrounded() && data.isSitting)
