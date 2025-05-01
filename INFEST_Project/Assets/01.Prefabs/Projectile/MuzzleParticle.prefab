@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1638435067791595004
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6039306910788578584}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.984032, y: 1.7039274, z: -22.996975}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4975,7 +4975,7 @@ PrefabInstance:
     - target: {fileID: 78111621126858097, guid: ab55ca96ad75c1148bc5f1bfc1fc920b,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 78111621126858097, guid: ab55ca96ad75c1148bc5f1bfc1fc920b,
         type: 3}
@@ -5170,7 +5170,7 @@ PrefabInstance:
     - target: {fileID: 78111621126858097, guid: ab55ca96ad75c1148bc5f1bfc1fc920b,
         type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 78111621126858097, guid: ab55ca96ad75c1148bc5f1bfc1fc920b,
         type: 3}
