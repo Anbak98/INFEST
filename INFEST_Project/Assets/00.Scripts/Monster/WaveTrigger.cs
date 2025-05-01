@@ -8,14 +8,14 @@ public class WaveTrigger : MonoBehaviour
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
         Player player = other.GetComponentInParent<Player>();
+
         if (other.gameObject.layer == _playerLayer && player)
         {
             if (_MVPStageSpawner.monsterSpawner == null) return;
 
             _MVPStageSpawner.monsterSpawner.RPC_WaveStart();
-            other.enabled = false;
+            enabled = false;
+
         }
     }
-
-
 }
