@@ -72,6 +72,11 @@ public class MonsterInfo
     public float SpeedMove;
 
     /// <summary>
+    /// 이동속도
+    /// </summary>
+    public float SpeedMoveWave;
+
+    /// <summary>
     /// 공격속도
     /// </summary>
     public float SpeedAtk;
