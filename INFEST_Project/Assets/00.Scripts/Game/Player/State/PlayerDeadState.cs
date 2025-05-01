@@ -6,7 +6,7 @@ using UnityEngine;
 // SitIdle, Waddle, SitAttack, SitReload
 public class PlayerDeadState : PlayerBaseState
 {
-    float respawnTime;  // 30초
+    float respawnTime = 0f;  // 30초
     // 플레이어의 respawn을 위해 ... spawn point가 저장되어있는 spawner를 알아야 한다
     public MVPStageSpawner stageSpawner;    // 생성될 때 연결해야겠다
     // 관전 모드: spawner > player > camera 로 접근할 수 있다
@@ -45,7 +45,7 @@ public class PlayerDeadState : PlayerBaseState
             FindAlivePlayers(); // 매 프레임마다 생존자 갱신
 
         }
-
+        Debug.Log(respawnTime);
         // 30초 후 체력 100 채우고 Idle 상태로 전환
         if (respawnTime >= 30f)
         {
@@ -54,13 +54,15 @@ public class PlayerDeadState : PlayerBaseState
 
 
             statHandler.CurrentHealth = 100;
+            player.animationController.Die = false;
+            player.stateMachine.IsDead = false;
             player.FirstPersonRoot.SetActive(true);
+            respawnTime = 0f;
             stateMachine.ChangeState(stateMachine.IdleState);
         }
         else
         {
             respawnTime += Time.deltaTime;
-            // 시간 소수점 이하단위 잘라서 출력하면 좋을듯
         }
     }
 
