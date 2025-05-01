@@ -98,7 +98,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Add(player, networkPlayerObject);
             if (runner.LocalPlayer == player)
             {
-                MonsterSpawner monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, new Vector3(-20,10,0)).GetComponent<MonsterSpawner>();
+                MonsterSpawner monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
                 monsterSpawner.SpawnMonsterOnWave();
 
                 runner.Spawn(_storePrefab, Vector3.zero);
