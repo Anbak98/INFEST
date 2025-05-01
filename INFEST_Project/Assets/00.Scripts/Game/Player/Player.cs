@@ -138,6 +138,7 @@ public class Player : NetworkBehaviour
             GUILayout.Label(playerController.stateMachine.currentState.ToString());
             GUILayout.Label(DEBUG_DATA.ToString());
             //
+            GUILayout.Label("Player HP: " + statHandler.CurrentHealth.ToString());
             GUILayout.Label("PlayerController position: " + playerController.transform.position.ToString());
             GUILayout.Label("PlayerController rotation: " + playerController.transform.rotation.ToString());
             GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
