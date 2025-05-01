@@ -17,6 +17,10 @@ public class UISetView : UIScreen
     public TMP_Dropdown graphic;
     public TMP_Dropdown display;
 
+    [Header("민감도")]
+    public Slider sensitivitySlider;
+    public TextMeshProUGUI sensitivityText;
+
     [Header("저장버튼")]
     public Button saveBtn;
 
@@ -27,16 +31,22 @@ public class UISetView : UIScreen
     private int _originalResolutionIndex;
     private int _originalGraphicIndex;
     private int _originalDisplayIndex;
+    private float _originalSensitivity;
+
+    PlayerCameraHandler _playerCameraHandler;
 
     public override void Awake()
     {
         base.Awake();
+
+        _playerCameraHandler = FindObjectOfType<PlayerCameraHandler>();        
 
         _originalBrightness = brightSlider.value;
         _originalScreenRateIndex = screenrate.value;
         _originalResolutionIndex = resolution.value;
         _originalGraphicIndex = graphic.value;
         _originalDisplayIndex = display.value;
+        _originalSensitivity = sensitivitySlider.value;
 
         saveBtn.gameObject.SetActive(false);
 
@@ -44,12 +54,19 @@ public class UISetView : UIScreen
         {
             Brightness(value);
             CheckForChanges();
-        });        
+        });
+
+        sensitivitySlider.onValueChanged.AddListener(value =>
+        {
+            SetSensitivity(value);
+            CheckForChanges();
+        });
+
 
         SetUpScreenRate();
         SetUpResolution();
         SetUpGraphic();
-        SetUpDisplay();        
+        SetUpDisplay();
     }
 
     public override void Show()
@@ -70,6 +87,12 @@ public class UISetView : UIScreen
         brightImage.color = c;
 
         brightText.text = $"{(value * 100f).ToString("F0")}%";
+    }
+
+    public void SetSensitivity(float value)
+    {
+        _playerCameraHandler._sensitivity = value;
+        sensitivityText.text = $"{(value * 10).ToString("F0")}";
     }
 
     private void SetUpScreenRate()
@@ -153,6 +176,10 @@ public class UISetView : UIScreen
         {
             var mode = (index == 0) ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
             Screen.fullScreenMode = mode;
+
+            var selectedResolution =
+            _resolutions.Select(r => new Vector2Int(r.width, r.height)).Distinct().ElementAt(resolution.value);
+            Screen.SetResolution(selectedResolution.x, selectedResolution.y, mode);
             Debug.Log($"Set Display: {(index == 0 ? "Full Screen" : "Window Screen")}");
             CheckForChanges();
         });
@@ -165,7 +192,9 @@ public class UISetView : UIScreen
             screenrate.value != _originalScreenRateIndex ||
             resolution.value != _originalResolutionIndex ||
             graphic.value != _originalGraphicIndex ||
-            display.value != _originalDisplayIndex;
+            display.value != _originalDisplayIndex ||
+            !Mathf.Approximately(sensitivitySlider.value, _originalSensitivity);
+
 
         saveBtn.gameObject.SetActive(changed);
     }
@@ -177,6 +206,7 @@ public class UISetView : UIScreen
         PlayerPrefs.SetInt("ResolutionIndex", resolution.value);
         PlayerPrefs.SetInt("GraphicIndex", graphic.value);
         PlayerPrefs.SetInt("DisplayIndex", display.value);
+        PlayerPrefs.SetFloat("Sensitivity", sensitivitySlider.value);
         PlayerPrefs.Save();
 
         // 현재 상태를 새로운 기준으로 업데이트
@@ -185,6 +215,7 @@ public class UISetView : UIScreen
         _originalResolutionIndex = resolution.value;
         _originalGraphicIndex = graphic.value;
         _originalDisplayIndex = display.value;
+        _originalSensitivity = sensitivitySlider.value;
 
         saveBtn.gameObject.SetActive(false);
     }
@@ -196,6 +227,7 @@ public class UISetView : UIScreen
         PlayerPrefs.SetInt("ResolutionIndex", resolution.value);
         PlayerPrefs.SetInt("GraphicIndex", graphic.value);
         PlayerPrefs.SetInt("DisplayIndex", display.value);
+        PlayerPrefs.SetFloat("Sensitivity", sensitivitySlider.value);
         PlayerPrefs.Save();
 
         _originalBrightness = brightSlider.value;
@@ -203,6 +235,7 @@ public class UISetView : UIScreen
         _originalResolutionIndex = resolution.value;
         _originalGraphicIndex = graphic.value;
         _originalDisplayIndex = display.value;
+        _originalSensitivity = sensitivitySlider.value;
 
         this.gameObject.SetActive(false);
     }
