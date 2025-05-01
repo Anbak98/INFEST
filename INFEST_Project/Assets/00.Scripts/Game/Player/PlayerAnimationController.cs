@@ -13,6 +13,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
 
     [Networked] public bool isJumping { get; set; }
+    [Networked] public bool isGrounded { get; set; }
     [Networked] public bool isReloading { get; set; }
     [Networked] public bool isFiring { get; set; }
     [Networked] public bool isRunning { get; set; }
@@ -20,7 +21,7 @@ public class PlayerAnimationController : NetworkBehaviour
     [Networked] public bool Die { get; set; } = false;
 
 
-    private string _groundParameterName = "@Ground";    // 
+    //private string _groundParameterName = "@Ground";    // 
     private string _idleParameterName = "Idle";
     //private string _moveParameterName = "Move";    // walk
     private string _moveXParameterName = "MoveX";    // walk
@@ -36,14 +37,15 @@ public class PlayerAnimationController : NetworkBehaviour
     private string _aimParameterName = "Aim";
 
 
-    private string _airParameterName = "@Air";
+    //private string _airParameterName = "@Air";
     private string _jumpParameterName = "Jump";
+    private string _groundedParameterName = "IsGrounded";    // 땅에 닿았을 때 true
     private string _fallParameterName = "Fall";
     // jump상태와 분명히 다르다
     // isGround가 false && isjumping이 false인 것으로 표현할 수 있어서 파라미터는 없어도 된다
     // 문제는 parameter가 없을때 idle과 구분해야한다는거
 
-    private string _sitParameterName = "@Sit";
+    //private string _sitParameterName = "@Sit";
 
     // 앉아서 이동(105)하는건 새로운 애니메이션이 필요하지만 파라미터는 Sit && Move로 처리할 수 있다
     //[SerializeField] private string _waddleParameterName = "Waddle";
@@ -68,7 +70,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
 
     // string 비교는 연산이 많으므로 int로 바꾸어 비교한다
-    public int GroundParameterHash { get; set; }
+    //public int GroundParameterHash { get; set; }
     public int IdleParameterHash { get; set; }
     //public int MoveParameterHash { get; private set; }
     public int MoveXParameterHash { get; set; }
@@ -85,6 +87,7 @@ public class PlayerAnimationController : NetworkBehaviour
     public int AimParameterHash { get; set; }
     //
     public int JumpParameterHash { get; set; }
+    public int GroundedParameterHash { get; set; }
     //
     public int SitParameterHash { get; set; }
     //
@@ -99,7 +102,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
     private void Start()
     {
-        GroundParameterHash = Animator.StringToHash(_groundParameterName);
+        //GroundParameterHash = Animator.StringToHash(_groundParameterName);
 
         //IdleParameterHash = Animator.StringToHash(_idleParameterName);
         //MoveParameterHash = Animator.StringToHash(_moveParameterName);
@@ -112,7 +115,9 @@ public class PlayerAnimationController : NetworkBehaviour
 
         RunParameterHash = Animator.StringToHash(_runParameterName);
         JumpParameterHash = Animator.StringToHash(_jumpParameterName);
-        SitParameterHash = Animator.StringToHash(_sitParameterName);
+        GroundedParameterHash = Animator.StringToHash(_groundedParameterName);
+
+        //SitParameterHash = Animator.StringToHash(_sitParameterName);
         AttackParameterHash = Animator.StringToHash(_attackParameterName);
         ReloadParameterHash = Animator.StringToHash(_reloadParameterName);
         AimParameterHash = Animator.StringToHash(_aimParameterName);
@@ -140,6 +145,8 @@ public class PlayerAnimationController : NetworkBehaviour
         playerAnimator.SetFloat(LookYParameterHash, lookDelta.y);
 
         playerAnimator.SetBool(JumpParameterHash, isJumping);
+        playerAnimator.SetBool(GroundedParameterHash, isGrounded);
+
         playerAnimator.SetBool(ReloadParameterHash, isReloading);
         playerAnimator.SetBool(AttackParameterHash, isFiring);
         playerAnimator.SetBool(RunParameterHash, isRunning);

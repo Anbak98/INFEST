@@ -195,12 +195,13 @@ public class Weapon : NetworkBehaviour
     /// </summary>
     public void Fire(bool holdingPressed)
     {
+        Debug.Log("holdingPressed: " + holdingPressed);
         if (!IsCollected) return;
         if (!holdingPressed && !instance.data.IsAutpmatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
         if (curMagazineBullet == 0) return;
         if (IsReloading) return;
-        //FPSWeapon.RPC_OnFirePressed();
+        FPSWeapon.RPC_OnFirePressed();
         Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // 랜덤값 고정
 
         for (int i = 0; i < instance.data.ProjectilesPerShot; i++)
@@ -356,7 +357,8 @@ public class Weapon : NetworkBehaviour
         if (IsReloading) return; // 장전중이면
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // 행동 쿨타임중이면
 
-        //if (HasStateAuthority) FPSWeapon.RPC_OnReload();
+        if(HasStateAuthority)
+            FPSWeapon.RPC_OnReload();
 
         IsReloading = true;
 

@@ -13,7 +13,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private Camera _scopeCam;          // scope 전용 카메라
     [SerializeField] private Transform _cameraHolder;    // 카메라 부모 (X축 회전만 담당)
-    [SerializeField] private float _sensitivity = 5f;   // 이동에 적용할 민감도
+    public float _sensitivity = 5f;   // 이동에 적용할 민감도
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
@@ -52,7 +52,6 @@ public class PlayerCameraHandler : NetworkBehaviour
         {            
             if (GetInput(out NetworkInputData data))
             {
-
                 Vector2 mouseDelta = data.lookDelta;
 
                 float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;

@@ -214,9 +214,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             }
         }
         _storeController.uIShopView.UpdateButtonState();
+        _storeController.uIShopView.UpdateSaleButtonState();
 
-        
-        
+
+
     }
     #endregion
 
@@ -250,25 +251,41 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             case 0: // º¸Á¶¹«±â
                 if (_player.inventory.auxiliaryWeapon[0] == null) return;
                 _player.characterInfoInstance.curGold += _player.inventory.auxiliaryWeapon[0].instance.data.Price / 2;
-                
-                if (_player.inventory.auxiliaryWeapon[0] == _player.inventory.equippedWeapon) _player.Weapons.Swap(-1);
-                _player.inventory.auxiliaryWeapon[0].curBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
-                _player.inventory.auxiliaryWeapon[0].curMagazineBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
-                _player.inventory.auxiliaryWeapon[0].IsCollected = false;
-                _player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
+
+
+                    if (_player.inventory.equippedWeapon == _player.inventory.auxiliaryWeapon[0])
+                    _player.Weapons.Swap(-1,true);
+
+                //_player.Weapons.Swap(1);
+                //    else if (_player.inventory.equippedWeapon == _player.Weapons._weapons[_player.Weapons._weapons.Count - 1])
+                //        _player.Weapons.Swap(-1);
+                //    else
+                //        _player.Weapons.Swap(0);
+
                 _player.inventory.RemoveWeaponItem(_player.inventory.auxiliaryWeapon[0], 0);
-                
+
+                //_player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
                 _storeController.uIShopView.WeaponSet(0);
                 break;
             case 1: // ÁÖ¹«±â 1
                 if (_player.inventory.weapon[0] == null) return;
                 _player.characterInfoInstance.curGold += _player.inventory.weapon[0].instance.data.Price / 2;
 
-                if (_player.inventory.weapon[0] == _player.inventory.equippedWeapon) _player.Weapons.Swap(-1); 
-                _player.inventory.weapon[0].curBullet = _player.inventory.weapon[0].instance.data.MaxBullet;
-                _player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
-                _player.inventory.weapon[0].IsCollected = false;
-                _player.Weapons._weapons.Remove(_player.inventory.weapon[0]); 
+          
+                    if (_player.inventory.equippedWeapon == _player.inventory.weapon[0])
+                        _player.Weapons.Swap(-1, true);
+
+                //_player.Weapons.Swap(1);
+                //    else if (_player.inventory.equippedWeapon == _player.Weapons._weapons[_player.Weapons._weapons.Count - 1])
+                //        _player.Weapons.Swap(-1);
+                //    else
+                //        _player.Weapons.Swap(0);
+
+
+                //_player.inventory.weapon[0].curBullet = _player.inventory.weapon[0].instance.data.MaxBullet;
+                //_player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
+                //_player.inventory.weapon[0].IsCollected = false;
+                //_player.Weapons._weapons.Remove(_player.inventory.weapon[0]); 
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[0], 0);
 
                 _storeController.uIShopView.WeaponSet(1);
@@ -276,12 +293,22 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             case 2: // ÁÖ¹«±â 2
                 if (_player.inventory.weapon[1] == null) return;
                 _player.characterInfoInstance.curGold += _player.inventory.weapon[1].instance.data.Price / 2;
+
                 
-                if (_player.inventory.weapon[1] == _player.inventory.equippedWeapon) _player.Weapons.Swap(-1);
-                _player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
-                _player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
-                _player.inventory.weapon[1].IsCollected = false;
-                _player.Weapons._weapons.Remove(_player.inventory.weapon[1]);
+                    if (_player.inventory.equippedWeapon == _player.inventory.weapon[1])
+                    _player.Weapons.Swap(-1, true);
+
+                //_player.Weapons.Swap(1);
+                //    else if(_player.inventory.equippedWeapon == _player.Weapons._weapons[_player.Weapons._weapons.Count-1])
+                //        _player.Weapons.Swap(-1);
+                //    else
+                //        _player.Weapons.Swap(0);
+                
+
+                //_player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
+                //_player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
+                //_player.inventory.weapon[1].IsCollected = false;
+                //_player.Weapons._weapons.Remove(_player.inventory.weapon[1]);
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[1], 1);
 
                 _storeController.uIShopView.WeaponSet(2);
@@ -308,6 +335,8 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         Debug.Log("ÆÇ¸Å ÈÄ :" + _player.characterInfoInstance.curGold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
         _storeController.uIShopView.UpdateButtonState();
+        _storeController.uIShopView.UpdateSaleButtonState();
+
     }
     #endregion
 
