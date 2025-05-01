@@ -32,6 +32,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void Fire(bool holdingPressed)
     {
+        Debug.Log(_activeWeaponIndex);
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         _weapons[_activeWeaponIndex].Fire(holdingPressed);
     }
