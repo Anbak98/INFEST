@@ -66,10 +66,6 @@ public class PlayerIdleState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.AimState);
         }
-        if (statHandler.CurrentHealth <= 0)
-        {
-            stateMachine.ChangeState(stateMachine.DeadState);
-        }
 
 
         // 앉는 상태는 잠금
