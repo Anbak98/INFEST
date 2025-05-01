@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Collider : MonoBehaviour // 유저가 상점에 진입했고 상호작용하는지 체크해준다.

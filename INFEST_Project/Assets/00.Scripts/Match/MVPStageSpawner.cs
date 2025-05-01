@@ -17,6 +17,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef _monsterSpawnerPrefab;
     [SerializeField] private NetworkPrefabRef _scoreboardManagerPrefab;
     [SerializeField] private NetworkPrefabRef _storePrefab;
+    [SerializeField] private NetworkPrefabRef _fieldMonsterSpawnPrefab;
 
     [Header("InputActionHandler for OnInput")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
@@ -33,7 +34,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private NetworkRunner _runner;
     private NetworkObject _scoreboardManagerObject;
 
-    MonsterSpawner monsterSpawner;
+    [HideInInspector] public MonsterSpawner monsterSpawner;
 
     public void SpawnMonster()
     {
@@ -106,10 +107,15 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             if (runner.LocalPlayer == player)
             {
                 monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
-                monsterSpawner.SpawnMonsterOnWave();
+                //monsterSpawner.SpawnMonsterOnWave();
 
                 runner.Spawn(_storePrefab, Vector3.zero);
+
+                runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
+                
             }
+
+
 
             CharacterInfoData infoData = new CharacterInfoData
             {
