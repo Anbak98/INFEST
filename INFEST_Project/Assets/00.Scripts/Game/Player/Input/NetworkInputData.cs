@@ -27,10 +27,11 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_SIT = 8;       // lCtrl
     public const byte BUTTON_SCOREBOARD = 9;    // Tab
     public const byte BUTTON_MENU = 10;    // ESC
+    public const byte BUTTON_CHANGECAMERA = 11;
 
     // 내부에서 사용하는 변수
-    public const byte BUTTON_FIREPRESSED = 11;    // 마우스 왼쪽클릭 지속
-    public const byte BUTTON_ZOOMPRESSED = 12;    // 마우스 오른쪽클릭 지속
+    public const byte BUTTON_FIREPRESSED = 12;    // 마우스 왼쪽클릭 지속
+    public const byte BUTTON_ZOOMPRESSED = 13;    // 마우스 오른쪽클릭 지속
 
     // InputAction과 연결
     public bool isJumping;
@@ -43,6 +44,8 @@ public struct NetworkInputData : INetworkInput
     public bool isSitting;
     public bool isScoreBoardPopup;
     public bool isMenuPopup;
+    public bool isChangingCamera;
+
 
     // 내부 변수(Input Action과 연결X)
     public bool isShotgunOnFiring;
@@ -74,6 +77,7 @@ public struct NetworkInputData : INetworkInput
             $"IsSitting: {isSitting}\n" +
             $"IsScoreBoardPopup: {isScoreBoardPopup}\n" +
             $"IsMenuPopup: {isMenuPopup}\n" +
+            $"IsChangingCamera: {isChangingCamera}\n" +
             $"IsShotgunOnFiring: {isShotgunOnFiring}\n" +
             $"IsOnZoom: {isOnZoom}";
         return result;

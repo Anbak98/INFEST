@@ -47,6 +47,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     private bool _isSitting;
     private bool _isScoreBoardPopup;
     private bool _isMenuPopup;
+    private bool _isChangingCamera;
 
     // 내부 변수(Input Action과 연결X)
     private bool _isShotgunOnFiring;
@@ -104,6 +105,9 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         _inputManager.GetInput(EPlayerInput.menu).started += OpenMenu;
         //_inputManager.GetInput(EPlayerInput.menu).canceled += CloseMenu;
+
+        _inputManager.GetInput(EPlayerInput.useItem).started += StartChangeCamera;
+        _inputManager.GetInput(EPlayerInput.useItem).canceled += CancelChangeCamera;
     }
 
     private void OnDisable()
@@ -147,6 +151,9 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         _inputManager.GetInput(EPlayerInput.menu).started -= OpenMenu;
         //_inputManager.GetInput(EPlayerInput.menu).canceled -= CloseMenu;
+
+        _inputManager.GetInput(EPlayerInput.useItem).started -= StartChangeCamera;
+        _inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelChangeCamera;
     }
 
     #region Get, Set
@@ -344,8 +351,31 @@ public class PlayerInputActionHandler : MonoBehaviour
     public bool GetIsMenuPopup() => _isMenuPopup;
 
     #endregion
-    #endregion
+    #region ChangeCamera(SpectorMode)
+    private void ChangeCamera(InputAction.CallbackContext context)
+    {
+        // 관전 모드 카메라 변경
 
+    }
+
+    private void StartChangeCamera(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] ChangeCamera triggered");
+        _isChangingCamera = true;
+        //Invoke(nameof(CancelUseItem), 0.1f);
+    }
+
+    private void CancelChangeCamera(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] ChangeCamera triggered reset");
+        _isChangingCamera = false;
+    }
+
+    public bool GetIsChangingCamera() => _isChangingCamera;
+
+
+    #endregion
+    #endregion
     /// <summary>
     /// 네트워크 입력 만들기
     /// PlayerInputSender에서 호출하여 저장된 입력을 서버로 전송한다
@@ -387,6 +417,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         if (_isMenuPopup) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);
+        if (_isChangingCamera) data.buttons.Set(NetworkInputData.BUTTON_CHANGECAMERA, true);
 
         _isInteracting = false;
         // 샷건의 경우 누르고 있어도 발사가 되면 안되니까 막아놓았다

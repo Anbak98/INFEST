@@ -143,6 +143,15 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""01776e8c-a111-424c-816f-2629fd3364d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -332,6 +341,17 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61faae8a-a384-4b52-86fb-0cf21597279b"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -353,6 +373,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         m_Player_ScoreBoard = m_Player.FindAction("ScoreBoard", throwIfNotFound: true);
         m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
+        m_Player_ChangeCamera = m_Player.FindAction("ChangeCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -427,6 +448,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ScoreBoard;
     private readonly InputAction m_Player_Swap;
     private readonly InputAction m_Player_Menu;
+    private readonly InputAction m_Player_ChangeCamera;
     public struct PlayerActions
     {
         private @PlayerActionMap m_Wrapper;
@@ -444,6 +466,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         public InputAction @ScoreBoard => m_Wrapper.m_Player_ScoreBoard;
         public InputAction @Swap => m_Wrapper.m_Player_Swap;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
+        public InputAction @ChangeCamera => m_Wrapper.m_Player_ChangeCamera;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -492,6 +515,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
+            @ChangeCamera.started += instance.OnChangeCamera;
+            @ChangeCamera.performed += instance.OnChangeCamera;
+            @ChangeCamera.canceled += instance.OnChangeCamera;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -535,6 +561,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
+            @ChangeCamera.started -= instance.OnChangeCamera;
+            @ChangeCamera.performed -= instance.OnChangeCamera;
+            @ChangeCamera.canceled -= instance.OnChangeCamera;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -567,5 +596,6 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         void OnScoreBoard(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
+        void OnChangeCamera(InputAction.CallbackContext context);
     }
 }

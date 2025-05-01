@@ -19,7 +19,8 @@ public enum EPlayerInput
     sit,
     scoreboard,
     swap,
-    menu
+    menu,
+    changeCamera
 }
 
 /// <summary>
@@ -106,6 +107,7 @@ public class InputManager : MonoBehaviour
             EPlayerInput.run => PlayerMoveAction.Player.Run,
             EPlayerInput.sit => PlayerMoveAction.Player.Sit,
             EPlayerInput.swap => PlayerMoveAction.Player.Swap,
+            EPlayerInput.changeCamera => PlayerMoveAction.Player.ChangeCamera,
             _ => null
         };
     }
