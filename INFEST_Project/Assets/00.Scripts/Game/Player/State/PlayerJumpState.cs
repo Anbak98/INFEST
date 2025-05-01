@@ -17,10 +17,13 @@ public class PlayerJumpState : PlayerAirState
     }
     public override void OnUpdate(NetworkInputData data)
     {
-        player.animationController.isJumping = data.isJumping; 
         base.OnUpdate(data);
+        player.animationController.isJumping = data.isJumping; 
         PlayerMove(data);
-        if(data.isFiring)
+
+        player.animationController.isFiring = data.isFiring;
+
+        if (data.isFiring)
             PlayerFire(data);
         controller.ApplyGravity();  // ม฿ทย
         if (controller.GetVerticalVelocity() <= 0)

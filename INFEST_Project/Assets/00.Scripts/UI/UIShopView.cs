@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using TMPro;
@@ -373,8 +374,49 @@ public class UIShopView : UIScreen
     public void OnClickSaleBtn(int index)
     {
         _store.RPC_RequestTrySale(Player.local, Player.local.Runner.LocalPlayer, index);
+
     }
 
+    public void UpdateSaleButtonState()
+    {
+        if (HasOnlyOneNonNullInAllArrays())
+        {
+            for (int i = 0; i < saleButton.Count; i++)
+            {
+                saleButton[i].interactable = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < saleButton.Count; i++)
+            {
+                saleButton[i].interactable = true;
+
+            }
+        }
+    }
+
+    public bool HasOnlyOneNonNullInAllArrays()
+    {
+        int count = 0;
+
+        foreach (var weapon in Player.local.inventory.weapon)
+        {
+            if (weapon != null) count++;
+        }
+
+        foreach (var weapon in Player.local.inventory.auxiliaryWeapon)
+        {
+            if (weapon != null) count++;
+        }
+
+        foreach (var itme in Player.local.inventory.consume)
+        {
+            if (itme != null) count++;
+        }
+
+        return count == 1;
+    }
     public void StoreInIt(Store store)
     {
         _store = store;
@@ -403,7 +445,7 @@ public class UIShopView : UIScreen
             bool recoveryItem = _itemKey < 900 && _itemKey > 800;
             bool shieldItme = _itemKey < 1000 && _itemKey > 900;
             #endregion
-
+            bool weaponDuplication = _inv.weapon[0]?.instance.data.key == _store.idList[i] || _inv.weapon[1]?.instance.data.key == _store.idList[i];
             Color32 color = Color.white;
 
             if (auxiliaryWeaponChk)
@@ -429,7 +471,7 @@ public class UIShopView : UIScreen
             if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.characterInfoInstance.curGold < weaponPrice))
                 buyButton[i].interactable = false;
 
-            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.curGold < weaponPrice)
+            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.curGold < weaponPrice || weaponDuplication)
                 buyButton[i].interactable = false;
 
             else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
@@ -507,7 +549,7 @@ public class UIShopView : UIScreen
 
     public void OnClickTypeBtn(int index)
     {
-        int _itemKey; 
+        int _itemKey;
 
         for (int i = 0; i < buyTaps.Length; i++)
         {
@@ -518,7 +560,7 @@ public class UIShopView : UIScreen
         {
 
             case 0:
-                for(int i=0; i< buyTaps.Length; i++)
+                for (int i = 0; i < buyTaps.Length; i++)
                 {
                     buyTaps[i].gameObject.SetActive(true);
                 }

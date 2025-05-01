@@ -21,12 +21,12 @@ public class PlayerAimState : PlayerGroundState
     {
         base.OnUpdate(data);
 
-        player.animationController.MoveDirection = data.direction;
-        PlayerMove(data);
+        //player.animationController.MoveDirection = data.direction;
+        //PlayerMove(data);
 
-        player.animationController.isFiring = data.isFiring;
-        if (data.isFiring)
-            PlayerFire(data);
+        //player.animationController.isFiring = data.isFiring;
+        //if (data.isFiring)
+        //    PlayerFire(data);
 
 
         // Aim 상태에서는 Idle, AimWalk, AimAttack으로 전환 가능

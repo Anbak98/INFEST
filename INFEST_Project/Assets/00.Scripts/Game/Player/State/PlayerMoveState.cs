@@ -45,10 +45,7 @@ public class PlayerMoveState : PlayerGroundState
             player.animationController.isJumping = data.isJumping;
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-        if (data.isSitting)
-        {
-            stateMachine.ChangeState(stateMachine.SitIdleState);
-        }
+
 
         if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
         {
@@ -60,9 +57,10 @@ public class PlayerMoveState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.AimWalkState);
         }
-        //if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
+
+        //if (data.isSitting)
         //{
-        //    stateMachine.ChangeState(stateMachine.ReloadState);
+        //    stateMachine.ChangeState(stateMachine.SitIdleState);
         //}
     }
 }

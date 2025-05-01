@@ -20,12 +20,11 @@ public class PlayerAimAttackState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-        player.animationController.MoveDirection = data.direction;
-        PlayerMove(data);
+        //player.animationController.MoveDirection = data.direction;
+        //PlayerMove(data);
 
         player.animationController.isFiring = data.isFiring;
-        if (data.isFiring)
-            PlayerFire(data);
+        PlayerFire(data);
 
         // AimAttack 상태에서는 Aim, Attack, AimAttackWalk, 
         if (data.direction != Vector3.zero)

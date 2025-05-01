@@ -52,7 +52,6 @@ public class PlayerCameraHandler : NetworkBehaviour
         {            
             if (GetInput(out NetworkInputData data))
             {
-
                 Vector2 mouseDelta = data.lookDelta;
 
                 float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;

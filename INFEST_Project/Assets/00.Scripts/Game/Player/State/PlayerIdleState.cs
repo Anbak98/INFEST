@@ -37,8 +37,8 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.OnUpdate(data);
 
-        player.animationController.MoveDirection = data.direction;
-        PlayerMove(data);
+        //player.animationController.MoveDirection = data.direction;
+        //PlayerMove(data);
 
         //player.animationController.isFiring = data.isFiring;
         //if (data.isFiring)
@@ -66,17 +66,11 @@ public class PlayerIdleState : PlayerGroundState
         {
             stateMachine.ChangeState(stateMachine.AimState);
         }
-        if (controller.IsGrounded() && data.isSitting)
-        {
-            stateMachine.ChangeState(stateMachine.SitIdleState);
-        }
-        //if (stateMachine.Player.GetWeapons() != null && data.isReloading)
+
+        // 앉는 상태는 잠금
+        //if (controller.IsGrounded() && data.isSitting)
         //{
-        //    stateMachine.ChangeState(stateMachine.ReloadState);
-        //}
-        //if (controller.IsGrounded() && data.isRunning)
-        //{
-        //    stateMachine.ChangeState(stateMachine.RunState);
+        //    stateMachine.ChangeState(stateMachine.SitIdleState);
         //}
     }
 }
