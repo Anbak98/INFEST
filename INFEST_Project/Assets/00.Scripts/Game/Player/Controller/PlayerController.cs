@@ -129,7 +129,7 @@ public class PlayerController : BaseController
     {
         // 네트워크 객체는 StateAuthority(호스트)만 생성할 수 있기 때문에 StateAuthority에 대한 확인이 필요
         // 호스트에서만 실행되고 클라이언트에서는 예측되지 않는다0
-        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner))
+        if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner) && !player.isInteraction)
         {
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))

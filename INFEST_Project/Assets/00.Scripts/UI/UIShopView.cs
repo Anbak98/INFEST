@@ -40,7 +40,6 @@ public class UIShopView : UIScreen
     public TextMeshProUGUI[] weaponNames;
     public TextMeshProUGUI[] ItmePrice;
     public Image[] itmeNameBG;
-    public Image[] itmePriceBG;
     public GameObject[] buyTaps;
 
     [Header("Button")]
@@ -391,7 +390,6 @@ public class UIShopView : UIScreen
             for (int i = 0; i < saleButton.Count; i++)
             {
                 saleButton[i].interactable = true;
-
             }
         }
     }
@@ -410,10 +408,10 @@ public class UIShopView : UIScreen
             if (weapon != null) count++;
         }
 
-        foreach (var itme in Player.local.inventory.consume)
-        {
-            if (itme != null) count++;
-        }
+        //foreach (var itme in Player.local.inventory.consume)
+        //{
+        //    if (itme != null) count++;
+        //}
 
         return count == 1;
     }
@@ -465,7 +463,6 @@ public class UIShopView : UIScreen
                 color = new Color32(103, 129, 156, 255);
             }
             itmeNameBG[i].color = color;
-            itmePriceBG[i].color = color;
 
 
             if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.characterInfoInstance.curGold < weaponPrice))
