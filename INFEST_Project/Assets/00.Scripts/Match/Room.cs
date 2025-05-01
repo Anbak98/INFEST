@@ -16,6 +16,8 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     public PlayerProfile MyProfile;
     [SerializeField] private List<PlayerProfile> _teamProfiles = new();
 
+    [Networked] public bool Lock { get; private set; } = false;
+
     //private bool _isPrivate = false;
 
     public override void Spawned()
@@ -38,72 +40,89 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-
-        // 방장이 없고, 현재 내가 StateAuthority면 새로 지정
-        if (HostPlayer == PlayerRef.None)
+        if(!Lock)
         {
-            HostPlayer = player;
-            Debug.Log($"[Room] Host reassigned to {player}");
-        }
+            // 방장이 없고, 현재 내가 StateAuthority면 새로 지정
+            if (HostPlayer == PlayerRef.None)
+            {
+                HostPlayer = player;
+                Debug.Log($"[Room] Host reassigned to {player}");
+            }
 
-        MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
+            MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        if (player == HostPlayer)
+        if (!Lock)
         {
-            // 방장이 나갔으면 다른 사람 중에서 새로 지정
-            foreach (var otherPlayer in runner.ActivePlayers)
+            if (player == HostPlayer)
             {
-                if (otherPlayer != player)
+                // 방장이 나갔으면 다른 사람 중에서 새로 지정
+                foreach (var otherPlayer in runner.ActivePlayers)
                 {
-                    HostPlayer = otherPlayer;
-                    Debug.Log($"[Room] Host transferred to {otherPlayer}");
+                    if (otherPlayer != player)
+                    {
+                        HostPlayer = otherPlayer;
+                        Debug.Log($"[Room] Host transferred to {otherPlayer}");
 
-                    break;
+                        break;
+                    }
+                }
+
+                // 아무도 없다면 초기화
+                if (runner.ActivePlayers.Count() == 0)
+                {
+                    HostPlayer = PlayerRef.None;
+                    Debug.Log($"[Room] No players left, host cleared.");
                 }
             }
 
-            // 아무도 없다면 초기화
-            if (runner.ActivePlayers.Count() == 0)
-            {
-                HostPlayer = PlayerRef.None;
-                Debug.Log($"[Room] No players left, host cleared.");
-            }
+            if (MatchManager.Instance != null)
+                MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
         }
-
-        MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_BroadcastUpdatePlayerProfile()
     {
-        MyProfile.SetInfo();
-        MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+        if (!Lock)
+        {
+            MyProfile.SetInfo();
+            MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendProfileToAll(PlayerProfile playerProfile)
     {
-        if (MyProfile != playerProfile && !_teamProfiles.Contains(playerProfile))
-            _teamProfiles.Add(playerProfile);
+        if(!Lock)
+        {
+            if (MyProfile != playerProfile && !_teamProfiles.Contains(playerProfile))
+                _teamProfiles.Add(playerProfile);
 
-        MatchManager.Instance.RoomUI.UpdateUIWhenJoinRoom();
-        MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+            MatchManager.Instance.RoomUI.UpdateUIWhenJoinRoom();
+            MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RemoveProfileToAll(PlayerProfile playerProfile)
     {
-        if (_teamProfiles.Contains(playerProfile))
-            _teamProfiles.Remove(playerProfile);
+        if(!Lock)
+        {
+            if (_teamProfiles.Contains(playerProfile))
+                _teamProfiles.Remove(playerProfile);
 
-        MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+            if (MatchManager.Instance != null && MatchManager.Instance.RoomUI != null)
+                MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
+        }
     }
 
     public void HostPlayGame()
     {
+        Lock = true;
         if (Runner.LocalPlayer == HostPlayer)
         {
             RPC_BrodcastPlayGame();
@@ -113,6 +132,12 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_BrodcastPlayGame()
     {
+        Lock = true;
+        if (Runner.LocalPlayer == HostPlayer)
+            PlayerPrefs.SetInt("Host", 1);
+        else
+            PlayerPrefs.SetInt("Host", 0);
+
         if (Runner.IsSharedModeMasterClient)
         {
             Runner.LoadScene("PlayStage(MVP)");
