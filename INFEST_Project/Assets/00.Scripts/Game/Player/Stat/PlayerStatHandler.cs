@@ -18,8 +18,10 @@ public class PlayerStatHandler : NetworkBehaviour
     [Networked] public int AttackPower { get; set; }
     [Networked] public int DefensePower { get; set; }
     [Networked] public int CurrentHealth { get; set; }
+    [Networked] public bool IsDead { get; set; }
 
     public event Action OnDeath;
+    public event Action OnRespawn;
     public event Action OnHealthChanged;
 
 
@@ -34,6 +36,7 @@ public class PlayerStatHandler : NetworkBehaviour
         AttackPower = attackPower;
         DefensePower = defensePower;
         CurrentHealth = MaxHealth;
+        IsDead = false;
     }
 
     // 리팩토링을 위한 메서드
@@ -78,8 +81,8 @@ public class PlayerStatHandler : NetworkBehaviour
     }
     public void SetHealth(int amount)
     {
-        if (CurrentHealth <= 0)
-            return;
+        //if (CurrentHealth <= 0)
+        //    return;
 
         CurrentHealth = amount;
         OnHealthChanged?.Invoke();
@@ -87,6 +90,11 @@ public class PlayerStatHandler : NetworkBehaviour
         {
             CurrentHealth = 0;
             //HandleDeath();
+        }
+        else if (IsDead && CurrentHealth > 0)
+        {
+            IsDead = false;
+            HandleRespawn();
         }
     }
     // 회복
@@ -99,9 +107,14 @@ public class PlayerStatHandler : NetworkBehaviour
     public void HandleDeath()
     {
         // MyDebug.Log($"PlayerStatHandler HandleDeath : {CurrentHealth}"); 
+        IsDead = true;
         OnDeath?.Invoke();
     }
-
+    // 리스폰
+    public void HandleRespawn()
+    {
+        OnRespawn?.Invoke();
+    }
     // 지속시간 스탯 버프 처리
     public void ApplyTemporaryBuff(
     int? speedDelta = null,
