@@ -68,7 +68,7 @@ public class PlayerController : BaseController
         // 회전은 막고, 이동만 한다
         // xz평면상에서만 이동해야한다
         player.networkCharacterController.Move(
-            moveDir
+            moveDir * player.statHandler.MoveSpeedModifier
         );
 
         // 회전 강제 고정: 카메라가 지정한 forward로

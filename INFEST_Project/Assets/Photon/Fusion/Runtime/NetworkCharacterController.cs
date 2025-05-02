@@ -90,7 +90,7 @@ namespace Fusion
             var previousPos = transform.position;
             var moveVelocity = Data.Velocity;
 
-            direction = direction.normalized;
+            //direction = direction.normalized;
 
             if (Data.Grounded && moveVelocity.y < 0)
             {
