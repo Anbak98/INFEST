@@ -10,6 +10,8 @@ public class PlayerAimWalkState : PlayerGroundState
 
     public override void Enter()
     {
+        stateMachine.StatHandler.MoveSpeedModifier = 1;
+
         base.Enter();
     }
     public override void Exit()
