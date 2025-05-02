@@ -40,8 +40,7 @@ public class PlayerIdleState : PlayerGroundState
 
         if ((controller.IsGrounded()) && data.isJumping)
         {
-            player.animationController.MoveDirection = data.direction;
-
+            player.animationController.isJumping = data.isJumping;
             stateMachine.ChangeState(stateMachine.JumpState);
         }
         // 정지한 상태에서 좌우회전
