@@ -37,11 +37,6 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     [HideInInspector] public MonsterSpawner monsterSpawner;
 
-    public void SpawnMonster()
-    {
-        monsterSpawner.SpawnMonsterOnWave();
-    }
-
     public void Start()
     {
         ReconnectionWithSwitchingSharedToHost();

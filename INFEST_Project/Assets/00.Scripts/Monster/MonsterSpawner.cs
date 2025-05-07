@@ -1,41 +1,41 @@
 using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MonsterSpawner : NetworkBehaviour
 {
     // TickTimer timer; // 나중에 타이머로 경보기하면 될듯
-    private int SpawnMonsterNumberOnEachWave = 50;
-    public List<MonsterSpawnPoint> pointRefs;
+    private readonly int SpawnMonsterNumberOnEachWave = 50;
+    public List<Transform> points;
+    public NetworkPrefabRef Monster;
 
-    public void SpawnMonsterOnWave()
+    public void SpawnMonsterOnWave(Transform waveTarget)
     {
-        foreach (var point in pointRefs)
-        {
-            Debug.Log(point.transform.position);
-        }
         if (Runner.IsServer)
         {
             int remainSpawnNumber = SpawnMonsterNumberOnEachWave;
             int iteral = 20;
-            while(remainSpawnNumber > 0 && iteral > 0)
+            while (remainSpawnNumber > 0 && iteral > 0)
             {
-                int point = Random.Range(0, pointRefs.Count);
+                int point = Random.Range(0, points.Count);
                 int num = Random.Range(0, 8);
                 num = num > remainSpawnNumber ? remainSpawnNumber : num;
-                pointRefs[point].Spawn(num);
+                Spawn(points[point].position, num, waveTarget);
                 remainSpawnNumber -= num;
-                iteral--; 
+                iteral--;
             }
         }
     }
 
-    //[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    //public void RPC_WaveStart()
-    //{
-    //    if (Runner.IsServer)
-    //    {
-    //        SpawnMonsterOnWave();
-    //    }
-    //}
+    private void Spawn(Vector3 position, int num, Transform waveTarget)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            MonsterNetworkBehaviour mnb = Runner.Spawn(Monster, position).GetComponent<MonsterNetworkBehaviour>();
+            mnb.GetComponent<NavMeshAgent>().enabled = true;
+            mnb.target = waveTarget;
+            mnb.FSM.ChangePhase<PJ_HI_Phase_Wave>();
+        }
+    }
 }
