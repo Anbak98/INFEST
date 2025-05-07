@@ -14,7 +14,9 @@ public enum EPlayerInput
     zoom,
     reload,
     interaction,
-    useItem,
+    grenade,
+    heal,
+    shield,
     run,
     sit,
     scoreboard,
@@ -87,7 +89,7 @@ public class InputManager : MonoBehaviour
         return input switch
         {           
             EPlayerInput.interaction => PlayerAction.Player.Interaction,
-            EPlayerInput.useItem => PlayerAction.Player.UseItem,           
+            //EPlayerInput.useItem => PlayerAction.Player.UseItem,           
             EPlayerInput.scoreboard => PlayerAction.Player.ScoreBoard,            
             EPlayerInput.menu => PlayerAction.Player.Menu,
             _ => null
@@ -108,6 +110,10 @@ public class InputManager : MonoBehaviour
             EPlayerInput.sit => PlayerMoveAction.Player.Sit,
             EPlayerInput.swap => PlayerMoveAction.Player.Swap,
             EPlayerInput.changeCamera => PlayerMoveAction.Player.ChangeCamera,
+            EPlayerInput.grenade => PlayerAction.Player.Grenade,           
+            EPlayerInput.heal => PlayerAction.Player.Heal,     
+            EPlayerInput.shield => PlayerAction.Player.Shield,           
+
             _ => null
         };
     }

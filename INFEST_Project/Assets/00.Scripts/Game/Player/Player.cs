@@ -135,6 +135,21 @@ public class Player : NetworkBehaviour
                     Weapons.Aiming(false);
 
                 }
+
+                if(data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
+                {
+
+                }
+
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
+                {
+
+                }
+
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
+                {
+
+                }
             }
         }
     }

@@ -3583,7 +3583,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 1258183370
+  SortKey: 123150925
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -3737,6 +3737,7 @@ MonoBehaviour:
   _AttackPower: 0
   _DefensePower: 0
   _CurrentHealth: 100
+  _IsDead: 0
 --- !u!114 &3724504915549296076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3781,6 +3782,7 @@ MonoBehaviour:
   store: {fileID: 0}
   inventory: {fileID: 0}
   Weapons: {fileID: 7032259557335484116}
+  Consumes: {fileID: 0}
   MoveSpeed: 6
   JumpForce: 10
   CameraHandle: {fileID: 7721353801691121081}
@@ -3804,6 +3806,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   auxiliaryWeapon:
+  - {fileID: 0}
+  consume:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   equippedWeapon: {fileID: 0}
 --- !u!1 &7930812640411088447
