@@ -8,7 +8,7 @@ public class PlayerDeadState : PlayerBaseState
 {
     float respawnTime = 0f;  // 30초
     // 플레이어의 respawn을 위해 ... spawn point가 저장되어있는 spawner를 알아야 한다
-    public MVPStageSpawner stageSpawner;    // 생성될 때 연결해야겠다
+    //public MVPStageSpawner stageSpawner;    // 생성될 때 연결해야겠다
     // 관전 모드: spawner > player > camera 로 접근할 수 있다
      
     // 카메라를 보는건 동기화할 필요는 없다. PlayerRef말고 Player
@@ -16,8 +16,8 @@ public class PlayerDeadState : PlayerBaseState
 
     public PlayerDeadState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
-        stageSpawner = GameObject.FindFirstObjectByType<MVPStageSpawner>();
-        Debug.Log("stageSpawner: "+ stageSpawner.name);
+        //stageSpawner = GameObject.FindFirstObjectByType<MVPStageSpawner>();
+        //Debug.Log("stageSpawner: "+ stageSpawner.name);
     }
 
     public override void Enter()
@@ -43,17 +43,15 @@ public class PlayerDeadState : PlayerBaseState
         {
             // 메서드 호출
             FindAlivePlayers(); // 매 프레임마다 생존자 갱신
-
         }
-        Debug.Log(respawnTime);
+
         // 30초 후 체력 100 채우고 Idle 상태로 전환
         if (respawnTime >= 30f)
         {
             // 자신이 spawn 되었던 위치로
-            player.transform.position = stageSpawner.playerSpawnPoint.transform.position;
+            //player.transform.position = stageSpawner.playerSpawnPoint.transform.position;
 
-
-            statHandler.CurrentHealth = 100;
+            statHandler.SetHealth(100);
             player.animationController.Die = false;
             player.stateMachine.IsDead = false;
             player.FirstPersonRoot.SetActive(true);
@@ -77,6 +75,10 @@ public class PlayerDeadState : PlayerBaseState
     {
         // 리스트에서 검색 후, 살아있는것을 저장한다
         //if (stageSpawner.spawnedCharacters.TryGetValue())
+        //{
+
+        //}
+
     }
 
     // 다른 플레이어의 카메라 전환(관전모드)

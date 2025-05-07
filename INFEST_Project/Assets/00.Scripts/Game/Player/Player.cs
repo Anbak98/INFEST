@@ -76,6 +76,7 @@ public class Player : NetworkBehaviour
         inventory = GetComponent<Inventory>();
         statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
         statHandler.OnDeath += OnDeath;
+        statHandler.OnRespawn += OnRespawn;
     }
 
     private void OnDeath()
@@ -84,6 +85,13 @@ public class Player : NetworkBehaviour
         ThirdPersonRoot.SetActive(true);
         stateMachine.ChangeState(stateMachine.DeadState);
     }
+    private void OnRespawn()
+    {
+        FirstPersonRoot.SetActive(true);
+        ThirdPersonRoot.SetActive(false);
+        stateMachine.ChangeState(stateMachine.IdleState);
+    }
+
 
     private void Start()
     {
@@ -95,38 +103,35 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData data))
         {
-            if(HasStateAuthority)
+            DEBUG_DATA = data;
+            playerController.stateMachine.OnUpdate(data);
+            //cameraHandler.RoateCamera(data);
+
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                DEBUG_DATA = data;
-                playerController.stateMachine.OnUpdate(data);
-                //cameraHandler.RoateCamera(data);
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
-                {
+                if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
 
-                    if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
+                else store.RPC_RequestStopInteraction(Object.InputAuthority);
 
-                    else store.RPC_RequestStopInteraction(Object.InputAuthority);
+                isInteraction = !isInteraction;
 
-                    isInteraction = !isInteraction;
+            }
 
-                }
+            if (data.scrollValue.y != 0)
+            {
+                Debug.Log("스왑");
+                Weapons.Swap(data.scrollValue.y);
+            }
 
-                if (data.scrollValue.y != 0)
-                {
-                    Debug.Log("스왑");
-                    Weapons.Swap(data.scrollValue.y);
-                }
+            if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+            {
+                Weapons.Aiming(true);
+            }
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+            {
+                Weapons.Aiming(false);
 
-                if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
-                {
-                    Weapons.Aiming(true);
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
-                {
-                    Weapons.Aiming(false);
-
-                }
             }
         }
     }
