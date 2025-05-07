@@ -15,7 +15,7 @@ public class WaveTrigger : MonoBehaviour
             if (_isTrigger) return;
             if (_MVPStageSpawner.monsterSpawner == null) return;
 
-            _MVPStageSpawner.monsterSpawner.SpawnMonsterOnWave();
+            _MVPStageSpawner.monsterSpawner.SpawnMonsterOnWave(transform);
             _isTrigger = true;
         }
     }

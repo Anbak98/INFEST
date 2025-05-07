@@ -1,6 +1,7 @@
 using Fusion;
 using Fusion.Addons.Physics;
 using Fusion.Sockets;
+using Fusion.Statistics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,11 +37,6 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     [HideInInspector] public MonsterSpawner monsterSpawner;
 
-    public void SpawnMonster()
-    {
-        monsterSpawner.SpawnMonsterOnWave();
-    }
-
     public void Start()
     {
         ReconnectionWithSwitchingSharedToHost();
@@ -48,36 +44,68 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     async void StartGame(GameMode mode)
     {
-        // Create the Fusion runner and let it know that we will be providing user input
-        _runner = gameObject.AddComponent<NetworkRunner>();
+        StartGameResult result;
+        int retryCount = 0;
 
-        // 네트워크 물리가 러너 객체에서 RunnerSimulatePhysics3D 컴포넌트를 작동시키려면 필요 
-        gameObject.AddComponent<RunnerSimulatePhysics3D>();
-
-        _runner.ProvideInput = true;
-
-        // Create the NetworkSceneInfo from the current scene
-        var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-        var sceneInfo = new NetworkSceneInfo();
-        if (scene.IsValid)
+        do
         {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+            if (_runner != null)
+                await _runner.Shutdown();
+
+            if(mode == GameMode.Host)
+            {
+                _loadingTextUI.text = $"게임을 생성 중입니다... {retryCount}";
+            }
+            else
+            {
+                _loadingTextUI.text = $"게임을 참가 중입니다... {retryCount}";
+            }
+
+            var runnerGO = new GameObject("Runner (Host)");
+            var newRunner = runnerGO.AddComponent<NetworkRunner>();
+            runnerGO.AddComponent<FusionStatistics>();
+
+            _runner = newRunner;
+            _runner.ProvideInput = true;
+            // Create the Fusion runner and let it know that we will be providing user input
+            //gameObject.AddComponent<FusionStatistics>();
+
+            // 네트워크 물리가 러너 객체에서 RunnerSimulatePhysics3D 컴포넌트를 작동시키려면 필요 
+            //gameObject.AddComponent<RunnerSimulatePhysics3D>();
+
+            // Create the NetworkSceneInfo from the current scene
+            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+            var sceneInfo = new NetworkSceneInfo();
+            if (scene.IsValid)
+            {
+                sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+            }
+
+            _runner.ProvideInput = true;
+
+            /// AddCallbacks 되어 있는 경우에만 키 입력시  OnInput 호출가능
+            // Start or join (depends on gamemode) a session with a specific name
+            result = await _runner.StartGame(new StartGameArgs()
+            {
+                GameMode = mode,
+                SessionName = "TestRoom",
+                Scene = scene,
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            });
+
+            if (_runner.IsServer)
+            {
+                _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+            }
+            retryCount++;
+        } while (!result.Ok && retryCount < 15);
+
+        if(!result.Ok)
+        {
+            _loadingTextUI.text = result.ToString();
         }
 
-        /// AddCallbacks 되어 있는 경우에만 키 입력시 OnInput 호출가능
-        // Start or join (depends on gamemode) a session with a specific name
-        await _runner.StartGame(new StartGameArgs()
-        {
-            GameMode = mode,
-            SessionName = "TestRoom",
-            Scene = scene,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
-
-        if (_runner.IsServer)
-        {
-            _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
-        }
+        _runner.AddCallbacks(this);
     }
 
     private void OnGUI()
@@ -112,7 +140,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
                 runner.Spawn(_storePrefab, Vector3.zero);
 
-                runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
+                //runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
                 
             }
 
@@ -156,27 +184,37 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
         StartGameResult result;
         int retryCount = 0;
 
+        GameMode gameMode;
+
+        if (PlayerPrefs.GetInt("Host") == 1)
+        {
+            gameMode = GameMode.Host;
+            _loadingTextUI.text = $"게임을 생성 중입니다... {retryCount}";
+        }
+        else
+        {
+            gameMode = GameMode.Client;
+            _loadingTextUI.text = $"호스트가 게임을 생성 중입니다... {retryCount}";
+        }
+
+
         if (_runner != null)
         {
-            GameMode gameMode;
-
-            if (PlayerPrefs.GetInt("Host") == 1)
+            if (gameMode == GameMode.Host)
             {
-                gameMode = GameMode.Host;
                 _loadingTextUI.text = $"게임을 생성 중입니다... {retryCount}";
             }
             else
             {
-                gameMode = GameMode.Client;
                 _loadingTextUI.text = $"호스트가 게임을 생성 중입니다... {retryCount}";
             }
 
             do
             {
                 await _runner.Shutdown();
-
                 var runnerGO = new GameObject("Runner (Host)");
                 var newRunner = runnerGO.AddComponent<NetworkRunner>();
+                runnerGO.AddComponent<FusionStatistics>();
 
                 _runner = newRunner;
                 _runner.ProvideInput = true;
@@ -212,10 +250,23 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnConnectedToServer(NetworkRunner runner) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+        _loadingTextUI.text = shutdownReason.ToString();
+        _loadingUI.SetActive(true);
+    }
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) 
+    { 
+        _loadingTextUI.text = reason.ToString();
+        _loadingUI.SetActive(true);    
+    }
+
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
+    {
+        _loadingTextUI.text = reason.ToString();
+        _loadingUI.SetActive(true);
+    }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }

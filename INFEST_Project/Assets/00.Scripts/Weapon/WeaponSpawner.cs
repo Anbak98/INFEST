@@ -30,6 +30,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void Fire(bool holdingPressed)
     {
+        Debug.Log(_activeWeaponIndex);
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         _weapons[_activeWeaponIndex].Fire(holdingPressed);
     }
@@ -162,7 +163,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     private bool _isAiming;
 
-    [Networked] private Vector3 _moveInput { get; set; }
+    private Vector3 _moveInput;
     private float _smoothGait;
 
     private bool _bSprinting;
@@ -204,6 +205,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void Update()
     {
+        
         _adsWeight = Mathf.Clamp01(_adsWeight + playerSettings.aimSpeed * Time.deltaTime * (_isAiming ? 1f : -1f));
 
         _smoothGait = Mathf.Lerp(_smoothGait, GetDesiredGait(),

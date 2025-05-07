@@ -15,7 +15,7 @@ public class MonsterSpawnerEditor : Editor
         {
             if (GUILayout.Button("Start Wave"))
             {
-                monsterSpawner.SpawnMonsterOnWave();
+                //monsterSpawner.SpawnMonsterOnWave();
             }
         }
         else

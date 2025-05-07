@@ -56,7 +56,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     [SerializeField]
     private InputManager _inputManager;
 
-    [SerializeField] private UIController _UIController;
+    //[SerializeField] private UIController _UIController;
 
     private void Start()
     {
@@ -317,14 +317,14 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Scoreboard
     private void OpenScoreboard(InputAction.CallbackContext context)
     {
-        _UIController.Show<UIScoreboardView>();
-        _isScoreBoardPopup = true;
+        //_UIController.Show<UIScoreboardView>();
+        //_isScoreBoardPopup = true;
     }
 
     private void CloseScoreboard(InputAction.CallbackContext context)
     {
-        _UIController.Hide();
-        _isScoreBoardPopup = false;
+        //_UIController.Hide();
+        //_isScoreBoardPopup = false;
     }
     public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
     #endregion
@@ -333,13 +333,13 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         if (!_isMenuPopup)
         {
-            _UIController.Show<UIMenuView>();
-            _isMenuPopup = true;
+            //_UIController.Show<UIMenuView>();
+            //_isMenuPopup = true;
         }
         else
         {
-            _UIController.Hide();
-            _isMenuPopup = false;
+            //_UIController.Hide();
+            //_isMenuPopup = false;
         }
     }
 
