@@ -19,7 +19,7 @@ public class ScoreboardManager : NetworkBehaviour
 {
     public static ScoreboardManager Instance { get; private set; }
 
-    [Networked]
+    [Networked, Capacity(32)]
     public NetworkDictionary<PlayerRef, PlayerScoreData> PlayerScores => default;
 
     private UIScoreboardView scoreboardView;
@@ -29,8 +29,8 @@ public class ScoreboardManager : NetworkBehaviour
     public override void Spawned()
     {
         Instance = this;
-        scoreboardView = UIScoreboardView.Instance;
-    }
+        scoreboardView = UIScoreboardView.Instance;       
+    }   
 
     public void OnPlayerJoined(PlayerRef newPlayer, CharacterInfoData info)
     {
@@ -48,23 +48,26 @@ public class ScoreboardManager : NetworkBehaviour
 
             RPC_AddExistingPlayerRow(newPlayer, existing, kvp.Value, PlayerScores[existing]);
         }
-    }
+    }    
 
     // 모든 클라이언트에게 새 플레이어 행 추가
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_BroadcastAddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
     {
         scoreboardView.AddPlayerRow(player, info);
         scoreboardView.UpdatePlayerRow(player, score);
-    }
+    }  
 
     // 새로 들어온 클라이언트에게 기존 플레이어 정보를 알려 줌
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_AddExistingPlayerRow(PlayerRef target, PlayerRef player, CharacterInfoData info, PlayerScoreData score)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_AddExistingPlayerRow(PlayerRef newPlayer, PlayerRef existingPlayer, CharacterInfoData info, PlayerScoreData score)
     {
-        scoreboardView.AddPlayerRow(player, info);
-        scoreboardView.UpdatePlayerRow(player, score);
-    }    
+        if (Runner.LocalPlayer == newPlayer)
+        {
+            scoreboardView.AddPlayerRow(existingPlayer, info);
+            scoreboardView.UpdatePlayerRow(existingPlayer, score);
+        }
+    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddKill(PlayerRef player)
