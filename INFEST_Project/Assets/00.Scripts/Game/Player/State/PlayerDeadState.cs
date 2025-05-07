@@ -43,7 +43,6 @@ public class PlayerDeadState : PlayerBaseState
         {
             // 메서드 호출
             FindAlivePlayers(); // 매 프레임마다 생존자 갱신
-
         }
         Debug.Log(respawnTime);
         // 30초 후 체력 100 채우고 Idle 상태로 전환
@@ -52,8 +51,7 @@ public class PlayerDeadState : PlayerBaseState
             // 자신이 spawn 되었던 위치로
             player.transform.position = stageSpawner.playerSpawnPoint.transform.position;
 
-
-            statHandler.CurrentHealth = 100;
+            statHandler.SetHealth(100);
             player.animationController.Die = false;
             player.stateMachine.IsDead = false;
             player.FirstPersonRoot.SetActive(true);
@@ -77,6 +75,10 @@ public class PlayerDeadState : PlayerBaseState
     {
         // 리스트에서 검색 후, 살아있는것을 저장한다
         //if (stageSpawner.spawnedCharacters.TryGetValue())
+        //{
+
+        //}
+
     }
 
     // 다른 플레이어의 카메라 전환(관전모드)

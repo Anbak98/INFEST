@@ -38,16 +38,15 @@ public class PlayerIdleState : PlayerGroundState
         base.OnUpdate(data);
 
 
+        if ((controller.IsGrounded()) && data.isJumping)
+        {
+            player.animationController.isJumping = data.isJumping;
+            stateMachine.ChangeState(stateMachine.JumpState);
+        }
         // 정지한 상태에서 좌우회전
         if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
-        }
-        if ((controller.IsGrounded()) && data.isJumping)
-        {
-            player.animationController.MoveDirection = data.direction;
-
-            stateMachine.ChangeState(stateMachine.JumpState);
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if (stateMachine.Player.GetWeapons() != null && data.isFiring)

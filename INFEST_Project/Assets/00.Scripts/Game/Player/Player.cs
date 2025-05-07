@@ -76,6 +76,7 @@ public class Player : NetworkBehaviour
         inventory = GetComponent<Inventory>();
         statHandler.OnHealthChanged += attackedEffectController.CalledWhenPlayerAttacked;
         statHandler.OnDeath += OnDeath;
+        statHandler.OnRespawn += OnRespawn;
     }
 
     private void OnDeath()
@@ -84,6 +85,13 @@ public class Player : NetworkBehaviour
         ThirdPersonRoot.SetActive(true);
         stateMachine.ChangeState(stateMachine.DeadState);
     }
+    private void OnRespawn()
+    {
+        FirstPersonRoot.SetActive(true);
+        ThirdPersonRoot.SetActive(false);
+        stateMachine.ChangeState(stateMachine.IdleState);
+    }
+
 
     private void Start()
     {
