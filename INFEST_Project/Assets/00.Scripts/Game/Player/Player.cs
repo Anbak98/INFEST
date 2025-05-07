@@ -138,7 +138,8 @@ public class Player : NetworkBehaviour
 
                 if(data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
                 {
-
+                    Debug.Log("G≈∞ »£√‚µ ");
+                    Consumes.Throw();
                 }
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))

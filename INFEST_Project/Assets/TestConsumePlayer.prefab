@@ -931,7 +931,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10801
+  animator: {fileID: 0}
   _curNum: 0
+  projectilePrefab:
+    RawGuidValue: 36d34a5e19f5c0442a5c379a4e14d4e8
+  throwPoint: {fileID: 7021053685950822612}
 --- !u!1 &1774738380087894093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1693,7 +1697,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10702
+  animator: {fileID: 0}
   _curNum: 0
+  projectilePrefab:
+    RawGuidValue: 36d34a5e19f5c0442a5c379a4e14d4e8
+  throwPoint: {fileID: 7021053685950822612}
 --- !u!1 &3500846354407915979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,7 +1811,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10703
+  animator: {fileID: 0}
   _curNum: 0
+  projectilePrefab:
+    RawGuidValue: 36d34a5e19f5c0442a5c379a4e14d4e8
+  throwPoint: {fileID: 7021053685950822612}
 --- !u!1 &3670093949919996899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2335,6 +2347,37 @@ Transform:
   - {fileID: 6519896642322760788}
   m_Father: {fileID: 8553666728141202083}
   m_LocalEulerAnglesHint: {x: 1.5897988, y: -0.1737251, z: 4.547512}
+--- !u!1 &5021649924714248499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4433686811124046470}
+  m_Layer: 0
+  m_Name: ThrowPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4433686811124046470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5021649924714248499}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7021053685950822612}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5029900412510758756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2480,7 +2523,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10701
+  animator: {fileID: 0}
   _curNum: 0
+  projectilePrefab:
+    RawGuidValue: 36d34a5e19f5c0442a5c379a4e14d4e8
+  throwPoint: {fileID: 7021053685950822612}
 --- !u!1 &5228384059822058398
 GameObject:
   m_ObjectHideFlags: 0
@@ -3765,6 +3812,7 @@ Transform:
   - {fileID: 7383850268062371032}
   - {fileID: 4858310217096506027}
   - {fileID: 8780455993663653173}
+  - {fileID: 4433686811124046470}
   m_Father: {fileID: 3506931298530967630}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6407314250102011187
@@ -4282,7 +4330,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10901
+  animator: {fileID: 0}
   _curNum: 0
+  projectilePrefab:
+    RawGuidValue: 36d34a5e19f5c0442a5c379a4e14d4e8
+  throwPoint: {fileID: 4433686811124046470}
 --- !u!1 &9052672135210140865
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,7 +28,20 @@ public class Consume : NetworkBehaviour
     
     protected void RunAnimation()
     {
-        animator.SetTrigger("");
+        //animator.SetTrigger("");
     }
+
+    public virtual void Throw()
+    {
+
+    }
+
+    public void CollThrow()
+    {
+        Debug.Log("Consume »£√‚");
+
+        Throw();
+    }
+
 }
 

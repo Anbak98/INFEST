@@ -7,4 +7,15 @@ public class ConsumeSpawner : NetworkBehaviour
 {
     public List<Consume> Consumes;
 
+    public void Throw()
+    {
+        for(int i=0; i<3; i++)
+        {
+            if (Consumes[i] == Player.local.inventory.consume[0])
+            {
+                Debug.Log("ConsumeSpawner È£Ãâ");
+                Consumes[i].CollThrow();
+            }
+        }
+    }
 }
