@@ -1545,6 +1545,7 @@ MonoBehaviour:
   store: {fileID: 0}
   inventory: {fileID: 0}
   Weapons: {fileID: 0}
+  Consumes: {fileID: 0}
   MoveSpeed: 6
   JumpForce: 10
   CameraHandle: {fileID: 7721353801691121081}
@@ -1568,6 +1569,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   auxiliaryWeapon:
+  - {fileID: 0}
+  consume:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   equippedWeapon: {fileID: 0}
 --- !u!1 &8169286849145927954

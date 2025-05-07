@@ -199,7 +199,7 @@ public class UIShopView : UIScreen
 
     public void ItemSet(int index)
     {
-        ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
+        Consume[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
 
         if (ItemInv[index] == null)
         {
@@ -209,11 +209,11 @@ public class UIShopView : UIScreen
             return;
         }
 
-        itemWeaponText[index].text = $"{ItemInv[index].curNum}/{ItemInv[index].data.MaxNum}";
-        itemPrice[index].text = $"{ItemInv[index].data.Price}G";
-        itemName[index].text = $"{ItemInv[index].data.Name}";
+        itemWeaponText[index].text = $"{ItemInv[index].curNum}/{ItemInv[index].instance.data.MaxNum}";
+        itemPrice[index].text = $"{ItemInv[index].instance.data.Price}G";
+        itemName[index].text = $"{ItemInv[index].instance.data.Name}";
 
-        if (ItemInv[index].data.MaxNum <= ItemInv[index].curNum)
+        if (ItemInv[index].instance.data.MaxNum <= ItemInv[index].curNum)
         {
             itemPrice[index].text = $"- G";
         }
@@ -249,11 +249,11 @@ public class UIShopView : UIScreen
         if (inv.weapon[1] != null)
             main2Price = (inv.weapon[1].instance.data.MaxBullet - inv.weapon[1].curBullet) * inv.weapon[1].instance.data.BulletPrice;
         if (inv.consume[0] != null)
-            item1Price = (inv.consume[0].data.MaxNum - inv.consume[0].curNum) * inv.consume[0].data.Price;
+            item1Price = (inv.consume[0].instance.data.MaxNum - inv.consume[0].curNum) * inv.consume[0].instance.data.Price;
         if (inv.consume[1] != null)
-            item2Price = (inv.consume[1].data.MaxNum - inv.consume[1].curNum) * inv.consume[1].data.Price;
+            item2Price = (inv.consume[1].instance.data.MaxNum - inv.consume[1].curNum) * inv.consume[1].instance.data.Price;
         if (inv.consume[2] != null)
-            item3Price = (inv.consume[2].data.MaxNum - inv.consume[2].curNum) * inv.consume[2].data.Price;
+            item3Price = (inv.consume[2].instance.data.MaxNum - inv.consume[2].curNum) * inv.consume[2].instance.data.Price;
 
         if (Player.local.characterInfoInstance.curDefGear >= 200)
         {
@@ -473,19 +473,19 @@ public class UIShopView : UIScreen
 
             else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
             {
-                if (_inv.consume[0]?.data.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.data.MaxNum)
+                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
             }
 
             else if ((recoveryItem && _inv.consume[1] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
             {
-                if (_inv.consume[1]?.data.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.data.MaxNum)
+                if (_inv.consume[1]?.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
             }
 
             else if ((shieldItme && _inv.consume[2] != null) || Player.local.characterInfoInstance.curGold < consumePrice)
             {
-                if (_inv.consume[2]?.data.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.data.MaxNum)
+                if (_inv.consume[2]?.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
             }
 
@@ -514,7 +514,7 @@ public class UIShopView : UIScreen
     public void SaleSet(int index)
     {
         Weapon[] weaponInv = { Player.local.inventory.auxiliaryWeapon[0], Player.local.inventory.weapon[0], Player.local.inventory.weapon[1] };
-        ConsumeInstance[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
+        Consume[] ItemInv = { Player.local.inventory.consume[0], Player.local.inventory.consume[1], Player.local.inventory.consume[2] };
 
 
         if (index < 3)
@@ -527,7 +527,7 @@ public class UIShopView : UIScreen
         else if (index > 2)
         {
             if (ItemInv[index - 3] != null)
-                saleButtonText[index].text = $"{ItemInv[index - 3].data.Price / 2}G";
+                saleButtonText[index].text = $"{ItemInv[index - 3].instance.data.Price / 2}G";
             else
                 saleButtonText[index].text = $"- G";
         }

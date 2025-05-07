@@ -4,7 +4,7 @@ public class Inventory : MonoBehaviour
 { 
     public Weapon[] weapon = new Weapon[2];
     public Weapon[] auxiliaryWeapon = new Weapon[1];
-    public ConsumeInstance[] consume = new ConsumeInstance[3];
+    public Consume[] consume = new Consume[3];
     public Weapon equippedWeapon;
 
     public void AddWeponItme(Weapon item)
@@ -23,14 +23,13 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void AddConsumeItme(ConsumeInstance item)
+    public void AddConsumeItme(Consume item)
     {
-        int key = item.data.key % 10000;
+        int key = item.instance.data.key % 10000;
         if (key < 800)
         {
             if (consume[0] == null)
                 consume[0] = item;
-
             else
                 consume[0].AddNum();
         }
@@ -38,7 +37,6 @@ public class Inventory : MonoBehaviour
         {
             if (consume[1] == null)
                 consume[1] = item;
-            
             else
                 consume[1].AddNum();
 
@@ -47,7 +45,6 @@ public class Inventory : MonoBehaviour
         {
             if (consume[2] == null)
                 consume[2] = item;
-
             else
                 consume[2].AddNum();
         }

@@ -41,7 +41,7 @@ public class Player : NetworkBehaviour
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
     public WeaponSpawner Weapons;// SY
-
+    public ConsumeSpawner Consumes;// SY
     [Header("Setup")]
     public float MoveSpeed = 6f;
     public float JumpForce = 10f;
@@ -103,7 +103,7 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData data))
         {
-            if(HasStateAuthority)
+            if (HasStateAuthority)
             {
                 DEBUG_DATA = data;
                 playerController.stateMachine.OnUpdate(data);
@@ -126,7 +126,7 @@ public class Player : NetworkBehaviour
                     Weapons.Swap(data.scrollValue.y);
                 }
 
-                if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
                 {
                     Weapons.Aiming(true);
                 }
@@ -188,18 +188,18 @@ public class Player : NetworkBehaviour
             Debug.Log("Local Player 설정 완료");
         }
 
-        if(characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
+        if (characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
         {
             characterInfoInstance = new(1);
 
-            for(int i=0; i< Weapons.Weapons.Count; i++)
+            for (int i = 0; i < Weapons.Weapons.Count; i++)
             {
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartAuxiliaryWeapon)
                 {
                     inventory.auxiliaryWeapon[0] = Weapons.Weapons[i];
                     inventory.auxiliaryWeapon[0].IsCollected = true;
                 }
-                    
+
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartWeapon1)
                 {
                     inventory.weapon[0] = Weapons.Weapons[i];
@@ -211,19 +211,38 @@ public class Player : NetworkBehaviour
             }
             //inventory.auxiliaryWeapon[0] = Weapons.weapons[i] (characterInfoInstance.data.StartAuxiliaryWeapon);
             //inventory.weapon[0] =  new WeaponInstance(characterInfoInstance.data.StartWeapon1);
-            #region 체크용 bool 값
-            int itemChk = characterInfoInstance.data.StartConsumeItem1 % 10000;
-            bool throwingWeapon = itemChk < 800 && itemChk > 700;
-            bool recoveryItem = itemChk < 900 && itemChk > 800;
-            bool shieldItme = itemChk < 1000 && itemChk > 900;
-            #endregion
-            if (throwingWeapon)
-                inventory.consume[0] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
-            if (recoveryItem)
-                inventory.consume[1] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
-            if (shieldItme)
-                inventory.consume[2] = new ConsumeInstance(characterInfoInstance.data.StartConsumeItem1);
+            //#region 체크용 bool 값
+            //int itemChk = characterInfoInstance.data.StartConsumeItem1 % 10000;
+            //bool throwingWeapon = itemChk < 800 && itemChk > 700;
+            //bool recoveryItem = itemChk < 900 && itemChk > 800;
+            //bool shieldItme = itemChk < 1000 && itemChk > 900;
+            //#endregion
 
+
+            for (int i = 0; i < Consumes.Consumes.Count; i++)
+            {
+                if(Consumes.Consumes[i].key == characterInfoInstance.data.StartConsumeItem1)
+                {
+                    #region 체크용 bool 값
+
+                    int itemChk = characterInfoInstance.data.StartConsumeItem1 % 10000;
+                    bool throwingWeapon = itemChk < 800 && itemChk > 700;
+                    bool recoveryItem = itemChk < 900 && itemChk > 800;
+                    bool shieldItme = itemChk < 1000 && itemChk > 900;
+                    #endregion
+                    if (throwingWeapon)
+                        inventory.consume[0] = Consumes.Consumes[i];
+
+                    if (recoveryItem)
+                        inventory.consume[1] = Consumes.Consumes[i];
+
+                    if (shieldItme)
+                        inventory.consume[2] = Consumes.Consumes[i];
+                    break;
+
+                }
+
+            }
             inventory.equippedWeapon = inventory.auxiliaryWeapon[0];
         }
 

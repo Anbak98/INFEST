@@ -129,7 +129,7 @@ public class UIStateView : UIScreen
         {
             for (int i = 0; i < 3; i++)
             {
-                if (Player.local.inventory.equippedWeapon.key == Player.local.inventory.consume[i].data.key)
+                if (Player.local.inventory.equippedWeapon.key == Player.local.inventory.consume[i]?.key)
                     bulletText.text = $"1/{Player.local.inventory.consume[i].curNum}";
             }
         }
