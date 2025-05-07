@@ -1735,6 +1735,8 @@ MonoBehaviour:
   _xRotation: 0
   _yRotation: 0
   isMenu: 0
+  statHandler: {fileID: 0}
+  virtualCamera: {fileID: 241464025491880770}
 --- !u!114 &6802146964932237305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2393,6 +2395,7 @@ MonoBehaviour:
   _lookDelta: {x: 0, y: 0}
   _look: 0
   _isJumping: 0
+  _isGrounded: 0
   _isReloading: 0
   _isFiring: 0
   _isRunning: 0
@@ -3690,6 +3693,7 @@ MonoBehaviour:
   _AttackPower: 0
   _DefensePower: 0
   _CurrentHealth: 0
+  _IsDead: 0
 --- !u!114 &3724504915549296076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3733,6 +3737,7 @@ MonoBehaviour:
   isInteraction: 0
   store: {fileID: 0}
   inventory: {fileID: 0}
+  FirstPersonCamera: {fileID: 6996409761476354241}
   Weapons: {fileID: 7032259557335484116}
   MoveSpeed: 6
   JumpForce: 10

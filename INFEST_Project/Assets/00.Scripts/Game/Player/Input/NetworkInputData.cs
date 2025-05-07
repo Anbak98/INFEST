@@ -27,7 +27,7 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_SIT = 8;       // lCtrl
     public const byte BUTTON_SCOREBOARD = 9;    // Tab
     public const byte BUTTON_MENU = 10;    // ESC
-    public const byte BUTTON_CHANGECAMERA = 11;
+    public const byte BUTTON_CHANGECAMERA = 11; // Q
 
     // 내부에서 사용하는 변수
     public const byte BUTTON_FIREPRESSED = 12;    // 마우스 왼쪽클릭 지속

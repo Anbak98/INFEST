@@ -37,6 +37,9 @@ public class Player : NetworkBehaviour
     public Inventory inventory;
     public CharacterInfoInstance characterInfoInstance;
 
+    // 관전모드
+    public GameObject FirstPersonCamera;    // CinemachineVirtualCamera를 가지고 있는 오브젝트
+
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
@@ -103,7 +106,7 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData data))
         {
-            if(HasStateAuthority)
+            if (HasStateAuthority)
             {
                 DEBUG_DATA = data;
                 playerController.stateMachine.OnUpdate(data);
@@ -126,7 +129,7 @@ public class Player : NetworkBehaviour
                     Weapons.Swap(data.scrollValue.y);
                 }
 
-                if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
                 {
                     Weapons.Aiming(true);
                 }
@@ -172,34 +175,44 @@ public class Player : NetworkBehaviour
         // Enable first person visual for local player, third person visual for proxies.
         SetFirstPersonVisuals(HasInputAuthority);
 
+        // CinemachineVirtualCamera가 포함된 게임오브젝트를 비활성화한 상태로 시작하므로 
         if (HasInputAuthority == false)
         {
-            // Virtual cameras are enabled only for local player.
-            var virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
-            for (int i = 0; i < virtualCameras.Length; i++)
-            {
-                virtualCameras[i].enabled = false;
-            }
+            // 다른 플레이어의 CinemachineVirtualCamera는 우선순위 낮춘다
+            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0; 
+
+            //// Virtual cameras are enabled only for local player.
+            //var virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
+            //// 관전모드를 위해서 컴포넌트는 비활성화하면 안된다.게임오브젝트를 비활성화하는 방식으로 수정
+            //for (int i = 0; i < virtualCameras.Length; i++)
+            //{
+            //    virtualCameras[i].enabled = false;
+            //}
         }
 
         if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
         {
+            // FirstPersonCamera
+            //FirstPersonCamera.SetActive(true);
+
+            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높이면
+
             local = this;
             Debug.Log("Local Player 설정 완료");
         }
 
-        if(characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
+        if (characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
         {
             characterInfoInstance = new(1);
 
-            for(int i=0; i< Weapons.Weapons.Count; i++)
+            for (int i = 0; i < Weapons.Weapons.Count; i++)
             {
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartAuxiliaryWeapon)
                 {
                     inventory.auxiliaryWeapon[0] = Weapons.Weapons[i];
                     inventory.auxiliaryWeapon[0].IsCollected = true;
                 }
-                    
+
                 if (Weapons.Weapons[i].key == characterInfoInstance.data.StartWeapon1)
                 {
                     inventory.weapon[0] = Weapons.Weapons[i];
