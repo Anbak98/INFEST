@@ -8,7 +8,9 @@ public class DebugZombieNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
 {
     [Header("Prefab For Runner.Spawn()")]
     [SerializeField] private NetworkPrefabRef _playerPrefab;
-    [SerializeField] private NetworkPrefabRef _zombieSpawnerPrefab;
+
+    [Header("Object Ref")]
+    [SerializeField] private MonsterSpawner _monsterSpawner;
 
     [Header("Input Action")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
@@ -26,6 +28,7 @@ public class DebugZombieNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
         {
             NetworkObject newPlayerObj = runner.Spawn(_playerPrefab, inputAuthority: player);
             _playerObjects.Add(player, newPlayerObj);
+            _monsterSpawner.SpawnMonsterOnWave(transform);
         }
     }
 
