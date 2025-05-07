@@ -28,7 +28,9 @@ public class DebugZombieNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
         {
             NetworkObject newPlayerObj = runner.Spawn(_playerPrefab, inputAuthority: player);
             _playerObjects.Add(player, newPlayerObj);
-            _monsterSpawner.SpawnMonsterOnWave(transform);
+
+            if(runner.LocalPlayer == player)
+                _monsterSpawner.SpawnMonsterOnWave(transform);
         }
     }
 
