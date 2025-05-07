@@ -34,17 +34,17 @@ public class ScoreboardManager : NetworkBehaviour
 
     public void OnPlayerJoined(PlayerRef newPlayer, CharacterInfoData info)
     {
-        //if (!Runner.IsServer) return;
+        if (!Runner.IsServer) return;
 
-        //PlayerScores.Add(newPlayer, new PlayerScoreData());
-        //_playerInfos[newPlayer] = info;
+        PlayerScores.Add(newPlayer, new PlayerScoreData());
+        _playerInfos[newPlayer] = info;
 
-        //RPC_BroadcastAddPlayerRow(newPlayer, info, PlayerScores[newPlayer]);
+        RPC_BroadcastAddPlayerRow(newPlayer, info, PlayerScores[newPlayer]);
 
-        //foreach (var kvp in _playerInfos)
-        //{
-        //    var existing = kvp.Key;
-        //    if (existing == newPlayer) continue;
+        foreach (var kvp in _playerInfos)
+        {
+            var existing = kvp.Key;
+            if (existing == newPlayer) continue;
 
             RPC_AddExistingPlayerRow(newPlayer, existing, kvp.Value, PlayerScores[existing]);
         }

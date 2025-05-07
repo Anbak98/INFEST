@@ -102,22 +102,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if(!result.Ok)
         {
             _loadingTextUI.text = result.ToString();
-        }
-
-        /// AddCallbacks 되어 있는 경우에만 키 입력시 OnInput 호출가능
-        // Start or join (depends on gamemode) a session with a specific name
-        await _runner.StartGame(new StartGameArgs()
-        {
-            GameMode = mode,
-            SessionName = "TestRoom",
-            Scene = scene,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
-
-        if (_runner.IsServer)
-        {
-            _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
-        }
+        }               
         _runner.AddCallbacks(this);
     }
 
