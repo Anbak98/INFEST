@@ -19,7 +19,7 @@ public class ScoreboardManager : NetworkBehaviour
 {
     public static ScoreboardManager Instance { get; private set; }
 
-    [Networked]
+    [Networked, Capacity(32)]
     public NetworkDictionary<PlayerRef, PlayerScoreData> PlayerScores => default;
 
     private UIScoreboardView scoreboardView;
@@ -29,14 +29,14 @@ public class ScoreboardManager : NetworkBehaviour
     public override void Spawned()
     {
         Instance = this;
-        scoreboardView = UIScoreboardView.Instance;
-    }
+        scoreboardView = UIScoreboardView.Instance;       
+    }   
 
     public void OnPlayerJoined(PlayerRef newPlayer, CharacterInfoData info)
     {
         if (!Runner.IsServer) return;
 
-        PlayerScores.Set(newPlayer, new PlayerScoreData());
+        PlayerScores.Add(newPlayer, new PlayerScoreData());
         _playerInfos[newPlayer] = info;
 
         RPC_BroadcastAddPlayerRow(newPlayer, info, PlayerScores[newPlayer]);
@@ -48,23 +48,26 @@ public class ScoreboardManager : NetworkBehaviour
 
             RPC_AddExistingPlayerRow(newPlayer, existing, kvp.Value, PlayerScores[existing]);
         }
-    }
+    }    
 
-    // ¸ðµç Å¬¶óÀÌ¾ðÆ®¿¡°Ô »õ ÇÃ·¹ÀÌ¾î Çà Ãß°¡
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ ï¿½ß°ï¿½
+    [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_BroadcastAddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
     {
         scoreboardView.AddPlayerRow(player, info);
         scoreboardView.UpdatePlayerRow(player, score);
-    }
+    }  
 
-    // »õ·Î µé¾î¿Â Å¬¶óÀÌ¾ðÆ®¿¡°Ô ±âÁ¸ ÇÃ·¹ÀÌ¾î Á¤º¸¸¦ ¾Ë·Á ÁÜ
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_AddExistingPlayerRow(PlayerRef target, PlayerRef player, CharacterInfoData info, PlayerScoreData score)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ ï¿½ï¿½
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_AddExistingPlayerRow(PlayerRef newPlayer, PlayerRef existingPlayer, CharacterInfoData info, PlayerScoreData score)
     {
-        scoreboardView.AddPlayerRow(player, info);
-        scoreboardView.UpdatePlayerRow(player, score);
-    }    
+        if (Runner.LocalPlayer == newPlayer)
+        {
+            scoreboardView.AddPlayerRow(existingPlayer, info);
+            scoreboardView.UpdatePlayerRow(existingPlayer, score);
+        }
+    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_AddKill(PlayerRef player)

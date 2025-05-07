@@ -71,7 +71,7 @@ public class PlayerDeadState : PlayerBaseState
         if (respawnTime >= 30f)
         {
             // 자신이 spawn 되었던 위치로
-            player.transform.position = stageSpawner.playerSpawnPoint.transform.position;
+            //player.transform.position = stageSpawner.playerSpawnPoint.transform.position;
 
             statHandler.SetHealth(100);
             player.animationController.Die = false;

@@ -133,6 +133,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     public void RPC_BrodcastPlayGame()
     {
         Lock = true;
+
         if (Runner.LocalPlayer == HostPlayer)
             PlayerPrefs.SetInt("Host", 1);
         else
@@ -142,14 +143,6 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
         {
             Runner.LoadScene("PlayStage(MVP)");
         }
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_BrodcastChangeSession()
-    {
-        MatchManager.Instance.CreateNewSession(
-            false,
-            Runner.SessionInfo.Name);
     }
 
     #region NOT USED

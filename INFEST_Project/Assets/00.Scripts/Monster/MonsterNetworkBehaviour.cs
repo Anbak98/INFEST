@@ -78,6 +78,8 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         if (PlayerDetectorCollider.radius != info.DetectAreaWave)
             PlayerDetectorCollider.radius = info.DetectAreaNormal;
+
+        AIPathing.enabled = true;
     }
 
     public virtual void PlayerDetectedListnerByPlayer()
