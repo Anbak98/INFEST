@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerDetectorCollider : MonoBehaviour
 {
-    [SerializeField] private MonsterNetworkBehaviour monster;
+    public MonsterNetworkBehaviour monster;
 
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
