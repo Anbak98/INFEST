@@ -43,9 +43,11 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         _storeController.uIShopView.UpdateButtonState();
 
         //isInteraction = false;
-        _storeController.uIShopView.bg.gameObject.SetActive(true);
-        _storeController.uIShopView.profile.gameObject.SetActive(true);
-        _storeController.uIShopView.interactionText.gameObject.SetActive(false); 
+        //_storeController.uIShopView.bg.gameObject.SetActive(true);
+        //_storeController.uIShopView.profile.gameObject.SetActive(true);
+        //_storeController.uIShopView.interactionText.gameObject.SetActive(false); 
+        Global.Instance.UIManager.Hide<UIInteractiveView>();
+        Global.Instance.UIManager.Show<UIShopView>();
     }
     #endregion
 
@@ -73,9 +75,12 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Cursor.lockState = CursorLockMode.Locked;
 
 
-        _storeController.uIShopView.interactionText.gameObject.SetActive(true);
-        _storeController.uIShopView.bg.gameObject.SetActive(false);
-        _storeController.uIShopView.profile.gameObject.SetActive(false);
+        //_storeController.uIShopView.interactionText.gameObject.SetActive(true);
+        //_storeController.uIShopView.bg.gameObject.SetActive(false);
+        //_storeController.uIShopView.profile.gameObject.SetActive(false);
+        Global.Instance.UIManager.Show<UIInteractiveView>();
+        Global.Instance.UIManager.Hide<UIShopView>();
+
     }
     #endregion
 
@@ -99,9 +104,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EnterShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        _storeController.uIShopView.bg.gameObject.SetActive(false);
-        _storeController.uIShopView.profile.gameObject.SetActive(false);
-        _storeController.uIShopView.interactionText.gameObject.SetActive(true);
+        //_storeController.uIShopView.bg.gameObject.SetActive(false);
+        //_storeController.uIShopView.profile.gameObject.SetActive(false);
+        //_storeController.uIShopView.interactionText.gameObject.SetActive(true);
+        Global.Instance.UIManager.Show<UIInteractiveView>();
     }
     #endregion
 
@@ -129,9 +135,11 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Cursor.lockState = CursorLockMode.Locked;
 
         _player.isInteraction = false;
-        _storeController.uIShopView.bg.gameObject.SetActive(false);
-        _storeController.uIShopView.profile.gameObject.SetActive(false);
-        _storeController.uIShopView.interactionText.gameObject.SetActive(false);
+        //_storeController.uIShopView.bg.gameObject.SetActive(false);
+        //_storeController.uIShopView.profile.gameObject.SetActive(false);
+        //_storeController.uIShopView.interactionText.gameObject.SetActive(false);
+        Global.Instance.UIManager.Hide<UIInteractiveView>();
+        Global.Instance.UIManager.Hide<UIShopView>();
     }
     #endregion
 

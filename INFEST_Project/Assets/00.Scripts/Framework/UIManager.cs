@@ -22,8 +22,7 @@ public class UIManager
         //    return UIList[typeof(T).Name] as T;
         //}
 
-        //var ui = Resources.Load<UIBase>($"UI/{typeof(T).Name}") as T;
-        var ui = Resources.Load<UIBase>($"UI/{uiName}") as T;
+        var ui = Resources.Load<UIBase>($"UI/{typeof(T).Name}") as T;
 
         var instantiated = Object.Instantiate(ui);
         UIList.Add(uiName, instantiated);

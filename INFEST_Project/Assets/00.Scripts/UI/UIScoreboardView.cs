@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIScoreboardView : UIScreen
 {
-    public static UIScoreboardView Instance { get; private set; }
+    //public static UIScoreboardView Instance { get; private set; }
 
     public RectTransform rowParent;
     //public UIScoreboardRow rowPrefab;
@@ -18,7 +18,7 @@ public class UIScoreboardView : UIScreen
 
     public override void Init()
     {
-        Instance = this;
+        //Instance = this;                
         base.Init();
         Hide();
     }
@@ -30,16 +30,13 @@ public class UIScoreboardView : UIScreen
 
     public override void Hide()
     {
-        base.Hide();
+        base.Hide();        
     }
 
     public void AddPlayerRow(PlayerRef player, CharacterInfoData info)
     {
         if (activeRows.ContainsKey(player)) return;
-
-        //UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
-        //row.SetNickname(info.nickname.ToString());
-        //activeRows[player] = row;
+        
         foreach (Transform child in rowParent)
         {
             var row = child.GetComponent<UIScoreboardRow>();
@@ -57,7 +54,6 @@ public class UIScoreboardView : UIScreen
     {
         if (activeRows.TryGetValue(player, out var row))
         {
-            //Destroy(row.gameObject);
             row.gameObject.SetActive(false);
             activeRows.Remove(player);
         }
