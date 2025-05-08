@@ -14,6 +14,7 @@ public class DebugZombieNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
 
     [Header("Input Action")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
+    [SerializeField] private InputManager _inputManager;
 
     [Header("Debug Related")]
     [SerializeField] private DebugerGameStarter _debuger;
@@ -23,6 +24,12 @@ public class DebugZombieNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         _debuger.AddDebugMessage(player + " " + runner.ToString() + "join");
+
+        if (runner.LocalPlayer == player)
+        {
+            _inputManager.Init();
+            _playerInputActionHandler.Init();
+        }
 
         if (runner.IsServer)
         {
