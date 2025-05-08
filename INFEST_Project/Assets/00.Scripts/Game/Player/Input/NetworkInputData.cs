@@ -22,16 +22,18 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_JUMP = 3;      // space
     public const byte BUTTON_RELOAD = 4;    // R
     public const byte BUTTON_INTERACT = 5;  // F
-    public const byte BUTTON_USEITEM = 6;   // E
-    public const byte BUTTON_RUN = 7;       // lShift
-    public const byte BUTTON_SIT = 8;       // lCtrl
-    public const byte BUTTON_SCOREBOARD = 9;    // Tab
-    public const byte BUTTON_MENU = 10;    // ESC
-    public const byte BUTTON_CHANGECAMERA = 11;
+    public const byte BUTTON_USEGRENAD = 6;   // G
+    public const byte BUTTON_USEHEAL = 7;   // E
+    public const byte BUTTON_USESHIELD = 8;   // V
+    public const byte BUTTON_RUN = 9;       // lShift
+    public const byte BUTTON_SIT = 10;       // lCtrl
+    public const byte BUTTON_SCOREBOARD = 11;    // Tab
+    public const byte BUTTON_MENU = 12;    // ESC
+    public const byte BUTTON_CHANGECAMERA = 13;
 
     // 내부에서 사용하는 변수
-    public const byte BUTTON_FIREPRESSED = 12;    // 마우스 왼쪽클릭 지속
-    public const byte BUTTON_ZOOMPRESSED = 13;    // 마우스 오른쪽클릭 지속
+    public const byte BUTTON_FIREPRESSED = 14;    // 마우스 왼쪽클릭 지속
+    public const byte BUTTON_ZOOMPRESSED = 15;    // 마우스 오른쪽클릭 지속
 
     // InputAction과 연결
     public bool isJumping;
@@ -39,7 +41,9 @@ public struct NetworkInputData : INetworkInput
     public bool isFiring;
     public bool isZooming;
     public bool isInteracting;
-    public bool isUsingItem;
+    public bool isUsingGrenad;
+    public bool isUsingHeal;
+    public bool isUsingShield;
     public bool isRunning;
     public bool isSitting;
     public bool isScoreBoardPopup;
@@ -72,7 +76,9 @@ public struct NetworkInputData : INetworkInput
             $"IsFiring: {isFiring}\n" +
             $"IsZooming: {isZooming}\n" +
             $"IsInteracting: {isInteracting}\n" +
-            $"IsUsingItem: {isUsingItem}\n" +
+            $"IsUsingItem: {isUsingGrenad}\n" + 
+            $"IsUsingItem: {isUsingHeal}\n" +
+            $"IsUsingItem: {isUsingShield}\n" +
             $"IsRunning: {isRunning}\n" +
             $"IsSitting: {isSitting}\n" +
             $"IsScoreBoardPopup: {isScoreBoardPopup}\n" +

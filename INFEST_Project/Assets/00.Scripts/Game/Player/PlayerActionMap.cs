@@ -91,9 +91,27 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""UseItem"",
+                    ""name"": ""Grenade"",
+                    ""type"": ""Button"",
+                    ""id"": ""85e936a2-61d8-40df-867c-1966c95f4b79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Heal"",
                     ""type"": ""Button"",
                     ""id"": ""4a8454fe-8391-4556-a452-9644d8a3fa30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shield"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1a82bd8-e294-4d39-8c30-1b4f1319444f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -272,7 +290,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""UseItem"",
+                    ""action"": ""Heal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -352,6 +370,28 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""action"": ""ChangeCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f27a264-de96-451e-87a2-1b6344b90d70"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shield"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""832b9e90-1565-4a64-b452-743cbfc67549"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grenade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -367,7 +407,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
-        m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
+        m_Player_Grenade = m_Player.FindAction("Grenade", throwIfNotFound: true);
+        m_Player_Heal = m_Player.FindAction("Heal", throwIfNotFound: true);
+        m_Player_Shield = m_Player.FindAction("Shield", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Sit = m_Player.FindAction("Sit", throwIfNotFound: true);
         m_Player_ScoreBoard = m_Player.FindAction("ScoreBoard", throwIfNotFound: true);
@@ -442,7 +484,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Zoom;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Interaction;
-    private readonly InputAction m_Player_UseItem;
+    private readonly InputAction m_Player_Grenade;
+    private readonly InputAction m_Player_Heal;
+    private readonly InputAction m_Player_Shield;
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Sit;
     private readonly InputAction m_Player_ScoreBoard;
@@ -460,7 +504,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
-        public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
+        public InputAction @Grenade => m_Wrapper.m_Player_Grenade;
+        public InputAction @Heal => m_Wrapper.m_Player_Heal;
+        public InputAction @Shield => m_Wrapper.m_Player_Shield;
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Sit => m_Wrapper.m_Player_Sit;
         public InputAction @ScoreBoard => m_Wrapper.m_Player_ScoreBoard;
@@ -497,9 +543,15 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Interaction.started += instance.OnInteraction;
             @Interaction.performed += instance.OnInteraction;
             @Interaction.canceled += instance.OnInteraction;
-            @UseItem.started += instance.OnUseItem;
-            @UseItem.performed += instance.OnUseItem;
-            @UseItem.canceled += instance.OnUseItem;
+            @Grenade.started += instance.OnGrenade;
+            @Grenade.performed += instance.OnGrenade;
+            @Grenade.canceled += instance.OnGrenade;
+            @Heal.started += instance.OnHeal;
+            @Heal.performed += instance.OnHeal;
+            @Heal.canceled += instance.OnHeal;
+            @Shield.started += instance.OnShield;
+            @Shield.performed += instance.OnShield;
+            @Shield.canceled += instance.OnShield;
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
@@ -543,9 +595,15 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @Interaction.started -= instance.OnInteraction;
             @Interaction.performed -= instance.OnInteraction;
             @Interaction.canceled -= instance.OnInteraction;
-            @UseItem.started -= instance.OnUseItem;
-            @UseItem.performed -= instance.OnUseItem;
-            @UseItem.canceled -= instance.OnUseItem;
+            @Grenade.started -= instance.OnGrenade;
+            @Grenade.performed -= instance.OnGrenade;
+            @Grenade.canceled -= instance.OnGrenade;
+            @Heal.started -= instance.OnHeal;
+            @Heal.performed -= instance.OnHeal;
+            @Heal.canceled -= instance.OnHeal;
+            @Shield.started -= instance.OnShield;
+            @Shield.performed -= instance.OnShield;
+            @Shield.canceled -= instance.OnShield;
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
@@ -590,7 +648,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         void OnZoom(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
-        void OnUseItem(InputAction.CallbackContext context);
+        void OnGrenade(InputAction.CallbackContext context);
+        void OnHeal(InputAction.CallbackContext context);
+        void OnShield(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnSit(InputAction.CallbackContext context);
         void OnScoreBoard(InputAction.CallbackContext context);

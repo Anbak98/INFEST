@@ -11782,7 +11782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
-    RawGuidValue: feb8080809dd2094d932f598b24ca219
+    RawGuidValue: 94905bc6fe8afd7448022f0528037229
   _monsterSpawnerPrefab:
     RawGuidValue: c599246f0e0a3414f88a5b53600b82fb
   _scoreboardManagerPrefab:
@@ -11792,7 +11792,7 @@ MonoBehaviour:
   _fieldMonsterSpawnPrefab:
     RawGuidValue: 44a00e0a37b48954ca99a91394122a17
   _playerInputActionHandler: {fileID: 1059157647}
-  _playerSpawnPoint: {fileID: 2030050488}
+  playerSpawnPoint: {fileID: 0}
   _loadingUI: {fileID: 433337760}
   _loadingTextUI: {fileID: 433337761}
   monsterSpawner: {fileID: 0}
@@ -34927,7 +34927,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 1059157648}
-  _UIController: {fileID: 835766688}
 --- !u!114 &1059157648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69705,7 +69704,7 @@ GameObject:
   - component: {fileID: 874778491014215340}
   - component: {fileID: 874778491014215339}
   - component: {fileID: 874778491014215342}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: StoreCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69736,7 +69735,7 @@ GameObject:
   - component: {fileID: 4942554546143406769}
   - component: {fileID: 4942554546143406774}
   - component: {fileID: 4942554546143406775}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: StartCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

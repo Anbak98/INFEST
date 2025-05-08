@@ -42,7 +42,9 @@ public class PlayerInputActionHandler : MonoBehaviour
     private bool _isFiring;
     private bool _isZooming;
     private bool _isInteracting;
-    private bool _isUsingItem;
+    private bool _isUsingGrenad;
+    private bool _isUsingHeal;
+    private bool _isUsingShield;
     private bool _isRunning;
     private bool _isSitting;
     private bool _isScoreBoardPopup;
@@ -91,8 +93,14 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.interaction).started += StartInteraction;
         //_inputManager.GetInput(EPlayerInput.interaction).canceled += CancelInteraction;
 
-        _inputManager.GetInput(EPlayerInput.useItem).started += StartUseItem;
-        _inputManager.GetInput(EPlayerInput.useItem).canceled += CancelUseItem;
+        _inputManager.MoveGetInput(EPlayerInput.grenade).started += StartGrenade;
+        _inputManager.MoveGetInput(EPlayerInput.grenade).canceled += CancelGrenade;
+
+        _inputManager.MoveGetInput(EPlayerInput.heal).started += StartHeal;
+        _inputManager.MoveGetInput(EPlayerInput.heal).canceled += CancelHeal;
+
+        _inputManager.MoveGetInput(EPlayerInput.shield).started += StartShield;
+        _inputManager.MoveGetInput(EPlayerInput.shield).canceled += CancelShield;
 
         _inputManager.MoveGetInput(EPlayerInput.run).started += StartRunState;
         _inputManager.MoveGetInput(EPlayerInput.run).canceled += CancelRunState;
@@ -106,8 +114,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.menu).started += OpenMenu;
         //_inputManager.GetInput(EPlayerInput.menu).canceled += CloseMenu;
 
-        _inputManager.GetInput(EPlayerInput.useItem).started += StartChangeCamera;
-        _inputManager.GetInput(EPlayerInput.useItem).canceled += CancelChangeCamera;
+        //_inputManager.GetInput(EPlayerInput.heal).started += StartChangeCamera;
+        //_inputManager.GetInput(EPlayerInput.heal).canceled += CancelChangeCamera;
     }
 
     private void OnDisable()
@@ -136,10 +144,16 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         _inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
         //_inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
-
-        _inputManager.GetInput(EPlayerInput.useItem).started -= StartUseItem;
-        _inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelUseItem;
-
+                      
+        _inputManager.MoveGetInput(EPlayerInput.grenade).started -= StartGrenade;
+        _inputManager.MoveGetInput(EPlayerInput.grenade).canceled -= CancelGrenade;
+                      
+        _inputManager.MoveGetInput(EPlayerInput.heal).started -= StartHeal;
+        _inputManager.MoveGetInput(EPlayerInput.heal).canceled -= CancelHeal;
+                      
+        _inputManager.MoveGetInput(EPlayerInput.shield).started -= StartShield;
+        _inputManager.MoveGetInput(EPlayerInput.shield).canceled -= CancelShield;
+                      
         _inputManager.MoveGetInput(EPlayerInput.run).started -= StartRunState;
         _inputManager.MoveGetInput(EPlayerInput.run).canceled -= CancelRunState;
 
@@ -152,8 +166,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.menu).started -= OpenMenu;
         //_inputManager.GetInput(EPlayerInput.menu).canceled -= CloseMenu;
 
-        _inputManager.GetInput(EPlayerInput.useItem).started -= StartChangeCamera;
-        _inputManager.GetInput(EPlayerInput.useItem).canceled -= CancelChangeCamera;
+        //_inputManager.GetInput(EPlayerInput.heal).started -= StartChangeCamera;
+        //_inputManager.GetInput(EPlayerInput.heal).canceled -= CancelChangeCamera;
     }
 
     #region Get, Set
@@ -271,21 +285,50 @@ public class PlayerInputActionHandler : MonoBehaviour
     }
     public bool GetIsInteracting() => _isInteracting;
     #endregion
-
-    #region UseItem
-    private void StartUseItem(InputAction.CallbackContext context)
+    #region Grenade
+    private void StartGrenade(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] TriggerUseItem - Use item triggered");
-        _isUsingItem = true;
+        _isUsingGrenad = true;
         //Invoke(nameof(CancelUseItem), 0.1f);
     }
 
-    private void CancelUseItem(InputAction.CallbackContext context)
+    private void CancelGrenade(InputAction.CallbackContext context)
     {
         Debug.Log("[Input] ResetUseItemState - Use item reset");
-        _isUsingItem = false;
+        _isUsingGrenad = false;
     }
-    public bool GetIsUsingItem() => _isUsingItem;
+    public bool GetIsUsingGrenade() => _isUsingGrenad;
+    #endregion
+    #region Heal
+    private void StartHeal(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] TriggerUseItem - Use item triggered");
+        _isUsingHeal = true;
+        //Invoke(nameof(CancelUseItem), 0.1f);
+    }
+
+    private void CancelHeal(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] ResetUseItemState - Use item reset");
+        _isUsingHeal = false;
+    }
+    public bool GetIsUsingHeal() => _isUsingHeal;
+    #endregion
+    #region Shield
+    private void StartShield(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] TriggerUseItem - Use item triggered");
+        _isUsingShield = true;
+        //Invoke(nameof(CancelUseItem), 0.1f);
+    }
+
+    private void CancelShield(InputAction.CallbackContext context)
+    {
+        Debug.Log("[Input] ResetUseItemState - Use item reset");
+        _isUsingShield = false;
+    }
+    public bool GetIsUsingShield() => _isUsingShield;
     #endregion
     #region Run
     private void StartRunState(InputAction.CallbackContext context)
@@ -396,7 +439,9 @@ public class PlayerInputActionHandler : MonoBehaviour
             isZooming = _isZooming,
             isReloading = _isReloading,
             isInteracting = _isInteracting,
-            isUsingItem = _isUsingItem,
+            isUsingGrenad = _isUsingGrenad,
+            isUsingHeal = _isUsingHeal,
+            isUsingShield = _isUsingShield,
             isSitting = _isSitting,
             isMenuPopup = _isMenuPopup,
             isScoreBoardPopup = _isScoreBoardPopup,
@@ -414,7 +459,9 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isZooming) data.buttons.Set(NetworkInputData.BUTTON_ZOOM, true);
         if (_isReloading) data.buttons.Set(NetworkInputData.BUTTON_RELOAD, true);
         if (_isInteracting) data.buttons.Set(NetworkInputData.BUTTON_INTERACT, true);
-        if (_isUsingItem) data.buttons.Set(NetworkInputData.BUTTON_USEITEM, true);
+        if (_isUsingGrenad) data.buttons.Set(NetworkInputData.BUTTON_USEGRENAD, true);
+        if (_isUsingHeal) data.buttons.Set(NetworkInputData.BUTTON_USEHEAL, true);
+        if (_isUsingShield) data.buttons.Set(NetworkInputData.BUTTON_USESHIELD, true);
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         if (_isMenuPopup) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);

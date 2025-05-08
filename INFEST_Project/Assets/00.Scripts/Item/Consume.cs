@@ -1,0 +1,47 @@
+using System.Collections.Generic;
+using Fusion;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class Consume : NetworkBehaviour
+{
+    public int key;
+    public ConsumeInstance instance;
+    public Animator animator;
+    [Networked] public int curNum { get; set; }    // 현재 아이템 갯수
+
+    public void AddNum()
+    {
+        curNum++;
+        curNum = Mathf.Min(curNum, instance.data.MaxNum);
+    }
+    public void RemoveNum()
+    {
+        curNum--;
+        curNum = Mathf.Max(curNum, 0);
+    }
+    public override void Spawned()
+    {
+        instance = new(key);
+        curNum = 1;
+    }
+    
+    protected void RunAnimation()
+    {
+        //animator.SetTrigger("");
+    }
+
+    public virtual void Throw()
+    {
+
+    }
+
+    public void CollThrow()
+    {
+        Debug.Log("Consume 호출");
+
+        Throw();
+    }
+
+}
+

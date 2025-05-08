@@ -69,9 +69,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseItem",
+                    "name": "Grenade",
+                    "type": "Button",
+                    "id": "85e936a2-61d8-40df-867c-1966c95f4b79",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Heal",
                     "type": "Button",
                     "id": "4a8454fe-8391-4556-a452-9644d8a3fa30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shield",
+                    "type": "Button",
+                    "id": "c1a82bd8-e294-4d39-8c30-1b4f1319444f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -250,7 +268,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UseItem",
+                    "action": "Heal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -328,6 +346,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ChangeCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f27a264-de96-451e-87a2-1b6344b90d70",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shield",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "832b9e90-1565-4a64-b452-743cbfc67549",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grenade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

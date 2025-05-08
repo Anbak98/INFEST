@@ -6,9 +6,7 @@ using KINEMATION.KAnimationCore.Runtime.Core;
 using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [Serializable]
 public struct IKTransforms
