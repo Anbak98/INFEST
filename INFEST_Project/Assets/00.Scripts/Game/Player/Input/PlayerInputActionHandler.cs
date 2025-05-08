@@ -60,7 +60,7 @@ public class PlayerInputActionHandler : MonoBehaviour
 
     //[SerializeField] private UIController _UIController;
 
-    private void Start()
+    public void Init()
     {
         /// performed: 키가 눌렸을 때 호출된다
         /// canceled: 키가 뗴졌을 때 호출
@@ -118,57 +118,57 @@ public class PlayerInputActionHandler : MonoBehaviour
         //_inputManager.GetInput(EPlayerInput.heal).canceled += CancelChangeCamera;
     }
 
-    private void OnDisable()
-    {
-        _inputManager.MoveGetInput(EPlayerInput.move).started -= SetMoveInput;
-        _inputManager.MoveGetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
-        _inputManager.MoveGetInput(EPlayerInput.move).canceled -= SetMoveInput;
+    //private void OnDisable()
+    //{
+    //    _inputManager.MoveGetInput(EPlayerInput.move).started -= SetMoveInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.move).performed -= SetMoveInput; // 추가
+    //    _inputManager.MoveGetInput(EPlayerInput.move).canceled -= SetMoveInput;
 
-        _inputManager.MoveGetInput(EPlayerInput.look).started -= SetLookInput;
-        _inputManager.MoveGetInput(EPlayerInput.look).canceled -= SetLookInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.look).started -= SetLookInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.look).canceled -= SetLookInput;
 
-        _inputManager.MoveGetInput(EPlayerInput.swap).performed -= SetSwapInput;
-        _inputManager.MoveGetInput(EPlayerInput.swap).canceled -= SetSwapInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.swap).performed -= SetSwapInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.swap).canceled -= SetSwapInput;
 
-        _inputManager.MoveGetInput(EPlayerInput.jump).started -= StartJumpInput;
-        _inputManager.MoveGetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.jump).started -= StartJumpInput;
+    //    _inputManager.MoveGetInput(EPlayerInput.jump).canceled -= CancelJumpInput;
 
-        _inputManager.MoveGetInput(EPlayerInput.fire).started -= StartFireState;
-        _inputManager.MoveGetInput(EPlayerInput.fire).canceled -= CancelFireState;
+    //    _inputManager.MoveGetInput(EPlayerInput.fire).started -= StartFireState;
+    //    _inputManager.MoveGetInput(EPlayerInput.fire).canceled -= CancelFireState;
 
-        _inputManager.MoveGetInput(EPlayerInput.zoom).started -= StartZoomState;
-        _inputManager.MoveGetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
+    //    _inputManager.MoveGetInput(EPlayerInput.zoom).started -= StartZoomState;
+    //    _inputManager.MoveGetInput(EPlayerInput.zoom).canceled -= CancelZoomState;
 
-        _inputManager.MoveGetInput(EPlayerInput.reload).started -= StartReloadState;
-        _inputManager.MoveGetInput(EPlayerInput.reload).canceled -= CancelReloadState;
+    //    _inputManager.MoveGetInput(EPlayerInput.reload).started -= StartReloadState;
+    //    _inputManager.MoveGetInput(EPlayerInput.reload).canceled -= CancelReloadState;
 
-        _inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
-        //_inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
+    //    _inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
+    //    //_inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
                       
-        _inputManager.MoveGetInput(EPlayerInput.grenade).started -= StartGrenade;
-        _inputManager.MoveGetInput(EPlayerInput.grenade).canceled -= CancelGrenade;
+    //    _inputManager.MoveGetInput(EPlayerInput.grenade).started -= StartGrenade;
+    //    _inputManager.MoveGetInput(EPlayerInput.grenade).canceled -= CancelGrenade;
                       
-        _inputManager.MoveGetInput(EPlayerInput.heal).started -= StartHeal;
-        _inputManager.MoveGetInput(EPlayerInput.heal).canceled -= CancelHeal;
+    //    _inputManager.MoveGetInput(EPlayerInput.heal).started -= StartHeal;
+    //    _inputManager.MoveGetInput(EPlayerInput.heal).canceled -= CancelHeal;
                       
-        _inputManager.MoveGetInput(EPlayerInput.shield).started -= StartShield;
-        _inputManager.MoveGetInput(EPlayerInput.shield).canceled -= CancelShield;
+    //    _inputManager.MoveGetInput(EPlayerInput.shield).started -= StartShield;
+    //    _inputManager.MoveGetInput(EPlayerInput.shield).canceled -= CancelShield;
                       
-        _inputManager.MoveGetInput(EPlayerInput.run).started -= StartRunState;
-        _inputManager.MoveGetInput(EPlayerInput.run).canceled -= CancelRunState;
+    //    _inputManager.MoveGetInput(EPlayerInput.run).started -= StartRunState;
+    //    _inputManager.MoveGetInput(EPlayerInput.run).canceled -= CancelRunState;
 
-        _inputManager.MoveGetInput(EPlayerInput.sit).started -= StartSitState;
-        _inputManager.MoveGetInput(EPlayerInput.sit).canceled -= CancelSitState;
+    //    _inputManager.MoveGetInput(EPlayerInput.sit).started -= StartSitState;
+    //    _inputManager.MoveGetInput(EPlayerInput.sit).canceled -= CancelSitState;
 
-        _inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
-        _inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
+    //    _inputManager.GetInput(EPlayerInput.scoreboard).started -= OpenScoreboard;
+    //    _inputManager.GetInput(EPlayerInput.scoreboard).canceled -= CloseScoreboard;
 
-        _inputManager.GetInput(EPlayerInput.menu).started -= OpenMenu;
-        //_inputManager.GetInput(EPlayerInput.menu).canceled -= CloseMenu;
+    //    _inputManager.GetInput(EPlayerInput.menu).started -= OpenMenu;
+    //    //_inputManager.GetInput(EPlayerInput.menu).canceled -= CloseMenu;
 
-        //_inputManager.GetInput(EPlayerInput.heal).started -= StartChangeCamera;
-        //_inputManager.GetInput(EPlayerInput.heal).canceled -= CancelChangeCamera;
-    }
+    //    //_inputManager.GetInput(EPlayerInput.heal).started -= StartChangeCamera;
+    //    //_inputManager.GetInput(EPlayerInput.heal).canceled -= CancelChangeCamera;
+    //}
 
     #region Get, Set
     #region Move
