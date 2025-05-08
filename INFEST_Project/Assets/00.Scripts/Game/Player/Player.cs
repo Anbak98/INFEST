@@ -152,9 +152,9 @@ public class Player : NetworkBehaviour
                 {
 
                 }
-            }
         }
     }
+    
 
     private void OnGUI()
     {
