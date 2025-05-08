@@ -4,13 +4,13 @@ using UnityEngine;
 public class GrenadeProjectile : NetworkBehaviour
 {
     [Networked] TickTimer _lifeTimer { get; set; }
-
+    public GrenadeExplosion GrenadeExplosion;
     private float _time;
     private Vector3 _gravity = new Vector3(0, -9.81f, 0);
     public Transform throwPoint;
     private Vector3 _startPosition;
     private Vector3 _velocity;
-
+    public GameObject obj;
     private float castRadius = 0.2f;
 
     private float _radius = 1f;
@@ -21,10 +21,14 @@ public class GrenadeProjectile : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-
         if (_lifeTimer.Expired(Runner))
         {
-            Runner.Despawn(Object);
+            if (!GrenadeExplosion.gameObject.activeSelf)
+            {
+                GrenadeExplosion.gameObject.SetActive(true);
+                Invoke("Despawn", 1f);
+            }
+            return;
         }
 
         if (_isStopped) return;
@@ -58,15 +62,24 @@ public class GrenadeProjectile : NetworkBehaviour
     }
 
 
-    public void Init(Vector3 initialVelocity)
+    public void Init(Vector3 initialVelocity, GameObject grenade)
     {
         _velocity = initialVelocity;
         _startPosition = transform.position;
         _time = 0f;
+        obj = grenade;
     }
+
     public override void Spawned()
     {
         _lifeTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+    }
+
+    public void Despawn()
+    {
+        if (Object == null) return;
+
+        Runner.Despawn(Object);
     }
 
 }
