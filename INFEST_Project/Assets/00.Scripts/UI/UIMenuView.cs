@@ -1,12 +1,9 @@
-using UnityEngine;
 using UnityEngine.UI;
 
 public class UIMenuView : UIScreen
 {
     public Button setBtn;
     public Button backBtn;
-
-    public InputManager inputManager;
 
     public override void Awake()
     {
@@ -16,23 +13,18 @@ public class UIMenuView : UIScreen
 
     public override void Show()
     {
-        base.Show();
-        inputManager.SetActive(false);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        base.Show();        
     }
 
     public override void Hide()
     {
-        base.Hide();
-        inputManager.SetActive(true);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        base.Hide();        
     }
 
     public void OnClickSetBtn()
     {
-        Controller.Get<UISetView>()?.Show();
+        //Controller.Get<UISetView>()?.Show();
+        Global.Instance.UIManager.Show<UISetView>();
     }
 
     public void OnClickBackBtn()

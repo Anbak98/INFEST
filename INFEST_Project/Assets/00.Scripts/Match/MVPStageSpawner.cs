@@ -146,7 +146,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
             {
                 nickname = DataManager.Instance.GetByKey<CharacterInfo>(player.PlayerId).Name
             };
-
+            
             ScoreboardManager.Instance.OnPlayerJoined(player, infoData);
         }
         _loadingUI.SetActive(false);

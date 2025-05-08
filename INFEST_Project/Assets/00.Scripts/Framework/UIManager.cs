@@ -8,20 +8,39 @@ public class UIManager
 
     public T Show<T>() where T : UIBase
     {
-        if (UIList.ContainsKey(typeof(T).Name))
+        string uiName = typeof(T).Name;
+
+        if (UIList.TryGetValue(uiName, out var existingUI))
         {
-            Debug.Log("[ResourceManager] Try loading UI that already loaded");
-            return UIList[typeof(T).Name] as T;
+            existingUI.gameObject.SetActive(true);
+            return existingUI as T;
         }
 
-        var ui = Resources.Load<UIBase>($"UI/{typeof(T).Name}") as T;
-        UIList.Add(ui.name, ui);
+        //if (UIList.ContainsKey(typeof(T).Name))
+        //{
+        //    Debug.Log("[ResourceManager] Try loading UI that already loaded");
+        //    return UIList[typeof(T).Name] as T;
+        //}
 
-        return Object.Instantiate(ui);
+        //var ui = Resources.Load<UIBase>($"UI/{typeof(T).Name}") as T;
+        var ui = Resources.Load<UIBase>($"UI/{uiName}") as T;
+
+        var instantiated = Object.Instantiate(ui);
+        UIList.Add(uiName, instantiated);
+        return instantiated;
+
+        //UIList.Add(ui.name, ui);
+
+        //return Object.Instantiate(ui);
     }
 
     public T Load<T>(string uiName) where T : UIBase
     {
+        if (UIList.ContainsKey(uiName))
+        {
+            return UIList[uiName] as T;
+        }
+
         var newCanvasObject = new GameObject(uiName + " Canvas");
 
         var canvas = newCanvasObject.AddComponent<Canvas>();
@@ -39,13 +58,17 @@ public class UIManager
 
         var result = obj.GetComponent<T>();
         result.canvas.sortingOrder = UIList.Count;
-
+                
         return result;
     }
 
-    public void Hide<T>()
+    public void Hide<T>() where T : UIBase
     {
-        string uiName = typeof(T).ToString();
-
+        string uiName = typeof(T).Name;
+        
+        if(UIList.TryGetValue(uiName, out var ui))
+        {
+            ui.gameObject.SetActive(false);
+        }
     }
 }

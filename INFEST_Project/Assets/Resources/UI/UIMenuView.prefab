@@ -685,12 +685,12 @@ GameObject:
   - component: {fileID: 6306548137276726427}
   - component: {fileID: 5726485183455278097}
   m_Layer: 5
-  m_Name: MenuView
+  m_Name: UIMenuView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1277940620588841709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -791,7 +791,6 @@ MonoBehaviour:
   _plugins: []
   setBtn: {fileID: 6338984921611706737}
   backBtn: {fileID: 7338429980963384902}
-  inputManager: {fileID: 0}
 --- !u!1 &6844197992601208207
 GameObject:
   m_ObjectHideFlags: 0

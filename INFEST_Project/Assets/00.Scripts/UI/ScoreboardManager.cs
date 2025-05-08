@@ -22,14 +22,14 @@ public class ScoreboardManager : NetworkBehaviour
     [Networked, Capacity(32)]
     public NetworkDictionary<PlayerRef, PlayerScoreData> PlayerScores => default;
 
-    private UIScoreboardView scoreboardView;
+    [SerializeField] private UIScoreboardView scoreboardView;
 
     [SerializeField] private Dictionary<PlayerRef, CharacterInfoData> _playerInfos = new();
 
     public override void Spawned()
     {
         Instance = this;
-        scoreboardView = UIScoreboardView.Instance;       
+        //scoreboardView = UIScoreboardView.Instance;
     }   
 
     public void OnPlayerJoined(PlayerRef newPlayer, CharacterInfoData info)
@@ -50,7 +50,6 @@ public class ScoreboardManager : NetworkBehaviour
         }
     }    
 
-    // ��� Ŭ���̾�Ʈ���� �� �÷��̾� �� �߰�
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_BroadcastAddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
     {
@@ -58,7 +57,6 @@ public class ScoreboardManager : NetworkBehaviour
         scoreboardView.UpdatePlayerRow(player, score);
     }  
 
-    // ���� ���� Ŭ���̾�Ʈ���� ���� �÷��̾� ������ �˷� ��
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_AddExistingPlayerRow(PlayerRef newPlayer, PlayerRef existingPlayer, CharacterInfoData info, PlayerScoreData score)
     {
@@ -106,24 +104,7 @@ public class ScoreboardManager : NetworkBehaviour
                 scoreboardView.UpdatePlayerRow(player, data);
             }
         }
-    }
-
-    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    //public void RPC_AddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
-    //{
-    //    if (!PlayerScores.ContainsKey(player))
-    //    {
-    //        PlayerScores.Add(player, score);
-    //    }
-
-    //    if (!_playerInfos.ContainsKey(player))
-    //    {
-    //        _playerInfos[player] = info;
-    //    }
-
-    //    scoreboardView.AddPlayerRow(player, info);
-    //    scoreboardView.UpdatePlayerRow(player, score);
-    //}
+    }    
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_RemovePlayerRow(PlayerRef player)

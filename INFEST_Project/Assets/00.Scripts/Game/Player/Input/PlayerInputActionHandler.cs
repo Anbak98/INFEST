@@ -317,14 +317,14 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Scoreboard
     private void OpenScoreboard(InputAction.CallbackContext context)
     {
-        //_UIController.Show<UIScoreboardView>();
-        //_isScoreBoardPopup = true;
+        Global.Instance.UIManager.Show<UIScoreboardView>();
+        _isScoreBoardPopup = true;
     }
 
     private void CloseScoreboard(InputAction.CallbackContext context)
     {
-        //_UIController.Hide();
-        //_isScoreBoardPopup = false;
+        Global.Instance.UIManager.Hide<UIScoreboardView>();
+        _isScoreBoardPopup = false;
     }
     public bool GetIsScoreBoardPopup() => _isScoreBoardPopup;
     #endregion
@@ -333,21 +333,22 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         if (!_isMenuPopup)
         {
-            //_UIController.Show<UIMenuView>();
-            //_isMenuPopup = true;
+            Global.Instance.UIManager.Show<UIMenuView>();
+            _inputManager.SetActive(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _isMenuPopup = true;
         }
         else
         {
-            //_UIController.Hide();
-            //_isMenuPopup = false;
+            Global.Instance.UIManager.Hide<UIMenuView>();
+            _inputManager.SetActive(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _isMenuPopup = false;
         }
     }
-
-    //private void CloseMenu(InputAction.CallbackContext context)
-    //{
-    //    _UIController.Hide();
-    //    _isMenuPopup = false;
-    //}
+    
     public bool GetIsMenuPopup() => _isMenuPopup;
 
     #endregion

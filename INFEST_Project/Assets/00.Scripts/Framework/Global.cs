@@ -10,6 +10,7 @@ public class Global : SingletonBehaviour<Global>
     protected override void Awake()
     {
         base.Awake();
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);        
+        UIManager.Show<UIStateView>();        
     }
 }

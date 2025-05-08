@@ -7,7 +7,7 @@ public class UIScoreboardView : UIScreen
     public static UIScoreboardView Instance { get; private set; }
 
     public RectTransform rowParent;
-    public UIScoreboardRow rowPrefab;
+    //public UIScoreboardRow rowPrefab;
 
     private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
 
@@ -37,16 +37,28 @@ public class UIScoreboardView : UIScreen
     {
         if (activeRows.ContainsKey(player)) return;
 
-        UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
-        row.SetNickname(info.nickname.ToString());
-        activeRows[player] = row;
+        //UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
+        //row.SetNickname(info.nickname.ToString());
+        //activeRows[player] = row;
+        foreach (Transform child in rowParent)
+        {
+            var row = child.GetComponent<UIScoreboardRow>();
+            if (row != null && !row.gameObject.activeSelf)
+            {
+                row.gameObject.SetActive(true);
+                row.SetNickname(info.nickname.ToString());
+                activeRows[player] = row;
+                return;
+            }
+        }
     }
 
     public void RemovePlayerRow(PlayerRef player)
     {
         if (activeRows.TryGetValue(player, out var row))
         {
-            Destroy(row.gameObject);
+            //Destroy(row.gameObject);
+            row.gameObject.SetActive(false);
             activeRows.Remove(player);
         }
     }
