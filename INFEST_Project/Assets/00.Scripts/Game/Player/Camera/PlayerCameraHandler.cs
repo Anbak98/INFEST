@@ -26,23 +26,14 @@ public class PlayerCameraHandler : NetworkBehaviour
     private Camera _mainCam;    // 1인칭 카메라
     public bool isMenu;
     public PlayerStatHandler statHandler;
-    public Transform hand;
-    private Vector3 startHand;
+
     // 관전모드 카메라 검색을 줄이기 위해
     public CinemachineVirtualCamera virtualCamera;
-
-    // 카메라 흔들림
-    private CinemachineBasicMultiChannelPerlin _noise; // 노이즈 컴포넌트
-    private float shakeTimer;
-    private float amplitude;
-    private float frequency;
 
     private void Awake()
     {
         InitCamera();
         isMenu = false;
-        _noise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        startHand = hand.localPosition;
     }
 
     public Camera GetCamera(bool scopeCam)
@@ -61,25 +52,6 @@ public class PlayerCameraHandler : NetworkBehaviour
     {
 
         base.FixedUpdateNetwork();
-
-        shakeTimer -= Time.deltaTime;
-
-        if (shakeTimer > 0)
-        {
-            Vector3 shakeOffset = new Vector3(
-                        Mathf.PerlinNoise(Time.time * frequency, 0f) - 0.5f,
-                        Mathf.PerlinNoise(0f, Time.time * frequency) - 0.5f,
-                        0f
-                        ) * amplitude;
-        }
-        else
-        {
-            _noise.m_AmplitudeGain = 0f;
-            _noise.m_FrequencyGain = 0f;
-
-            hand.localPosition = startHand;
-
-        }
 
         if (isMenu) return;
 
@@ -143,21 +115,4 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     }
 
-    public void Shake(float duration, float amp, float freq)
-    {
-        amplitude = amp;
-        frequency = freq;
-        shakeTimer = duration;
-
-        _noise.m_AmplitudeGain = amplitude;
-        _noise.m_FrequencyGain = frequency;
-
-        Vector3 shakeOffset = new Vector3(
-            Mathf.PerlinNoise(Time.time * frequency, 0f) - 0.5f,
-            Mathf.PerlinNoise(0f, Time.time * frequency) - 0.5f,
-            0f
-            ) * amplitude;
-
-        hand.localPosition = startHand + shakeOffset;
-    }
 }

@@ -11,25 +11,12 @@ public class GrenadeExplosion : MonoBehaviour
     private int _damage;
     private Player _player;
 
-    private PlayerCameraHandler _playerCameraHandler;  // 흔들릴 카메라
-    private CinemachineBasicMultiChannelPerlin noise;
-
     public void Awake()
     {
         _damage = grenadeProjectile.obj.GetComponent<Grenade>().instance.data.Effect;
         _player = grenadeProjectile.obj.GetComponent<Grenade>().throwPoint.GetComponentInParent<Player>();
     }
-    private void OnTriggerEnter(UnityEngine.Collider other)
-    {
-        Player player = other.GetComponentInParent<Player>();
-        if (other.gameObject.layer == 7 && player)
-        {
-            _playerCameraHandler = player.GetComponentInChildren<PlayerCameraHandler>();
-            noise = _playerCameraHandler.virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-            _playerCameraHandler.Shake(3f, 1f, 3f);
-        }
-    }
     public void Explosion()
     {
         int layerMask = (1 << _playerLayer) | (1 << _monsterLayer);

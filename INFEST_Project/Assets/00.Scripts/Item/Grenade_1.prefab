@@ -35,7 +35,6 @@ Transform:
   - {fileID: 5290103157370001378}
   - {fileID: 6190166161445869872}
   - {fileID: 6267990118102593605}
-  - {fileID: 8813513070061369163}
   - {fileID: 6841112516276668784}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,8 +106,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6267990118102593605}
-  - component: {fileID: 9065960250237859629}
   - component: {fileID: 2699429017159344683}
+  - component: {fileID: 1851647548138147557}
   m_Layer: 0
   m_Name: GrenadeExplosion
   m_TagString: Untagged
@@ -131,27 +130,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6833095684138853698}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &9065960250237859629
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3159688593360641354}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 100
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2699429017159344683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +149,21 @@ MonoBehaviour:
   _monsterLayer:
     serializedVersion: 2
     m_Bits: 12
+--- !u!114 &1851647548138147557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3159688593360641354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b6b88d425f7234aae309cb9a973743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  MaximumStress: 0.4
+  Range: 10
 --- !u!1 &4696047194209947090
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,72 +251,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -9.313226e-10, y: 0.003326375, z: 0.0016516387}
     m_Extent: {x: 0.013168748, y: 0.016495116, z: 0.01482038}
   m_DirtyAABB: 0
---- !u!1 &5983892131384817612
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8813513070061369163}
-  - component: {fileID: 9166194674537994560}
-  - component: {fileID: 1337547716305045426}
-  m_Layer: 0
-  m_Name: GrenadeShake
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8813513070061369163
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5983892131384817612}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6833095684138853698}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &9166194674537994560
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5983892131384817612}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 7
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1337547716305045426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5983892131384817612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 301c8a5cfd6453142b8633e576930b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6268945646953364853
 GameObject:
   m_ObjectHideFlags: 0

@@ -762,6 +762,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6785490234438154161}
+  - component: {fileID: 7771074240890505022}
   m_Layer: 0
   m_Name: ik_hand_root
   m_TagString: Untagged
@@ -785,6 +786,21 @@ Transform:
   - {fileID: 2831176873799362131}
   m_Father: {fileID: 6624489042419820702}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7771074240890505022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495691116267709588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ee1c62c905bb24ea7c9cf3d9d40b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TraumaExponent: 1
+  MaximumAngularShake: {x: 5, y: 5, z: 5}
+  MaximumTranslationShake: {x: 0.75, y: 0.75, z: 0.75}
 --- !u!1 &1515268274451505729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3158,6 +3174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3096651921852594016}
   - component: {fileID: 241464025491880770}
+  - component: {fileID: 8797523783984790861}
   m_Layer: 6
   m_Name: FirstPersonCamera
   m_TagString: Untagged
@@ -3221,6 +3238,21 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 8147664695648343174}
+--- !u!114 &8797523783984790861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996409761476354241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ee1c62c905bb24ea7c9cf3d9d40b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TraumaExponent: 1
+  MaximumAngularShake: {x: 5, y: 5, z: 5}
+  MaximumTranslationShake: {x: 0.75, y: 0.75, z: 0.75}
 --- !u!1 &7113947717647863814
 GameObject:
   m_ObjectHideFlags: 0
@@ -3393,7 +3425,6 @@ GameObject:
   - component: {fileID: 3976596273147930671}
   - component: {fileID: 3990409011255516628}
   - component: {fileID: 4768141817543528770}
-  - component: {fileID: 7657606708618355568}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -3453,23 +3484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7657606708618355568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7602194006655918319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NoiseProfile: {fileID: 11400000, guid: c80007d1567149442a48aa5438d95303, type: 2}
-  m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0
-  m_FrequencyGain: 0
-  mNoiseOffsets: {x: -889.3843, y: -348.20712, z: 258.31076}
 --- !u!1 &7691360088755567024
 GameObject:
   m_ObjectHideFlags: 0

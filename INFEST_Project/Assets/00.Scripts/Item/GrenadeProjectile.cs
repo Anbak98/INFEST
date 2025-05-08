@@ -40,8 +40,13 @@ public class GrenadeProjectile : NetworkBehaviour
         _time += Time.deltaTime;
 
         Vector3 displacement = _velocity * _time + 0.5f * _gravity * _time * _time;
-        transform.position = _startPosition + displacement;
-      
+
+        Vector3 currentPosition = transform.position;
+        Vector3 newPosition = _startPosition + displacement;
+        Vector3 direction = (newPosition - currentPosition).normalized;
+        float distance = Vector3.Distance(newPosition, currentPosition);
+
+
         if (Physics.SphereCast(transform.position, castRadius, displacement.normalized, out RaycastHit hit, displacement.magnitude))
         {
             if (hit.collider.gameObject.layer == 11)
@@ -60,8 +65,10 @@ public class GrenadeProjectile : NetworkBehaviour
                 transform.position = hit.point + hit.normal * 0.01f;
             }
             _startPosition = transform.position;
-        }
 
+        }
+        else
+            transform.position = newPosition;
 
     }
 
