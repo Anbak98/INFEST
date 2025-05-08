@@ -99,9 +99,8 @@ public class UIShopView : UIScreen
     protected override void Start()
     {
         base.Start();
-        bg.gameObject.SetActive(false);
-        //interactionText.gameObject.SetActive(false);
-        profile.gameObject.SetActive(false);
+        //bg.gameObject.SetActive(false);
+        //profile.gameObject.SetActive(false);
     }
 
     public override void Show()

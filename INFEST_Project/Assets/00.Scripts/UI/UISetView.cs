@@ -8,7 +8,7 @@ public class UISetView : UIScreen
 {
     [Header("밝기")]
     public Slider brightSlider;
-    public Image brightImage;
+    public UIBrightView brightImage;
     public TextMeshProUGUI brightText;
 
     [Header("옵션 드롭다운")]
@@ -38,6 +38,8 @@ public class UISetView : UIScreen
     public override void Awake()
     {
         base.Awake();
+
+        brightImage = Global.Instance.UIManager.Get<UIBrightView>();
 
         _playerCameraHandler = FindObjectOfType<PlayerCameraHandler>();        
 
@@ -82,10 +84,7 @@ public class UISetView : UIScreen
     public void Brightness(float value)
     {
         float alpha = Mathf.Min((1f - value) * 0.9f, 0.9f);
-        Color c = brightImage.color;
-        c.a = alpha;
-        brightImage.color = c;
-
+        brightImage.SetAlpha(alpha);
         brightText.text = $"{(value * 100f).ToString("F0")}%";
     }
 

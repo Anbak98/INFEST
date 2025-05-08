@@ -11,6 +11,7 @@ public class Global : SingletonBehaviour<Global>
     {
         base.Awake();
         DontDestroyOnLoad(this);        
-        UIManager.Show<UIStateView>();        
+        UIManager.Show<UIStateView>();
+        UIManager.Show<UIBrightView>();
     }
 }

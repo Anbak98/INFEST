@@ -4,6 +4,7 @@ using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class StoreController : NetworkBehaviour
 {
@@ -20,7 +21,7 @@ public class StoreController : NetworkBehaviour
     public float activateTime = 5f;
 
     public override void Spawned()
-    {
+    {        
         activeTime = true;
         Activate();
     }
