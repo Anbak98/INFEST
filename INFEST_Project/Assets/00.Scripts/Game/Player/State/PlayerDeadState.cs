@@ -40,7 +40,7 @@ public class PlayerDeadState : PlayerBaseState
 
 
         // 키 입력을 통한 관전(다른 플레이어의 카메라로)
-        if (data.isUsingItem)  // E 입력
+        if (data.isUsingHeal)  // E 입력
         {
             FindAlivePlayers(); // 생존자 갱신
 
