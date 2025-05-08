@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
     // PlayerAction.Player.Move.performed += 이벤트함수
     // 무엇이 있는지는 PlayerActionMap을 참고
 
-    private void Awake()
+    public void Init()
     {
         /// 이런 연결 방식은 심화강의 1-11 참고
         PlayerAction = new PlayerActionMap();
@@ -58,19 +58,20 @@ public class InputManager : MonoBehaviour
 
         PlayerMoveAction = new PlayerActionMap();
         playerMoveActions = PlayerMoveAction.Player;
-    }
 
-    private void OnEnable()
-    {
         PlayerAction?.Enable();
         PlayerMoveAction?.Enable();
     }
 
-    private void OnDisable()
+    private void OnEnable()
     {
-        PlayerAction?.Disable();
-        PlayerMoveAction.Disable();
     }
+
+    //private void OnDisable()
+    //{
+    //    PlayerAction?.Disable();
+    //    PlayerMoveAction.Disable();
+    //}
 
     public void SetActive(bool active)
     {
