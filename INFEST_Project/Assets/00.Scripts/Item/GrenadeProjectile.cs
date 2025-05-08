@@ -5,12 +5,14 @@ public class GrenadeProjectile : NetworkBehaviour
 {
     [Networked] TickTimer _lifeTimer { get; set; }
     public GrenadeExplosion GrenadeExplosion;
+    public GameObject explosionParticles;
     private float _time;
     private Vector3 _gravity = new Vector3(0, -9.81f, 0);
     public Transform throwPoint;
     private Vector3 _startPosition;
     private Vector3 _velocity;
-    public GameObject obj;
+    public GameObject obj; 
+
     private float castRadius = 0.2f;
 
     private float _radius = 1f;
@@ -25,7 +27,9 @@ public class GrenadeProjectile : NetworkBehaviour
         {
             if (!GrenadeExplosion.gameObject.activeSelf)
             {
+                explosionParticles.gameObject.SetActive(true);
                 GrenadeExplosion.gameObject.SetActive(true);
+                GrenadeExplosion.Explosion();
                 Invoke("Despawn", 1f);
             }
             return;
@@ -72,7 +76,7 @@ public class GrenadeProjectile : NetworkBehaviour
 
     public override void Spawned()
     {
-        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
     }
 
     public void Despawn()
