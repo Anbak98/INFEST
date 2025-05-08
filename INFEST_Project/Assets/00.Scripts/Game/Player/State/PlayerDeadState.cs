@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerDeadState : PlayerBaseState
 {
     float respawnTime = 0f;  // 30초(네트워크 시간 동기화 필요)
-    public MVPStageSpawner stageSpawner;
+    //public MVPStageSpawner stageSpawner;
     //List<Player> alivePlayerList = new List<Player>();
 
     List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
@@ -16,8 +16,8 @@ public class PlayerDeadState : PlayerBaseState
 
     public PlayerDeadState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
-        stageSpawner = GameObject.FindFirstObjectByType<MVPStageSpawner>();
-        Debug.Log("stageSpawner: " + stageSpawner.name);
+        //stageSpawner = GameObject.FindFirstObjectByType<MVPStageSpawner>();
+        //Debug.Log("stageSpawner: " + stageSpawner.name);
     }
 
     public override void Enter()
@@ -109,22 +109,22 @@ public class PlayerDeadState : PlayerBaseState
 
         // 생존자 체크(살아있는 플레이어들만 alivePlayerCameras에 남겨야한다)
         // 생존자는 계속 변경되므로 매 프레임마다 체크한다
-        foreach (var kvp in stageSpawner.spawnedCharacters)
-        {
-            var otherPlayerObj = kvp.Value;
-            var otherPlayer = otherPlayerObj.GetComponent<Player>();
-            var otherCamHandler = otherPlayerObj.GetComponentInChildren<PlayerCameraHandler>();
-            if (otherPlayer.statHandler.CurrentHealth > 0)
-            {
-                var cam = otherCamHandler.virtualCamera;
-                //if (cam == null)
-                //{
-                //    cam = otherPlayerObj.GetComponentInChildren<CinemachineVirtualCamera>(true); // inactive 포함
-                //    otherCamHandler.virtualCamera = cam;    // null이니 추가해줘야한다
-                //}
-                alivePlayerCameras.Add(cam);
-            }
-        }
+        //foreach (var kvp in stageSpawner.spawnedCharacters)
+        //{
+        //    var otherPlayerObj = kvp.Value;
+        //    var otherPlayer = otherPlayerObj.GetComponent<Player>();
+        //    var otherCamHandler = otherPlayerObj.GetComponentInChildren<PlayerCameraHandler>();
+        //    if (otherPlayer.statHandler.CurrentHealth > 0)
+        //    {
+        //        var cam = otherCamHandler.virtualCamera;
+        //        //if (cam == null)
+        //        //{
+        //        //    cam = otherPlayerObj.GetComponentInChildren<CinemachineVirtualCamera>(true); // inactive 포함
+        //        //    otherCamHandler.virtualCamera = cam;    // null이니 추가해줘야한다
+        //        //}
+        //        alivePlayerCameras.Add(cam);
+        //    }
+        //}
     }
 
     // 다른 플레이어의 카메라 전환(관전모드)
