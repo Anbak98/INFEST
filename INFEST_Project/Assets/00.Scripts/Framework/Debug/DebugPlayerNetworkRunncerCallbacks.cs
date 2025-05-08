@@ -3,14 +3,16 @@ using Fusion;
 using Fusion.Sockets;
 using System.Collections.Generic;
 using System;
+using UnityEngine.InputSystem;
 
 public class DebugPlayerNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerCallbacks
 {
     [Header("Prefab For Runner.Spawn()")]
     [SerializeField] private NetworkPrefabRef _playerPrefab;
 
-    [Header("Input Action")]
+    [Header("Input Related")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
+    [SerializeField] private InputManager _InputManager;
 
     [Header("Debug Related")]
     [SerializeField] private DebugerGameStarter _debuger;
@@ -19,6 +21,12 @@ public class DebugPlayerNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+        if(runner.LocalPlayer == player)
+        {
+            _InputManager.Init();
+            _playerInputActionHandler.Init();
+        }
+
         _debuger.AddDebugMessage(player + " " + runner.ToString() + "join");
 
         if (runner.IsServer)
