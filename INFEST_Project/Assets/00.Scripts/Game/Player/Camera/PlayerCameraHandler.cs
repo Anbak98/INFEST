@@ -1,3 +1,4 @@
+using Cinemachine;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,13 +18,15 @@ public class PlayerCameraHandler : NetworkBehaviour
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
-
     [Networked] public float xRotation { get; set; } = 0f;
     [Networked] public float yRotation { get; set; } = 0f;
 
     private Camera _mainCam;    // 1인칭 카메라
     public bool isMenu;
     public PlayerStatHandler statHandler;
+
+    // 관전모드 카메라 검색을 줄이기 위해
+    public CinemachineVirtualCamera virtualCamera;
 
     private void Awake()
     {

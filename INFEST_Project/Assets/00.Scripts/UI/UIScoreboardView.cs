@@ -9,11 +9,11 @@ public class UIScoreboardView : UIScreen
     public RectTransform rowParent;
     public UIScoreboardRow rowPrefab;
 
-    private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();  
+    private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
 
     public override void Awake()
     {
-        base.Awake();        
+        base.Awake();
     }
 
     public override void Init()
@@ -39,7 +39,7 @@ public class UIScoreboardView : UIScreen
 
         UIScoreboardRow row = Instantiate(rowPrefab, rowParent);
         row.SetNickname(info.nickname.ToString());
-        activeRows[player] = row;        
+        activeRows[player] = row;
     }
 
     public void RemovePlayerRow(PlayerRef player)
@@ -57,5 +57,5 @@ public class UIScoreboardView : UIScreen
         {
             row.SetData(data);
         }
-    }    
+    }
 }

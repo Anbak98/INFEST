@@ -33,7 +33,6 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] public Dictionary<PlayerRef, NetworkObject> spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     private NetworkRunner _runner;
-    private NetworkObject _scoreboardManagerObject;
 
     [HideInInspector] public MonsterSpawner monsterSpawner;
 
@@ -95,7 +94,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
             if (_runner.IsServer)
             {
-                _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
+                _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
             }
             retryCount++;
         } while (!result.Ok && retryCount < 15);
@@ -103,8 +102,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if(!result.Ok)
         {
             _loadingTextUI.text = result.ToString();
-        }
-
+        }               
         _runner.AddCallbacks(this);
     }
 
@@ -143,8 +141,6 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 //runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
                 
             }
-
-
 
             CharacterInfoData infoData = new CharacterInfoData
             {
@@ -235,12 +231,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                     IsVisible = false,
                     //Scene = scene,
                     SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-                });
-
-                if (_runner.IsServer)
-                {
-                    _scoreboardManagerObject = _runner.Spawn(_scoreboardManagerPrefab, Vector3.zero, Quaternion.identity);
-                }
+                });                
 
                 newRunner.AddCallbacks(this);
 

@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Statistics;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,17 +28,14 @@ public class DebugerGameStarter : MonoBehaviour
             if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
             {
                 TryStartGame(GameMode.Host);
-                HideConnectionMessage();
             }
             else if (GUI.Button(new Rect(0, 40, 200, 40), "Client"))
             {
                 TryStartGame(GameMode.Client);
-                HideConnectionMessage();
             }
             else if (GUI.Button(new Rect(0, 80, 200, 40), "Single"))
             {
                 TryStartGame(GameMode.Single);
-                HideConnectionMessage();
             }
         }
         if (_runner != null)
@@ -62,6 +60,7 @@ public class DebugerGameStarter : MonoBehaviour
     {
         SetConnectionMessage(string.Empty);
         ShowConnectionMessage();
+        ShowDebugMessage();
         _callbacks = GetComponent<INetworkRunnerCallbacks>();
         StartGameResult result;
         int retryCount = 0;
@@ -99,7 +98,8 @@ public class DebugerGameStarter : MonoBehaviour
             SetDebugMessage($"Retry...{retryCount}\n{mode}\n{result}");
 
             ++retryCount;
-        } while (!result.Ok && retryCount < 15);   
+        } while (!result.Ok && retryCount < 15);
+        HideConnectionMessage();
     }
 
     public void SetConnectionMessage(string msg)

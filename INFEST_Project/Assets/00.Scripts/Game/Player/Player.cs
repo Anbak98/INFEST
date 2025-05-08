@@ -37,6 +37,9 @@ public class Player : NetworkBehaviour
     public Inventory inventory;
     public CharacterInfoInstance characterInfoInstance;
 
+    // 관전모드
+    public GameObject FirstPersonCamera;    // CinemachineVirtualCamera를 가지고 있는 오브젝트
+
     #region 기존의 데이터
     //private NetworkCharacterController _cc;
     private Vector3 _forward = Vector3.forward;
@@ -103,36 +106,34 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData data))
         {
-            if (HasStateAuthority)
+            DEBUG_DATA = data;
+            playerController.stateMachine.OnUpdate(data);
+            //cameraHandler.RoateCamera(data);
+
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
             {
-                DEBUG_DATA = data;
-                playerController.stateMachine.OnUpdate(data);
-                //cameraHandler.RoateCamera(data);
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && inStoreZoon)
-                {
+                if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
 
-                    if (!isInteraction) store.RPC_RequestInteraction(this, Object.InputAuthority);
+                else store.RPC_RequestStopInteraction(Object.InputAuthority);
 
-                    else store.RPC_RequestStopInteraction(Object.InputAuthority);
+                isInteraction = !isInteraction;
 
-                    isInteraction = !isInteraction;
+            }
 
-                }
+            if (data.scrollValue.y != 0)
+            {
+                Debug.Log("스왑");
+                Weapons.Swap(data.scrollValue.y);
+            }
 
-                if (data.scrollValue.y != 0)
-                {
-                    Debug.Log("스왑");
-                    Weapons.Swap(data.scrollValue.y);
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
-                {
-                    Weapons.Aiming(true);
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
-                {
-                    Weapons.Aiming(false);
+            if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+            {
+                Weapons.Aiming(true);
+            }
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+            {
+                Weapons.Aiming(false);
 
                 }
 
@@ -188,18 +189,28 @@ public class Player : NetworkBehaviour
         // Enable first person visual for local player, third person visual for proxies.
         SetFirstPersonVisuals(HasInputAuthority);
 
+        // CinemachineVirtualCamera가 포함된 게임오브젝트를 비활성화한 상태로 시작하므로 
         if (HasInputAuthority == false)
         {
-            // Virtual cameras are enabled only for local player.
-            var virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
-            for (int i = 0; i < virtualCameras.Length; i++)
-            {
-                virtualCameras[i].enabled = false;
-            }
+            // 다른 플레이어의 CinemachineVirtualCamera는 우선순위 낮춘다
+            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0; 
+
+            //// Virtual cameras are enabled only for local player.
+            //var virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
+            //// 관전모드를 위해서 컴포넌트는 비활성화하면 안된다.게임오브젝트를 비활성화하는 방식으로 수정
+            //for (int i = 0; i < virtualCameras.Length; i++)
+            //{
+            //    virtualCameras[i].enabled = false;
+            //}
         }
 
         if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
         {
+            // FirstPersonCamera
+            //FirstPersonCamera.SetActive(true);
+
+            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높이면
+
             local = this;
             Debug.Log("Local Player 설정 완료");
         }

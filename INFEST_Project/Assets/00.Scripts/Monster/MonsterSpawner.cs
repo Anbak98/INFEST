@@ -1,12 +1,14 @@
 using Fusion;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class MonsterSpawner : NetworkBehaviour
 {
     // TickTimer timer; // 나중에 타이머로 경보기하면 될듯
-    private readonly int SpawnMonsterNumberOnEachWave = 50;
+    public int SpawnMonsterNumberOnEachWave = 5;
     [SerializeField] private List<Transform> points;
     [SerializeField] private NetworkPrefabRef MonsterPrefab;
 
@@ -21,21 +23,58 @@ public class MonsterSpawner : NetworkBehaviour
                 int point = Random.Range(0, points.Count);
                 int num = Random.Range(0, 8);
                 num = num > remainSpawnNumber ? remainSpawnNumber : num;
-                Spawn(points[point].position, num, waveTarget);
+
+                for (int i = 0; i < num; i++)
+                {
+                    Vector3 offset = Random.insideUnitSphere * 1f;
+                    offset.y = 0f;
+                    Vector3 spawnPos = points[point].position + offset;
+
+                    NetworkObject networkObj = Runner.Spawn(MonsterPrefab, spawnPos);
+                    if (networkObj == null)
+                    {
+                        Debug.LogWarning("Failed to spawn monster.");
+                        continue;
+                    }
+
+                    MonsterNetworkBehaviour mnb = networkObj.GetComponent<MonsterNetworkBehaviour>();
+                    if (mnb != null)
+                    {
+                        var agent = mnb.GetComponent<NavMeshAgent>();
+                        if (agent != null) agent.enabled = true;
+
+                        mnb.target = waveTarget;
+
+                        if (mnb.FSM != null)
+                            mnb.FSM.ChangePhase<PJ_HI_Phase_Wave>();
+                    }
+                }
+
                 remainSpawnNumber -= num;
                 iteral--;
             }
         }
     }
-
-    private void Spawn(Vector3 position, int num, Transform waveTarget)
+    private void OnGUI()
     {
-        for (int i = 0; i < num; i++)
+        if (Runner != null)
         {
-            MonsterNetworkBehaviour mnb = Runner.Spawn(MonsterPrefab, position).GetComponent<MonsterNetworkBehaviour>();
-            mnb.GetComponent<NavMeshAgent>().enabled = true;
-            mnb.target = waveTarget;
-            mnb.FSM.ChangePhase<PJ_HI_Phase_Wave>();
+            if(Runner.IsServer)
+            {
+                if (GUI.Button(new Rect(10, Screen.height - 50, 150, 40), "스폰 몬스터"))
+                {
+                    if (points.Count > 0)
+                    {
+                        SpawnMonsterOnWave(transform);
+                    }
+                }
+            }
+
+            int allHitboxes = FindObjectsOfType<Hitbox>().Length;
+            int activeHitboxes = FindObjectsOfType<Hitbox>().Count(hb => hb.enabled && hb.gameObject.activeInHierarchy);
+
+            GUI.Label(new Rect(10, Screen.height - 100, 150, 40), $"All: {allHitboxes}");
+            GUI.Label(new Rect(10, Screen.height - 150, 150, 40), $"Active: {activeHitboxes}");
         }
     }
 }
