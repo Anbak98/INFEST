@@ -22,6 +22,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     [Header("InputActionHandler for OnInput")]
     [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
+    [SerializeField] private InputManager _inputManager;
 
     [Header("Spawn Point")]
     [SerializeField] public Transform playerSpawnPoint;
@@ -124,6 +125,12 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
     #region INetworkRunnerCallbacks 인터페이스 구현
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+        if (runner.LocalPlayer == player)
+        {
+            _inputManager.Init();
+            _playerInputActionHandler.Init();
+        }
+
         if (runner.IsServer)
         {
             // Create a unique position for the player
