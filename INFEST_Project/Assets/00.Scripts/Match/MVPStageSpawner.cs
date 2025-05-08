@@ -146,7 +146,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 runner.Spawn(_storePrefab, Vector3.zero);
 
                 //runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
-                
+
             }
 
             CharacterInfoData infoData = new CharacterInfoData

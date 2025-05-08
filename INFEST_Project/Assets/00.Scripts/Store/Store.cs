@@ -40,14 +40,16 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        _storeController.uIShopView.UpdateButtonState();
 
         //isInteraction = false;
         //_storeController.uIShopView.bg.gameObject.SetActive(true);
         //_storeController.uIShopView.profile.gameObject.SetActive(true);
         //_storeController.uIShopView.interactionText.gameObject.SetActive(false); 
         Global.Instance.UIManager.Hide<UIInteractiveView>();
-        Global.Instance.UIManager.Show<UIShopView>();
+        _storeController.uIShopView = Global.Instance.UIManager.Show<UIShopView>();
+        _storeController.Activate();
+
+        _storeController.uIShopView.UpdateButtonState();
     }
     #endregion
 
