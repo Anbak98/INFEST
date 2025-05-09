@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using Fusion;
 using UnityEngine;
 
@@ -9,13 +8,6 @@ public class SirenController : NetworkBehaviour
 
     [SerializeField] private AudioSource sirenSound;
     [SerializeField] private AudioClip sirenSoundClip;
-
-    private MonsterNetworkBehaviour _monster;
-
-    public override void Spawned()
-    {
-        _monster = FindObjectOfType<Monster_PJ_HI>();
-    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_RequestTrigger(Player _player, PlayerRef _playerRef)
@@ -31,16 +23,25 @@ public class SirenController : NetworkBehaviour
             sirenSound.PlayOneShot(sirenSoundClip);
         }
 
-        _monster.PlayerDetectorCollider.radius = _monster.info.DetectAreaWave;
+        var allMonsters = FindObjectsOfType<MonsterNetworkBehaviour>();
+        foreach (var monster in allMonsters)
+        {
+            monster.PlayerDetectorCollider.radius = monster.info.DetectAreaWave;
+        }
+
         siren.isTrigger = true;
-        StartCoroutine(MonsterDetectTime(30f));
+        StartCoroutine(MonsterDetectTime(30f, allMonsters));
         StartCoroutine(ResetTriggerAfterDelay(420f));
     }
 
-    private IEnumerator MonsterDetectTime(float delay)
+    private IEnumerator MonsterDetectTime(float delay, MonsterNetworkBehaviour[] allMonsters)
     {
         yield return new WaitForSeconds(delay);
-        _monster.PlayerDetectorCollider.radius = _monster.info.DetectAreaNormal;
+
+        foreach (var monster in allMonsters)
+        {
+            monster.PlayerDetectorCollider.radius = monster.info.DetectAreaNormal;
+        }
     }
 
     private IEnumerator ResetTriggerAfterDelay(float delay)
