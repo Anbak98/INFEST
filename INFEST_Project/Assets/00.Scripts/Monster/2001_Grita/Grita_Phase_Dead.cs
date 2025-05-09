@@ -4,4 +4,6 @@ using UnityEngine;
 
 public class Grita_Phase_Dead : MonsterPhase
 {
+    // enter, execute, exit
+
 }

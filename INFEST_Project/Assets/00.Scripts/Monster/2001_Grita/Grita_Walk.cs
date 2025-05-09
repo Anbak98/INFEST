@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// WonderPhase에만 포함된 상태
 public class Grita_Walk : MonsterStateNetworkBehaviour
 {
     Vector3 randomPosition;
@@ -25,7 +26,6 @@ public class Grita_Walk : MonsterStateNetworkBehaviour
                 phase.ChangeState<Grita_Idle>();
             }
         }
-
     }
     private Vector3 GetRandomPositionOnNavMesh()
     {

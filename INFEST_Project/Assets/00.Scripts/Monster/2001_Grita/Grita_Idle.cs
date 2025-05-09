@@ -17,9 +17,18 @@ public class Grita_Idle : MonsterStateNetworkBehaviour
     {
         base.Execute();
 
-        if (_tickTimer.Expired(Runner))
+        if (_tickTimer.Expired(Runner)) // 일정 시간 초과하면 true 리턴
         {
-            phase.ChangeState<Grita_Walk>();
+            phase.ChangeState<Grita_Walk>(); // state 교체
+
+            //// 예시
+            //monster.FSM.ChangePhase<PJ_HI_II_DeadPhase>(); //phase 교체
+            //monster.MovementSpeed = monster.info.SpeedMove; //기획서에 있는 달리기 속도
+            //monster.AIPathing.SetDestination(monster.target.transform.position); // 추격
+            //// Monsterinfo에서 불러옴
+
+
+
         }
     }
 }
