@@ -24,7 +24,7 @@ public class ScoreboardManager : NetworkBehaviour
 
     [SerializeField] private UIScoreboardView scoreboardView;
 
-    [SerializeField] private Dictionary<PlayerRef, CharacterInfoData> _playerInfos = new();
+    private Dictionary<PlayerRef, CharacterInfoData> _playerInfos = new();
 
     public override void Spawned()
     {
