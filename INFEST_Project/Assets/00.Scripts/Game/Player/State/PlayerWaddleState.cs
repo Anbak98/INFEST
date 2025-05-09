@@ -50,7 +50,7 @@ public class PlayerWaddleState : PlayerSitState
             stateMachine.ChangeState(stateMachine.SitIdleState);
         }
         // isSitting && isFiring
-        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if ((stateMachine.Player.Weapons != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.SitAttackState);
             return;

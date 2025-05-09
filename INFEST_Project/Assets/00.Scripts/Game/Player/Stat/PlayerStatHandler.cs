@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class PlayerStatHandler : NetworkBehaviour
 {
-    public PlayerStatData statData;
-
     // Networked 붙으면 서버로 자동 전송
     [Networked] public int MaxHealth { get; set; }
     [Networked] public int MoveSpeed { get; set; }
