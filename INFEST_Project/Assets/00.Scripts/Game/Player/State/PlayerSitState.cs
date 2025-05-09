@@ -13,7 +13,7 @@ public class PlayerSitState : PlayerGroundState
     public override void Enter()
     {
         // collider의 크기를 절반으로 줄인다
-        player.characterController.height /= 2;        
+        //player.characterController.height /= 2;        
 
         //Debug.Log("Sit상태 진입");
         base.Enter();
@@ -30,7 +30,7 @@ public class PlayerSitState : PlayerGroundState
         // 일어난다
         controller.StartStand();
 
-        player.characterController.height *= 2;
+        //player.characterController.height *= 2;
     }
 
     public override void OnUpdate(NetworkInputData data)

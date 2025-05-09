@@ -4,12 +4,14 @@ using UnityEngine;
 public class GrenadeProjectile : NetworkBehaviour
 {
     [Networked] TickTimer _lifeTimer { get; set; }
-
+    public GrenadeExplosion GrenadeExplosion;
+    public GameObject explosionParticles;
     private float _time;
     private Vector3 _gravity = new Vector3(0, -9.81f, 0);
     public Transform throwPoint;
     private Vector3 _startPosition;
     private Vector3 _velocity;
+    public GameObject obj; 
 
     private float castRadius = 0.2f;
 
@@ -21,10 +23,16 @@ public class GrenadeProjectile : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-
         if (_lifeTimer.Expired(Runner))
         {
-            Runner.Despawn(Object);
+            if (!GrenadeExplosion.gameObject.activeSelf)
+            {
+                explosionParticles.gameObject.SetActive(true);
+                GrenadeExplosion.gameObject.SetActive(true);
+                GrenadeExplosion.Explosion();
+                Invoke("Despawn", 1f);
+            }
+            return;
         }
 
         if (_isStopped) return;
@@ -32,8 +40,13 @@ public class GrenadeProjectile : NetworkBehaviour
         _time += Time.deltaTime;
 
         Vector3 displacement = _velocity * _time + 0.5f * _gravity * _time * _time;
-        transform.position = _startPosition + displacement;
-      
+
+        Vector3 currentPosition = transform.position;
+        Vector3 newPosition = _startPosition + displacement;
+        Vector3 direction = (newPosition - currentPosition).normalized;
+        float distance = Vector3.Distance(newPosition, currentPosition);
+
+
         if (Physics.SphereCast(transform.position, castRadius, displacement.normalized, out RaycastHit hit, displacement.magnitude))
         {
             if (hit.collider.gameObject.layer == 11)
@@ -52,21 +65,32 @@ public class GrenadeProjectile : NetworkBehaviour
                 transform.position = hit.point + hit.normal * 0.01f;
             }
             _startPosition = transform.position;
-        }
 
+        }
+        else
+            transform.position = newPosition;
 
     }
 
 
-    public void Init(Vector3 initialVelocity)
+    public void Init(Vector3 initialVelocity, GameObject grenade)
     {
         _velocity = initialVelocity;
         _startPosition = transform.position;
         _time = 0f;
+        obj = grenade;
     }
+
     public override void Spawned()
     {
-        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
+    }
+
+    public void Despawn()
+    {
+        if (Object == null) return;
+
+        Runner.Despawn(Object);
     }
 
 }

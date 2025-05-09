@@ -344,7 +344,6 @@ GameObject:
   - component: {fileID: 4567210484206821330}
   - component: {fileID: 1595965804028964000}
   - component: {fileID: 6227829415373052939}
-  - component: {fileID: 9194565730136371118}
   - component: {fileID: 3105978529233833000}
   m_Layer: 5
   m_Name: UIScoreboardView
@@ -426,24 +425,6 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &9194565730136371118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3738511527351107666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 753f8902f0782c24a886b43be48642f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  _isModal: 0
-  _plugins: []
-  rowParent: {fileID: 2350515114997316485}
-  rowPrefab: {fileID: 2705203822914701596, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
-    type: 3}
 --- !u!95 &3105978529233833000
 Animator:
   serializedVersion: 5
@@ -477,8 +458,7 @@ GameObject:
   - component: {fileID: 4398977448454646637}
   - component: {fileID: 7903465238393559427}
   - component: {fileID: 5926402518034881049}
-  - component: {fileID: 5457235860659807087}
-  - component: {fileID: 2756677773835229911}
+  - component: {fileID: 8869537069364808628}
   m_Layer: 5
   m_Name: UIScoreboardView
   m_TagString: Untagged
@@ -558,7 +538,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &5457235860659807087
+--- !u!114 &8869537069364808628
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -574,29 +554,6 @@ MonoBehaviour:
   _isModal: 0
   _plugins: []
   rowParent: {fileID: 2350515114997316485}
-  rowPrefab: {fileID: 2705203822914701596, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
-    type: 3}
---- !u!95 &2756677773835229911
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3937095708037544536}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e392b6da2e8cab64cb59dd1b21a97925, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5317232547720913039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,6 +1165,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2350515114997316485}
     m_Modifications:
+    - target: {fileID: 1007966755905381374, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
+        type: 3}
+      propertyPath: m_text
+      value: "\uCEE4\uB9E8\uB354"
+      objectReference: {fileID: 0}
     - target: {fileID: 1159366567154093107, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1376,7 +1338,7 @@ PrefabInstance:
     - target: {fileID: 6386705621301944947, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7360204891831657147, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
@@ -1585,7 +1547,7 @@ PrefabInstance:
     - target: {fileID: 6386705621301944947, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7360204891831657147, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
@@ -1794,7 +1756,7 @@ PrefabInstance:
     - target: {fileID: 6386705621301944947, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7360204891831657147, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
@@ -2003,7 +1965,7 @@ PrefabInstance:
     - target: {fileID: 6386705621301944947, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7360204891831657147, guid: 2b511c565c01c8d4fbb804a6ef604c4e,
         type: 3}

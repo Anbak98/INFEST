@@ -11,7 +11,7 @@ public class UIShopView : UIScreen
     [Header("Interaction")]
     public Image bg;
     public Image profile;
-    public TextMeshProUGUI interactionText;
+    //public TextMeshProUGUI interactionText;
 
     [Header("Job")]
     public Image comender;
@@ -99,9 +99,8 @@ public class UIShopView : UIScreen
     protected override void Start()
     {
         base.Start();
-        bg.gameObject.SetActive(false);
-        interactionText.gameObject.SetActive(false);
-        profile.gameObject.SetActive(false);
+        //bg.gameObject.SetActive(false);
+        //profile.gameObject.SetActive(false);
     }
 
     public override void Show()

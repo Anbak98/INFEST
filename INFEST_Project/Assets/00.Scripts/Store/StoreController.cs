@@ -20,7 +20,7 @@ public class StoreController : NetworkBehaviour
     public float activateTime = 5f;
 
     public override void Spawned()
-    {
+    {        
         activeTime = true;
         Activate();
     }
@@ -85,9 +85,11 @@ public class StoreController : NetworkBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        Player.local.inStoreZoon = false;
-        uIShopView.interactionText.gameObject.SetActive(false);
-        uIShopView.bg.gameObject.SetActive(false);
+        //Player.local.inStoreZoon = false;
+        //uIShopView.interactionText.gameObject.SetActive(false);
+        //uIShopView.bg.gameObject.SetActive(false);
+        Global.Instance.UIManager.Hide<UIInteractiveView>();
+        Global.Instance.UIManager.Hide<UIShopView>();
     }
 
     /// <summary>

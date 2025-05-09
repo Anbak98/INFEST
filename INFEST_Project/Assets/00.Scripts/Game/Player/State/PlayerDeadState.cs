@@ -23,8 +23,7 @@ public class PlayerDeadState : PlayerBaseState
     public override void Enter()
     {
         player.animationController.Die = true;
-        player.stateMachine.IsDead = true;
-        Debug.Log("????");
+        stateMachine.IsDead = true;
 
         player.FirstPersonRoot.SetActive(false);
     }
@@ -75,7 +74,7 @@ public class PlayerDeadState : PlayerBaseState
 
             statHandler.SetHealth(100);
             player.animationController.Die = false;
-            player.stateMachine.IsDead = false;
+            stateMachine.IsDead = false;
             player.FirstPersonRoot.SetActive(true); // FirstPersonRoot는 로컬처리
 
             // 관전모드 초기화
