@@ -984,8 +984,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2371753348841125519}
-  - component: {fileID: 2395093669097183872}
   - component: {fileID: 5052248017230947469}
+  - component: {fileID: 5829288436927987931}
   m_Layer: 11
   m_Name: DetectPlayerByMonster
   m_TagString: Untagged
@@ -1008,8 +1008,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6205163159084411306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2395093669097183872
-BoxCollider:
+--- !u!114 &5052248017230947469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057197448693998084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ee5e811f01c0d4db07237a9f85314e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 9217737986315806052}
+--- !u!135 &5829288436927987931
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1023,25 +1036,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 2, z: 5}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5052248017230947469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3057197448693998084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81ee5e811f01c0d4db07237a9f85314e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monster: {fileID: 0}
 --- !u!1 &3432671912613124414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2651,7 +2651,7 @@ MonoBehaviour:
   _MovementSpeed: 0
   FSM: {fileID: 5334992375036982847}
   AIPathing: {fileID: 8541060984460718935}
-  PlayerDetectorCollider: {fileID: 0}
+  PlayerDetectorCollider: {fileID: 5829288436927987931}
   _IsAttack:
     _value: 0
   _IsDead:

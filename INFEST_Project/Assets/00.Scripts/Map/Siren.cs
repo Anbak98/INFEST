@@ -1,55 +1,23 @@
-using System.Collections;
-using Fusion;
 using UnityEngine;
 
-public class Siren : NetworkBehaviour
+public class Siren : MonoBehaviour
 {
-    [SerializeField] private AudioSource sirenSound;
-    [SerializeField] private AudioClip sirenSoundClip;
-
-    [Networked] private bool IsTriggered { get; set; }
+    public bool isTrigger = false;
 
     private int _playerLayer = 7;
+    private Player _player;
+    [SerializeField] private SirenController _controller;
 
     public void OnTriggerEnter(UnityEngine.Collider other)
     {
+        if (isTrigger) return;
+
         Player player = other.GetComponentInParent<Player>();
-        if (player == null || other.gameObject.layer != _playerLayer) return;
-        if (!player.Object.HasInputAuthority) return;
-
-        if(HasInputAuthority)
-        RPC_RequestTrigger();
-
-        if (HasStateAuthority)
+        if (other.gameObject.layer == _playerLayer && player)
         {
-            if (IsTriggered) return;
-            IsTriggered = true;
-            RPC_PlaySirenSound();
-            StartCoroutine(ResetTriggerAfterDelay(420f));
+            _player = player;
+
+            _controller.RPC_RequestTrigger(_player, _player.Object.InputAuthority);
         }
-    }
-
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    private void RPC_RequestTrigger()
-    {
-        if (IsTriggered) return;
-        IsTriggered = true;
-        RPC_PlaySirenSound();
-        StartCoroutine(ResetTriggerAfterDelay(420f));
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_PlaySirenSound()
-    {
-        if (sirenSound != null && sirenSoundClip != null)
-        {
-            sirenSound.PlayOneShot(sirenSoundClip);
-        }
-    }
-
-    private IEnumerator ResetTriggerAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        IsTriggered = false;
-    }
+    }    
 }

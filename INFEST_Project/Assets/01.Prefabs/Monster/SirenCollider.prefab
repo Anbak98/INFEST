@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5973459042748022414}
   - component: {fileID: 3821126624460993106}
   - component: {fileID: 590801898442004331}
-  - component: {fileID: 5996389520952411311}
+  - component: {fileID: 8207163340620904038}
+  - component: {fileID: 3439710755851420885}
   m_Layer: 11
   m_Name: SirenCollider
   m_TagString: Untagged
@@ -68,8 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5909999bee5cfa4459ba4abf5aa449a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sirenSound: {fileID: 5996389520952411311}
-  sirenSoundClip: {fileID: 8300000, guid: 7124eba31bfa43e4097cdbaa21190619, type: 3}
+  isTrigger: 0
+  _controller: {fileID: 8207163340620904038}
 --- !u!114 &590801898442004331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,9 +88,24 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 3821126624460993106}
+  - {fileID: 8207163340620904038}
   ForceRemoteRenderTimeframe: 0
---- !u!82 &5996389520952411311
+--- !u!114 &8207163340620904038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2443644632781091569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e968f917016064688c4fd2b8fc81e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  siren: {fileID: 3821126624460993106}
+  sirenSound: {fileID: 3439710755851420885}
+  sirenSoundClip: {fileID: 8300000, guid: 7124eba31bfa43e4097cdbaa21190619, type: 3}
+--- !u!82 &3439710755851420885
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
