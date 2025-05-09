@@ -80,8 +80,6 @@ public abstract class PlayerBaseState : IState
     #region 애니메이션이 있는 것들(이동, 달리기, 사격, 점프, 앉기, 앉아서 이동, 조준)의 실제 동작
     protected void PlayerMove(NetworkInputData data)
     {        
-        // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.HandleMovement(data);    // 이동
     }
 
     protected void PlayerFire(NetworkInputData data)
@@ -91,14 +89,12 @@ public abstract class PlayerBaseState : IState
     }
     protected void Reload(NetworkInputData data)
     {
-        controller.weapons.Reload();
+        player.Weapons.Reload();
         // 장전
     }
 
     protected void PlayerRun(NetworkInputData data)
     {
-        // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.HandleMovement(data);    // 이동
 
     }
     protected void PlayerJump()
@@ -113,10 +109,8 @@ public abstract class PlayerBaseState : IState
     // 앉아서 걷기
     protected void PlayerWaddle(NetworkInputData data)
     {
-        Debug.Log("Waddle");
-        // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.HandleMovement(data);    // 이동
     }
+
     protected void PlayerSitFire(NetworkInputData data)
     {
         Debug.Log("SitFire");

@@ -39,7 +39,7 @@ public class PlayerSitIdleState : PlayerSitState
             stateMachine.ChangeState(stateMachine.IdleState);
         }
         // isSitting && isFiring
-        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if ((stateMachine.Player.Weapons != null) && data.isFiring)
         {
             stateMachine.ChangeState(stateMachine.SitAttackState);
         }
