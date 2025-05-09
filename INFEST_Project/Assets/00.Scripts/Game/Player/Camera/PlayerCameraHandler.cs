@@ -2,6 +2,8 @@ using Cinemachine;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -48,37 +50,37 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+
         base.FixedUpdateNetwork();
 
         if (isMenu) return;
 
         if (statHandler.CurrentHealth <= 0) return;
 
+            if (GetInput(out NetworkInputData data))
+            {
+                Vector2 mouseDelta = data.lookDelta;
 
-        if (GetInput(out NetworkInputData data))
-        {
-            Vector2 mouseDelta = data.lookDelta;
+                float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
+                float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
 
-            float mouseX = (yRotation + mouseDelta.x) * _sensitivity * Time.deltaTime;
-            float mouseY = mouseDelta.y * _sensitivity * Time.deltaTime;
+                // 좌우 회전 (플레이어)
+                _parentTransform.Rotate(Vector3.up * mouseX);
 
-            // 좌우 회전 (플레이어)
-            _parentTransform.Rotate(Vector3.up * mouseX);
+                // 상하 회전
+                //if (_cameraHolder.rotation.eulerAngles.x > 80f)
+                //    return;
+                //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
+                //    return;
+                //else
+                //  _cameraHolder.Rotate(Vector3.right * -mouseY);
 
-            // 상하 회전
-            //if (_cameraHolder.rotation.eulerAngles.x > 80f)
-            //    return;
-            //else if (_cameraHolder.rotation.eulerAngles.x < -80f)
-            //    return;
-            //else
-            //  _cameraHolder.Rotate(Vector3.right * -mouseY);
+                // 상하 회전 (카메라 홀더만)
+                xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
+                xRotation = Mathf.Clamp(xRotation, -80f, 80f);
 
-            // 상하 회전 (카메라 홀더만)
-            xRotation -= mouseY; // 위로 이동하면 음수, 아래로 이동하면 양수
-            xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-
-            _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
-        }
+                _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
+            }
     }
 
     public Vector3 GetCameraForwardOnXZ()
@@ -112,4 +114,5 @@ public class PlayerCameraHandler : NetworkBehaviour
         }
 
     }
+
 }

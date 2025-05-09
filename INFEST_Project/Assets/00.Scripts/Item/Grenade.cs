@@ -15,7 +15,7 @@ public class Grenade : Consume
 
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
 
-        RunAnimation();
+        StopAnimation();
         GrenadeCreate();
         // 수류탄 나가야함;
 
@@ -38,6 +38,6 @@ public class Grenade : Consume
             Object.InputAuthority
         ).GetComponent<GrenadeProjectile>();
 
-        grenade.Init(velocity);
+        grenade.Init(velocity, gameObject);
     }
 }

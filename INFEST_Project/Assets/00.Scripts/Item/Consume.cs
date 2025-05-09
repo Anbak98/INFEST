@@ -26,7 +26,7 @@ public class Consume : NetworkBehaviour
         curNum = 1;
     }
     
-    protected void RunAnimation()
+    protected void StopAnimation()
     {
         //animator.SetTrigger("");
     }
