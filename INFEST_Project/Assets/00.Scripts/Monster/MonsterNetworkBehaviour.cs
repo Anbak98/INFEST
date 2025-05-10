@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MonsterNetworkBehaviour : NetworkBehaviour
 {
-    //  key": 1001,
+    //   key": 1001,
     //  "Name": "PJ_H I",
     //  "MonsterType": 0,
     //  "MinHealth": 150,
@@ -26,64 +26,50 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     //  "DropGold": 30,
     //  "FieldSpawn": true,
     //  "LimitSpawnCount": 9999
-    public MonsterInfo info;
+    public MonsterInfo info {get; private set;}
 
+    [Header("Monster Number depends on Data Table")]
     public int key = -1;
 
-    [field: Header("Stat")]
-    [Networked, HideInInspector, Tooltip("The networked amount of health that monster has")]
-    public float CurrentHealth { get; private set; } = -1;
-
-    [Networked, HideInInspector, Tooltip("The networked amount of health that monster has")]
-    public float MovementSpeed { get; set; } = -1;
-
-    [Header("Components")]
+    [Header("Monster Control Helper")]
     [Tooltip("Reference to the enemy's FSM.")]
     public MonsterFSM FSM;
-
     [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
     public NavMeshAgent AIPathing;
 
-    [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
-    public SphereCollider PlayerDetectorCollider;
-
-    [Networked] public NetworkBool IsAttack { get; set; } = false;
-    [Networked] public NetworkBool IsDead { get; set; } = false;
-
-    [HideInInspector]
-    public Transform target;
-    [HideInInspector]
-    public List<Transform> targets = new();
-    [HideInInspector]
-    public PlayerStatHandler targetStatHandler;
-
+    [Header("Monster Render Helper")]
     public Animator animator;
-    [Networked]
-    private int HitCount { get; set; }
-    [Networked]
-    private Vector3 LastHitPosition { get; set; }
-    [Networked]
-    private Vector3 LastHitDirection { get; set; }
-
     public GameObject hitEffectPrefab;
     public AudioSource hitSound;
     public AudioClip hitSoundClip;
 
+    [Header("Monster Status")]
+    public SphereCollider PlayerDetectorCollider;
+
+    [Networked, HideInInspector, Tooltip("The networked amount of health that monster has")]
+    public float CurrentHealth { get; private set; } = -1;
+
+    [Networked, HideInInspector] public NetworkBool IsAttack { get; set; } = false;
+    [Networked, HideInInspector] public NetworkBool IsDead { get; set; } = false;
+    [Networked, HideInInspector] private Vector3 LastHitPosition { get; set; }
+    [Networked, HideInInspector] private Vector3 LastHitDirection { get; set; }
+    [Networked, HideInInspector] private int HitCount { get; set; }
+    [Networked, HideInInspector] public float MovementSpeed { get; set; }
+
+    [ReadOnly] public Transform target;
+    [HideInInspector] public List<Transform> targets = new();
+
     public override void Spawned()
-    {
+    { 
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
 
         CurrentHealth = Random.Range(info.MinHealth, info.MaxHealth);
-        MovementSpeed = info.SpeedMove;
+        AIPathing.speed = info.SpeedMove;
 
         if (PlayerDetectorCollider.radius != info.DetectAreaWave)
             PlayerDetectorCollider.radius = info.DetectAreaNormal;
 
         AIPathing.enabled = true;
-    }
-
-    public virtual void PlayerDetectedListnerByPlayer()
-    {
     }
 
     public bool IsLookPlayer()
@@ -115,17 +101,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         if (CurrentHealth <= 0f)
             return false;
 
-        //if (isImmortal)
-        //return false;
-
         CurrentHealth -= damage;
 
         if (CurrentHealth <= 0f)
         {
             CurrentHealth = 0f;
             IsDead = true;
-            Debug.Log("»ç¸Á");
-            //_sceneObjects.Gameplay.PlayerKilled(instigator, Object.InputAuthority, weaponType, isCritical);
         }
 
         // Store relative hit position.
