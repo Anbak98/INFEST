@@ -13,7 +13,6 @@ public class ConsumeSpawner : NetworkBehaviour
         {
             if (Consumes[i] == Player.local.inventory.consume[0])
             {
-                Debug.Log("ConsumeSpawner »£√‚");
                 Consumes[i].CollThrow();
             }
         }

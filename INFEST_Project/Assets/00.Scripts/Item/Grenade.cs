@@ -15,18 +15,20 @@ public class Grenade : Consume
 
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
 
+        //Player.local.inventory.RemoveConsumeItem(0);
         StopAnimation();
         GrenadeCreate();
         // 수류탄 나가야함;
 
-        _throwTimer = TickTimer.CreateFromSeconds(Runner, 0.5f); // 애니메이션 시간이랑 동일하게
+         // 애니메이션 시간이랑 동일하게
 
         // 총 안보이게 하자 => 랜더(?) 없애주자
     }
 
     private void GrenadeCreate()
     {
-        if (!Object.HasInputAuthority) return;
+        if (!Object.HasStateAuthority) return;
+        if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
 
         Vector3 direction = Camera.main.transform.forward;
         Vector3 velocity = direction * 10f + Vector3.up * 5f;
@@ -38,6 +40,8 @@ public class Grenade : Consume
             Object.InputAuthority
         ).GetComponent<GrenadeProjectile>();
 
-        grenade.Init(velocity, gameObject);
+        grenade.Init(velocity, gameObject, throwPoint.position);
+
+        _throwTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
     }
 }

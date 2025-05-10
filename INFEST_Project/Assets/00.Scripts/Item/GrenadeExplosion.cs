@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using Cinemachine;
+using Fusion;
+using FuzzySharp.Utils;
 using UnityEngine;
 
 public class GrenadeExplosion : MonoBehaviour
@@ -19,7 +22,7 @@ public class GrenadeExplosion : MonoBehaviour
 
     public void Explosion()
     {
-        int layerMask = (1 << _playerLayer) | (1 << _monsterLayer);
+        int layerMask = (1 << _playerLayer);
 
         UnityEngine.Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, layerMask);
 
@@ -33,12 +36,35 @@ public class GrenadeExplosion : MonoBehaviour
 
             }
 
-            if (other.gameObject.layer == _monsterLayer)
-            {
-                MonsterNetworkBehaviour _monster = other.GetComponentInParent<MonsterNetworkBehaviour>();
-                Debug.Log("몬스터 이름" + _monster);
-                ApplyDamage(_monster, transform.position, (transform.position - _monster.transform.position).normalized);
+            //if (other.gameObject.layer == _monsterLayer)
+            //{
+            //    MonsterNetworkBehaviour _monster = other.GetComponentInParent<MonsterNetworkBehaviour>();
+            //    Debug.Log("몬스터 이름" + _monster);
+            //    ApplyDamage(_monster, transform.position, (transform.position - _monster.transform.position).normalized);
 
+            //}
+        }
+        List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
+
+        _player.Runner.LagCompensation.OverlapSphere(
+            origin: transform.position,
+            radius: 5f,
+            hits: hits,
+            layerMask: -1,
+            queryTriggerInteraction: QueryTriggerInteraction.Ignore,
+            player: _player.Runner.LocalPlayer
+        );
+
+        foreach (var hit in hits)
+        {
+            if (hit.Hitbox != null && hit.Hitbox.name == "mixamorig5:Head")
+            {
+                var _monster = hit.Hitbox.Root.GetComponent<MonsterNetworkBehaviour>();
+                if (_monster != null)
+                {
+                    ApplyDamage(_monster, transform.position, (transform.position - _monster.transform.position).normalized);
+                    Debug.Log($"몬스터 {_monster.name} 에게 피해");
+                }
             }
         }
     }

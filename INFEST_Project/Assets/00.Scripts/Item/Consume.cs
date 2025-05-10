@@ -38,8 +38,6 @@ public class Consume : NetworkBehaviour
 
     public void CollThrow()
     {
-        Debug.Log("Consume »£√‚");
-
         Throw();
     }
 

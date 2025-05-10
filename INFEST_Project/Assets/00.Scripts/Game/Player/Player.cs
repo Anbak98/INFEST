@@ -127,7 +127,7 @@ public class Player : NetworkBehaviour
                 Weapons.Swap(data.scrollValue.y);
             }
 
-            if(data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
             {
                 Weapons.Aiming(true);
             }
@@ -135,26 +135,26 @@ public class Player : NetworkBehaviour
             {
                 Weapons.Aiming(false);
 
-                }
+            }
 
-                if(data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
-                {
-                    Debug.Log("G키 호출됨");
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
+            {
+                if (inventory.consume[0]?.curNum > 0)
                     Consumes.Throw();
-                }
+            }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
-                {
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
+            {
 
-                }
+            }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
-                {
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
+            {
 
-                }
+            }
         }
     }
-    
+
 
     private void OnGUI()
     {
@@ -193,7 +193,7 @@ public class Player : NetworkBehaviour
         if (HasInputAuthority == false)
         {
             // 다른 플레이어의 CinemachineVirtualCamera는 우선순위 낮춘다
-            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0; 
+            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
 
             //// Virtual cameras are enabled only for local player.
             //var virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
@@ -248,7 +248,7 @@ public class Player : NetworkBehaviour
 
             for (int i = 0; i < Consumes.Consumes.Count; i++)
             {
-                if(Consumes.Consumes[i].key == characterInfoInstance.data.StartConsumeItem1)
+                if (Consumes.Consumes[i].key == characterInfoInstance.data.StartConsumeItem1)
                 {
                     #region 체크용 bool 값
 
