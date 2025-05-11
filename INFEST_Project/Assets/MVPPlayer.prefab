@@ -1824,7 +1824,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7721353801691121081}
   - component: {fileID: 3268070573558879607}
-  - component: {fileID: 6802146964932237305}
   m_Layer: 6
   m_Name: CameraHandle
   m_TagString: Untagged
@@ -1863,30 +1862,12 @@ MonoBehaviour:
   _scopeCam: {fileID: 0}
   _cameraHolder: {fileID: 7721353801691121081}
   _sensitivity: 5
-  _parentTransform: {fileID: 3834324505224384244}
+  _parentTransform: {fileID: 227759289204617595}
   _xRotation: 0
   _yRotation: 0
   isMenu: 0
   statHandler: {fileID: 3147526191137004029}
-  hand: {fileID: 2831176873799362131}
   virtualCamera: {fileID: 241464025491880770}
---- !u!114 &6802146964932237305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3697546439029722335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!1 &3819623328929040217
 GameObject:
   m_ObjectHideFlags: 0
@@ -3886,7 +3867,6 @@ MonoBehaviour:
   - {fileID: 3072078453906701333}
   - {fileID: 686141162492240600}
   - {fileID: 3268070573558879607}
-  - {fileID: 6802146964932237305}
   - {fileID: 7032259557335484116}
   - {fileID: 749016921998632051}
   - {fileID: 4359307007718460345}
@@ -4013,21 +3993,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c492b17e818e89345be2f617b4bbdab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statData:
-    id: 0
-    name: 
-    team: 0
-    maxHp: 100
-    curHp: 100
-    defGear: 0
-    def: 0
-    speedMove: 0
-    startGold: 0
-    startTeamCoin: 0
-    playerState: 0
-    startWeapon1Id: 0
-    startAuxiliaryId: 0
-    startConsumeItem1Id: 0
   _MaxHealth: 100
   _MoveSpeed: 20
   _MoveSpeedModifier: 0
@@ -4049,9 +4014,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13abb73a0ec0ccd4da186d828a768ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockState: 0
   player: {fileID: 3072078453906701333}
-  weapons: {fileID: 7032259557335484116}
   cameraHandler: {fileID: 3268070573558879607}
+  networkCharacterController: {fileID: 2204635897523245189}
   playerId: 
 --- !u!114 &3072078453906701333
 MonoBehaviour:
@@ -4065,19 +4031,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inStoreZoon: 0
+  isInteraction: 0
   animationController: {fileID: 686141162492240600}
   data:
     key: 0
     Playeridx: 
     NickName: 
-  playerController: {fileID: 3724504915549296076}
   statHandler: {fileID: 3147526191137004029}
-  characterController: {fileID: 7081860901902442314}
-  networkCharacterController: {fileID: 2204635897523245189}
   attackedEffectController: {fileID: 8335810917877115477}
   cameraHandler: {fileID: 3268070573558879607}
-  inStoreZoon: 0
-  isInteraction: 0
   store: {fileID: 0}
   inventory: {fileID: 0}
   FirstPersonCamera: {fileID: 6996409761476354241}
@@ -4088,8 +4051,8 @@ MonoBehaviour:
   CameraHandle: {fileID: 7721353801691121081}
   FirstPersonRoot: {fileID: 5118857599195776093}
   ThirdPersonRoot: {fileID: 1055682366495237838}
-  _spawnedProjectile: 0
   _material: {fileID: 0}
+  _spawnedProjectile: 0
 --- !u!114 &8280481667216219239
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 using Fusion;
 
-public class PJ_HI_II_Attack : MonsterStateNetworkBehaviour
+public class PJ_HI_II_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
 {
     public TickTimer _tickTimer;
 
@@ -11,8 +11,8 @@ public class PJ_HI_II_Attack : MonsterStateNetworkBehaviour
             return;
         monster.MovementSpeed = 0f;
         monster.IsAttack = true;
-        monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
-        monster.targetStatHandler.TakeDamage(10);
+        //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
+        //monster.targetStatHandler.TakeDamage(10);
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }
 
@@ -27,7 +27,7 @@ public class PJ_HI_II_Attack : MonsterStateNetworkBehaviour
             {
                 if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_II_Attack>();
+                    phase.ChangeState<PJ_HI_II_ChasePhase>();
                 }
                 else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
                 {
