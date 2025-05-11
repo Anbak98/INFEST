@@ -7,7 +7,7 @@ public class Consume : NetworkBehaviour
 {
     public int key;
     public ConsumeInstance instance;
-    public Animator animator;
+
     [Networked] public int curNum { get; set; }    // 현재 아이템 갯수
 
     public void AddNum()
@@ -25,11 +25,8 @@ public class Consume : NetworkBehaviour
         instance = new(key);
         curNum = 1;
     }
-    
-    protected void StopAnimation()
-    {
-        //animator.SetTrigger("");
-    }
+
+
 
     public virtual void Throw()
     {

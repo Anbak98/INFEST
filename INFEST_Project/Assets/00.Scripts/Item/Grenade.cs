@@ -9,6 +9,7 @@ public class Grenade : Consume
     public Transform throwPoint;
 
 
+
     public override void Throw()
     {
         Debug.Log("Grenade 호출");
@@ -16,7 +17,6 @@ public class Grenade : Consume
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
 
         //Player.local.inventory.RemoveConsumeItem(0);
-        StopAnimation();
         GrenadeCreate();
         // 수류탄 나가야함;
 
@@ -40,8 +40,9 @@ public class Grenade : Consume
             Object.InputAuthority
         ).GetComponent<GrenadeProjectile>();
 
-        grenade.Init(velocity, gameObject, throwPoint.position);
+        grenade.Init(velocity, this, throwPoint.position);
 
         _throwTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
     }
+
 }

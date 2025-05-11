@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 2976173764633602220}
   - component: {fileID: 1295281777511444605}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -846,7 +846,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10701
-  animator: {fileID: 0}
   _curNum: 0
   projectilePrefab:
     RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
@@ -1568,7 +1567,7 @@ GameObject:
   - component: {fileID: 5427664398628139033}
   - component: {fileID: 5959309091546008479}
   m_Layer: 0
-  m_Name: GameObject (3)
+  m_Name: Heal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1602,7 +1601,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10801
-  animator: {fileID: 0}
   _curNum: 0
   projectilePrefab:
     RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
@@ -2101,7 +2099,7 @@ GameObject:
   - component: {fileID: 5684634666923599973}
   - component: {fileID: 7134650469899455710}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: IceGrenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2135,10 +2133,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10702
-  animator: {fileID: 0}
   _curNum: 0
   projectilePrefab:
-    RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
+    RawGuidValue: 1bb6c97f7785d2a439521e12c95b6c1e
   throwPoint: {fileID: 6429843654550995173}
 --- !u!1 &4391703208073560342
 GameObject:
@@ -2993,7 +2990,7 @@ GameObject:
   - component: {fileID: 8272837367771234292}
   - component: {fileID: 6863337400171572290}
   m_Layer: 0
-  m_Name: GameObject (4)
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3027,7 +3024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10901
-  animator: {fileID: 0}
   _curNum: 0
   projectilePrefab:
     RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
@@ -4313,7 +4309,7 @@ GameObject:
   - component: {fileID: 3494774912888069417}
   - component: {fileID: 3906248093585814299}
   m_Layer: 0
-  m_Name: GameObject (2)
+  m_Name: EMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4347,7 +4343,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 10703
-  animator: {fileID: 0}
   _curNum: 0
   projectilePrefab:
     RawGuidValue: ab1cac65b214e0e42b4c859f550afa49

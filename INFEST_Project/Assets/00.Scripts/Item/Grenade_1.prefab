@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2472642772151516925}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2359, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -54,9 +54,9 @@ MonoBehaviour:
   explosionParticles: {fileID: 6837544412651398192}
   throwPoint: {fileID: 6833095684138853698}
   obj: {fileID: 0}
-  aimLayerMask:
+  _layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
 --- !u!114 &186967498496518935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,9 +146,6 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 7
-  _monsterLayer:
-    serializedVersion: 2
-    m_Bits: 12
 --- !u!114 &1851647548138147557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +342,7 @@ Transform:
   m_Children:
   - {fileID: 409252530463468370}
   m_Father: {fileID: 6833095684138853698}
-  m_LocalEulerAnglesHint: {x: -90.00002, y: 0.0025863647, z: -0.002609253}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
 --- !u!1001 &6836505676456128348
 PrefabInstance:
   m_ObjectHideFlags: 0

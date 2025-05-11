@@ -9,10 +9,13 @@ public class GrenadeExplosion : MonoBehaviour
     public GrenadeProjectile grenadeProjectile;
 
     [SerializeField] private LayerMask _playerLayer = 7;
-    [SerializeField] private LayerMask _monsterLayer = 12;
 
     private int _damage;
     private Player _player;
+
+    private int _ice = 10702;
+    private int _emp = 10703;
+
 
     public void Awake()
     {
@@ -63,7 +66,10 @@ public class GrenadeExplosion : MonoBehaviour
                 if (_monster != null)
                 {
                     ApplyDamage(_monster, transform.position, (transform.position - _monster.transform.position).normalized);
-                    Debug.Log($"몬스터 {_monster.name} 에게 피해");
+                    if (_player.inventory.consume[0].key == _ice)
+                        FreezEeffect(_monster);
+                    if(_player.inventory.consume[0].key == _emp)
+                        EmpEeffect(_monster);
                 }
             }
         }
@@ -79,4 +85,15 @@ public class GrenadeExplosion : MonoBehaviour
             return;
 
     }
+
+    private void FreezEeffect(MonsterNetworkBehaviour _monster)
+    {
+        _monster.FSM.ChangeState<PJ_HI_Idle>();
+    }
+
+    private void EmpEeffect(MonsterNetworkBehaviour _monster)
+    {
+        _monster.FSM.ChangeState<PJ_HI_Idle>();
+    }
+
 }

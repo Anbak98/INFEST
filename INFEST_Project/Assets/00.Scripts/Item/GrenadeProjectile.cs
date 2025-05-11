@@ -11,7 +11,7 @@ public class GrenadeProjectile : NetworkBehaviour
     public Transform throwPoint;
     private Vector3 _startPosition;
     private Vector3 _velocity;
-    public GameObject obj;
+    public Grenade obj;
 
     private float _castRadius = 0.2f;
 
@@ -27,6 +27,15 @@ public class GrenadeProjectile : NetworkBehaviour
     Vector3 displacement;
     Vector3 currentPosition;
     Vector3 newPosition;
+
+    private Animator animator;
+
+    private int _isStopHash = Animator.StringToHash("IsStop");
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     public override void FixedUpdateNetwork()
     {
@@ -129,10 +138,11 @@ public class GrenadeProjectile : NetworkBehaviour
         GrenadeExplosion.gameObject.SetActive(true);
         GrenadeExplosion.Explosion();
         _lifeTimer = TickTimer.None;
+        StopAnimation();
         Invoke(nameof(Despawn), 1f);
     }
 
-    public void Init(Vector3 initialVelocity, GameObject grenade, Vector3 startPosition)
+    public void Init(Vector3 initialVelocity, Grenade grenade, Vector3 startPosition)
     {
         _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
         _velocity = initialVelocity;
@@ -151,6 +161,11 @@ public class GrenadeProjectile : NetworkBehaviour
         if (Object == null) return;
 
         Runner.Despawn(Object);
+    }
+
+    public void StopAnimation()
+    {
+        animator.SetBool(_isStopHash, true);
     }
 
 }
