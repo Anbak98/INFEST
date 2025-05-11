@@ -47,7 +47,7 @@ public class PlayerMoveState : PlayerGroundState
             stateMachine.ChangeState(stateMachine.RunState);
         }
 
-        if ((stateMachine.Player.GetWeapons() != null) && data.isFiring)
+        if ((stateMachine.Player.Weapons != null) && data.isFiring)
         {
             player.animationController.isFiring = data.isFiring;
             PlayerFire(data);

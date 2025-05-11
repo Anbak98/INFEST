@@ -1,4 +1,4 @@
-public class Monster_PJ_HI : MonsterNetworkBehaviour
+public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
 {    
     public override void Render()
     {
@@ -9,7 +9,6 @@ public class Monster_PJ_HI : MonsterNetworkBehaviour
         }
         if (IsDead)
         {
-            FSM.ChangePhase<PJ_HI_Phase_Dead>();
             animator.SetBool("IsDead", IsDead);
         }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PJ_HI_II_Walk : MonsterStateNetworkBehaviour
+public class PJ_HI_II_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
 {
     Vector3 randomPosition;
 

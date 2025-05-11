@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour
+public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI>
 {
     private TickTimer _tickTimer;
 
@@ -17,8 +17,8 @@ public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour
         monster.MovementSpeed = 0f;
         monster.IsAttack = true;
 
-        monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
-        monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
+        //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
+        //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }
 

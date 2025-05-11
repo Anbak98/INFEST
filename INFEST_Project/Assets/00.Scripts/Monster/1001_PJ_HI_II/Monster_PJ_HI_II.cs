@@ -1,4 +1,4 @@
-public class Monster_PJ_HI_II : MonsterNetworkBehaviour
+public class Monster_PJ_HI_II : BaseMonster<Monster_PJ_HI_II>
 
 {
     public override void Render()

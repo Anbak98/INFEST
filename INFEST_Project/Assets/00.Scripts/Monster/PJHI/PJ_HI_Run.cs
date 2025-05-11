@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PJ_HI_Run : MonsterStateNetworkBehaviour
+public class PJ_HI_Run : MonsterStateNetworkBehaviour<Monster_PJ_HI>
 {
     Transform _target;
 
