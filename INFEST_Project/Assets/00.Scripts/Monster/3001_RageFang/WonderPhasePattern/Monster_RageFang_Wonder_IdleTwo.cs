@@ -1,11 +1,10 @@
 using Fusion;
 using UnityEngine;
 
-public class Monster_RageFang_Wonder_Idle : MonsterStateNetworkBehaviour<Monster_RageFang>
+public class Monster_RageFang_Wonder_IdleTwo : MonsterStateNetworkBehaviour<Monster_RageFang>
 {
     [SerializeField]
-    private float DurationTime = 30.0f;
-    [SerializeField]
+    private float DurationTime =7.0f;
     private TickTimer _tickTimer;
 
     public override void Enter()
@@ -21,8 +20,7 @@ public class Monster_RageFang_Wonder_Idle : MonsterStateNetworkBehaviour<Monster
 
         if(_tickTimer.Expired(Runner))
         {
-            
-            phase.ChangeState<Monster_RageFang_Wonder_Stretch>();
+            phase.ChangeState<Monster_RageFang_Wonder_Walk>();
         }
     }
 }

@@ -1,6 +1,6 @@
 using Fusion;
 
-public class PJ_HI_II_Dead : MonsterStateNetworkBehaviour
+public class PJ_HI_II_Dead : MonsterStateNetworkBehaviour<Monster_PJ_HI>
 {
     public TickTimer _tickTimer;
     public NetworkObject obj;

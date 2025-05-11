@@ -29,11 +29,9 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public MonsterInfo info {get; private set;}
 
     [Header("Monster Number depends on Data Table")]
-    public int key = -1;
+    public int key = -1; 
 
     [Header("Monster Control Helper")]
-    [Tooltip("Reference to the enemy's FSM.")]
-    public MonsterFSM FSM;
     [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
     public NavMeshAgent AIPathing;
 
@@ -96,6 +94,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         }
     }
 
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+    }   
+    
     public bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
     {
         if (CurrentHealth <= 0f)
@@ -109,10 +112,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             IsDead = true;
         }
 
+        Vector3 dir = (transform.position - position).normalized;
+
         // Store relative hit position.
         // Only last hit is stored. For casual gameplay this is enough, no need to store precise data for each hit.
         LastHitPosition = position - transform.position;
-        LastHitDirection = -direction;
+        LastHitDirection = -dir;
 
         RPC_PlayDamageEffect(LastHitPosition, LastHitDirection);
 

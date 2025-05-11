@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PJ_HI_RunWave : MonsterStateNetworkBehaviour
+public class PJ_HI_RunWave : MonsterStateNetworkBehaviour<Monster_PJ_HI>
 {
     public override void Enter()
     {

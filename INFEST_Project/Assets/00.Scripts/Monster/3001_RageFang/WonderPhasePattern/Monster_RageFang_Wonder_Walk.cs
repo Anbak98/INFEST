@@ -1,34 +1,40 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PJ_HI_II_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster_RageFang>
 {
     Vector3 randomPosition;
 
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 1.5f;
+        monster.MovementSpeed = monster.info.SpeedMove;
         randomPosition = GetRandomPositionOnNavMesh(); // NavMesh 위의 랜덤한 위치를 가져옵니다.
         monster.AIPathing.SetDestination(randomPosition); // NavMeshAgent의 목표 위치를 랜덤 위치로 설정합니다.
     }
 
     public override void Execute()
     {
+        base.Execute();
         base.Execute();// 아직 경로가 계산되지 않았거나 도착한 경우
         if (!monster.AIPathing.pathPending)
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
-                phase.ChangeState<PJ_HI_II_Idle>();
-
+                phase.ChangeState<Monster_RageFang_Wonder_Idle>();
             }
         }
     }
 
+    public override void Exit()
+    {
+        base.Exit();
+        monster.MovementSpeed = 0;
+    }
+
     private Vector3 GetRandomPositionOnNavMesh()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * 3f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.
+        Vector3 randomDirection = Random.insideUnitSphere * 10f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.
         randomDirection += transform.position; // 랜덤 방향 벡터를 현재 위치에 더합니다.
 
         NavMeshHit hit;
