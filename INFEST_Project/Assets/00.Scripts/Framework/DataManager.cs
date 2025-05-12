@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class DataManager : SingletonBehaviour<DataManager>
 {
@@ -27,6 +28,17 @@ public class DataManager : SingletonBehaviour<DataManager>
         {
             DataLoader<T> loader = dataLoader as DataLoader<T>;
             return loader.GetByKey(key);
+        }
+
+        return default;
+    }
+
+    public Dictionary<int, T> GetDictionary<T>() where T : IKeyedItem
+    {
+        if (_dataLoaderMap.TryGetValue(typeof(T), out var dataLoader))
+        {
+            DataLoader<T> loader = dataLoader as DataLoader<T>;
+            return loader.ItemsDict;
         }
 
         return default;
