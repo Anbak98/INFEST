@@ -5,56 +5,75 @@ using UnityEngine;
 
 public class Monster_Grita : BaseMonster<Monster_Grita>
 {
-    private int _playerDetectLayer = 7;
-    [SerializeField] private AudioSource _screamSound; 
+    [SerializeField] private AudioSource _screamSound;
     [SerializeField] private AudioClip _screamSoundClip;
+   
 
-    [Networked] private bool IsTriggered { get; set; } // 중복 트리거 방지(모든 플레이어가 같은 값을 가져야하는 변수)
+    public const int screamMaxCount = 2;  // 최대 2번만 가능하다
+    public int screamCount = 0;  // 최대 2번만 가능하다
+
+    public TickTimer screamCooldownTimer;
+    public const float ScreamCooldownSeconds = 50f;
+
+    public GritaPlayerDetector playerDetector; // 연결 필요
+
+    // 동적으로 연결해야된다
+    [SerializeField] public MonsterSpawner spawner;
+
 
     public override void Render()
     {
+        // Animation 관련
     }
 
-    public void OnTriggerEnter(UnityEngine.Collider other)
+    public bool CanScream()
     {
-        // 타겟이 범위에 들어와야한다
-        Player player = other.GetComponentInParent<Player>();
-        if (player == null || other.gameObject.layer != _playerDetectLayer) return;
-
-        if (HasInputAuthority)  // 각 Client
-            Rpc_RequestTrigger();
-
-        if (HasStateAuthority)  // Host(해당 오브젝트의 네트워크 상태(동기화 변수 등)를 최종적으로 결정할 권한이 있는지 알려줍니다.
-        {
-            if (IsTriggered) return;    // 중복 트리거 방지
-            IsTriggered = true;
-        }
+        return screamCooldownTimer.ExpiredOrNotRunning(Runner);
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void Rpc_RequestTrigger()
-    {
-        if (IsTriggered) return;
-
-        // Wave 상태일때와 아닐때 다르다. if문을 쓰지 않는다면, 함수를 구분하는 것이 좋은 방법
-
-        // 몬스터를 7~10 추가 스폰
-        // 몬스터별로 스폰 확률이 다르니까 기획서를 참고
-    }
-
+    // 소리는 Host가 모든 Player로 쏴 주는 RPC 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void Rpc_Scream()
     {
-        // 소리지르기(Rpc)
-//         Debug.Log("Scream!");   // 나중에 지우고 커밋
+        Debug.Log("Scream!");   // 나중에 지우고 커밋
 
-        // 다른 몬스터들 Spawn된다
-        // 가장 가까운 Spawn포인트에서 몇마리를 스폰하고
-        // 현재 위치로 뛰어오게 만든다
+        if (_screamSound != null && _screamSoundClip != null)
+            _screamSound.PlayOneShot(_screamSoundClip);
 
+        screamCount++;
 
-
+        // 쿨타임 시작
+        screamCooldownTimer = TickTimer.CreateFromSeconds(Runner, ScreamCooldownSeconds);       
     }
+    #region 쿨타임 후 isTriggered를 false로
+    public void StartScreamCooldown()
+    {
+        playerDetector.isTriggered = true;
+        // 50초 후에 ResetTrigger 함수 자동 호출
+        Invoke(nameof(ResetTrigger), ScreamCooldownSeconds);
+    }
+    private void ResetTrigger()
+    {
+        playerDetector.isTriggered = false;
+        Debug.Log("쿨타임 종료: isTriggered = false");
+    }
+    #endregion
 
-    // 추가 스폰
+    public float GetCurrentAnimLength()
+    {
+        AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfos.Length > 0)
+        {
+            return clipInfos[0].clip.length;
+        }
+        return 0f;
+    }
+    public IEnumerator SpawnAfterAnim(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Debug.Log("SpawnAfterAnim 실행");
+
+        spawner.SpawnMonsterOnWave(spawner.transform);
+    }
 
 }
