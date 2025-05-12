@@ -7,10 +7,12 @@ public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker>
     public override void Enter()
     {
         base.Enter();
-        if (monster.IsDead)
+        if (monster.IsDead || monster.target == null)
             return;
+
         monster.MovementSpeed = 0f;
         monster.IsAttack = true;
+        print("아야");
         //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(10);
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
@@ -27,7 +29,8 @@ public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker>
             {
                 if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<Stacker_Phase_Chase>();
+                    print("범위 안에 들어옴");
+                    phase.ChangeState<Stacker_Attack>();
                 }
                 else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
                 {

@@ -6,7 +6,6 @@ public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker>
     {
         base.Enter();
         monster.MovementSpeed = monster.info.SpeedMoveWave;
-
     }
 
     public override void Execute()
@@ -27,7 +26,7 @@ public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker>
             }
             //else if (monster.AIPathing.remainingDistance > 10f)
             //{
-            //    monster.FSM.ChangePhase<PJ_HI_WonderPhase>();
+            //    monster.FSM.ChangePhase<Stacker_Phase_Wonder>();
             //}
         }
     }
@@ -36,6 +35,5 @@ public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker>
     {
         base.Exit();
         monster.MovementSpeed = 0;
-
     }
 }

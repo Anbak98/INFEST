@@ -16,6 +16,6 @@ public class Stacker_Phase_Wave : MonsterPhase<Monster_Stacker>
     public override void MachineExit()
     {
         monster.PlayerDetectorCollider.radius = monster.info.DetectAreaNormal;
-        base.MachineEnter();
+        base.MachineExit();
     }
 }
