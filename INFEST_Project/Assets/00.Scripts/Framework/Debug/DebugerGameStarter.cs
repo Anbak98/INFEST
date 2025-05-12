@@ -50,12 +50,6 @@ public class DebugerGameStarter : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible =true;
-    }
-
     private async void TryStartGame(GameMode mode)
     {
         SetConnectionMessage(string.Empty);
@@ -75,6 +69,7 @@ public class DebugerGameStarter : MonoBehaviour
 
             GameObject _runnerObject = new GameObject($"Player({mode})");
             _runner = _runnerObject.AddComponent<NetworkRunner>();
+            _runnerObject.AddComponent<FusionStatistics>(); 
 
             // Create the NetworkSceneInfo from the current scene
             var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);

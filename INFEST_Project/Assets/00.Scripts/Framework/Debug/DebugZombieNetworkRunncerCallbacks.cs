@@ -33,11 +33,8 @@ public class DebugZombieNetworkRunncerCallbacks : MonoBehaviour, INetworkRunnerC
 
         if (runner.IsServer)
         {
-            NetworkObject newPlayerObj = runner.Spawn(_playerPrefab, inputAuthority: player);
+            NetworkObject newPlayerObj = runner.Spawn(_playerPrefab, Vector3.zero, inputAuthority: player);
             _playerObjects.Add(player, newPlayerObj);
-
-            if(runner.LocalPlayer == player)
-                _monsterSpawner.SpawnMonsterOnWave(transform);
         }
     }
 
