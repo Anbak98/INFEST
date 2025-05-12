@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Idle : MonsterStateNetworkBehaviour
+public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita>
 {
     public TickTimer _tickTimer;
 
