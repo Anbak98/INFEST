@@ -7,16 +7,10 @@ public class SirenController : NetworkBehaviour
     [SerializeField] private Siren siren;
 
     [SerializeField] private AudioSource sirenSound;
-    [SerializeField] private AudioClip sirenSoundClip;
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestTrigger(Player _player, PlayerRef _playerRef)
-    {
-        RPC_PlaySirenSound(_player, _playerRef);
-    }
+    [SerializeField] private AudioClip sirenSoundClip;    
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    private void RPC_PlaySirenSound(Player _player, PlayerRef _playerRef)
+    public void RPC_PlaySirenSound(Player _player, PlayerRef _playerRef)
     {
         if (sirenSound != null && sirenSoundClip != null)
         {

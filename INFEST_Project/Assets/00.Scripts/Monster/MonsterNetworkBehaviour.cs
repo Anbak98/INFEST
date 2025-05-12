@@ -1,4 +1,5 @@
 using Fusion;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -124,6 +125,14 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         HitCount++;
 
         return true;
+    }
+
+    public IEnumerator Slow(float slowedMovementSpeed, float duration)
+    {
+        float previous = MovementSpeed;
+        MovementSpeed = slowedMovementSpeed;
+        yield return new WaitForSeconds(duration);
+        MovementSpeed = previous;
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
