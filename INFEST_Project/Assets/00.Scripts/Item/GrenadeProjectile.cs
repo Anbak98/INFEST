@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GrenadeProjectile : NetworkBehaviour
 {
-    [Networked] TickTimer _lifeTimer { get; set; }
+    TickTimer _lifeTimer;
     public GrenadeExplosion GrenadeExplosion;
     public GameObject explosionParticles;
     private float _time;
@@ -39,11 +39,14 @@ public class GrenadeProjectile : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (!HasStateAuthority) return;
+
         if (_lifeTimer.Expired(Runner))
         {
             if (!GrenadeExplosion.gameObject.activeSelf)
             {
-                Explode();
+                RPC_Explode(transform.position);
+                _lifeTimer = TickTimer.None;
             }
             return;
         }
@@ -93,7 +96,8 @@ public class GrenadeProjectile : NetworkBehaviour
             if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 0.2f,
                     Object.InputAuthority, out var hits))
             {
-                Explode();
+                RPC_Explode(transform.position);
+                _lifeTimer = TickTimer.None;
             }
         }
 
@@ -107,7 +111,8 @@ public class GrenadeProjectile : NetworkBehaviour
         // Æø¹ß Ã¼Å©
         if (hitLayer == 6)
         {
-            Explode();
+            RPC_Explode(transform.position);
+            _lifeTimer = TickTimer.None;
         }
 
         if (hitLayer == 11)
@@ -129,22 +134,22 @@ public class GrenadeProjectile : NetworkBehaviour
         }
     }
 
-
-    private void Explode()                  
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_Explode(Vector3 explosionPosition)                  
     {
+        transform.position = explosionPosition; 
         explosionParticles.SetActive(true);
         GrenadeExplosion.gameObject.SetActive(true);
-        GrenadeExplosion.Explosion();
-        _lifeTimer = TickTimer.None;
         StopAnimation();
-        Invoke(nameof(Despawn), 0.3f);
+        if (HasStateAuthority)
+            Invoke(nameof(Despawn), 0.5f);
     }
 
-    public void Init(Vector3 initialVelocity, Grenade grenade, Vector3 startPosition)
+    public void Init(Vector3 initialVelocity, Vector3 startPosition, Grenade grenade)
     {
         _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
         _velocity = initialVelocity;
-        transform.position = startPosition;
+        //transform.position = startPosition;
         _time = 0f;
         obj = grenade;
     }

@@ -4,7 +4,7 @@ using Fusion;
 using FuzzySharp.Utils;
 using UnityEngine;
 
-public class GrenadeExplosion : MonoBehaviour
+public class GrenadeExplosion : NetworkBehaviour
 {
     public GrenadeProjectile grenadeProjectile;
 
@@ -19,14 +19,18 @@ public class GrenadeExplosion : MonoBehaviour
     private float _debuffTime = 5f;
 
 
-    public void Awake()
+    public void Start()
     {
-        _damage = grenadeProjectile.obj.GetComponent<Grenade>().instance.data.Effect;
+        if (!HasStateAuthority) return;
+        _damage = grenadeProjectile.obj.instance.data.Effect;
         _player = grenadeProjectile.obj.GetComponent<Grenade>().throwPoint.GetComponentInParent<Player>();
+        Explosion();
     }
 
     public void Explosion()
     {
+        if (!HasStateAuthority) return;
+
         int layerMask = (1 << _playerLayer);
 
         UnityEngine.Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, layerMask);
@@ -55,9 +59,9 @@ public class GrenadeExplosion : MonoBehaviour
             origin: transform.position,
             radius: 5f,
             hits: hits,
-            layerMask: -1,
+            layerMask: 12,
             queryTriggerInteraction: QueryTriggerInteraction.Ignore,
-            player: _player.Runner.LocalPlayer
+            player: grenadeProjectile.obj._player.Runner.LocalPlayer
         );
 
         foreach (var hit in hits)

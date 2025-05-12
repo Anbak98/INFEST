@@ -7,6 +7,7 @@ public class Consume : NetworkBehaviour
 {
     public int key;
     public ConsumeInstance instance;
+    public Player _player;
 
     [Networked] public int curNum { get; set; }    // 현재 아이템 갯수
 

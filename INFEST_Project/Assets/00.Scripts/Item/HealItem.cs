@@ -6,7 +6,7 @@ using UnityEngine;
 public class HealItem : Consume
 {
     private Player player;
-    TickTimer _healTimer { get; set; }
+    private TickTimer _healTimer;
 
     private void Awake()
     {
@@ -16,6 +16,7 @@ public class HealItem : Consume
     public override void Heal()
     {
         if (!_healTimer.ExpiredOrNotRunning(Runner)) return;
+        if (!HasInputAuthority) return;
 
         Player.local.inventory.RemoveConsumeItem(1);
 
@@ -24,4 +25,5 @@ public class HealItem : Consume
         _healTimer = TickTimer.CreateFromSeconds(Runner, 5f);
 
     }
+
 }

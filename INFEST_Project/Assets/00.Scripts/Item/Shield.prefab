@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4522276523273232297}
   - component: {fileID: 3417553180211733367}
   - component: {fileID: 5096846379032705160}
+  - component: {fileID: 4140583654245163006}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -73,6 +74,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f2eb0099c44ee43b090262a4dde797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _curDurability: 0
+  obj: {fileID: 0}
 --- !u!114 &5096846379032705160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,11 +90,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 889787307
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3417553180211733367}
+  - {fileID: 4140583654245163006}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &4140583654245163006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969077110302453053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &3132316949264585100
 GameObject:
   m_ObjectHideFlags: 0
