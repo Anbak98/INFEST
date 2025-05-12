@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class RageFangSkillTable : IKeyedItem
+public class RageFangSkillTable
 {
     /// <summary>
     /// ID
@@ -55,7 +55,5 @@ public class RageFangSkillTable : IKeyedItem
     /// 5m이내일경우
     /// </summary>
     public float Distance_2P5M;
-
-    public int Key => key;
 
 }
