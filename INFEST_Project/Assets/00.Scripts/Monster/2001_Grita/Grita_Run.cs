@@ -28,7 +28,7 @@ public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita>
             }
             else if (monster.AIPathing.remainingDistance > 10f)
             {
-                monster.FSM.ChangePhase<Grita_Phase_Wonder>();
+                monster.FSM.ChangePhase<Grita_Phase_Wander>();
             }
         }
 

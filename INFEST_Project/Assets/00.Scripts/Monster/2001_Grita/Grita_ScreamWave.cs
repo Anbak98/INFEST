@@ -27,6 +27,7 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita>
         Debug.Log("Execute 실행");
         base.Execute();
 
+        // Enter에서 공격했으니 RunWave로 상태전환
         phase.ChangeState<Grita_RunWave>();
 
     }

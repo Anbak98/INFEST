@@ -17,13 +17,15 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
     public GritaPlayerDetector playerDetector; // 연결 필요
 
-    // 동적으로 연결해야된다
+    // 동적으로 연결
     [SerializeField] public MonsterSpawner spawner;
 
 
     public override void Render()
     {
         // Animation 관련
+
+
     }
 
     public bool CanScream()
