@@ -87,6 +87,7 @@ public class GrenadeProjectile : NetworkBehaviour
             }
         }
 
+
         if (displacement.sqrMagnitude > 0.0001f)
         {
             if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 0.2f,
@@ -97,11 +98,10 @@ public class GrenadeProjectile : NetworkBehaviour
         }
 
         transform.position = newPosition;
+
     }
     private void HandleCollision(RaycastHit hit)
     {
-
-
         int hitLayer = hit.collider.gameObject.layer;
 
         // 폭발 체크
@@ -122,8 +122,6 @@ public class GrenadeProjectile : NetworkBehaviour
         else
         {
             // 반사 벡터 계산
-            //Vector3 reflected = Vector3.Reflect(_velocity.normalized, hit.normal);
-            //_velocity = (reflected + hit.normal * 0.2f).normalized * _velocity.magnitude * 0.6f;
             _velocity = Vector3.Reflect(_velocity, hit.normal) * 0.6f;
             // 충돌 지점으로 위치 이동 (약간 띄워서 튕기기)
             transform.position = hit.point + hit.normal * 0.01f;
@@ -139,7 +137,7 @@ public class GrenadeProjectile : NetworkBehaviour
         GrenadeExplosion.Explosion();
         _lifeTimer = TickTimer.None;
         StopAnimation();
-        Invoke(nameof(Despawn), 1f);
+        Invoke(nameof(Despawn), 0.3f);
     }
 
     public void Init(Vector3 initialVelocity, Grenade grenade, Vector3 startPosition)

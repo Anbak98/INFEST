@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class Grenade : Consume
 {
-    [Networked] TickTimer _throwTimer { get; set; }
+    private TickTimer _throwTimer { get; set; }
     public NetworkPrefabRef projectilePrefab;
     public Transform throwPoint;
-
-
 
     public override void Throw()
     {
@@ -16,7 +14,7 @@ public class Grenade : Consume
 
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
 
-        //Player.local.inventory.RemoveConsumeItem(0);
+        Player.local.inventory.RemoveConsumeItem(0);
         GrenadeCreate();
         // 수류탄 나가야함;
 
@@ -42,7 +40,7 @@ public class Grenade : Consume
 
         grenade.Init(velocity, this, throwPoint.position);
 
-        _throwTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
+        _throwTimer = TickTimer.CreateFromSeconds(Runner, 3f);
     }
 
 }

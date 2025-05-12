@@ -40,7 +40,7 @@ public class PlayerController : NetworkBehaviour
     {
         stateMachine = new PlayerStateMachine(player, this);
 
-        player.statHandler.OnHealthChanged += player.attackedEffectController.CalledWhenPlayerAttacked;
+        player.statHandler.OnHealthChanged += (amount) => player.attackedEffectController.CalledWhenPlayerAttacked(amount);
         player.statHandler.OnDeath += OnDeath;
         player.statHandler.OnRespawn += OnRespawn;
     }
@@ -86,12 +86,12 @@ public class PlayerController : NetworkBehaviour
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
             {
-
+                player.Consumes.Heal();
             }
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
             {
-
+                player.Consumes.Mounting();
             }
         }
     }

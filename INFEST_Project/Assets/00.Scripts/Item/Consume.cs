@@ -26,8 +26,6 @@ public class Consume : NetworkBehaviour
         curNum = 1;
     }
 
-
-
     public virtual void Throw()
     {
 
@@ -36,6 +34,26 @@ public class Consume : NetworkBehaviour
     public void CollThrow()
     {
         Throw();
+    }
+
+    public virtual void Heal()
+    {
+
+    }
+
+    public void CollHeal()
+    {
+        Heal();
+    }
+
+    public virtual void Mounting()
+    {
+
+    }
+
+    public void CollMounting()
+    {
+        Mounting();
     }
 
 }

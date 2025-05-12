@@ -15,6 +15,8 @@ public class GrenadeExplosion : MonoBehaviour
 
     private int _ice = 10702;
     private int _emp = 10703;
+    private float _iceDebuff = 0.55f;
+    private float _debuffTime = 5f;
 
 
     public void Awake()
@@ -66,9 +68,9 @@ public class GrenadeExplosion : MonoBehaviour
                 if (_monster != null)
                 {
                     ApplyDamage(_monster, transform.position, (transform.position - _monster.transform.position).normalized);
-                    if (_player.inventory.consume[0].key == _ice)
+                    if (grenadeProjectile.obj?.key == _ice)
                         FreezEeffect(_monster);
-                    if(_player.inventory.consume[0].key == _emp)
+                    if (grenadeProjectile.obj?.key == _emp)
                         EmpEeffect(_monster);
                 }
             }
@@ -81,19 +83,28 @@ public class GrenadeExplosion : MonoBehaviour
 
         if (_monster.CurrentHealth == 0 || _monster.IsDead == true) return;
 
-        if (_monster.ApplyDamage(_player.Runner.LocalPlayer, _damage, pos, dir, 0, false) == false)
+        if (_monster.ApplyDamage(_player.Runner.LocalPlayer, _damage, Vector3.zero, Vector3.zero, 0, false) == false)
             return;
 
     }
 
     private void FreezEeffect(MonsterNetworkBehaviour _monster)
     {
-        _monster.FSM.ChangeState<PJ_HI_Idle>();
+        //if(_monster is Monster_PJ_HI pj)
+        //{
+        //    pj.FSM.ChangePhase<PJ_HI_Phase_Wonder>();
+        //    pj.FSM.ChangeState<PJ_HI_Idle>();
+
+        //    pj.FSM.ChangePhase<PJ_HI_Phase_Chase>();
+        //    pj.FSM.ChangeState<PJ_HI_Run>();
+        //}
+        StartCoroutine(_monster.Slow(_monster.MovementSpeed * _iceDebuff, _debuffTime));
     }
 
     private void EmpEeffect(MonsterNetworkBehaviour _monster)
     {
-        _monster.FSM.ChangeState<PJ_HI_Idle>();
+        // _monster.FSM.ChangeState<PJ_HI_Idle>();
+        StartCoroutine(_monster.Slow(0, _debuffTime));
     }
 
 }

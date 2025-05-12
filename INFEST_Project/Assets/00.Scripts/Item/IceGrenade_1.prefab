@@ -111,10 +111,7 @@ MonoBehaviour:
   grenadeProjectile: {fileID: 8507663795923855459}
   _playerLayer:
     serializedVersion: 2
-    m_Bits: 7
-  _monsterLayer:
-    serializedVersion: 2
-    m_Bits: 12
+    m_Bits: 128
 --- !u!114 &1521259199754829486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,6 +484,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4686284035302956, guid: e96e7dd85717edf4fa0a05d8b45d8450, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198805840310298302, guid: e96e7dd85717edf4fa0a05d8b45d8450,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198805840310298302, guid: e96e7dd85717edf4fa0a05d8b45d8450,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.75950456
+      objectReference: {fileID: 0}
+    - target: {fileID: 198805840310298302, guid: e96e7dd85717edf4fa0a05d8b45d8450,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199149795414227152, guid: e96e7dd85717edf4fa0a05d8b45d8450,
