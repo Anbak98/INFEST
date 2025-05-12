@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Phase_Wave : MonsterPhase
+public class Grita_Phase_Wave : MonsterPhase<Monster_Grita>
 {
     public override void MachineEnter()
     {

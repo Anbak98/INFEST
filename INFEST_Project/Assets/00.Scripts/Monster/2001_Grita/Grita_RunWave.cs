@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_RunWave : MonsterStateNetworkBehaviour
+public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita>
 {
     public override void Enter()
     {
