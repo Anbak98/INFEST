@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Attack : MonsterStateNetworkBehaviour
+public class Grita_Attack : MonsterStateNetworkBehaviour<Monster_Grita>
 {
     private TickTimer _tickTimer;
 
@@ -16,8 +16,8 @@ public class Grita_Attack : MonsterStateNetworkBehaviour
         monster.MovementSpeed = 0f;
         monster.IsAttack = true;
 
-        monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
-        monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
+        //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
+        //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
 
     }

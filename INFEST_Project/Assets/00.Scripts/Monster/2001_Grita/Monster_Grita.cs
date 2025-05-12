@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster_Grita : MonsterNetworkBehaviour
+public class Monster_Grita : BaseMonster<Monster_Grita>
 {
     private int _playerDetectLayer = 7;
+    [SerializeField] private AudioSource _screamSound; 
+    [SerializeField] private AudioClip _screamSoundClip;
 
     [Networked] private bool IsTriggered { get; set; } // 중복 트리거 방지(모든 플레이어가 같은 값을 가져야하는 변수)
 
     public override void Render()
     {
-
     }
 
     public void OnTriggerEnter(UnityEngine.Collider other)
@@ -44,7 +45,7 @@ public class Monster_Grita : MonsterNetworkBehaviour
     public void Rpc_Scream()
     {
         // 소리지르기(Rpc)
-        Debug.Log("Scream!");   // 나중에 지우고 커밋
+//         Debug.Log("Scream!");   // 나중에 지우고 커밋
 
         // 다른 몬스터들 Spawn된다
         // 가장 가까운 Spawn포인트에서 몇마리를 스폰하고
