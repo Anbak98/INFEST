@@ -1,18 +1,21 @@
 using Fusion;
 
-public class PJ_HI_II_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class PJ_HI_II_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
 {
-    public TickTimer _tickTimer;
+    private TickTimer _tickTimer;
 
     public override void Enter()
     {
         base.Enter();
-        if (monster.IsDead)
+
+        if (monster.IsDead || monster.target == null)
             return;
+
         monster.MovementSpeed = 0f;
         monster.IsAttack = true;
-        //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
-        //monster.targetStatHandler.TakeDamage(10);
+
+        //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
+        //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }
 
@@ -27,11 +30,11 @@ public class PJ_HI_II_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
             {
                 if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_II_ChasePhase>();
+                    phase.ChangeState<PJ_HI_II_AttackWave>();
                 }
                 else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_II_Run>();
+                    phase.ChangeState<PJ_HI_II_RunWave>();
                 }
             }
         }
