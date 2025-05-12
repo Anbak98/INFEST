@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class PJ_HI_Phase_Wave : MonsterPhase
+public class PJ_HI_Phase_Wave : MonsterPhase<Monster_PJ_HI>
 {
     public override void MachineEnter()
     {

@@ -27,8 +27,8 @@ public class MonsterSpawner : NetworkBehaviour
                 for (int i = 0; i < num; i++)
                 {
                     Vector3 offset = Random.insideUnitSphere * 1f;
-                    offset.y = 0f;
                     Vector3 spawnPos = points[point].position + offset;
+                    offset.y = 0f;
 
                     NetworkObject networkObj = Runner.Spawn(MonsterPrefab, spawnPos);
                     if (networkObj == null)
@@ -45,8 +45,10 @@ public class MonsterSpawner : NetworkBehaviour
 
                         mnb.target = waveTarget;
 
-                        if (mnb.FSM != null)
-                            mnb.FSM.ChangePhase<PJ_HI_Phase_Wave>();
+                        if(mnb is Monster_PJ_HI pj)
+                        {
+                            pj.FSM.ChangePhase<PJ_HI_Phase_Chase>();
+                        }
                     }
                 }
 

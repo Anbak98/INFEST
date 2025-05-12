@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterPhase : NetworkBehaviour
+public class MonsterPhase<T> : NetworkBehaviour where T : BaseMonster<T>
 {
     [SerializeField]
-    private List<MonsterStateNetworkBehaviour> states;
-    private Dictionary<Type, MonsterStateNetworkBehaviour> stateMap = new();
-    public MonsterStateNetworkBehaviour currentState;
+    private List<MonsterStateNetworkBehaviour<T>> states;
+    private Dictionary<Type, MonsterStateNetworkBehaviour<T>> stateMap = new();
+    [ReadOnly] public MonsterStateNetworkBehaviour<T> currentState;
 
-    protected MonsterNetworkBehaviour monster;
+    protected T monster;
 
-    public void Init(MonsterNetworkBehaviour monster)
+    public void Init(T monster)
     {
         this.monster = monster;
 
@@ -27,13 +27,9 @@ public class MonsterPhase : NetworkBehaviour
 
     public virtual void MachineExecute()
     {
-
-    }
-
-    public virtual void ExecuteState()
-    {
         currentState.Execute();
     }
+
 
     public virtual void MachineEnter()
     {

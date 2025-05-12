@@ -3,20 +3,20 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class MonsterFSM : NetworkBehaviour
+public class MonsterFSM<T> : NetworkBehaviour where T : BaseMonster<T>
 {
-    public MonsterNetworkBehaviour monster;
+    public T monster;
     [Header("Phase")]
-    public MonsterPhase currentPhase;
+    public MonsterPhase<T> currentPhase;
 
     [SerializeField]
-    private List<MonsterPhase> phases;
+    private List<MonsterPhase<T>> phases;
 
-    private Dictionary<Type, MonsterPhase> phaseMap = new();
+    private Dictionary<Type, MonsterPhase<T>> phaseMap = new();
 
     public override void Spawned()
     {
-        foreach (MonsterPhase m in phases)
+        foreach (MonsterPhase<T> m in phases)
         {
             m.Init(monster);
             phaseMap.Add(m.GetType(), m);
@@ -28,22 +28,21 @@ public class MonsterFSM : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         currentPhase.MachineExecute();
-        currentPhase.ExecuteState();
     }
 
-    public void ChangePhase<T>() where T : MonsterPhase
+    public void ChangePhase<S>() where S : MonsterPhase<T>
     {
-        if(currentPhase == phaseMap[typeof(T)])
+        if(currentPhase == phaseMap[typeof(S)])
         {
             return;
         }
         currentPhase?.MachineExit();
-        currentPhase = phaseMap[typeof(T)];
+        currentPhase = phaseMap[typeof(S)];
         currentPhase.MachineEnter();
     }
 
-    public void ChangeState<T>() where T : MonsterStateNetworkBehaviour
+    public void ChangeState<S>() where S : MonsterStateNetworkBehaviour<T>
     {
-        currentPhase.ChangeState<T>();
+        currentPhase.ChangeState<S>();
     }
 }

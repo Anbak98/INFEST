@@ -1,6 +1,6 @@
 using Fusion;
 
-public class PJ_HI_II_Idle : MonsterStateNetworkBehaviour
+public class PJ_HI_II_Idle : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
 {
     public TickTimer _tickTimer;
 

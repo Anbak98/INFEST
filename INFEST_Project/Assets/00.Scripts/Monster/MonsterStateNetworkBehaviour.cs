@@ -4,19 +4,19 @@ using UnityEngine;
 /// <summary>
 /// Init 
 /// </summary>
-public abstract class MonsterStateNetworkBehaviour : NetworkBehaviour
+public abstract class MonsterStateNetworkBehaviour<T> : NetworkBehaviour where T : BaseMonster<T>
 {
     /// <summary>
     /// Reference to Monster that control Phase that control this state
     /// </summary>
-    protected MonsterNetworkBehaviour monster;
+    protected T monster;
 
     /// <summary>
     /// Reference to Monster Phase that control this state
     /// </summary>
-    protected MonsterPhase phase;
+    protected MonsterPhase<T> phase;
 
-    public void Init(MonsterNetworkBehaviour monster, MonsterPhase phase)
+    public void Init(T monster, MonsterPhase<T> phase)
     {
         this.monster = monster;
         this.phase = phase;
