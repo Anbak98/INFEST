@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PJ_HI_II_Run : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class Stacker_Run : MonsterStateNetworkBehaviour<Monster_Stacker>
 {
     Transform target;
 
@@ -22,7 +22,7 @@ public class PJ_HI_II_Run : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
 
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
-                phase.ChangeState<PJ_HI_II_Phase_Chase>();
+                phase.ChangeState<Stacker_Phase_Chase>();
             }
             //else if (monster.AIPathing.remainingDistance > 10f)
             //{

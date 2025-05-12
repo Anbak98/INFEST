@@ -1,6 +1,6 @@
 using Fusion;
 
-public class PJ_HI_II_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class Stacker_AttackWave : MonsterStateNetworkBehaviour<Monster_Stacker>
 {
     private TickTimer _tickTimer;
 
@@ -30,11 +30,11 @@ public class PJ_HI_II_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI_II
             {
                 if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_II_AttackWave>();
+                    phase.ChangeState<Stacker_AttackWave>();
                 }
                 else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<PJ_HI_II_RunWave>();
+                    phase.ChangeState<Stacker_RunWave>();
                 }
             }
         }

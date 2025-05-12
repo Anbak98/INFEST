@@ -1,4 +1,4 @@
-public class FSM_PJ_HI_II : MonsterFSM<Monster_PJ_HI_II>
+public class FSM_Stacker : MonsterFSM<Monster_Stacker>
 {
     public override void FixedUpdateNetwork()
     {
@@ -6,7 +6,7 @@ public class FSM_PJ_HI_II : MonsterFSM<Monster_PJ_HI_II>
 
         if (monster.IsLookPlayer())
         {
-            ChangePhase<PJ_HI_II_Phase_Chase>();
+            ChangePhase<Stacker_Phase_Chase>();
         }
     }
 }

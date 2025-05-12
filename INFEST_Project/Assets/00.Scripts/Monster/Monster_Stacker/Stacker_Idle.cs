@@ -1,6 +1,6 @@
 using Fusion;
 
-public class PJ_HI_II_Idle : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class Stacker_Idle : MonsterStateNetworkBehaviour<Monster_Stacker>
 {
     public TickTimer _tickTimer;
 
@@ -17,7 +17,7 @@ public class PJ_HI_II_Idle : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
 
         if (_tickTimer.Expired(Runner))
         {
-            phase.ChangeState<PJ_HI_II_Walk>();
+            phase.ChangeState<Stacker_Walk>();
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PJ_HI_II_RunWave : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker>
 {
     public override void Enter()
     {
@@ -23,7 +23,7 @@ public class PJ_HI_II_RunWave : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
             {
                 Debug.Log(monster.target.position + "  " + transform.position);
                 Debug.Log(monster.AIPathing.remainingDistance + "  " + monster.AIPathing.stoppingDistance);
-                phase.ChangeState<PJ_HI_II_AttackWave>();
+                phase.ChangeState<Stacker_AttackWave>();
             }
             //else if (monster.AIPathing.remainingDistance > 10f)
             //{

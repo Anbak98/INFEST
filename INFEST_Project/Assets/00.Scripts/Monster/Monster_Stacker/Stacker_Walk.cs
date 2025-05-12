@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PJ_HI_II_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
+public class Stacker_Walk : MonsterStateNetworkBehaviour<Monster_Stacker>
 {
     Vector3 randomPosition;
 
@@ -20,7 +20,7 @@ public class PJ_HI_II_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI_II>
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
-                phase.ChangeState<PJ_HI_II_Idle>();
+                phase.ChangeState<Stacker_Idle>();
 
             }
         }

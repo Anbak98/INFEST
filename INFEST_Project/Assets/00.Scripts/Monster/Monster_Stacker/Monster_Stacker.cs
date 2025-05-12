@@ -1,4 +1,4 @@
-public class Monster_PJ_HI_II : BaseMonster<Monster_PJ_HI_II>
+public class Monster_Stacker : BaseMonster<Monster_Stacker>
 
 {
     public override void Render()

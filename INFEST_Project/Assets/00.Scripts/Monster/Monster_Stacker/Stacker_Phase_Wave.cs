@@ -1,4 +1,4 @@
-public class PJ_HI_II_Phase_Wave : MonsterPhase<Monster_PJ_HI_II>
+public class Stacker_Phase_Wave : MonsterPhase<Monster_Stacker>
 {
     public override void MachineEnter()
     {
