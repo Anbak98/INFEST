@@ -17,6 +17,7 @@ public class DataManager : SingletonBehaviour<DataManager>
             {typeof(MonsterState), new DataLoader<MonsterState>("JSON/MonsterState") },
             {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
             {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
+            {typeof(RageFangSkillTable), new DataLoader<RageFangSkillTable>("JSON/RageFangSkillTable") }
         };
     }
 
