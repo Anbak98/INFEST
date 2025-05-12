@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// PlayerHandlerInput에서 받은 정보를 바탕으로 상태를 업데이트(유지 혹은 변화)
 /// </summary>
-public class PlayerStateMachine : StateMachine
+public class PlayerStateMachine
 {
     public Player Player { get; }
 
@@ -13,35 +13,6 @@ public class PlayerStateMachine : StateMachine
 
     // 상태들이 받아갈 수 있는 값들을 관리
     public PlayerStatHandler StatHandler { get; set; }
-
-    ///// <summary>
-    ///// Animator에 전달할 정보
-    /// InputHandler에 있으니까 아래의 내용은 없어도 된다
-    ///// </summary>
-    //[field: Header("MoveData")]
-    //public Vector3 position;        //플레이어 현 위치
-
-    //// look은 상태에 영향을 주지 않는다
-    //public Vector3 lookInput;       //어디를 보고 있는지 벡터     
-    //public Vector3 moveInput;       //이동 중인 벡터
-
-    //[field: Header("RotateData")]
-    //public float rotationX;
-    //public float rotationY;         //마우스 회전 값
-
-    //[field: Header("JumpData")]
-    //public bool isJumping;          //점프 중인지
-
-    //[field: Header("FireData")]
-    //public bool isFiring;           //공격 중인지
-    //public bool hitSuccess;         //공격에 성공 했는지
-    ////public string hitTargetId;    //공격한 타겟의 ID는 무엇인지
-
-    //[field: Header("SitData")]
-    //public bool isSitting;       //앉아 있는지
-
-
-    // 나중에 Dictionary에 상태를 관리하는 방식으로 수정할 예정
     // Ground
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -63,6 +34,44 @@ public class PlayerStateMachine : StateMachine
     public PlayerSitAttackState SitAttackState { get; private set; }
     public PlayerWaddleState WaddleState { get; private set; }
     public PlayerDeadState DeadState { get; private set; }
+    // 현재 상태를 가지고 있어야한다
+    public IState currentState;
+
+    // 확장성을 고려하면 BaseController를 선언하는게 맞지만
+    // 사용하는 곳에서 ((PlayerController) controller).PlayerAnimation 처럼 쓸때마다 형변환해야하는 문제가 생길 수 있음
+    // PlayerStateMachine에 PlayerController를 바로 선언할 수도 있지만 이때는 확장성이 줄어든다는 단점이 있다
+    protected PlayerController controller;
+
+    public bool IsDead = false;
+
+    // 현재의 상태를 종료하고 새로운 상태를 실행
+    public void ChangeState(IState newState)
+    {
+        if (IsDead)
+            return;
+        if (currentState?.GetType() == newState?.GetType()) return;
+
+        /// 가장 처음으로 들어가는 State는 IdleState
+        currentState?.Exit();
+        currentState = newState;
+        currentState?.Enter();
+    }
+
+
+    // 생명주기함수 아니다
+    public void OnUpdate(NetworkInputData data)
+    {
+        if (IsDead)
+            return;
+        currentState?.OnUpdate(data);
+    }
+
+    public void PhysicsUpdate(NetworkInputData data)
+    {
+        if (IsDead)
+            return;
+        currentState?.PhysicsUpdate(data);
+    }
 
 
     public PlayerStateMachine(Player player, PlayerController controller)

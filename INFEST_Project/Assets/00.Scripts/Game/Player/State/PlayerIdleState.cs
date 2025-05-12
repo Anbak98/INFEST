@@ -49,7 +49,7 @@ public class PlayerIdleState : PlayerGroundState
             stateMachine.ChangeState(stateMachine.MoveState);
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
-        if (stateMachine.Player.GetWeapons() != null && data.isFiring)
+        if (stateMachine.Player.Weapons != null && data.isFiring)
         {
             // 이전 frame의 정보와 state가 바뀐 다음 frame의 정보가 다르기 때문에
             // 이전 frame에서 _isShotgunOnFiring true라도 다음 frame에서 false가 되기 때문이다

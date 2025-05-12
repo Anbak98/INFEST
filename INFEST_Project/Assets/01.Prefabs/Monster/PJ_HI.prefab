@@ -444,7 +444,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: -0.01}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1268209695988953783
 GameObject:
@@ -497,7 +497,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: -0.01}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1437616354229993422
 GameObject:
@@ -1010,7 +1010,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: -0.2, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2588700904354526019
 GameObject:
@@ -1139,7 +1139,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2784435785035087788
 GameObject:
@@ -1192,7 +1192,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0.13, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2853995714781909408
 GameObject:
@@ -1309,7 +1309,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0.13, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &3057197448693998084
 GameObject:
@@ -1376,7 +1376,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3104220567837638103
 GameObject:
@@ -1433,7 +1433,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &3105043158258257559
 GameObject:
@@ -1903,7 +1903,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4544592939376556457}
   - component: {fileID: 3667624559071425815}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: mixamorig5:Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1944,7 +1944,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.25
   Offset: {x: 0, y: 0.09, z: 0.05}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &5314309908229481976
 GameObject:
@@ -2128,7 +2128,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &5914971994581815166
 GameObject:
@@ -2675,7 +2675,17 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:
-  - {fileID: 0}
+  - {fileID: 7671296837006041845}
+  - {fileID: 9093981411210920832}
+  - {fileID: 1041156051793079882}
+  - {fileID: 3414650535947347109}
+  - {fileID: 6973359882226475605}
+  - {fileID: 8034058703909803772}
+  - {fileID: 3627981605192036150}
+  - {fileID: 3667624559071425815}
+  - {fileID: 2801098052342808127}
+  - {fileID: 7299259346688601142}
+  - {fileID: 8357321618041405346}
 --- !u!82 &6573686536218448580
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2784,46 +2794,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f917ea1f0155aaf4692aec81755d8c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
-    key: 0
-    Name: 
-    MonsterType: 0
-    MinHealth: 0
-    MaxHealth: 0
-    HealthPer5Min: 0
-    MinAtk: 0
-    MaxAtk: 0
-    AtkPer5Min: 0
-    MinDef: 0
-    MaxDef: 0
-    DefPer5Min: 0
-    SpeedMove: 0
-    SpeedMoveWave: 0
-    SpeedAtk: 0
-    DetectAreaNormal: 0
-    DetectAreaWave: 0
-    State: 0
-    DropGold: 0
-    FieldSpawn: 0
-    LimitSpawnCount: 0
   key: 1001
-  _CurrentHealth: 100
-  _MovementSpeed: 10
   FSM: {fileID: 3608102175748486747}
   AIPathing: {fileID: 8541060984460718935}
-  PlayerDetectorCollider: {fileID: 8227249028229613044}
-  _IsAttack:
-    _value: 0
-  _IsDead:
-    _value: 0
-  target: {fileID: 0}
-  targets: []
-  targetStatHandler: {fileID: 0}
   animator: {fileID: 6900176941767614314}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
   hitSound: {fileID: 6573686536218448580}
   hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
+  PlayerDetectorCollider: {fileID: 8227249028229613044}
+  _CurrentHealth: 100
+  _IsAttack:
+    _value: 0
+  _IsDead:
+    _value: 0
+  _MovementSpeed: 10
+  target: {fileID: 0}
+  targets: []
 --- !u!1 &7426032713725516538
 GameObject:
   m_ObjectHideFlags: 0
@@ -2866,7 +2853,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1512060726138304701}
   - component: {fileID: 8034058703909803772}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: mixamorig5:Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2909,7 +2896,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.45
   Offset: {x: 0, y: -0.04, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &7596005134736654789
 GameObject:
@@ -3294,7 +3281,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8498094562419402430
 GameObject:
