@@ -45,35 +45,37 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Header("Monster Status")]
     public SphereCollider PlayerDetectorCollider;
 
-    [Networked, HideInInspector, Tooltip("The networked amount of health that monster has")]
-    public float CurrentHealth { get; private set; } = -1;
+    [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))]
+    public float CurMovementSpeed { get; set; }
+    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))]
+    public float CurDetectorRadius { get; private set; }
+    [Networked] public int CurHealth { get; private set; } = -1;
+    public int CurDamage { get; private set; }
+    public int CurDef { get; private set; }
+    [Networked] public NetworkBool IsAttack { get; set; } = false;
+    [Networked] public NetworkBool IsDead { get; set; } = false;
 
-    [Networked, HideInInspector] public NetworkBool IsAttack { get; set; } = false;
-    [Networked, HideInInspector] public NetworkBool IsDead { get; set; } = false;
-    [Networked, HideInInspector] private Vector3 LastHitPosition { get; set; }
-    [Networked, HideInInspector] private Vector3 LastHitDirection { get; set; }
-    [Networked, HideInInspector] private int HitCount { get; set; }
-    [Networked, OnChangedRender(nameof(SetMovementSpeed)), HideInInspector] public float MovementSpeed { get; set; }
 
-    [ReadOnly] public Transform target;
-    [HideInInspector] public List<Transform> targets = new();
+    [field: ReadOnly] public Transform target { get; private set;}
+    private List<Transform> targets = new();
+    private Dictionary<Transform, PlayerMethodFromMonster> targetBridges = new();
 
-    private void SetMovementSpeed()
-    {
-        AIPathing.speed = MovementSpeed;
-    }
 
     public override void Spawned()
     { 
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
 
-        CurrentHealth = Random.Range(info.MinHealth, info.MaxHealth);
-        AIPathing.speed = info.SpeedMove;
+        float userCount = Runner.SessionInfo.PlayerCount / 4;
 
-        if (PlayerDetectorCollider.radius != info.DetectAreaWave)
-            PlayerDetectorCollider.radius = info.DetectAreaNormal;
+        CurHealth = (int)(info.MinHealth * userCount);
+        CurMovementSpeed = info.SpeedMove;
+        CurDamage = info.MinAtk;
+        CurDef = info.MinDef;
+
+        PlayerDetectorCollider.radius = info.DetectAreaNormal;
 
         AIPathing.enabled = true;
+        AIPathing.speed = info.SpeedMove;
     }
 
     public bool IsLookPlayer()
@@ -112,18 +114,57 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public void SetTarget(Transform target)
     {
         this.target = target;
-    }   
-    
+    }
+
+    public void TryAddTarget(Transform target)
+    {
+        if(!targets.Contains(target))
+        {
+            if(target.TryGetComponent<PlayerMethodFromMonster>(out PlayerMethodFromMonster bridge))
+            {
+                targets.Add(target);
+                targetBridges.Add(target, bridge);
+            }
+        }
+    }
+
+    public void TryRemoveTarget(Transform target)
+    {
+        if (targets.Contains(target))
+        {
+            targets.Remove(target);
+            targetBridges.Remove(target);
+        }
+    }
+
+    public void TryAttackTarget(int damage)
+    {
+        if(targetBridges.TryGetValue(target, out PlayerMethodFromMonster bridge))
+        {
+            bridge.ApplyDamage(key, damage);
+        }
+    }
+    private void OnChangedMovementSpeed()
+    {
+        animator.SetFloat("MovementSpeed", CurMovementSpeed);
+        AIPathing.speed = CurMovementSpeed;
+    }
+
+    private void OnChangedDetectorRadiusSpeed()
+    {
+        PlayerDetectorCollider.radius = CurDetectorRadius;
+    }
+
     public bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
     {
-        if (CurrentHealth <= 0f)
+        if (CurHealth <= 0f)
             return false;
 
-        CurrentHealth -= damage;
+        CurHealth -= (int)damage;
 
-        if (CurrentHealth <= 0f)
+        if (CurHealth <= 0f)
         {
-            CurrentHealth = 0f;
+            CurHealth = 0;
             IsDead = true;
         }
 
@@ -131,22 +172,18 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         // Store relative hit position.
         // Only last hit is stored. For casual gameplay this is enough, no need to store precise data for each hit.
-        LastHitPosition = position - transform.position;
-        LastHitDirection = -dir;
 
-        RPC_PlayDamageEffect(LastHitPosition, LastHitDirection);
-
-        HitCount++;
+        RPC_PlayDamageEffect(position - transform.position, -dir);
 
         return true;
     }
 
     public IEnumerator Slow(float slowedMovementSpeed, float duration)
     {
-        float previous = MovementSpeed;
-        MovementSpeed = slowedMovementSpeed;
+        float previous = CurMovementSpeed;
+        CurMovementSpeed = slowedMovementSpeed;
         yield return new WaitForSeconds(duration);
-        MovementSpeed = previous;
+        CurMovementSpeed = previous;
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
