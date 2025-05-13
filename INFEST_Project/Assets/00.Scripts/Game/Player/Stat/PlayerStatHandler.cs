@@ -20,7 +20,8 @@ public class PlayerStatHandler : NetworkBehaviour
 
     public event Action OnDeath;
     public event Action OnRespawn;
-    public event Action OnHealthChanged;
+    public event Action<float> OnHealthChanged;
+
 
 
     // 직업에 따라 다른 능력치로 생성
@@ -70,7 +71,7 @@ public class PlayerStatHandler : NetworkBehaviour
     public void TakeDamage(int amount)
     {
         CurrentHealth -= amount;
-        OnHealthChanged?.Invoke();
+        OnHealthChanged?.Invoke(-amount);
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
@@ -83,7 +84,7 @@ public class PlayerStatHandler : NetworkBehaviour
         //    return;
 
         CurrentHealth = amount;
-        OnHealthChanged?.Invoke();
+        OnHealthChanged?.Invoke(amount);
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
@@ -99,7 +100,7 @@ public class PlayerStatHandler : NetworkBehaviour
     public void Heal(int amount)
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
-        OnHealthChanged?.Invoke();
+        OnHealthChanged?.Invoke(amount);
     }
     // 사망
     public void HandleDeath()

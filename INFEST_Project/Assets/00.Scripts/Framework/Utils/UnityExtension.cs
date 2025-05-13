@@ -8,4 +8,12 @@ public static class UnityExtension
 
         return result ?? gameObject.AddComponent<T>();
     }
+
+    //¿øÇü
+    public static void EMPEffect(this MonsterNetworkBehaviour mnb)
+    {
+        
+    }
+
+    
 }
