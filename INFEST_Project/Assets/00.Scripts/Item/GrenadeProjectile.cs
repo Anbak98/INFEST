@@ -20,7 +20,7 @@ public class GrenadeProjectile : NetworkBehaviour
     private bool _isStopped = false;
     private bool _oneBound = false;
     [SerializeField] private LayerMask _layerMask = 1 << 12;
-    
+
 
     private RaycastHit[] _hitBuffer = new RaycastHit[5];
 
@@ -45,7 +45,7 @@ public class GrenadeProjectile : NetworkBehaviour
         {
             if (!GrenadeExplosion.gameObject.activeSelf)
             {
-                RPC_Explode(transform.position);
+                RPC_Explode();
                 _lifeTimer = TickTimer.None;
             }
             return;
@@ -53,9 +53,23 @@ public class GrenadeProjectile : NetworkBehaviour
 
         if (_isStopped) return;
 
+
+        if (displacement.sqrMagnitude > 0.0001f)
+        {
+            if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 0.2f,
+                    Object.InputAuthority, out var hits))
+            {
+                transform.position = hits.GameObject.transform.root.position + new Vector3(0,0.01f,0);
+
+                RPC_Explode();
+                _lifeTimer = TickTimer.None;
+                return;
+            }
+        }
+
         _time = Runner.DeltaTime;
 
-        displacement = _velocity * Runner.DeltaTime  + 0.5f * _gravity * _time * _time;
+        displacement = _velocity * Runner.DeltaTime + 0.5f * _gravity * _time * _time;
         currentPosition = transform.position;
         newPosition = currentPosition + displacement;
         //Vector3 direction = (newPosition - currentPosition).normalized;
@@ -86,33 +100,27 @@ public class GrenadeProjectile : NetworkBehaviour
                     }
                 }
 
-                HandleCollision(closestHit);
+                if (HandleCollision(closestHit)) return;
             }
         }
 
 
-        if (displacement.sqrMagnitude > 0.0001f)
-        {
-            if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 0.2f,
-                    Object.InputAuthority, out var hits))
-            {
-                RPC_Explode(transform.position);
-                _lifeTimer = TickTimer.None;
-            }
-        }
+
 
         transform.position = newPosition;
 
     }
-    private void HandleCollision(RaycastHit hit)
+    private bool HandleCollision(RaycastHit hit)
     {
         int hitLayer = hit.collider.gameObject.layer;
 
         // Æø¹ß Ã¼Å©
         if (hitLayer == 6)
         {
-            RPC_Explode(transform.position);
+            transform.position = hit.transform.root.position + new Vector3(0, 0.01f, 0); ;
+            RPC_Explode();
             _lifeTimer = TickTimer.None;
+            return true;
         }
 
         if (hitLayer == 11)
@@ -132,32 +140,27 @@ public class GrenadeProjectile : NetworkBehaviour
             transform.position = hit.point + hit.normal * 0.01f;
             newPosition = hit.point + hit.normal * 0.01f + _velocity;
         }
+
+        return false;
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_Explode(Vector3 explosionPosition)                  
+    private void RPC_Explode()
     {
-        transform.position = explosionPosition; 
         explosionParticles.SetActive(true);
         GrenadeExplosion.gameObject.SetActive(true);
+        GrenadeExplosion.Explosion();
         StopAnimation();
         if (HasStateAuthority)
-            Invoke(nameof(Despawn), 0.5f);
+            Invoke(nameof(Despawn), 1f);
     }
 
-    public void Init(Vector3 initialVelocity, Vector3 startPosition, Grenade grenade)
+    public void Init(Vector3 initialVelocity, Vector3 startPosition)
     {
         _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
         _velocity = initialVelocity;
-        //transform.position = startPosition;
         _time = 0f;
-        obj = grenade;
     }
-
-    //public override void Spawned()
-    //{
-    //    _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
-    //}
 
     public void Despawn()
     {
@@ -170,5 +173,11 @@ public class GrenadeProjectile : NetworkBehaviour
     {
         animator.SetBool(_isStopHash, true);
     }
+
+    public void GetGrenade(Grenade grenade)
+    {
+        obj = grenade;
+    }
+
 
 }

@@ -81,6 +81,7 @@ public class PlayerController : NetworkBehaviour
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
             {
+                player.Weapons.ThrowGrenade();
                 player.Consumes.Throw();
             }
 

@@ -852,7 +852,6 @@ MonoBehaviour:
   projectilePrefab:
     RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
   throwPoint: {fileID: 6429843654550995173}
-  _player: {fileID: 0}
 --- !u!1 &1576684326777346588
 GameObject:
   m_ObjectHideFlags: 0
@@ -2122,7 +2121,6 @@ MonoBehaviour:
   projectilePrefab:
     RawGuidValue: 1bb6c97f7785d2a439521e12c95b6c1e
   throwPoint: {fileID: 6429843654550995173}
-  _player: {fileID: 0}
 --- !u!1 &4391703208073560342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4198,7 +4196,7 @@ Transform:
   m_GameObject: {fileID: 8361723613520917880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4279,7 +4277,7 @@ GameObject:
   - component: {fileID: 3494774912888069417}
   - component: {fileID: 3906248093585814299}
   m_Layer: 0
-  m_Name: EMP
+  m_Name: EMPGrenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4316,9 +4314,8 @@ MonoBehaviour:
   _player: {fileID: 3072078453906701333}
   _curNum: 0
   projectilePrefab:
-    RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
+    RawGuidValue: 32c225143f778234aab743983c132ba9
   throwPoint: {fileID: 6429843654550995173}
-  _player: {fileID: 0}
 --- !u!1 &8933653467842698854
 GameObject:
   m_ObjectHideFlags: 0

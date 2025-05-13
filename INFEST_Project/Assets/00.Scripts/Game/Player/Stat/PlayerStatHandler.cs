@@ -71,7 +71,7 @@ public class PlayerStatHandler : NetworkBehaviour
     public void TakeDamage(int amount)
     {
         CurrentHealth -= amount;
-        OnHealthChanged?.Invoke(amount);
+        OnHealthChanged?.Invoke(-amount);
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;

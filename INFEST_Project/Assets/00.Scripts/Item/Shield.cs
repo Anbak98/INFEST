@@ -14,26 +14,34 @@ public class Shield : Consume
         Debug.Log("Shield »£√‚");
 
         if (!_shieldTimer.ExpiredOrNotRunning(Runner)) return;
-        if (HasInputAuthority)
-            Player.local.inventory.RemoveConsumeItem(2);
+
+        //_player.inventory.RemoveConsumeItem(2);
 
         ShieldCreate();
     }
 
     private void ShieldCreate()
     {
-        if (!_shieldTimer.ExpiredOrNotRunning(Runner)) return;
-
-        Vector3 direction = _player.transform.forward;
+        //Vector3 direction = _player.transform.forward;
+        //Quaternion rotation = Quaternion.LookRotation(direction);
 
         if (Object.HasStateAuthority)
         {
+            Quaternion baseRotation = Quaternion.LookRotation(_player.transform.forward);
+            Quaternion offsetRotation = Quaternion.Euler(0, 90f, 0);
+            Quaternion finalRotation = baseRotation * offsetRotation;
+
+            Vector3 createPosition = mountingPoint.position;
+            createPosition.y = 0f;
+
             Runner.Spawn(
             mountingPrefab,
-            mountingPoint.position,
-            quaternion.identity,
+            createPosition,
+            finalRotation,
             Object.InputAuthority
             );
+
+            
         }
         _shieldTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
     }
