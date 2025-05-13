@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum JOB
 {
-    Medic,
-    Defender,
-    SWAT,
-    Demolator
+    Commander = 1,
+    BattleMedic = 2,
+    Defender = 3,
+    Demolator = 4
 }
 
 [Serializable]

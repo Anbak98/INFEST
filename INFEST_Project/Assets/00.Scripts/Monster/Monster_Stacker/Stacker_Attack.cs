@@ -10,7 +10,7 @@ public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker, Stac
         if (monster.IsDead || monster.target == null)
             return;
 
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         monster.IsAttack = true;
         print("¾Æ¾ß");
         //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();

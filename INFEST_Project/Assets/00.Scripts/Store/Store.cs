@@ -188,7 +188,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                     break;
                 }
             }
-            _player.characterInfoInstance.curGold -= _buyWeapon.instance.data.Price;
+            _player.statHandler.CurGold -= _buyWeapon.instance.data.Price;
             _player.inventory.AddWeponItme(_buyWeapon);
             _buyWeapon.IsCollected = true;
             _player.Weapons._weapons.Add(_buyWeapon);
@@ -206,7 +206,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 }
             }
 
-            _player.characterInfoInstance.curGold -= _buyConsume.instance.data.Price;
+            _player.statHandler.CurGold -= _buyConsume.instance.data.Price;
             _player.inventory.AddConsumeItme(_buyConsume);
         }
         var inv = _player.inventory;
@@ -265,7 +265,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         {
             case 0: // º¸Á¶¹«±â
                 if (_player.inventory.auxiliaryWeapon[0] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.auxiliaryWeapon[0].instance.data.Price / 2;
+                _player.statHandler.CurGold += _player.inventory.auxiliaryWeapon[0].instance.data.Price / 2;
 
 
                     if (_player.inventory.equippedWeapon == _player.inventory.auxiliaryWeapon[0])
@@ -284,7 +284,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 break;
             case 1: // ÁÖ¹«±â 1
                 if (_player.inventory.weapon[0] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.weapon[0].instance.data.Price / 2;
+                _player.statHandler.CurGold += _player.inventory.weapon[0].instance.data.Price / 2;
 
           
                     if (_player.inventory.equippedWeapon == _player.inventory.weapon[0])
@@ -307,7 +307,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 break;
             case 2: // ÁÖ¹«±â 2
                 if (_player.inventory.weapon[1] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.weapon[1].instance.data.Price / 2;
+                _player.statHandler.CurGold += _player.inventory.weapon[1].instance.data.Price / 2;
 
                 
                     if (_player.inventory.equippedWeapon == _player.inventory.weapon[1])
@@ -328,25 +328,25 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 break;
             case 3: // ¾ÆÀÌÅÛ 1
                 if (_player.inventory.consume[0] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.consume[0].instance.data.Price / 2;
+                _player.statHandler.CurGold += _player.inventory.consume[0].instance.data.Price / 2;
                 _player.inventory.RemoveConsumeItem(0);
                 _storeController.uIShopView.ItemSet(0);
                 break;
             case 4: // ¾ÆÀÌÅÛ 2
                 if (_player.inventory.consume[1] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.consume[1].instance.data.Price / 2;
+                _player.statHandler.CurGold += _player.inventory.consume[1].instance.data.Price / 2;
                 _player.inventory.RemoveConsumeItem(1);
                 _storeController.uIShopView.ItemSet(1);
                 break;
             case 5: // ¾ÆÀÌÅÛ 3
                 if (_player.inventory.consume[2] == null) return;
-                _player.characterInfoInstance.curGold += _player.inventory.consume[2].instance.data.Price / 2;
+                _player.statHandler.CurGold += _player.inventory.consume[2].instance.data.Price / 2;
                 _player.inventory.RemoveConsumeItem(2);
                 _storeController.uIShopView.ItemSet(2);
                 break;
         }
 
-        Debug.Log("ÆÇ¸Å ÈÄ :" + _player.characterInfoInstance.curGold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
+        Debug.Log("ÆÇ¸Å ÈÄ :" + _player.statHandler.CurGold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
         _storeController.uIShopView.UpdateButtonState();
         _storeController.uIShopView.UpdateSaleButtonState();
 
@@ -406,7 +406,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         }
         #endregion
 
-        if (_player.characterInfoInstance.curDefGear >= 200)
+        if (_player.statHandler.CurDefGear >= 200)
         {
             totalprice += weaponPrice + itemPrice;
         }
@@ -415,8 +415,8 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
             totalprice += 500 + weaponPrice + itemPrice;
         }
 
-        if (totalprice > _player.characterInfoInstance.curGold) return;
-
+        if (totalprice > _player.statHandler.CurGold) return;
+            
         for (int i = 0; i < 3; i++)
         {
             if (weaponInv[i] != null)
@@ -439,9 +439,9 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         }
 
-        _player.characterInfoInstance.curGold -= totalprice;
-        _player.characterInfoInstance.curDefGear += 200;
-        _player.characterInfoInstance.curDefGear = Mathf.Min(_player.characterInfoInstance.curDefGear, 200);
+        _player.statHandler.CurGold -= totalprice;
+        _player.statHandler.CurDefGear += 200;
+        _player.statHandler.CurDefGear = Mathf.Min(_player.statHandler.CurDefGear, 200);
         _storeController.uIShopView.UpdateButtonState();
     }
     #endregion
@@ -456,13 +456,13 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_TryDefSupplement(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        if (Player.local.characterInfoInstance.curDefGear >= 200) return;
-        if (Player.local.characterInfoInstance.curGold < 500) return;
+        if (Player.local.statHandler.CurDefGear >= 200) return;
+        if (Player.local.statHandler.CurGold < 500) return;
 
 
-        Player.local.characterInfoInstance.curGold -= 500;
-        Player.local.characterInfoInstance.curDefGear += 200;
-        Player.local.characterInfoInstance.curDefGear = Mathf.Min(Player.local.characterInfoInstance.curDefGear, 200);
+        Player.local.statHandler.CurGold -= 500;
+        Player.local.statHandler.CurDefGear += 200;
+        Player.local.statHandler.CurDefGear = Mathf.Min(Player.local.statHandler.CurDefGear, 200);
         _storeController.uIShopView.UpdateButtonState();
     }
 
@@ -484,9 +484,9 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         if (weaponInv[index].curBullet >= weaponInv[index].instance.data.MaxBullet) return;
 
         if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
-            _player.characterInfoInstance.curGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MaxBullet - weaponInv[index].curBullet);
+            _player.statHandler.CurGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MaxBullet - weaponInv[index].curBullet);
         else
-            _player.characterInfoInstance.curGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MagazineBullet);
+            _player.statHandler.CurGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MagazineBullet);
 
         weaponInv[index].SupplementBullet();
         _storeController.uIShopView.WeaponSet(index);
@@ -509,7 +509,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         if (itemInv[index] == null) return;
         if (itemInv[index].curNum >= itemInv[index].instance.data.MaxNum) return;
 
-        _player.characterInfoInstance.curGold -= itemInv[index].instance.data.Price;
+        _player.statHandler.CurGold -= itemInv[index].instance.data.Price;
         itemInv[index].AddNum();
         _storeController.uIShopView.ItemSet(index);
         _storeController.uIShopView.UpdateButtonState();

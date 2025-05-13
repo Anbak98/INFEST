@@ -13,7 +13,7 @@ public class Grita_Attack : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Ph
 
         if (monster.IsDead || monster.target == null)
             return;
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         monster.IsAttack = true;
 
         Debug.Log("Attack");
