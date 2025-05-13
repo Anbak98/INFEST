@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // WonderPhase에만 포함된 상태
-public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
 {
     Vector3 randomPosition;
+
+    public GritaPlayerDetector ditector;
 
     public override void Enter()
     {
@@ -19,6 +21,10 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita>
     public override void Execute()
     {
         base.Execute();// 아직 경로가 계산되지 않았거나 도착한 경우
+        // Ditector의 Trigger가 발동되었다면 ScreamState로 바꿔야한다
+        if (ditector.isTriggered)
+            phase.ChangeState<Grita_Scream>();
+
         if (!monster.AIPathing.pathPending)
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)

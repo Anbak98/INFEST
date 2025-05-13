@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PJ_HI_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI>
+public class PJ_HI_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Phase_Wonder>
 {
     Vector3 randomPosition;
 

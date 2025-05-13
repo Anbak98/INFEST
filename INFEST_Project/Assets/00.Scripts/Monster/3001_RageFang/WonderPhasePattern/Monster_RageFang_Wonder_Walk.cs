@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster_RageFang>
+public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_Wonder>
 {
     Vector3 randomPosition;
 
@@ -16,7 +16,6 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
     public override void Execute()
     {
         base.Execute();
-        base.Execute();// 아직 경로가 계산되지 않았거나 도착한 경우
         if (!monster.AIPathing.pathPending)
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
@@ -34,8 +33,14 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
 
     private Vector3 GetRandomPositionOnNavMesh()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * 10f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.
-        randomDirection += transform.position; // 랜덤 방향 벡터를 현재 위치에 더합니다.
+        float minDistance = 10f;
+        float maxDistance = 20f;
+
+        // 방향 벡터를 구하고, 최소~최대 거리 사이의 랜덤 거리만큼 곱합니다.
+        Vector3 randomDirection = Random.onUnitSphere;
+        randomDirection.y = 0; // 수평면에서만 이동하도록 y값을 0으로 만듭니다.
+        randomDirection *= Random.Range(minDistance, maxDistance);
+        randomDirection += transform.position;
 
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, 3, NavMesh.AllAreas)) // 랜덤 위치가 NavMesh 위에 있는지 확인합니다.

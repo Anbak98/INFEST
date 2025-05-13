@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class PJ_HI_Dead : MonsterStateNetworkBehaviour<Monster_PJ_HI>
+public class PJ_HI_Dead : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Phase_Dead>
 {
     public TickTimer _tickTimer;
     public NetworkObject obj;

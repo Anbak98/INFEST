@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI>
+public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Phase_Chase>
 {
     private TickTimer _tickTimer;
 

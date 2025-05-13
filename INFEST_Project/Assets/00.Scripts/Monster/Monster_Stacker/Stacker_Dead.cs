@@ -1,6 +1,6 @@
 using Fusion;
 
-public class Stacker_Dead : MonsterStateNetworkBehaviour<Monster_Stacker>
+public class Stacker_Dead : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Dead>
 {
     public TickTimer _tickTimer;
     public NetworkObject obj;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Chase>
 {
     Transform _target;
 
@@ -25,6 +25,10 @@ public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita>
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
                 phase.ChangeState<Grita_Attack>();
+            }
+            else if (monster.AIPathing.remainingDistance > 10f)
+            {
+                monster.FSM.ChangePhase<Grita_Phase_Wander>();
             }
         }
 

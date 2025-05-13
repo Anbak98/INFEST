@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
 {
     public TickTimer _tickTimer;
+
+    public GritaPlayerDetector ditector;
+
 
     public override void Enter()
     {
@@ -16,6 +19,10 @@ public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita>
     public override void Execute()
     {
         base.Execute();
+        // Ditector의 Trigger가 발동되었다면 ScreamState로 바꿔야한다
+        if (ditector.isTriggered)
+            phase.ChangeState<Grita_Scream>();
+
 
         if (_tickTimer.Expired(Runner)) // 일정 시간 초과하면 true 리턴
         {

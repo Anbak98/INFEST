@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Stacker_Run : MonsterStateNetworkBehaviour<Monster_Stacker>
+public class Stacker_Run : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Chase>
 {
     Transform _target;
 

@@ -30,7 +30,7 @@ public class MonsterFSM<T> : NetworkBehaviour where T : BaseMonster<T>
         currentPhase.MachineExecute();
     }
 
-    public void ChangePhase<S>() where S : MonsterPhase<T>
+    public void ChangePhase<S>()
     {
         if(currentPhase == phaseMap[typeof(S)])
         {
@@ -41,7 +41,7 @@ public class MonsterFSM<T> : NetworkBehaviour where T : BaseMonster<T>
         currentPhase.MachineEnter();
     }
 
-    public void ChangeState<S>() where S : MonsterStateNetworkBehaviour<T>
+    public void ChangeState<S>()
     {
         currentPhase.ChangeState<S>();
     }
