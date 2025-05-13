@@ -6,7 +6,7 @@ public class Monster_RageFang_Attack_Run : MonsterStateNetworkBehaviour<Monster_
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
     }
 
     public override void Execute()

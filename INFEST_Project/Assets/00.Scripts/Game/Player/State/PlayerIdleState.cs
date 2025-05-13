@@ -12,8 +12,6 @@ public class PlayerIdleState : PlayerGroundState
     // 가장 먼저 시작
     public override void Enter()
     {
-        // 일단 숫자대입. 나중에 PlayStatData.WalkSpeedModifier 변수 추가해서 그,값으로 바꾼다
-        stateMachine.StatHandler.MoveSpeedModifier = 0;
 
         base.Enter();   // Ground 진입
         //Debug.Log("Idle상태 진입");

@@ -8,7 +8,7 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = monster.info.SpeedMove;
+        monster.CurMovementSpeed = monster.info.SpeedMove;
         randomPosition = GetRandomPositionOnNavMesh(); // NavMesh 위의 랜덤한 위치를 가져옵니다.
         monster.AIPathing.SetDestination(randomPosition); // NavMeshAgent의 목표 위치를 랜덤 위치로 설정합니다.
     }
@@ -28,7 +28,7 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
     public override void Exit()
     {
         base.Exit();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
     }
 
     private Vector3 GetRandomPositionOnNavMesh()

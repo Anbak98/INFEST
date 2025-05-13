@@ -10,7 +10,7 @@ public class Monster_RageFang_Wonder_IdleTwo : MonsterStateNetworkBehaviour<Mons
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         _tickTimer = TickTimer.CreateFromSeconds(Runner, DurationTime);
     }
 

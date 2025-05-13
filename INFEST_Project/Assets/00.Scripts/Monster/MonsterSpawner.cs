@@ -1,6 +1,7 @@
 using Fusion;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -10,7 +11,50 @@ public class MonsterSpawner : NetworkBehaviour
     // TickTimer timer; // 나중에 타이머로 경보기하면 될듯
     public int SpawnMonsterNumberOnEachWave = 5;
     [SerializeField] private List<Transform> points;
-    [SerializeField] private NetworkPrefabRef MonsterPrefab;
+    [SerializeField] private MonsterScriptableObject MonsterMap;
+    [SerializeField] private int MonsterKey = 1001;
+
+    private TickTimer tickTimer;
+    private int spawnNum = 0;
+    private int monsterKey;
+    private Vector3 spawnPosition;
+
+
+    public override void Spawned()
+    {
+        MonsterMap.Init();
+        SpawnMonsterOnWave(transform);
+        tickTimer = TickTimer.CreateFromSeconds(Runner, 0);
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+
+        if (tickTimer.Expired(Runner))
+        {
+            if (spawnNum > 0)
+            {
+                if (Runner.IsServer)
+                {
+                    Runner.Spawn(MonsterMap.GetByKey(monsterKey), spawnPosition);
+                    tickTimer = TickTimer.CreateFromSeconds(Runner, 0.1f);
+                }
+            }
+        }
+    }    
+    public void AllocateSpawnCommand(int monsterKey, Vector3 position)
+    {
+        if (spawnNum > 0)
+        {
+            Debug.Log("[Monster Spawner] Already Spawning Precessing");
+        }
+        else
+        {
+            this.monsterKey = monsterKey;
+            this.spawnPosition = position;
+        }
+    }
 
     public void SpawnMonsterOnWave(Transform waveTarget)
     {
@@ -30,7 +74,8 @@ public class MonsterSpawner : NetworkBehaviour
                     Vector3 spawnPos = points[point].position + offset;
                     offset.y = 0f;
 
-                    NetworkObject networkObj = Runner.Spawn(MonsterPrefab, spawnPos);
+                    Debug.Log(MonsterMap.GetByKey(MonsterKey));  
+                    NetworkObject networkObj = Runner.Spawn(MonsterMap.GetByKey(MonsterKey), spawnPos);
                     if (networkObj == null)
                     {
                         Debug.LogWarning("Failed to spawn monster.");
@@ -43,7 +88,7 @@ public class MonsterSpawner : NetworkBehaviour
                         var agent = mnb.GetComponent<NavMeshAgent>();
                         if (agent != null) agent.enabled = true;
 
-                        mnb.target = waveTarget;
+                        mnb.SetTarget(waveTarget);
 
                         if(mnb is Monster_PJ_HI pj)
                         {
