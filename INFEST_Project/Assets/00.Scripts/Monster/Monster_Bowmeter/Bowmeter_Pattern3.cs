@@ -11,7 +11,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
             return;
 
         monster.IsShoot = true;
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
 
         //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(10);

@@ -5,7 +5,7 @@ public class Bowmeter_RunWave : MonsterStateNetworkBehaviour<Monster_Bowmeter, B
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
     }
 
     public override void Execute()
@@ -34,6 +34,6 @@ public class Bowmeter_RunWave : MonsterStateNetworkBehaviour<Monster_Bowmeter, B
     public override void Exit()
     {
         base.Exit();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
     }
 }
