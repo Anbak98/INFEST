@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Init 
 /// </summary>
-public abstract class MonsterStateNetworkBehaviour<T> : NetworkBehaviour where T : BaseMonster<T>
+public abstract class MonsterStateNetworkBehaviour<T, F> : BaseMonsterStateNetworkBehaviour where T : BaseMonster<T> where F : MonsterPhase<T>
 {
     /// <summary>
     /// Reference to Monster that control Phase that control this state
@@ -14,25 +14,11 @@ public abstract class MonsterStateNetworkBehaviour<T> : NetworkBehaviour where T
     /// <summary>
     /// Reference to Monster Phase that control this state
     /// </summary>
-    protected MonsterPhase<T> phase;
+    protected F phase;
 
-    public void Init(T monster, MonsterPhase<T> phase)
+    public override void Init<S, G>(S monster, G phase)
     {
-        this.monster = monster;
-        this.phase = phase;
-    }
-
-    public virtual void Enter()
-    {
-
-    }   
-
-    public virtual void Execute()
-    {
-
-    }
-
-    public virtual void Exit() 
-    { 
+        this.monster = monster as T;
+        this.phase = phase as F;
     }
 }

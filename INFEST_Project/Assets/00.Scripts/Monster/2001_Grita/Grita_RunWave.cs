@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Wave Phase의 첫번째 상태
 // ScreamWave의 우선순위 > AttackWave의 우선순위
-public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
     public override void Enter()
     {

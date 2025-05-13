@@ -1,6 +1,6 @@
 using Fusion;
 
-public class Monster_RageFang_Wonder_Stretch : MonsterStateNetworkBehaviour<Monster_RageFang>
+public class Monster_RageFang_Wonder_Stretch : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_Wonder>
 {
     public TickTimer _tickTimer;
 

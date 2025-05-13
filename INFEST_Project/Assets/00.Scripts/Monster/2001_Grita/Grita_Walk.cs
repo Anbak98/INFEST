@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // WonderPhase에만 포함된 상태
-public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
 {
     Vector3 randomPosition;
 

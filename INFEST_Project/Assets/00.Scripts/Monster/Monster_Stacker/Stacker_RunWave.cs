@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker>
+public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Wave>
 {
     public override void Enter()
     {

@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class Monster_RageFang_Wonder_IdleTwo : MonsterStateNetworkBehaviour<Monster_RageFang>
+public class Monster_RageFang_Wonder_IdleTwo : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_Wonder>
 {
     [SerializeField]
     private float DurationTime =7.0f;
