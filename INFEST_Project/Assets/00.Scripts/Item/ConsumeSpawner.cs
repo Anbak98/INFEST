@@ -11,11 +11,26 @@ public class ConsumeSpawner : NetworkBehaviour
     {
         for(int i=0; i<3; i++)
         {
-            if (Consumes[i] == Player.local.inventory.consume[0])
-            {
-                Debug.Log("ConsumeSpawner È£Ãâ");
+            if (Consumes[i].key == Player.local.inventory.consume[0]?.key)
                 Consumes[i].CollThrow();
-            }
+        }
+    }
+
+    public void Heal()
+    {
+        for (int i = 3; i < 4; ++i)
+        {
+            if (Consumes[i].key == Player.local.inventory.consume[1]?.key)
+                Consumes[i].CollHeal();
+        }
+    }
+
+    public void Mounting()
+    {
+        for (int i = 4; i < 5; ++i)
+        {
+            if (Consumes[i].key == Player.local.inventory.consume[2]?.key)
+                Consumes[i].CollMounting();
         }
     }
 }

@@ -4,40 +4,48 @@ using UnityEngine;
 
 public class Grenade : Consume
 {
-    [Networked] TickTimer _throwTimer { get; set; }
+    private TickTimer _throwTimer;
     public NetworkPrefabRef projectilePrefab;
     public Transform throwPoint;
-
-
+    private GrenadeProjectile grenade;
+    
     public override void Throw()
     {
         Debug.Log("Grenade 호출");
 
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
+    
+        //_player.inventory.RemoveConsumeItem(0);
 
-        StopAnimation();
         GrenadeCreate();
-        // 수류탄 나가야함;
 
-        _throwTimer = TickTimer.CreateFromSeconds(Runner, 0.5f); // 애니메이션 시간이랑 동일하게
-
-        // 총 안보이게 하자 => 랜더(?) 없애주자
     }
 
     private void GrenadeCreate()
     {
-        if (!Object.HasInputAuthority) return;
-
-        Vector3 direction = Camera.main.transform.forward;
+        Vector3 direction = _player.transform.forward;
         Vector3 velocity = direction * 10f + Vector3.up * 5f;
 
-        GrenadeProjectile grenade = Runner.Spawn(
+        if (Object.HasStateAuthority)
+        {
+            GrenadeProjectile _grenade = Runner.Spawn(
             projectilePrefab,
             throwPoint.position,
             quaternion.identity,
             Object.InputAuthority
-        ).GetComponent<GrenadeProjectile>();
+            ).GetComponent<GrenadeProjectile>();
 
-        grenade.Init(velocity, gameObject);
+            _grenade.Init(velocity, throwPoint.position);
+            RPC_Init(_grenade);
+        }
+        _throwTimer = TickTimer.CreateFromSeconds(Runner, 3f);
+    }
+
+    [Rpc(RpcSources.StateAuthority,RpcTargets.All)]
+    private void RPC_Init(GrenadeProjectile _grenade)
+    {
+        grenade = _grenade;
+
+        grenade.GetGrenade(this);
     }
 }

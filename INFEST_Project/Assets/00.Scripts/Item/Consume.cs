@@ -7,7 +7,8 @@ public class Consume : NetworkBehaviour
 {
     public int key;
     public ConsumeInstance instance;
-    public Animator animator;
+    public Player _player;
+
     [Networked] public int curNum { get; set; }    // 현재 아이템 갯수
 
     public void AddNum()
@@ -25,11 +26,6 @@ public class Consume : NetworkBehaviour
         instance = new(key);
         curNum = 1;
     }
-    
-    protected void StopAnimation()
-    {
-        //animator.SetTrigger("");
-    }
 
     public virtual void Throw()
     {
@@ -38,9 +34,27 @@ public class Consume : NetworkBehaviour
 
     public void CollThrow()
     {
-        Debug.Log("Consume 호출");
-
         Throw();
+    }
+
+    public virtual void Heal()
+    {
+
+    }
+
+    public void CollHeal()
+    {
+        Heal();
+    }
+
+    public virtual void Mounting()
+    {
+
+    }
+
+    public void CollMounting()
+    {
+        Mounting();
     }
 
 }
