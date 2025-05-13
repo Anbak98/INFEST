@@ -410,7 +410,7 @@ public class WeaponSpawner : NetworkBehaviour
 
         for(int i = 0; i< _weapons.Count; i++)
         {
-            if (_weapons[i].key == Player.local.characterInfoInstance.data.StartAuxiliaryWeapon)
+            if (_weapons[i].key == Player.local.statHandler.info.data.StartAuxiliaryWeapon)
                 _activeWeaponIndex = i;
         }
         GetActiveWeapon().gameObject.SetActive(true);

@@ -54,7 +54,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 
         if (isMenu) return;
 
-        if (statHandler.info.CurHealth <= 0) return;
+        if (statHandler.CurHealth <= 0) return;
 
         if (GetInput(out NetworkInputData data))
         {

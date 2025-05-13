@@ -21,7 +21,7 @@ public class GrenadeExplosion : NetworkBehaviour
     private void Awake()
     {
         if (!Object.HasStateAuthority) return;
-        _damage = grenadeProjectile.obj.instance.data.Effect/100;
+        _damage = grenadeProjectile.obj.instance.data.Effect/10;
         _player = grenadeProjectile.obj.GetComponent<Grenade>()._player;
     }
     public void Explosion()
