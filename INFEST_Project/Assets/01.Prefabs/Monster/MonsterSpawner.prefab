@@ -64,7 +64,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eb5b37b34beb8d4694241beabcb0202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnMonsterNumberOnEachWave: 5
   points:
   - {fileID: 7159469473498760871}
-  MonsterPrefab:
-    RawGuidValue: 4363edd3bef55bd489ed10f88efd359f
+  MonsterMap: {fileID: 11400000, guid: 51a0e1bdd60a09c4eb1aae585ad1fdd7, type: 2}
+  MonsterKey: 1001

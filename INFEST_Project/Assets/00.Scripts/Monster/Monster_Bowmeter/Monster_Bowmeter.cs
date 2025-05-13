@@ -10,7 +10,7 @@ public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
 
     public override void Render()
     {
-        animator.SetFloat("MovementSpeed", MovementSpeed);
+        animator.SetFloat("MovementSpeed", CurMovementSpeed);
 
         if (IsAttack)
         {
@@ -21,7 +21,7 @@ public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
             animator.SetBool("IsDead", IsDead);
         }
 
-        AIPathing.speed = MovementSpeed;
+        AIPathing.speed = CurMovementSpeed;
     }
 
     private void OnIsBwack() => animator.SetBool("IsBwack", IsBwack);

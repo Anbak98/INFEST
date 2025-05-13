@@ -162,12 +162,12 @@ public class UIShopView : UIScreen
 
     public void DefSet()
     {
-        defText.text = $"{Player.local.characterInfoInstance.CurDefGear}/200";
+        defText.text = $"{Player.local.statHandler.CurDefGear}/200";
     }
 
     private void GoldSet()
     {
-        goldText.text = $"{Player.local.characterInfoInstance.CurGold}";
+        goldText.text = $"{Player.local.statHandler.CurGold}";
     }
 
     public void WeaponSet(int index)
@@ -254,7 +254,7 @@ public class UIShopView : UIScreen
         if (inv.consume[2] != null)
             item3Price = (inv.consume[2].instance.data.MaxNum - inv.consume[2].curNum) * inv.consume[2].instance.data.Price;
 
-        if (Player.local.characterInfoInstance.CurDefGear >= 200)
+        if (Player.local.statHandler.CurDefGear >= 200)
         {
             allSupplement.text = $"모두 보충\n({subPrice + main1Price + main2Price + item1Price + item2Price + item3Price}G)";
         }
@@ -464,25 +464,25 @@ public class UIShopView : UIScreen
             itmeNameBG[i].color = color;
 
 
-            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.characterInfoInstance.CurGold < weaponPrice))
+            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (Player.local.statHandler.CurGold < weaponPrice))
                 buyButton[i].interactable = false;
 
-            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.characterInfoInstance.CurGold < weaponPrice || weaponDuplication)
+            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || Player.local.statHandler.CurGold < weaponPrice || weaponDuplication)
                 buyButton[i].interactable = false;
 
-            else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.characterInfoInstance.CurGold < consumePrice)
+            else if ((throwingWeapon && _inv.consume[0] != null) || Player.local.statHandler.CurGold < consumePrice)
             {
                 if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
             }
 
-            else if ((recoveryItem && _inv.consume[1] != null) || Player.local.characterInfoInstance.CurGold < consumePrice)
+            else if ((recoveryItem && _inv.consume[1] != null) || Player.local.statHandler.CurGold < consumePrice)
             {
                 if (_inv.consume[1]?.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
             }
 
-            else if ((shieldItme && _inv.consume[2] != null) || Player.local.characterInfoInstance.CurGold < consumePrice)
+            else if ((shieldItme && _inv.consume[2] != null) || Player.local.statHandler.CurGold < consumePrice)
             {
                 if (_inv.consume[2]?.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
