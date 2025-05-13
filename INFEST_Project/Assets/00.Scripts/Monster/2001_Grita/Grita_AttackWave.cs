@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_AttackWave : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_AttackWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
     private TickTimer _tickTimer;
 

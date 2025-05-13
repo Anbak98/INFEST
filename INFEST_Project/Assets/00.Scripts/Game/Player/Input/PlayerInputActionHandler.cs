@@ -466,7 +466,9 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         if (_isMenuPopup) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);
         if (_isChangingCamera) data.buttons.Set(NetworkInputData.BUTTON_CHANGECAMERA, true);
-
+        _isUsingGrenad = false;
+        _isUsingHeal = false;
+        _isUsingShield = false;
         _isInteracting = false;
         // 샷건의 경우 누르고 있어도 발사가 되면 안되니까 막아놓았다
         if (_isShotgunOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);   // 구조체의 변수를 바꾼거고

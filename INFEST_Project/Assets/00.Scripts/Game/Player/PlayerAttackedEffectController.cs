@@ -7,6 +7,8 @@ public class PlayerAttackedEffectController : MonoBehaviour
 {
     [Header("Attack Effect Components")]
     [SerializeField] private GameObject _uiAttackEffect;
+    [SerializeField] private GameObject _uiHealEffect;
+
     [SerializeField] private float _fadeDuration = 1.0f;
 
     [Header("Camera Components")]
@@ -24,10 +26,14 @@ public class PlayerAttackedEffectController : MonoBehaviour
         }
     }
 
-    public void CalledWhenPlayerAttacked()
+    public void CalledWhenPlayerAttacked(float amount)
     {
         //StartCoroutine(ShowCameraEffectAttacked());
-        StartCoroutine(ShowUIEffectAttacked());
+        if (amount > 0)
+            StartCoroutine(ShowUIEffectHeal());
+        else if(amount < 0)
+            StartCoroutine(ShowUIEffectAttacked());
+        
     }
 
     private IEnumerator ShowCameraEffectAttacked()
@@ -66,6 +72,34 @@ public class PlayerAttackedEffectController : MonoBehaviour
 
             canvasGroup.alpha = 0f;
             _uiAttackEffect.SetActive(false);
+        }
+    }
+
+    private IEnumerator ShowUIEffectHeal()
+    {
+        if (!_uiHealEffect.activeSelf)
+        {
+            _uiHealEffect.SetActive(true);
+
+            // 페이드 아웃 시작
+            CanvasGroup canvasGroup = _uiHealEffect.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = _uiHealEffect.AddComponent<CanvasGroup>();
+            }
+
+            canvasGroup.alpha = 1.0f;
+
+            float elapsed = 0f;
+            while (elapsed < _fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0f, elapsed / _fadeDuration);
+                yield return null;
+            }
+
+            canvasGroup.alpha = 0f;
+            _uiHealEffect.SetActive(false);
         }
     }
 }

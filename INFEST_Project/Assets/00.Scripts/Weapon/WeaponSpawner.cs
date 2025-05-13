@@ -124,6 +124,12 @@ public class WeaponSpawner : NetworkBehaviour
         }
     }
 
+    public void ThrowGrenade()
+    {
+        GetActiveWeapon().gameObject.SetActive(false);
+        Invoke(nameof(SetWeaponVisible), 5f);
+    }
+
     #region Model
     public float AdsWeight => _adsWeight;
 

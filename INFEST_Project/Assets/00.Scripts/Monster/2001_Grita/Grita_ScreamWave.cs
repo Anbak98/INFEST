@@ -6,7 +6,7 @@ using UnityEngine;
 // 소리 지르기
 // 몬스터 스폰하기
 
-public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
 
     public override void Enter()

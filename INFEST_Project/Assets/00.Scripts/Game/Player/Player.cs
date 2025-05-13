@@ -120,6 +120,8 @@ public class Player : NetworkBehaviour
 
             }
             inventory.equippedWeapon = inventory.auxiliaryWeapon[0];
+            inventory.consume[0] = Consumes.Consumes[2];
+            inventory.consume[1] = Consumes.Consumes[3];
         }
     }
 

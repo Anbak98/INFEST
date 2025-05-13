@@ -30,14 +30,14 @@ public class Inventory : MonoBehaviour
         {
             if (consume[0] == null)
                 consume[0] = item;
-            else
+            
                 consume[0].AddNum();
         }
         else if (key > 800 && key < 900)
         {
             if (consume[1] == null)
                 consume[1] = item;
-            else
+            
                 consume[1].AddNum();
 
         }
@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
         {
             if (consume[2] == null)
                 consume[2] = item;
-            else
+            
                 consume[2].AddNum();
         }
             

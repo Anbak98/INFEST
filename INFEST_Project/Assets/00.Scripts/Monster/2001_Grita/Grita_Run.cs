@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita>
+public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Chase>
 {
     Transform _target;
 

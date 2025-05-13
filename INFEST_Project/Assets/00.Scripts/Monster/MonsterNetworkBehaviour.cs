@@ -53,10 +53,15 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Networked, HideInInspector] private Vector3 LastHitPosition { get; set; }
     [Networked, HideInInspector] private Vector3 LastHitDirection { get; set; }
     [Networked, HideInInspector] private int HitCount { get; set; }
-    [Networked, HideInInspector] public float MovementSpeed { get; set; }
+    [Networked, OnChangedRender(nameof(SetMovementSpeed)), HideInInspector] public float MovementSpeed { get; set; }
 
     [ReadOnly] public Transform target;
     [HideInInspector] public List<Transform> targets = new();
+
+    private void SetMovementSpeed()
+    {
+        AIPathing.speed = MovementSpeed;
+    }
 
     public override void Spawned()
     { 
@@ -89,9 +94,18 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void SetTargetRandomly()
     {
-        if (targets.Count > 0)
+        if (targets.Count > 1)
         {
-            target = targets[Random.Range(0, targets.Count)];
+            Transform newTarget;
+            do
+            {
+                newTarget = targets[Random.Range(0, targets.Count)];
+            } while (target != newTarget);
+            target = newTarget;
+        }
+        else if (targets.Count == 1)
+        {
+            target = targets[0];
         }
     }
 
