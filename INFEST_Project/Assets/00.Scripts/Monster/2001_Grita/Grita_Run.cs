@@ -26,11 +26,13 @@ public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase
             {
                 phase.ChangeState<Grita_Attack>();
             }
-            else if (monster.AIPathing.remainingDistance > 10f)
+            else if (!monster.IsLookPlayer() && monster.AIPathing.remainingDistance > 10f)
             {
+                monster.target = null;
                 monster.FSM.ChangePhase<Grita_Phase_Wander>();
             }
         }
+
 
     }
 
