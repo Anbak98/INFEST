@@ -27,7 +27,7 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         _tickTimer = TickTimer.CreateFromSeconds(Runner, animLength);   // 해당 시간이 지난 다음 다음 진행
 
         // Spawn
-        //monster.StartCoroutine(monster.SpawnAfterAnim(animLength));
+        monster.StartCoroutine(monster.SpawnAfterAnim(animLength));
     }
     public override void Execute()
     {

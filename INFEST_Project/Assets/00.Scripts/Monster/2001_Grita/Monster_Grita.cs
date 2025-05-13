@@ -32,7 +32,7 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     public NetworkBool IsCooltimeCharged { get; set; } = true;
     [Networked, OnChangedRender(nameof(OnScreamCount))]
     public int ScreamCount { get; set; } = 0;
-
+    
 
     //private void OnLookXChanged() => animator.SetFloat("LookX", LookX);
     private void OnIsScreamChanged() => animator.SetBool("IsScream", IsScream);

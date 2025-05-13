@@ -33,4 +33,10 @@ public class GritaPlayerDetector : NetworkBehaviour
         // MonsterGrita 에 변수 선언을 하지 않기 위해 여기서 isTriggered 변수를 수정한다
         isTriggered = true;
     }
+
+    public void OnTriggerExit(UnityEngine.Collider other)
+    {
+
+    }
+
 }
