@@ -14,7 +14,7 @@ public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_H
         if (monster.IsDead || monster.target == null)
             return;
 
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         monster.IsAttack = true;
 
         //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();

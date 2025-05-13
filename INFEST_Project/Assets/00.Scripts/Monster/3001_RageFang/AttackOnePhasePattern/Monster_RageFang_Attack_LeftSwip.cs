@@ -7,7 +7,7 @@ public class Monster_RageFang_Attack_LeftSwip : MonsterStateNetworkBehaviour<Mon
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
         monster.IsLeftSwip = true;
         phase.skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, monster.skills[2].CoolDown);
         phase.patternTickTimer = TickTimer.CreateFromSeconds(Runner, 3);

@@ -14,11 +14,13 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
         if (monster.IsDead || monster.target == null)
             return;
 
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         monster.IsAttack = true;
 
         //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
+
+        monster.TryAttackTarget(monster.info.MinAtk);
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }
 

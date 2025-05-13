@@ -45,7 +45,7 @@ public abstract class PlayerBaseState : IState
     }
     public virtual void OnUpdate(NetworkInputData data)
     {
-        if (statHandler.CurrentHealth <= 0)
+        if (statHandler.info.CurHealth <= 0)
         {
             stateMachine.ChangeState(stateMachine.DeadState);
         }

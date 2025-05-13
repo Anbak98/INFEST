@@ -150,10 +150,4 @@ public class Player : NetworkBehaviour
         FirstPersonRoot.SetActive(firstPerson);
         ThirdPersonRoot.SetActive(firstPerson == false);
     }
-
-    // ÇÇ°Ý
-    public void TakeDamage(int amount)
-    {
-        statHandler.TakeDamage(amount);
-    }
 }
