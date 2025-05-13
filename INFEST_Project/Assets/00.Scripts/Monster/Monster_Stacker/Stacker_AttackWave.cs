@@ -1,6 +1,6 @@
 using Fusion;
 
-public class Stacker_AttackWave : MonsterStateNetworkBehaviour<Monster_Stacker>
+public class Stacker_AttackWave : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Wave>
 {
     private TickTimer _tickTimer;
 

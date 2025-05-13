@@ -1,6 +1,6 @@
 using Fusion;
 
-public class Stacker_Idle : MonsterStateNetworkBehaviour<Monster_Stacker>
+public class Stacker_Idle : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Wonder>
 {
     public TickTimer _tickTimer;
 
