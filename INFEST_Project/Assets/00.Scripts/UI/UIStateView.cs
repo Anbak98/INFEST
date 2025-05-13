@@ -82,11 +82,11 @@ public class UIStateView : UIScreen
 
     private void ChoiceJob()
     {
-        if (Info.Job == JOB.SWAT)
+        if (Info.Job == JOB.Commander)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
         }
-        else if (Info.Job == JOB.Medic)
+        else if (Info.Job == JOB.BattleMedic)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(2);
         }
@@ -106,9 +106,9 @@ public class UIStateView : UIScreen
 
         CharacterInfoInstance _info = Player.local.characterInfoInstance;
 
-        hpText.text = _info.curHealth.ToString();
-        defText.text = _info.curDefGear.ToString();
-        goldText.text = _info.curGold.ToString();
+        hpText.text = _info.CurHealth.ToString();
+        defText.text = _info.CurDefGear.ToString();
+        goldText.text = _info.CurGold.ToString();
 
         if (Player.local.inventory.equippedWeapon == null)
         {

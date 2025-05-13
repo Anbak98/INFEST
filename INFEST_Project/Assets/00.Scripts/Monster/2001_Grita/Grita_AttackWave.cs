@@ -14,7 +14,7 @@ public class Grita_AttackWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         if (monster.IsDead || monster.target == null)
             return;
 
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         monster.IsAttack = true;
 
         // 공격은 1번

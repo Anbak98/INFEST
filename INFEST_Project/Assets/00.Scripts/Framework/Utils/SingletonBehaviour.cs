@@ -52,7 +52,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
             }
             else
             {
-                GameObject obj = new GameObject(string.Format("s"));
+                GameObject obj = new GameObject(string.Format(typeof(T).Name + "_auto"));
                 _instance = obj.AddComponent<T>();
             }
         }

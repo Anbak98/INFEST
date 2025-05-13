@@ -8,16 +8,15 @@ public class PlayerDetectorCollider : MonoBehaviour
     {
         if (other.gameObject.layer == 7)
         {
-            if (!monster.targets.Contains(other.transform))
-                monster.targets.Add(other.transform);
+                monster.TryAddTarget(other.transform);
+                monster.SetTargetRandomly();
         }
     }
     private void OnTriggerExit(UnityEngine.Collider other)
     {
         if (other.gameObject.layer == 7)
         {
-            if (monster.targets.Contains(other.transform))
-                monster.targets.Remove(other.transform);
+            monster.TryRemoveTarget(other.transform);
         }
     }
 }
