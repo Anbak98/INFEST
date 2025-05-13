@@ -10,37 +10,27 @@ public class Bowmeter_Pattern2 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
         if (monster.IsDead || monster.target == null)
             return;
 
+        monster.IsBwack = true;
         monster.MovementSpeed = 0f;
-        monster.IsAttack = true;
 
         //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(10);
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
 
     public override void Execute()
     {
         base.Execute();
-        //if (_tickTimer.Expired(Runner))
-        //{
-        //    monster.AIPathing.SetDestination(monster.target.position);
-        //    monster.IsAttack = false;
-        //    if (!monster.AIPathing.pathPending && !monster.IsDead)
-        //    {
-        //        if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
-        //        {
-        //            phase.ChangeState<Bowmeter_Pattern2>();
-        //        }
-        //        else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
-        //        {
-        //            phase.ChangeState<Bowmeter_Run>();
-        //        }
-        //    }
-        //}
+
+        if (_tickTimer.Expired(Runner))
+        {
+            phase.ChangeState<Bowmeter_Idle>();
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
+        monster.IsBwack = false;
     }
 }

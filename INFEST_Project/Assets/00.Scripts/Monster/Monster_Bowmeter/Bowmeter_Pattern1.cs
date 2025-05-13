@@ -10,8 +10,8 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
         if (monster.IsDead || monster.target == null)
             return;
 
-        monster.MovementSpeed = 0f;
         monster.IsAttack = true;
+        monster.MovementSpeed = 0f;
 
         //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(10);
@@ -21,6 +21,11 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Execute()
     {
         base.Execute();
+
+        if (_tickTimer.Expired(Runner))
+        {
+            phase.ChangeState<Bowmeter_Idle>();
+        }
         //if (_tickTimer.Expired(Runner))
         //{
         //    monster.AIPathing.SetDestination(monster.target.position);
@@ -42,5 +47,6 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Exit()
     {
         base.Exit();
+        monster.IsAttack = false;
     }
 }

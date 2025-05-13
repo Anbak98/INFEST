@@ -1,8 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class Siren : MonoBehaviour
 {
-    public bool isTrigger = false;
+    public static bool isTrigger = false;
 
     private int _playerLayer = 7;
     private Player _player;
@@ -16,8 +17,20 @@ public class Siren : MonoBehaviour
         if (other.gameObject.layer == _playerLayer && player)
         {
             _player = player;
+            isTrigger = true;
 
-            _controller.RPC_PlaySirenSound(_player, _player.Object.InputAuthority);
+            float delay = Random.Range(5f, 30f);
+            StartCoroutine(DelayedSiren(delay, _player));
         }
-    }    
+    }
+
+    private IEnumerator DelayedSiren(float delay, Player player)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (_controller != null && player != null)
+        {
+            _controller.RPC_PlaySirenSound(player, player.Object.InputAuthority);
+        }
+    }
 }
