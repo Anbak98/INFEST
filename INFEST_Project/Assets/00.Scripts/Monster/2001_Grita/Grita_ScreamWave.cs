@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,18 +9,25 @@ using UnityEngine;
 
 public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
+    public TickTimer _tickTimer;
 
     public override void Enter()
     {
         base.Enter();
         // Scream
-        if (monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
-        {
-            monster.Rpc_Scream();   // 여기서 모두 해버리면.. 상태머신에서 할 것이 없다
-            float animLength = monster.GetCurrentAnimLength();
-            // Spawn
-            monster.StartCoroutine(monster.SpawnAfterAnim(animLength));
-        }
+        monster.IsScream = true;
+        monster.IsCooltimeCharged = false;  // 기술 썼으니
+        monster.ScreamCount++;
+
+        Debug.Log("Scream Wave Enter");
+
+        monster.Rpc_Scream();
+        float animLength = monster.GetCurrentAnimLength();
+
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, animLength);   // 해당 시간이 지난 다음 다음 진행
+
+        // Spawn
+        //monster.StartCoroutine(monster.SpawnAfterAnim(animLength));
     }
     public override void Execute()
     {
@@ -28,16 +36,19 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         base.Execute();
 
         // Enter에서 공격했으니 RunWave로 상태전환
-        phase.ChangeState<Grita_RunWave>();
+        if (_tickTimer.Expired(Runner))     // _tickTimer가 해당 시간만큼 지나면 true가 된다
+        {
+            phase.ChangeState<Grita_RunWave>();
+        }
 
     }
 
     public override void Exit()
     {
         base.Exit();
-
+        monster.IsScream = false;
+        Debug.Log("Scream Wave Exit");
     }
-
 }
 
 // 추가 스폰
