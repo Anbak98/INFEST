@@ -17,7 +17,6 @@ public class SirenController : NetworkBehaviour
             sirenSound.clip = sirenSoundClip;
             sirenSound.Play();
             StartCoroutine(StopSirenSoundAfterSeconds(9.3f));
-            //sirenSound.PlayOneShot(sirenSoundClip);
         }
 
         var allMonsters = FindObjectsOfType<MonsterNetworkBehaviour>();
