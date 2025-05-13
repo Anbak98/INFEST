@@ -1,6 +1,7 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class UIStateView : UIScreen
@@ -38,6 +39,7 @@ public class UIStateView : UIScreen
         SetJobIcon();
         SetWeaponIcon();
 
+        _characterInfo = Player.local.statHandler.info.data;
         _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
         ChoiceJob();
 
@@ -102,9 +104,9 @@ public class UIStateView : UIScreen
 
     public void UpdatePlayerState()
     {
-        if (Player.local.characterInfoInstance == null) return; 
+        if (Player.local.statHandler.info == null) return;
 
-        CharacterInfoInstance _info = Player.local.characterInfoInstance;
+        PlayerStatHandler _info = Player.local.statHandler;
 
         hpText.text = _info.CurHealth.ToString();
         defText.text = _info.CurDefGear.ToString();

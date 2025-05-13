@@ -94,7 +94,7 @@ public class ScoreboardManager : NetworkBehaviour
     {
         if (Runner.TryGetPlayerObject(player, out var playerObj))
         {
-            var characterInfo = playerObj.GetComponent<CharacterInfoInstance>();
+            var characterInfo = playerObj.GetComponent<Player>().statHandler;
             characterInfo.CurGold += amount;
 
             if (PlayerScores.TryGet(player, out var data))
