@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8039936329304259751}
   - component: {fileID: 186967498496518935}
   - component: {fileID: 7965385950106925138}
+  - component: {fileID: -7908341972085300947}
   m_Layer: 0
   m_Name: Grenade_1
   m_TagString: Untagged
@@ -28,14 +29,14 @@ Transform:
   m_GameObject: {fileID: 2472642772151516925}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2359, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5290103157370001378}
   - {fileID: 6190166161445869872}
   - {fileID: 6267990118102593605}
-  - {fileID: 6841112516276668784}
+  - {fileID: 2419241252060124437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8039936329304259751
@@ -51,12 +52,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GrenadeExplosion: {fileID: 2699429017159344683}
-  explosionParticles: {fileID: 6837544412651398192}
+  explosionParticles: {fileID: 2414363592375580757}
   throwPoint: {fileID: 6833095684138853698}
   obj: {fileID: 0}
-  aimLayerMask:
+  _layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
 --- !u!114 &186967498496518935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +76,8 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8039936329304259751}
+  - {fileID: -7908341972085300947}
+  - {fileID: 2699429017159344683}
   ForceRemoteRenderTimeframe: 0
 --- !u!95 &7965385950106925138
 Animator:
@@ -97,6 +100,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7908341972085300947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2472642772151516925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &3159688593360641354
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,10 +165,7 @@ MonoBehaviour:
   grenadeProjectile: {fileID: 8039936329304259751}
   _playerLayer:
     serializedVersion: 2
-    m_Bits: 7
-  _monsterLayer:
-    serializedVersion: 2
-    m_Bits: 12
+    m_Bits: 128
 --- !u!114 &1851647548138147557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,8 +362,8 @@ Transform:
   m_Children:
   - {fileID: 409252530463468370}
   m_Father: {fileID: 6833095684138853698}
-  m_LocalEulerAnglesHint: {x: -90.00002, y: 0.0025863647, z: -0.002609253}
---- !u!1001 &6836505676456128348
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
+--- !u!1001 &2414625663194395449
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -422,15 +439,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e96e7dd85717edf4fa0a05d8b45d8450, type: 3}
---- !u!1 &6837544412651398192 stripped
+--- !u!1 &2414363592375580757 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1112544203819884, guid: e96e7dd85717edf4fa0a05d8b45d8450,
     type: 3}
-  m_PrefabInstance: {fileID: 6836505676456128348}
+  m_PrefabInstance: {fileID: 2414625663194395449}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6841112516276668784 stripped
+--- !u!4 &2419241252060124437 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4686284035302956, guid: e96e7dd85717edf4fa0a05d8b45d8450,
     type: 3}
-  m_PrefabInstance: {fileID: 6836505676456128348}
+  m_PrefabInstance: {fileID: 2414625663194395449}
   m_PrefabAsset: {fileID: 0}
