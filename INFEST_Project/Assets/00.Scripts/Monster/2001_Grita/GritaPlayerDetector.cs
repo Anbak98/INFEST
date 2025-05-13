@@ -16,10 +16,27 @@ public class GritaPlayerDetector : NetworkBehaviour
     {
         if (isTriggered) return;    // 중복 트리거 방지
 
-        Player player = other.GetComponentInParent<Player>();
-        if (player == null || other.gameObject.layer != _playerDetectLayer) return;
+        //Player player = other.GetComponentInParent<Player>();
+        //if (player == null || other.gameObject.layer != _playerDetectLayer) return;
 
+        if (!_grita.targets.Contains(other.transform))
+        {
+            _grita.targets.Add(other.transform);
+            if (_grita.target == null || other.gameObject.layer == _playerDetectLayer)
+            {
+                Player player = other.GetComponentInParent<Player>();
+                if (player == null) return;
+
+                _grita.SetTargetRandomly();
+            }
+        }
         // MonsterGrita 에 변수 선언을 하지 않기 위해 여기서 isTriggered 변수를 수정한다
         isTriggered = true;
     }
+
+    public void OnTriggerExit(UnityEngine.Collider other)
+    {
+
+    }
+
 }

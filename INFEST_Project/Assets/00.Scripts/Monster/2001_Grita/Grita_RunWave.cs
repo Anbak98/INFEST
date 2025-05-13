@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,9 +29,9 @@ public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_P
             if (!monster.CanScream() || monster.screamCount >= Monster_Grita.screamMaxCount)
                 phase.ChangeState<Grita_AttackWave>();
         }
-        else
+        else if (!monster.IsLookPlayer() && monster.AIPathing.remainingDistance > 15f)
         {
-            // Wonder Phase·Î º¯°æ
+            monster.target = null;
             monster.FSM.ChangePhase<Grita_Phase_Wander>();
         }
     }
