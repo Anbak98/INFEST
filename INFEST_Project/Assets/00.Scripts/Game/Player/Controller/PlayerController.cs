@@ -118,7 +118,7 @@ public class PlayerController : NetworkBehaviour
             moveDir.y = 0f; // 수직 방향 제거
 
             networkCharacterController.Move(
-                moveDir * player.statHandler.MoveSpeedModifier
+                moveDir
             );
 
             // 회전 강제 고정: 카메라가 지정한 forward로
