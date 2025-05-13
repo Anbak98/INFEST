@@ -45,12 +45,12 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     public override void Render()
     {
         // Animation 관련
-        animator.SetFloat("MovementSpeed", MovementSpeed);
+        animator.SetFloat("MovementSpeed", CurMovementSpeed);
         if (IsAttack)
             animator.SetTrigger("IsAttack");
         if (IsDead)
             animator.SetBool("IsDead", IsDead);
-        AIPathing.speed = MovementSpeed;
+        AIPathing.speed = CurMovementSpeed;
 
         //// 타겟이 존재할 경우 LookX 계산
         //if (target != null)

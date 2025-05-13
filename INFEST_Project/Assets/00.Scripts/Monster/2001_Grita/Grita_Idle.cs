@@ -22,7 +22,7 @@ public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
     public override void Execute()

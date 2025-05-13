@@ -10,7 +10,7 @@ public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase
     {
         base.Enter();
         _target = monster.target;
-        monster.MovementSpeed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
     }
 
     public override void Execute()
@@ -28,7 +28,7 @@ public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase
             }
             else if (!monster.IsLookPlayer() && monster.AIPathing.remainingDistance > 10f)
             {
-                monster.target = null;
+                monster.TryRemoveTarget(monster.target);
                 monster.FSM.ChangePhase<Grita_Phase_Wander>();
             }
         }
@@ -39,6 +39,6 @@ public class Grita_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase
     public override void Exit()
     {
         base.Exit();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
     }
 }

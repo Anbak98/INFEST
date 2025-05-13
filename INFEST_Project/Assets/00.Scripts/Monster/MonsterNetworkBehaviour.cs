@@ -130,6 +130,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void TryRemoveTarget(Transform target)
     {
+        if (this.target == target)
+        {
+            target = null;
+        }
+
         if (targets.Contains(target))
         {
             targets.Remove(target);
