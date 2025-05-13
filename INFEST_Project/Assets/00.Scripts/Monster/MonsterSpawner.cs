@@ -43,6 +43,7 @@ public class MonsterSpawner : NetworkBehaviour
             }
         }
     }    
+
     public void AllocateSpawnCommand(int monsterKey, Vector3 position)
     {
         if (spawnNum > 0)

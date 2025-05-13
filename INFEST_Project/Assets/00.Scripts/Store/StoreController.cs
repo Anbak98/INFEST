@@ -14,6 +14,8 @@ public class StoreController : NetworkBehaviour
     [Networked] public TickTimer storeTimer { get; set; }
     [Networked] private int _randomIndex { get; set; }
 
+    private int[] _activeIndex = new int[3] { -1, -1, -1 };
+
     public List<Store> aiiStores;
 
     public float newStoreTime = 10f;
@@ -32,7 +34,12 @@ public class StoreController : NetworkBehaviour
             if (storeTimer.ExpiredOrNotRunning(Runner))
             {
                 activeTime = true;
-                RPC_Hide(_randomIndex);
+                for (int i = 0; i < 3; i++)
+                {
+                    _randomIndex = _activeIndex[i];
+                    _activeIndex[i] = -1;
+                    RPC_Hide(_randomIndex);
+                }
                 RPC_EndTImer();
             }
 
@@ -51,8 +58,17 @@ public class StoreController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            _randomIndex = Random.Range(0, aiiStores.Count);
-            RPC_Show(_randomIndex);
+            for(int i= 0; i< 3; i++)
+            {
+                _randomIndex = Random.Range(0, aiiStores.Count);
+                while(_activeIndex[1] == _randomIndex || _activeIndex[2] == _randomIndex)
+                {
+                    _randomIndex = Random.Range(0, aiiStores.Count);
+                }
+                _activeIndex[i] = _randomIndex;
+                RPC_Show(_randomIndex);
+            }
+            
             storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
             _runingTime = true;
         }
