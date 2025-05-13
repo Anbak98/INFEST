@@ -19,6 +19,6 @@ public class PJ_HI_Phase_Wave : MonsterPhase<Monster_PJ_HI>
     public override void MachineExit()
     {
         monster.PlayerDetectorCollider.radius = monster.info.DetectAreaNormal;
-        base.MachineEnter();
+        base.MachineExit();
     }
 }

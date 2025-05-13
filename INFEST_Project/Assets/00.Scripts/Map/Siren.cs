@@ -17,7 +17,7 @@ public class Siren : MonoBehaviour
         {
             _player = player;
 
-            _controller.RPC_RequestTrigger(_player, _player.Object.InputAuthority);
+            _controller.RPC_PlaySirenSound(_player, _player.Object.InputAuthority);
         }
     }    
 }

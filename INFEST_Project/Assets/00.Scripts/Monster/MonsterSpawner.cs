@@ -49,6 +49,17 @@ public class MonsterSpawner : NetworkBehaviour
                         {
                             pj.FSM.ChangePhase<PJ_HI_Phase_Chase>();
                         }
+
+                        if (mnb is Monster_Stacker st)
+                        {
+                            st.FSM.ChangePhase<Stacker_Phase_Chase>();
+                        }
+
+                        if (mnb is Monster_Grita grita)
+                        {
+                            grita.spawner = FindObjectOfType<MonsterSpawner>(); 
+                            grita.FSM.ChangePhase<Grita_Phase_Wander>();                            
+                        }
                     }
                 }
 
