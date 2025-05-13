@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Bowmeter_Walk : MonsterStateNetworkBehaviour<Monster_Bowmeter>
+public class Bowmeter_Walk : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Wonder>
 {
     Vector3 randomPosition;
 

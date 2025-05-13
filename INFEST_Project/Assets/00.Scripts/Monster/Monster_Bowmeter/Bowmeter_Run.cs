@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bowmeter_Run : MonsterStateNetworkBehaviour<Monster_Bowmeter>
+public class Bowmeter_Run : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Chase>
 {
     Transform _target;
 

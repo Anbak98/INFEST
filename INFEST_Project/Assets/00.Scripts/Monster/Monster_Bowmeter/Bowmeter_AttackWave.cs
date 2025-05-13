@@ -1,6 +1,6 @@
 using Fusion;
 
-public class Bowmeter_AttackWave : MonsterStateNetworkBehaviour<Monster_Bowmeter>
+public class Bowmeter_AttackWave : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Wave>
 {
     private TickTimer _tickTimer;
 

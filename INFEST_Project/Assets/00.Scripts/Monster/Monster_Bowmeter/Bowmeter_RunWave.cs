@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bowmeter_RunWave : MonsterStateNetworkBehaviour<Monster_Bowmeter>
+public class Bowmeter_RunWave : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Wave>
 {
     public override void Enter()
     {

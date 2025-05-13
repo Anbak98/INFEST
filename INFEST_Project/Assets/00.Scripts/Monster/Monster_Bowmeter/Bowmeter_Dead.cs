@@ -1,6 +1,6 @@
 using Fusion;
 
-public class Bowmeter_Dead : MonsterStateNetworkBehaviour<Monster_Bowmeter>
+public class Bowmeter_Dead : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Dead>
 {
     public TickTimer _tickTimer;
     public NetworkObject obj;
