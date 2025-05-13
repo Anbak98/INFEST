@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_P
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
 
     }
     public override void Execute()
@@ -28,9 +29,9 @@ public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_P
             if (!monster.CanScream() || monster.screamCount >= Monster_Grita.screamMaxCount)
                 phase.ChangeState<Grita_AttackWave>();
         }
-        else
+        else if (!monster.IsLookPlayer() && monster.AIPathing.remainingDistance > 15f)
         {
-            // Wonder Phase·Î º¯°æ
+            monster.TryRemoveTarget(monster.target);
             monster.FSM.ChangePhase<Grita_Phase_Wander>();
         }
     }
@@ -38,6 +39,6 @@ public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_P
     public override void Exit()
     {
         base.Exit();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
     }
 }

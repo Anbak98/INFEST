@@ -33,7 +33,7 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     }
     public override void Render()
     {
-        animator.SetFloat("MovementSpeed", MovementSpeed);
+        animator.SetFloat("MovementSpeed", CurMovementSpeed);
     }
 
     private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);

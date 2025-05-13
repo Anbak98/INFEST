@@ -7,7 +7,7 @@ public class Monster_RageFang_Attack_FlexingMuscles : MonsterStateNetworkBehavio
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
         monster.IsFlexingMuscles = true;
         phase.skillCoolDown[4] = TickTimer.CreateFromSeconds(Runner, monster.skills[4].CoolDown);
         phase.patternTickTimer = TickTimer.CreateFromSeconds(Runner, 3);

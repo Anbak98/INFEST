@@ -24,6 +24,6 @@ public class PickUpCoinController : NetworkBehaviour
     {
         if (player != Player.local) return;
         Debug.Log("¡¢√À");
-        player.characterInfoInstance.curGold += 1000;
+        player.characterInfoInstance.CurGold += 1000;
     }
 }

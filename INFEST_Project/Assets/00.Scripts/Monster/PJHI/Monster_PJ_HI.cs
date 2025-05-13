@@ -2,7 +2,7 @@ public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
 {    
     public override void Render()
     {
-        animator.SetFloat("MovementSpeed", MovementSpeed);
+        animator.SetFloat("MovementSpeed", CurMovementSpeed);
         if(IsAttack)
         {
             animator.SetTrigger("IsAttack");
@@ -12,6 +12,6 @@ public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
             animator.SetBool("IsDead", IsDead);
         }
 
-        AIPathing.speed = MovementSpeed;
+        AIPathing.speed = CurMovementSpeed;
     }
 }

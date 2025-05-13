@@ -17,13 +17,13 @@ public class UIPlayerProfile : MonoBehaviour
         this.Nickname.text = NickName;
         switch (job)
         {
-            case JOB.Medic:
+            case JOB.BattleMedic:
                 JobIcon.sprite = MedicIcon;
                 break;
             case JOB.Defender:
                 JobIcon.sprite = DefenderIcon;
                 break;
-            case JOB.SWAT:
+            case JOB.Commander:
                 JobIcon.sprite = SWATIcon;
                 break;
             case JOB.Demolator:
@@ -37,13 +37,13 @@ public class UIPlayerProfile : MonoBehaviour
         this.Nickname.text = profile.NickName.ToString();
         switch (profile.Job)
         {
-            case JOB.Medic:
+            case JOB.BattleMedic:
                 JobIcon.sprite = MedicIcon;
                 break;
             case JOB.Defender:
                 JobIcon.sprite = DefenderIcon;
                 break;
-            case JOB.SWAT:
+            case JOB.Commander:
                 JobIcon.sprite = SWATIcon;
                 break;
             case JOB.Demolator:
