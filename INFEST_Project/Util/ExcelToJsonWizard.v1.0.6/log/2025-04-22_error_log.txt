@@ -1,4 +1,0 @@
-2025-04-22 오후 5:37:32: Error processing sheet AbilityInfo in file C:\Users\worni\Desktop\GitProject\INFEST\INFEST_Project\Util\ExcelToJsonWizard.v1.0.6\excel_files\AbilityInfo.xlsx: Specified argument was out of the range of valid values. (Parameter 'index')
-   at System.Linq.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument)
-   at System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
-   at ExcelToJsonWizard.Program.GenerateClassAndJsonFromExcel(String excelPath, String loaderDir, String jsonDir, String logFilePath, Boolean allowMultipleSheets, Boolean useResources, String resourcesInternalPath)

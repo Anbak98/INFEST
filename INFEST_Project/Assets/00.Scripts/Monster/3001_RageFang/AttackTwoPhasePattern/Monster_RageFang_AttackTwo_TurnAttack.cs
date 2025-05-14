@@ -44,7 +44,7 @@ public class Monster_RageFang_AttackTwo_TurnAttack : MonsterStateNetworkBehaviou
             if (angle <= attackAngle / 2f)
             {
                 // 이 콜라이더는 전방 90도 안에 있음
-                monster.TryAttackTarget(hitCollider.transform, (int)(monster.CurDamage * 1.25));
+                monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[9].DamageCoefficient));
             }
         }
     }

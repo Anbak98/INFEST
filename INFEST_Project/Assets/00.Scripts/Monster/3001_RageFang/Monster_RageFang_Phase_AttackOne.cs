@@ -48,8 +48,8 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
             {
                 beforeDamage = monster.CurDamage;
                 beforeDef = monster.CurDef;
-                monster.CurDamage += monster.CurDamage / 10;
-                monster.CurDef += monster.CurDef / 10;
+                monster.CurDamage += (int)(monster.CurDamage / monster.skills[4].DamageCoefficient);
+                monster.CurDef += (int)(monster.CurDef / monster.skills[4].DamageCoefficient);
                 IsFlexingMuscles = true;
             }
         }

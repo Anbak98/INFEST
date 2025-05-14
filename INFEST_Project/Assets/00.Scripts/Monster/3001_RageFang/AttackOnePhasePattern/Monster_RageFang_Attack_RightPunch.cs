@@ -23,6 +23,6 @@ public class Monster_RageFang_Attack_RightPunch : MonsterStateNetworkBehaviour<M
     public override void Attack()
     {
         base.Attack();
-        monster.TryAttackTarget(monster.CurDamage);
+        monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[1].DamageCoefficient));
     }
 }
