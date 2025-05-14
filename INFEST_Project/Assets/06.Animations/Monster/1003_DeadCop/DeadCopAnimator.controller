@@ -407,7 +407,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Attack_1_Normal
+  m_Name: Punch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -421,7 +421,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 9a55d5d99c1374e4f96002b7335e13e8,
+  m_Motion: {fileID: 1827226128182048838, guid: 9a55d5d99c1374e4f96002b7335e13e8,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -615,7 +615,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DeadCop_Attack
+  m_Name: DeadCop_Punch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -629,7 +629,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 9a55d5d99c1374e4f96002b7335e13e8,
+  m_Motion: {fileID: 1827226128182048838, guid: 9a55d5d99c1374e4f96002b7335e13e8,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -699,17 +699,17 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6723096010101349497}
-    m_Position: {x: 490, y: 310, z: 0}
+    m_Position: {x: 480, y: 310, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -8179114574236448097}
-    m_Position: {x: 490, y: 80, z: 0}
+    m_Position: {x: 480, y: 80, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 4760987651820594288}
     m_Position: {x: 260, y: 200, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -1550496859426531022}
-    m_Position: {x: 690, y: 200, z: 0}
+    m_Position: {x: 700, y: 200, z: 0}
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:

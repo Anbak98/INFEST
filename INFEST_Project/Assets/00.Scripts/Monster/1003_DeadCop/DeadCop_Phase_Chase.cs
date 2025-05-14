@@ -35,12 +35,12 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
                 if (distance <= 0.5f)
                 {
                     // HeadButt
-                    ChangeState<DeadCop_Chase_Attack_2_HeadButt>();
+                    ChangeState<DeadCop_Chase_HeadButt>();
                 }
                 else if (distance > 0.5f && distance < 1.0f)
                 {
                     // normal
-                    ChangeState<DeadCop_Chase_Attack_1_Normal>();
+                    ChangeState<DeadCop_Chase_Punch>();
                 }
             }
         }

@@ -83,7 +83,7 @@ MonoBehaviour:
   states:
   - {fileID: 5719825114794038484}
   - {fileID: 8090312157452513000}
-  - {fileID: 1829254307936704465}
+  - {fileID: 5317553036247797360}
   currentState: {fileID: 0}
 --- !u!1 &261564756411750716
 GameObject:
@@ -1077,7 +1077,7 @@ GameObject:
   - component: {fileID: 4759797979681425085}
   - component: {fileID: 8090312157452513000}
   m_Layer: 0
-  m_Name: Attack_1
+  m_Name: Punch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1696,9 +1696,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3264117354781523722}
-  - component: {fileID: 1829254307936704465}
+  - component: {fileID: 5317553036247797360}
   m_Layer: 0
-  m_Name: Attack_2
+  m_Name: HeadButt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1719,7 +1719,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8559324884961345100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1829254307936704465
+--- !u!114 &5317553036247797360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1728,7 +1728,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3549584705221924813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c870f28fbf70623469c9118222847e65, type: 3}
+  m_Script: {fileID: 11500000, guid: ccf24cf12205d7c47b1f41333c0f8ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3890971364150824487
@@ -1792,7 +1792,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -3.814361e-17, y: -0.0000000014390344, z: 0.000000043931315,
     w: 1}
-  m_LocalPosition: {x: 0, y: 1.070538, z: 0.0025391346}
+  m_LocalPosition: {x: -0.00000003852342, y: 1.070538, z: 0.0025391346}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3123,7 +3123,7 @@ GameObject:
   - component: {fileID: 6386512067511682978}
   - component: {fileID: 1237968068434248475}
   m_Layer: 0
-  m_Name: Attack_2_Wave
+  m_Name: HeadButtWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3374,7 +3374,7 @@ MonoBehaviour:
   - {fileID: 8671781353545198924}
   - {fileID: 5719825114794038484}
   - {fileID: 8090312157452513000}
-  - {fileID: 1829254307936704465}
+  - {fileID: 5317553036247797360}
   - {fileID: 8033678546370394945}
   - {fileID: 352140817281373244}
   - {fileID: 6728069236312120493}
@@ -3607,7 +3607,7 @@ GameObject:
   - component: {fileID: 5330047778581588674}
   - component: {fileID: 6728069236312120493}
   m_Layer: 0
-  m_Name: Attack_1_Wave
+  m_Name: PunchWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

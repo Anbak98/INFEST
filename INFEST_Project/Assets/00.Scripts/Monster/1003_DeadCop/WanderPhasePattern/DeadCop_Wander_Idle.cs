@@ -22,7 +22,7 @@ public class DeadCop_Wander_Idle : MonsterStateNetworkBehaviour<Monster_DeadCop,
 
         if (_tickTimer.Expired(Runner))
         {
-            phase.ChangeState<DeadCop_Walk>();
+            phase.ChangeState<DeadCop_Wander_Walk>();
         }
     }
 }

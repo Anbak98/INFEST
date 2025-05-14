@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DeadCop_Walk : MonsterStateNetworkBehaviour<Monster_DeadCop, DeadCop_Phase_Wander>
+public class DeadCop_Wander_Walk : MonsterStateNetworkBehaviour<Monster_DeadCop, DeadCop_Phase_Wander>
 {
     Vector3 randomPosition;
 

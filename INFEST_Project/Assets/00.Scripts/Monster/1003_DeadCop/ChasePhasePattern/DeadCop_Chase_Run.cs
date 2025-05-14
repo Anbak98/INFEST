@@ -25,12 +25,12 @@ public class DeadCop_Chase_Run : MonsterStateNetworkBehaviour<Monster_DeadCop, D
             if (monster.AIPathing.remainingDistance <= 0.5f)
             {
                 monster.IsAttack = true;
-                phase.ChangeState<DeadCop_Chase_Attack_2_HeadButt>();
+                phase.ChangeState<DeadCop_Chase_HeadButt>();
             }
             else if (monster.AIPathing.remainingDistance > 0.5f && monster.AIPathing.remainingDistance < 1.0f)
             {
                 monster.IsAttack = true;
-                phase.ChangeState<DeadCop_Chase_Attack_1_Normal>();
+                phase.ChangeState<DeadCop_Chase_Punch>();
             }
             else
             {
