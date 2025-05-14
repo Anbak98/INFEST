@@ -7,6 +7,7 @@ public class Bowmeter_Idle : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowm
     public override void Enter()
     {
         base.Enter();
+        monster.IsIdle = true;
         monster.CurMovementSpeed = 0f;
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 1);
     }
@@ -19,5 +20,11 @@ public class Bowmeter_Idle : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowm
         {
             phase.ChangeState<Bowmeter_Walk>();
         }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        monster.IsIdle = false;
     }
 }
