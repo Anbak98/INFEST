@@ -28,7 +28,7 @@ public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Mons
 
         foreach (UnityEngine.Collider collider in hitColliders)
         {
-            monster.TryAttackTarget(collider.transform, (int)(monster.CurDamage * 1.35));
+            monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[3].DamageCoefficient));
         }
     }
 

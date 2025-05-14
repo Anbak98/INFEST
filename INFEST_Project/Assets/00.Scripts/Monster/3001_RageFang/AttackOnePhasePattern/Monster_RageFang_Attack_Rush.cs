@@ -18,7 +18,7 @@ public class Monster_RageFang_Attack_Rush : MonsterStateNetworkBehaviour<Monster
         base.Execute();
         if(monster.AIPathing.remainingDistance < 5f)
         {
-            monster.TryAttackTarget((int)(monster.CurDamage*1.3));
+            monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[5].DamageCoefficient));
             monster.CurMovementSpeed = 0;
             monster.IsReadyForChangingState = true;
         }
