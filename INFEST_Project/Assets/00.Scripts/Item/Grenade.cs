@@ -36,16 +36,16 @@ public class Grenade : Consume
             ).GetComponent<GrenadeProjectile>();
 
             _grenade.Init(velocity, throwPoint.position);
-            RPC_Init(_grenade);
+            RPC_Init(_grenade, velocity);
         }
         _throwTimer = TickTimer.CreateFromSeconds(Runner, 3f);
     }
 
     [Rpc(RpcSources.StateAuthority,RpcTargets.All)]
-    private void RPC_Init(GrenadeProjectile _grenade)
+    private void RPC_Init(GrenadeProjectile _grenade, Vector3 _velocity)
     {
         grenade = _grenade;
 
-        grenade.GetGrenade(this);
+        grenade.GetGrenade(this, _velocity);
     }
 }
