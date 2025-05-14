@@ -45,6 +45,11 @@ public class MonsterPhase<T> : NetworkBehaviour where T : BaseMonster<T>
 
     public void ChangeState<S>()
     {
+        if(currentState is S)
+        {
+            return;
+        }
+
         currentState?.Exit();
         currentState = stateMap[typeof(S)];
         currentState.Enter();

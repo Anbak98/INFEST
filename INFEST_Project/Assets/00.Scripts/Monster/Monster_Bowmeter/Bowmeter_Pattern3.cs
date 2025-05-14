@@ -2,7 +2,6 @@ using Fusion;
 
 public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Chase>
 {
-    public TickTimer _tickTimer;
 
     public override void Enter()
     {
@@ -13,19 +12,12 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
         monster.IsShoot = true;
         monster.CurMovementSpeed = 0f;
 
-        //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
-        //monster.targetStatHandler.TakeDamage(10);
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
+        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 2);
     }
 
     public override void Execute()
     {
         base.Execute();
-
-        if (_tickTimer.Expired(Runner))
-        {
-            phase.ChangeState<Bowmeter_Run>();
-        }
     }
 
     public override void Exit()
