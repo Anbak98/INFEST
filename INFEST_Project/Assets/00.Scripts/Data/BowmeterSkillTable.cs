@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class EliteMonsterSkillTable : IKeyedItem
+public class BowmeterSkillTable : IKeyedItem
 {
     /// <summary>
     /// ID
@@ -32,20 +32,11 @@ public class EliteMonsterSkillTable : IKeyedItem
     public float UseRange;
 
     /// <summary>
-    /// 웨이브 시 사용 범위
-    /// </summary>
-    public float UseRangeInWave;
-
-    /// <summary>
-    /// 사용 몬스터 인덱스
-    /// </summary>
-    public int UseMonster;
-
-    /// <summary>
     /// 사용 우선순위
     /// </summary>
     public int SkillPriority;
 
+    
     public int Key => key;
 
 }
