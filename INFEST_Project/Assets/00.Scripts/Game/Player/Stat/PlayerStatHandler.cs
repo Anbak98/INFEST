@@ -27,7 +27,6 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         base.Spawned();
 
-
         info = new(1);
         CurHealth = info.data.Health;
         CurDefGear = info.data.DefGear;
@@ -36,55 +35,6 @@ public class PlayerStatHandler : NetworkBehaviour
         CurTeamCoin = info.data.StartTeamCoin;
         CurSpeedMove = info.data.SpeedMove;
         curstate = info.data.State;
-
-        //Player _player = GetComponent<Player>();
-        //if (_player == null)
-        //{
-
-        //    for (int i = 0; i < _player.Weapons.Weapons.Count; i++)
-        //    {
-        //        if (_player.Weapons.Weapons[i].key == info.data.StartAuxiliaryWeapon)
-        //        {
-        //            _player.inventory.auxiliaryWeapon[0] = _player.Weapons.Weapons[i];
-        //            _player.inventory.auxiliaryWeapon[0].IsCollected = true;
-        //        }
-
-        //        if (_player.Weapons.Weapons[i].key == info.data.StartWeapon1)
-        //        {
-        //            _player.inventory.weapon[0] = _player.Weapons.Weapons[i];
-        //            _player.inventory.weapon[0].IsCollected = true;
-        //        }
-
-        //        if (_player.inventory.auxiliaryWeapon[0] != null && _player.inventory.weapon[0] != null)
-        //            break;
-        //    }
-
-        //    for (int i = 0; i < _player.Consumes.Consumes.Count; i++)
-        //    {
-        //        if (_player.Consumes.Consumes[i].key == _player.statHandler.info.data.StartConsumeItem1)
-        //        {
-        //            int itemChk = _player.statHandler.info.data.StartConsumeItem1 % 10000;
-        //            bool throwingWeapon = itemChk < 800 && itemChk > 700;
-        //            bool recoveryItem = itemChk < 900 && itemChk > 800;
-        //            bool shieldItme = itemChk < 1000 && itemChk > 900;
-
-        //            if (throwingWeapon)
-        //                _player.inventory.consume[0] = _player.Consumes.Consumes[i];
-
-        //            if (recoveryItem)
-        //                _player.inventory.consume[1] = _player.Consumes.Consumes[i];
-
-        //            if (shieldItme)
-        //                _player.inventory.consume[2] = _player.Consumes.Consumes[i];
-        //            break;
-
-        //        }
-
-        //    }
-        //    _player.inventory.equippedWeapon = _player.inventory.auxiliaryWeapon[0];
-        //    _player.inventory.consume[0] = _player.Consumes.Consumes[2];
-        //    _player.inventory.consume[1] = _player.Consumes.Consumes[3];
-        //}
     }
 
     // 피격
@@ -117,6 +67,8 @@ public class PlayerStatHandler : NetworkBehaviour
 
         if (CurDefGear < 0)
             CurDefGear = 0;
+
+        Debug.Log(CurHealth);
     }
 
     public void SetHealth(int amount)
@@ -148,6 +100,7 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         // MyDebug.Log($"PlayerStatHandler HandleDeath : {CurrentHealth}"); 
         IsDead = true;
+
         OnDeath?.Invoke();
     }
     // 리스폰

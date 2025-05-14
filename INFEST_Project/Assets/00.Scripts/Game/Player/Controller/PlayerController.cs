@@ -129,9 +129,25 @@ public class PlayerController : NetworkBehaviour
 
     private void OnDeath()
     {
-        player.FirstPersonRoot.SetActive(false);
         player.ThirdPersonRoot.SetActive(true);
         stateMachine.ChangeState(stateMachine.DeadState);
+
+        // MeshRenderer 컴포넌트 비활성화
+        MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
+        foreach (var mr in meshRenderers)
+        {
+            mr.enabled = false;
+        }
+
+        // SkinnedMeshRenderer 컴포넌트 비활성화 (캐릭터 등 스킨드 메시 처리)
+        SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+        Debug.Log(skinnedRenderers.Length);
+        foreach (var smr in skinnedRenderers)
+        {
+            smr.enabled = false;
+        }
+
+        Debug.Log($"Disabled {meshRenderers.Length} MeshRenderer(s) and {skinnedRenderers.Length} SkinnedMeshRenderer(s).");
     }
     private void OnRespawn()
     {
@@ -195,6 +211,7 @@ public class PlayerController : NetworkBehaviour
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
+
                 //data.isShotgunOnFiring = true;
                 player.Weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 
@@ -215,16 +232,16 @@ public class PlayerController : NetworkBehaviour
     {
         if (HasInputAuthority)
         {
-            //GUILayout.Label(stateMachine.currentState.ToString());
-            //GUILayout.Label(DEBUG_DATA.ToString());
-            ////
-            //GUILayout.Label("Player HP: " + player.statHandler.CurrentHealth.ToString());
-            //GUILayout.Label("PlayerController position: " + transform.position.ToString());
-            //GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
-            //GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-            //GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
-            ////
-            //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+            GUILayout.Label(stateMachine.currentState.ToString());
+            GUILayout.Label(DEBUG_DATA.ToString());
+            //
+            GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
+            GUILayout.Label("PlayerController position: " + transform.position.ToString());
+            GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
+            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+            //
+            GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
             //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
         }
     }

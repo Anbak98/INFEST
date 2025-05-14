@@ -16,6 +16,11 @@ public class PlayerAttackedEffectController : MonoBehaviour
     [SerializeField] private float _shakeDuration = 0.5f;
     [SerializeField] private float _shakeIntensity = 2.0f;
 
+
+    [Header("Camera Components")]
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip[] _attackedSounds;
+
     private CinemachineBasicMultiChannelPerlin _cameraNoise;
 
     private void Awake()
@@ -31,9 +36,8 @@ public class PlayerAttackedEffectController : MonoBehaviour
         //StartCoroutine(ShowCameraEffectAttacked());
         if (amount > 0)
             StartCoroutine(ShowUIEffectHeal());
-        else if(amount < 0)
+        else if (amount < 0)
             StartCoroutine(ShowUIEffectAttacked());
-        
     }
 
     private IEnumerator ShowCameraEffectAttacked()
@@ -49,30 +53,30 @@ public class PlayerAttackedEffectController : MonoBehaviour
 
     private IEnumerator ShowUIEffectAttacked()
     {
-        if (!_uiAttackEffect.activeSelf)
+        _uiAttackEffect.SetActive(true);
+
+        int rand = Random.Range(0, _attackedSounds.Length);
+        _audioSource.PlayOneShot(_attackedSounds[rand]);
+
+        // 페이드 아웃 시작
+        CanvasGroup canvasGroup = _uiAttackEffect.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
         {
-            _uiAttackEffect.SetActive(true);
-
-            // 페이드 아웃 시작
-            CanvasGroup canvasGroup = _uiAttackEffect.GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
-            {
-                canvasGroup = _uiAttackEffect.AddComponent<CanvasGroup>();
-            }
-
-            canvasGroup.alpha = 1.0f;
-
-            float elapsed = 0f;
-            while (elapsed < _fadeDuration)
-            {
-                elapsed += Time.deltaTime;
-                canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0f, elapsed / _fadeDuration);
-                yield return null;
-            }
-
-            canvasGroup.alpha = 0f;
-            _uiAttackEffect.SetActive(false);
+            canvasGroup = _uiAttackEffect.AddComponent<CanvasGroup>();
         }
+
+        canvasGroup.alpha = 1.0f;
+
+        float elapsed = 0f;
+        while (elapsed < _fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0f, elapsed / _fadeDuration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0f;
+        _uiAttackEffect.SetActive(false);
     }
 
     private IEnumerator ShowUIEffectHeal()
