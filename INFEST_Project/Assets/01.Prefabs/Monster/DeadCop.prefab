@@ -269,7 +269,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &644243100892447086
 GameObject:
@@ -609,7 +609,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1354527653361048626
 GameObject:
@@ -695,7 +695,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: -0.01}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1401966275656533636
 GameObject:
@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e53b1d1f2984578409a2a8c2ca530c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DurationTime: 30
+  DurationTime: 7
 --- !u!1 &1696642896999552752
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +924,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2100075367270622639
 GameObject:
@@ -1741,7 +1741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4518325918067659933}
   m_Layer: 0
-  m_Name: Model
+  m_Name: DeadCop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1764,7 +1764,6 @@ Transform:
   - {fileID: 3670533582400586294}
   - {fileID: 7878986517187050801}
   - {fileID: 1357225016403216500}
-  - {fileID: 8278746099629650953}
   m_Father: {fileID: 2130520266589038403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3907972851861073276
@@ -1793,14 +1792,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -3.814361e-17, y: -0.0000000014390344, z: 0.000000043931315,
     w: 1}
-  m_LocalPosition: {x: -0.00000003852342, y: 1.070538, z: 0.0025391346}
+  m_LocalPosition: {x: 0, y: 1.070538, z: 0.0025391346}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1925993556017958261}
   - {fileID: 5215610824524088118}
   - {fileID: 8542477883968915354}
-  m_Father: {fileID: 4518325918067659933}
+  m_Father: {fileID: 2130520266589038403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3985834101760875011
 GameObject:
@@ -1916,7 +1915,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0.13, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &4360000819436444502
 GameObject:
@@ -2110,7 +2109,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: 0.13, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &4905872913440612209
 GameObject:
@@ -2163,7 +2162,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.4
   Offset: {x: 0, y: -0.2, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &4923170735825320264
 GameObject:
@@ -2746,7 +2745,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.25
   Offset: {x: 0, y: 0.09, z: 0.05}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &6849620291523352278
 GameObject:
@@ -3048,7 +3047,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8044943903323197735
 GameObject:
@@ -3274,7 +3273,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.45
   Offset: {x: 0, y: -0.04, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8699179494845804233
 GameObject:
@@ -3345,6 +3344,7 @@ Transform:
   m_Children:
   - {fileID: 6690893107584062067}
   - {fileID: 4518325918067659933}
+  - {fileID: 8278746099629650953}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &453003009988073947
@@ -3453,7 +3453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Config: 3
-  BroadRadius: 0
+  BroadRadius: 2.0273182
   Offset: {x: 0, y: 0, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes: []
@@ -3691,7 +3691,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.5
   Offset: {x: 0, y: 0.25, z: -0.01}
-  Root: {fileID: 0}
+  Root: {fileID: 5318771021199015657}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &9052155904853682218
 GameObject:

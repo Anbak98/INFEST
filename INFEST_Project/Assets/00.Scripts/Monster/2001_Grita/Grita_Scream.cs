@@ -30,8 +30,8 @@ public class Grita_Scream : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Ph
 
         _animTickTimer = TickTimer.CreateFromSeconds(Runner, animLength);
 
-        // Wave가 시작된다
-        monster.spawner.SpawnMonsterOnWave(monster.target.transform);
+        // Wave가 시작된다(무한생성되는 문제)
+        //monster.spawner.SpawnMonsterOnWave(monster.target.transform);
     }
     public override void Execute()
     {
