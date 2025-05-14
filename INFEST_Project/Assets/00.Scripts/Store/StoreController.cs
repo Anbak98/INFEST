@@ -9,12 +9,11 @@ public class StoreController : NetworkBehaviour
 {
     public UIShopView uIShopView;
 
-    [Networked] private NetworkBool _runingTime { get; set; }
     [Networked] public NetworkBool activeTime { get; set; }
     [Networked] public TickTimer storeTimer { get; set; }
     [Networked] private int _randomIndex { get; set; }
 
-    private int[] _activeIndex = new int[3] { -1, -1, -1 };
+    private int[] _activeIndex = new int[3] {0,0,0};
 
     public List<Store> aiiStores;
 
@@ -34,19 +33,28 @@ public class StoreController : NetworkBehaviour
             if (storeTimer.ExpiredOrNotRunning(Runner))
             {
                 activeTime = true;
-                for (int i = 0; i < 3; i++)
+                if(aiiStores.Count < 3)
                 {
-                    _randomIndex = _activeIndex[i];
-                    _activeIndex[i] = -1;
                     RPC_Hide(_randomIndex);
                 }
-                RPC_EndTImer();
-            }
+                else
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        _randomIndex = _activeIndex[i];
+                        RPC_Hide(_randomIndex);
+                        _activeIndex[i] = -1;
+                    }
+                }
 
-            if (!_runingTime)
-            {
+                RPC_EndTImer();
                 Activate();
             }
+
+            //if (!storeTimer.ExpiredOrNotRunning(Runner))
+            //{
+            //    Activate();
+            //}
 
         }
     }
@@ -58,19 +66,27 @@ public class StoreController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            for(int i= 0; i< 3; i++)
+            if (aiiStores.Count < 3)
             {
                 _randomIndex = Random.Range(0, aiiStores.Count);
-                while(_activeIndex[1] == _randomIndex || _activeIndex[2] == _randomIndex)
-                {
-                    _randomIndex = Random.Range(0, aiiStores.Count);
-                }
-                _activeIndex[i] = _randomIndex;
                 RPC_Show(_randomIndex);
             }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    _randomIndex = Random.Range(0, aiiStores.Count);
+                    while (i != 0 && (_activeIndex[1] == _randomIndex || _activeIndex[2] == _randomIndex))
+                    {
+                        _randomIndex = Random.Range(0, aiiStores.Count);
+                    }
+                    _activeIndex[i] = _randomIndex;
+                    RPC_Show(_randomIndex);
+                }
+            }
+            
             
             storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
-            _runingTime = true;
         }
         uIShopView.StoreInIt(aiiStores[_randomIndex]);
 
@@ -115,7 +131,6 @@ public class StoreController : NetworkBehaviour
     public void RPC_Hide(int index)
     {
         aiiStores[index].gameObject.SetActive(false);
-        _runingTime = false;
     }
 
     /// <summary>
