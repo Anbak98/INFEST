@@ -51,6 +51,7 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
         Global.Instance.UIManager.Hide<UIInteractiveView>();
         _storeController.uIShopView = Global.Instance.UIManager.Show<UIShopView>();
         //_storeController.Activate();
+        _storeController.uIShopView.StoreInIt(this);
 
         _storeController.uIShopView.UpdateButtonState();
     }

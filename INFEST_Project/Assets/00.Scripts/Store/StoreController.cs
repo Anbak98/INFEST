@@ -94,7 +94,6 @@ public class StoreController : NetworkBehaviour
 
             storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
         }
-        uIShopView.StoreInIt(aiiStores[_randomIndex]);
 
     }
 
