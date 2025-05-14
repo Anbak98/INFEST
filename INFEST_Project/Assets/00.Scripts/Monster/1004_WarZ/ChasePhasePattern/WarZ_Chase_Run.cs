@@ -34,7 +34,7 @@ public class WarZ_Chase_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Ph
             }
             else
             {
-                monster.FSM.ChangePhase<DeadCop_Phase_Wander>();
+                monster.FSM.ChangePhase<WarZ_Phase_Wander>();
             }
 
             //else if (monster.AIPathing.remainingDistance > 10f)

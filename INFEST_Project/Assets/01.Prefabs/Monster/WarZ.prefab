@@ -149,7 +149,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3197597065896905919}
-  - component: {fileID: 5580176767597043297}
   - component: {fileID: 3306653070456933957}
   m_Layer: 0
   m_Name: Run
@@ -173,18 +172,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8964590322018723539}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5580176767597043297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 312649642054851926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3899c8a8ce559f4093f765798769ac4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3306653070456933957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -538,13 +525,12 @@ MonoBehaviour:
   - {fileID: 7083824917247520130}
   - {fileID: 3823233587882517002}
   - {fileID: 232314378336991847}
-  - {fileID: 5580176767597043297}
   - {fileID: 3306653070456933957}
   - {fileID: 1010061006151526775}
   - {fileID: 6020034518522867767}
   - {fileID: 9053757953372520969}
   - {fileID: 9204424691350983302}
-  - {fileID: 4146181081340075621}
+  - {fileID: 7710609844761053710}
   - {fileID: 4204232132621548293}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &2544540002031531952
@@ -855,7 +841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7867711674710986324}
-  - component: {fileID: 4146181081340075621}
+  - component: {fileID: 7710609844761053710}
   m_Layer: 0
   m_Name: PunchWave
   m_TagString: Untagged
@@ -878,7 +864,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 220341597333087069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4146181081340075621
+--- !u!114 &7710609844761053710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -887,7 +873,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 941046421244748993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ffa0b570d652504881e71ccd4ab506d, type: 3}
+  m_Script: {fileID: 11500000, guid: 82b85fb24eacefb489c879d592b1ee09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &978332160439622063
@@ -2192,7 +2178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   states:
-  - {fileID: 5580176767597043297}
+  - {fileID: 3306653070456933957}
   - {fileID: 1010061006151526775}
   - {fileID: 6020034518522867767}
   currentState: {fileID: 0}
@@ -4090,7 +4076,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   states:
   - {fileID: 9204424691350983302}
-  - {fileID: 4146181081340075621}
+  - {fileID: 7710609844761053710}
   - {fileID: 4204232132621548293}
   currentState: {fileID: 0}
 --- !u!1 &8735206090339297130
