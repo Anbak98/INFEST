@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_AttackOne>
+public class Monster_RageFang_AttackTwo_Jumping : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_AttackTwo>
 {
     [SerializeField] ParticleSystem _particleSystem;
     public LayerMask layerMask;

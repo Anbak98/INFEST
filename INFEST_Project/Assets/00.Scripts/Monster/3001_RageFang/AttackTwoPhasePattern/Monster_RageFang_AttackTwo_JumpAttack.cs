@@ -2,24 +2,26 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_AttackOne>
+public class Monster_RageFang_AttackTwo_JumpAttack : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_AttackTwo>
 {
     [SerializeField] ParticleSystem _particleSystem;
     public LayerMask layerMask;
+
     public override void Enter()
     {
         base.Enter();
-        monster.CurMovementSpeed = 0;
-        monster.IsJumping = true;
-        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, monster.skills[3].CoolDown);
+        monster.CurMovementSpeed = 20;
+        monster.IsJumpAttack = true;
+        phase.skillCoolDown[6] = TickTimer.CreateFromSeconds(Runner, monster.skills[6].CoolDown);
         monster.IsReadyForChangingState = false;
     }
 
     public override void Exit()
     {
         base.Exit();
-        monster.IsJumping = false;
+        monster.IsJumpAttack = false;
     }
+
     public override void Attack()
     {
         base.Attack();
@@ -35,6 +37,7 @@ public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Mons
     public override void Effect()
     {
         base.Effect();
+        monster.CurMovementSpeed = 0;
         RPC_PlayEffect();
     }
 

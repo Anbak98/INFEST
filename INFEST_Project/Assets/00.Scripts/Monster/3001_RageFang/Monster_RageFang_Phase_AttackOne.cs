@@ -8,12 +8,21 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
 {
     public TickTimer[] skillCoolDown = new TickTimer[6];
     public TickTimer patternTickTimer;
-    private int patternCount = 0;
-    private int nextPatternIndex = 0;
+    [SerializeField] private int patternCount = 0;
+    [SerializeField] private int nextPatternIndex = 0;
+    [SerializeField] private List<int> activatedSkills;
+
+    public bool IsFlexingMuscles = false;
+    public TickTimer flexingMusclesBuffTimer;
+
+    public int beforeDamage;
+    public int beforeDef;
 
     public override void MachineEnter()
     {
         base.MachineEnter();
+        Debug.Log("HI");
+        monster.animator.Play("AttackOnePhase.Monster_RageFang_Run");
         monster.PhaseIndex = 1;
 
         for (int i = 0; i < skillCoolDown.Length; i++)
@@ -28,36 +37,66 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
         base.MachineExecute();
         monster.AIPathing.SetDestination(monster.target.position);
 
-        if (patternTickTimer.Expired(Runner))
+        if(monster.CurHealth < monster.info.MinHealth / 2)
         {
-            CaculateAttackType(monster.AIPathing.remainingDistance);
+            monster.FSM.ChangePhase<Monster_RageFang_Phase_AttackTwo>();    
+        }
 
-            switch (nextPatternIndex)
+        if(!flexingMusclesBuffTimer.ExpiredOrNotRunning(Runner))
+        {
+            if(!IsFlexingMuscles)
             {
-                case 0:
-                    ChangeState<Monster_RageFang_Attack_Run>(); break;
-                case 1:
-                    ChangeState<Monster_RageFang_Attack_RightPunch>(); break;
-                case 2:
-                    ChangeState<Monster_RageFang_Attack_LeftSwip>(); break;
-                case 3:
-                    ChangeState<Monster_RageFang_Attack_Jumping>(); break;
-                case 4:
-                    ChangeState<Monster_RageFang_Attack_FlexingMuscles>(); break;
-                case 5:
-                    ChangeState<Monster_RageFang_Attack_Rush>(); break;
+                beforeDamage = monster.CurDamage;
+                beforeDef = monster.CurDef;
+                monster.CurDamage += monster.CurDamage / 10;
+                monster.CurDef += monster.CurDef / 10;
+                IsFlexingMuscles = true;
+            }
+        }
+        else
+        {
+            if(IsFlexingMuscles)
+            {
+                monster.CurDamage = beforeDamage;
+                monster.CurDef = beforeDef;
+                IsFlexingMuscles = false;
+            }
+        }
+
+        if (!monster.AIPathing.pathPending)
+        {
+            if (monster.IsReadyForChangingState)
+            {
+                CaculateAttackType(monster.AIPathing.remainingDistance);
+
+                switch (nextPatternIndex)
+                {
+                    case 0:
+                        ChangeState<Monster_RageFang_Attack_Run>(); break;
+                    case 1:
+                        ChangeState<Monster_RageFang_Attack_RightPunch>(); break;
+                    case 2:
+                        ChangeState<Monster_RageFang_Attack_LeftSwip>(); break;
+                    case 3:
+                        ChangeState<Monster_RageFang_Attack_Jumping>(); break;
+                    case 4:
+                        ChangeState<Monster_RageFang_Attack_FlexingMuscles>(); break;
+                    case 5:
+                        ChangeState<Monster_RageFang_Attack_Rush>(); break;
+                }
             }
         }
     }
 
     public void CaculateAttackType(float distance)
     {
-        List<int> activatedSkills = new();
+        activatedSkills = new();
         int totalProbability = 0;
 
         if (distance > 15)
         {
-            ChangeState<Monster_RageFang_Attack_Run>();
+            monster.IsReadyForChangingState = true;
+            nextPatternIndex = 0;
             return;
         }
 
@@ -75,7 +114,7 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
                     totalProbability += monster.skills[i].Distance_1P3M;
                     activatedSkills.Add(i);
                 }
-                else if (distance <= 15 && monster.skills[i].Distance_1P3M > 0)
+                else if (distance <= 15 && monster.skills[i].Distance_1P5M > 0)
                 {
                     totalProbability += monster.skills[i].Distance_1P5M;
                     activatedSkills.Add(i);
@@ -83,17 +122,16 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
             }
         }
 
-        Debug.Log(activatedSkills.Count);   
 
         if (activatedSkills.Count == 0)
         {
-            Debug.Log(distance);
             if (distance <= 5)
             {
                 nextPatternIndex = 1;
             }
             else
             {
+                ChangeState<Monster_RageFang_Attack_Run>();
                 nextPatternIndex = 0;
             }
 
@@ -120,7 +158,6 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
 
             if (rand < temp)
             {
-                Debug.Log("Activate " + index + " " + monster.skills[index].Name);
                 nextPatternIndex = index;
 
                 patternCount++;

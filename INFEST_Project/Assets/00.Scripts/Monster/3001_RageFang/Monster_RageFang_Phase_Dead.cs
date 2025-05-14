@@ -1,10 +1,11 @@
 
-public class Monster_RageFang_Phase_Wonder : MonsterPhase<Monster_RageFang>
+public class Monster_RageFang_Phase_Dead : MonsterPhase<Monster_RageFang>
 {
     public override void MachineEnter()
     {
         base.MachineEnter();
-        monster.PhaseIndex = 0;
+        monster.animator.Play("Dead");
+        monster.CurMovementSpeed = 0;
     }
 
     public override void MachineExecute()
