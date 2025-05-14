@@ -8,6 +8,9 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
     public override void MachineEnter()
     {
         base.MachineEnter();
+
+        monster.animator.Play("Wave.DeadCop_Run");
+
     }
 
     public override void MachineExecute()

@@ -1730,7 +1730,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4054784144166120025}
-  - component: {fileID: 7972867117241708579}
   m_Layer: 0
   m_Name: Zombiegirl W Kurniawan
   m_TagString: Untagged
@@ -1756,27 +1755,6 @@ Transform:
   - {fileID: 5180761189276783798}
   m_Father: {fileID: 9084751411537330646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7972867117241708579
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3679067193466171619}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: f4007b55b1269c74cacc13fa4705389e, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3747855477930410515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,17 +2473,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
-    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
-    'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Zombie Attack'\n\tFrom
-    animation clip 'Zombie Dying'\n\tFrom animation clip 'Zombie Scream'\n\tFrom
-    animation clip 'Zombie Walk'\n\tFrom animation clip 'Zombie Run'\n\tFrom animation
-    clip 'Zombie Turn Left'\n\tFrom animation clip 'Zombie Idle'\n\tFrom animation
-    clip 'Zombie Turn Right'\n\tFrom animation clip 'Zombie Idle'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2643,23 +2611,35 @@ MonoBehaviour:
   hitSound: {fileID: 0}
   hitSoundClip: {fileID: 0}
   PlayerDetectorCollider: {fileID: 3630458036033300547}
-  _CurrentHealth: -1
+  _CurMovementSpeed: 0
+  _CurDetectorRadius: 0
+  _CurHealth: -1
+  <CurDamage>k__BackingField: 0
+  <CurDef>k__BackingField: 0
+  _BaseHealth: -1
+  <BaseDamage>k__BackingField: 0
+  <BaseDef>k__BackingField: 0
+  _OffsetHealth: -1
+  <OffsetDamage>k__BackingField: 0
+  <OffsetDef>k__BackingField: 0
   _IsAttack:
     _value: 0
   _IsDead:
     _value: 0
-  _MovementSpeed: -1
   target: {fileID: 0}
   targets: []
   FSM: {fileID: 4877765757947123194}
+  IsReadyForChangingState: 1
   _screamSound: {fileID: 0}
   _screamSoundClip: {fileID: 0}
   screamCount: 0
   playerDetector: {fileID: 8080199677434203632}
   spawner: {fileID: 0}
-  _LookX: 0
   _IsScream:
     _value: 0
+  _IsCooltimeCharged:
+    _value: 1
+  _ScreamCount: 0
 --- !u!1 &5708268363624592986
 GameObject:
   m_ObjectHideFlags: 0
