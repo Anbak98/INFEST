@@ -42,24 +42,6 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     [Networked, OnChangedRender(nameof(OnIsRoaring))]
     public NetworkBool IsRoaring { get; set; } = false;
 
-
-    public bool IsReadyForChangingState = true;
-
-    public void OnAnimationEventIsReady()
-    {
-        IsReadyForChangingState = true;
-    }
-
-    public void OnAnimationEventIsAttack()
-    {
-        FSM.currentPhase.currentState.Attack();
-    }
-
-    public void OnAnimationEventIsEffect()
-    {
-        FSM.currentPhase.currentState.Effect();
-    }
-
     public override void Spawned()
     {
         base.Spawned();

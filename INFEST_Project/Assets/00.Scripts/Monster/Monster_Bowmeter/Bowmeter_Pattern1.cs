@@ -21,24 +21,6 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Execute()
     {
         base.Execute();
-
-        if (_tickTimer.Expired(Runner))
-        {
-            monster.IsAttack = false;
-            phase.ChangeState<Bowmeter_Run>();
-        }
-        
-        if (!monster.AIPathing.pathPending && !monster.IsDead)
-        {
-            if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
-            {
-                phase.ChangeState<Bowmeter_Pattern1>();
-            }
-            else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
-            {
-                phase.ChangeState<Bowmeter_Run>();
-            }
-        }
     }
 
     public override void Exit()

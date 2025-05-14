@@ -102,10 +102,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         if (targets.Count > 1)
         {
             Transform newTarget;
-            do
-            {
-                newTarget = targets[Random.Range(0, targets.Count)];
-            } while (target != newTarget);
+            newTarget = targets[Random.Range(0, targets.Count)];
             target = newTarget;
         }
         else if (targets.Count == 1)

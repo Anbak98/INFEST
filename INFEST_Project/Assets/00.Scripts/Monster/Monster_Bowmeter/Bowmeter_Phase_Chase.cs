@@ -25,20 +25,23 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         base.MachineExecute();
         monster.AIPathing.SetDestination(monster.target.position);
 
-        if (patternTickTimer.Expired(Runner))
+        if(!monster.AIPathing.pathPending)
         {
-            CaculateAttackType(monster.AIPathing.remainingDistance);
-
-            switch (nextPatternIndex)
+            if (patternTickTimer.Expired(Runner))
             {
-                case 0:
-                    ChangeState<Bowmeter_Run>(); break;
-                case 1:
-                    ChangeState<Bowmeter_Pattern1>(); break;
-                case 2:
-                    ChangeState<Bowmeter_Pattern2>(); break;
-                case 3:
-                    ChangeState<Bowmeter_Pattern3>(); break;
+                CaculateAttackType(monster.AIPathing.remainingDistance);
+
+                switch (nextPatternIndex)
+                {
+                    case 0:
+                        ChangeState<Bowmeter_Run>(); break;
+                    case 1:
+                        ChangeState<Bowmeter_Pattern1>(); break;
+                    case 2:
+                        ChangeState<Bowmeter_Pattern2>(); break;
+                    case 3:
+                        ChangeState<Bowmeter_Pattern3>(); break;
+                }
             }
         }
     }
