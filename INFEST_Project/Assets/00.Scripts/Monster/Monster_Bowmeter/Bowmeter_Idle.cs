@@ -8,12 +8,12 @@ public class Bowmeter_Idle : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowm
     {
         base.Enter();
         monster.CurMovementSpeed = 0f;
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 1);
     }
 
     public override void Execute()
     {
-        base.Execute();
+        base.Execute();       
 
         if (_tickTimer.Expired(Runner))
         {
