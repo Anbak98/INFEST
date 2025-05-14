@@ -10,7 +10,7 @@ public class FSM_DeadCop : MonsterFSM<Monster_DeadCop>
 
         if (monster.IsLookPlayer())
         {
-            ChangePhase<Bowmeter_Phase_Chase>();
+            ChangePhase<DeadCop_Phase_Chase>();
         }
     }
 }

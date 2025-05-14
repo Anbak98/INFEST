@@ -246,25 +246,25 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Distance
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsAttack
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsWave
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -811,7 +811,7 @@ AnimatorStateMachine:
     m_Position: {x: 480, y: 80, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 922008793984943161}
-    m_Position: {x: 480, y: 310, z: 0}
+    m_Position: {x: 480, y: 290, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 4760987651820594288}
     m_Position: {x: 240, y: 180, z: 0}
@@ -821,17 +821,17 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: 3269053318454121978}
-    second:
-    - {fileID: 3992174783221781906}
-  - first: {fileID: 4760987651820594288}
-    second:
-    - {fileID: 3718535375839038964}
   - first: {fileID: -8179114574236448097}
     second:
     - {fileID: 7484617403753770355}
     - {fileID: 7538668153286738256}
     - {fileID: 5290434105183087244}
+  - first: {fileID: 4760987651820594288}
+    second:
+    - {fileID: 3718535375839038964}
+  - first: {fileID: 3269053318454121978}
+    second:
+    - {fileID: 3992174783221781906}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 80, y: 0, z: 0}
   m_EntryPosition: {x: 80, y: 80, z: 0}
