@@ -20,8 +20,6 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
     [Networked, OnChangedRender(nameof(OnIsWave))]
     public NetworkBool IsWave { get; set; } = false;
 
-    public bool IsReadyForChangingState = true;
-
     public override void Render()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);

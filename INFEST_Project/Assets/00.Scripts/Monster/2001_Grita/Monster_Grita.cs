@@ -16,7 +16,7 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
     public const float ScreamCooldownSeconds = 50f;
 
-    public GritaPlayerDetector playerDetector; // 연결 필요
+    //public GritaPlayerDetector playerDetector; // 연결 필요
 
     // 동적으로 연결
     [SerializeField] public MonsterSpawner spawner;
@@ -63,7 +63,7 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
         if (screemCooldownTickTimer.Expired(Runner))
         {
             IsCooltimeCharged = true;
-            playerDetector.isTriggered = false;
+            //playerDetector.isTriggered = false;
         }
 
         //// 타겟이 존재할 경우 LookX 계산

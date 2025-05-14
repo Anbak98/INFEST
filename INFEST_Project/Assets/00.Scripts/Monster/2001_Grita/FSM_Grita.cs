@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class FSM_Grita : MonsterFSM<Monster_Grita>
 {
-    public override void FixedUpdateNetwork()
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        base.FixedUpdateNetwork();
-
-        if (monster.IsLookPlayer())
+        if (other.gameObject.layer == 7)
         {
-            ChangePhase<Grita_Phase_Chase>();
+            monster.TryAddTarget(other.transform);
+            monster.SetTargetRandomly();
+            monster.FSM.ChangePhase<Grita_Phase_Chase>();
         }
     }
 }

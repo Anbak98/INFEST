@@ -8,7 +8,7 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
 {
     Vector3 randomPosition;
 
-    public GritaPlayerDetector ditector;
+    //public GritaPlayerDetector ditector;
 
     public override void Enter()
     {
@@ -21,7 +21,7 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
     public override void Execute()
     {
         base.Execute();
-        if (ditector.isTriggered && monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
+        if (/*ditector.isTriggered &&*/ monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
             phase.ChangeState<Grita_Scream>();
 
         if (!monster.AIPathing.pathPending)

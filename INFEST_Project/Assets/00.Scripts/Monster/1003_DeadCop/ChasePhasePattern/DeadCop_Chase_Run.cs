@@ -10,7 +10,7 @@ public class DeadCop_Chase_Run : MonsterStateNetworkBehaviour<Monster_DeadCop, D
     {
         base.Enter();
         _target = monster.target;
-        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMove;
     }
 
     public override void Execute()

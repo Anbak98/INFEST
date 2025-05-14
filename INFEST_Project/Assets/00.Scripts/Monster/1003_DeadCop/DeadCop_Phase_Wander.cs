@@ -7,6 +7,8 @@ public class DeadCop_Phase_Wander : MonsterPhase<Monster_DeadCop>
     public override void MachineEnter()
     {
         base.MachineEnter();
+        monster.animator.Play("Wander.DeadCop_Idle");
+        Debug.Log(currentState);
     }
 
     public override void MachineExecute()

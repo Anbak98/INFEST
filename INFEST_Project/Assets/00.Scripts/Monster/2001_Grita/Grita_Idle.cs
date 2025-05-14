@@ -7,7 +7,7 @@ public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
 {
     public TickTimer idleTickTimer;
 
-    public GritaPlayerDetector ditector;
+    //public GritaPlayerDetector ditector;
 
 
     [Networked] private Quaternion _targetRotation { get; set; }
@@ -27,7 +27,7 @@ public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
     public override void Execute()
     {
         base.Execute();
-        if (ditector.isTriggered && monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
+        if (/*ditector.isTriggered && */monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
             phase.ChangeState<Grita_Scream>();
 
         if (idleTickTimer.Expired(Runner)) // 일정 시간 초과하면 true 리턴

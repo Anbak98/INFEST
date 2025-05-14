@@ -10,6 +10,8 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
         //monster.IsReadyForChangingState = false;
 
         monster.animator.Play("Chase.DeadCop_Run");
+        Debug.Log(currentState);
+        Debug.Log(monster.target);
 
     }
 

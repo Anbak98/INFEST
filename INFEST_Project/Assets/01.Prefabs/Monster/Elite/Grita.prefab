@@ -1381,74 +1381,6 @@ Transform:
   - {fileID: 8449496843461456622}
   m_Father: {fileID: 2772643991303156346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2666809932441027526
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8052946500254635994}
-  - component: {fileID: 3630458036033300547}
-  - component: {fileID: 8080199677434203632}
-  m_Layer: 0
-  m_Name: DetectPlayerByMonster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8052946500254635994
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2666809932441027526}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9084751411537330646}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3630458036033300547
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2666809932441027526}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 8063
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8080199677434203632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2666809932441027526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8002347560334b4489f82c53d56920c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grita: {fileID: 8096296097022345748}
-  isTriggered: 0
 --- !u!1 &2744551442764156893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,6 +1741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4715724224646867579}
   - component: {fileID: 4877765757947123194}
+  - component: {fileID: 1577059504474232142}
   m_Layer: 0
   m_Name: FSM
   m_TagString: Untagged
@@ -1854,6 +1787,27 @@ MonoBehaviour:
   - {fileID: 3986741747919360910}
   - {fileID: 5396497802439543786}
   - {fileID: 5814481705821730403}
+--- !u!135 &1577059504474232142
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764499794592447945}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3932773680000503739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,7 +1852,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1177a573b9b745844813d93eb89aeeef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ditector: {fileID: 8080199677434203632}
   _rotationSpeed: 120
   _angleThreshold: 30
 --- !u!1 &4211138796661417362
@@ -2379,7 +2332,6 @@ Transform:
   - {fileID: 4715724224646867579}
   - {fileID: 4054784144166120025}
   - {fileID: 8364643004063288013}
-  - {fileID: 8052946500254635994}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1478963113393865172
@@ -2416,7 +2368,6 @@ MonoBehaviour:
   - {fileID: 5688832090947200682}
   - {fileID: 5814481705821730403}
   - {fileID: 6451380940787002042}
-  - {fileID: 8080199677434203632}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &7156887524021147276
 MonoBehaviour:
@@ -2610,7 +2561,7 @@ MonoBehaviour:
     type: 3}
   hitSound: {fileID: 0}
   hitSoundClip: {fileID: 0}
-  PlayerDetectorCollider: {fileID: 3630458036033300547}
+  PlayerDetectorCollider: {fileID: 1577059504474232142}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1
@@ -2633,7 +2584,6 @@ MonoBehaviour:
   _screamSound: {fileID: 0}
   _screamSoundClip: {fileID: 0}
   screamCount: 0
-  playerDetector: {fileID: 8080199677434203632}
   spawner: {fileID: 0}
   _IsScream:
     _value: 0
@@ -2684,7 +2634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a34464420b7f4341a843931db91e632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ditector: {fileID: 8080199677434203632}
 --- !u!1 &5808084469598544017
 GameObject:
   m_ObjectHideFlags: 0
