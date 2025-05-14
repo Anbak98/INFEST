@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
 {
-    public EliteMonsterSkillTable skillTable;
     [Networked, OnChangedRender(nameof(OnIsChasePhase))]
     public NetworkBool IsIdle { get; set; } = false;
     [Networked, OnChangedRender(nameof(OnIsChasePhase))]
@@ -34,7 +33,6 @@ public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
     public override void Spawned()
     {
         base.Spawned();
-        skillTable = DataManager.Instance.GetByKey<EliteMonsterSkillTable>(2003);
         _wonderParameterHash = Animator.StringToHash("Wonder.Idle");
         _chaseParameterHash = Animator.StringToHash("Chase.Run");
     }

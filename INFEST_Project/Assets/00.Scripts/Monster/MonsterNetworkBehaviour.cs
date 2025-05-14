@@ -50,6 +50,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Networked] public int CurHealth { get; set; } = -1;
     [field: SerializeField] public int CurDamage { get; set; }
     [field: SerializeField] public int CurDef { get; set; }
+    [Networked] public int BaseHealth { get; set; } = -1;
+    [field: SerializeField] public int BaseDamage { get; set; }
+    [field: SerializeField] public int BaseDef { get; set; }
+    [Networked] public int OffsetHealth { get; set; } = -1;
+    [field: SerializeField] public int OffsetDamage { get; set; }
+    [field: SerializeField] public int OffsetDef { get; set; }
     [Networked] public NetworkBool IsAttack { get; set; } = false;
     [Networked, OnChangedRender(nameof(OnDead))] public NetworkBool IsDead { get; set; } = false;
 
@@ -65,10 +71,15 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     { 
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
 
-        CurHealth = info.MinHealth * Runner.SessionInfo.PlayerCount;
+        BaseHealth = info.MinHealth * Runner.SessionInfo.PlayerCount;
+        BaseDamage = info.MinAtk;
+        BaseDef = info.MinDef;
+
+        CurHealth = BaseHealth;
+        CurDamage = BaseDamage;
+        CurDef = BaseDef;
+
         CurMovementSpeed = info.SpeedMove;
-        CurDamage = info.MinAtk;
-        CurDef = info.MinDef;
 
         PlayerDetectorCollider.radius = info.DetectAreaNormal;
 

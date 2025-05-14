@@ -22,6 +22,6 @@ public class Monster_RageFang_AttackTwo_LeftSwip : MonsterStateNetworkBehaviour<
     public override void Attack()
     {
         base.Attack();
-        monster.TryAttackTarget((int)(monster.CurDamage * 1.05));
+        monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[2].DamageCoefficient));
     }
 }
