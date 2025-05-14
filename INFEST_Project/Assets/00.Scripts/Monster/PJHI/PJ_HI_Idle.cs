@@ -8,7 +8,7 @@ public class PJ_HI_Idle : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Phas
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
 

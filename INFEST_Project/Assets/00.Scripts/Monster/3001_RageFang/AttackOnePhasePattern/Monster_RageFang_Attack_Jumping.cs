@@ -7,7 +7,7 @@ public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Mons
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
         monster.IsJumping = true;
         phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, monster.skills[3].CoolDown);
         phase.patternTickTimer = TickTimer.CreateFromSeconds(Runner, 3);

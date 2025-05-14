@@ -5,7 +5,7 @@ public class PJ_HI_RunWave : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_P
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
 
     }
 
@@ -35,7 +35,7 @@ public class PJ_HI_RunWave : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_P
     public override void Exit()
     {
         base.Exit();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
 
     }
 }

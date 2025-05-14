@@ -1,6 +1,7 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class UIStateView : UIScreen
@@ -38,6 +39,7 @@ public class UIStateView : UIScreen
         SetJobIcon();
         SetWeaponIcon();
 
+        _characterInfo = Player.local.statHandler.info.data;
         _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
         ChoiceJob();
 
@@ -82,11 +84,11 @@ public class UIStateView : UIScreen
 
     private void ChoiceJob()
     {
-        if (Info.Job == JOB.SWAT)
+        if (Info.Job == JOB.Commander)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
         }
-        else if (Info.Job == JOB.Medic)
+        else if (Info.Job == JOB.BattleMedic)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(2);
         }
@@ -102,13 +104,13 @@ public class UIStateView : UIScreen
 
     public void UpdatePlayerState()
     {
-        if (Player.local.characterInfoInstance == null) return; 
+        if (Player.local.statHandler.info == null) return;
 
-        CharacterInfoInstance _info = Player.local.characterInfoInstance;
+        PlayerStatHandler _info = Player.local.statHandler;
 
-        hpText.text = _info.curHealth.ToString();
-        defText.text = _info.curDefGear.ToString();
-        goldText.text = _info.curGold.ToString();
+        hpText.text = _info.CurHealth.ToString();
+        defText.text = _info.CurDefGear.ToString();
+        goldText.text = _info.CurGold.ToString();
 
         if (Player.local.inventory.equippedWeapon == null)
         {

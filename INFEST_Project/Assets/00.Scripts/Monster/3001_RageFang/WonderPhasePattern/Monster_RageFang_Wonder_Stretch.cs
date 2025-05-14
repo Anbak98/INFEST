@@ -8,7 +8,7 @@ public class Monster_RageFang_Wonder_Stretch : MonsterStateNetworkBehaviour<Mons
     {
         base.Enter();
         monster.IsStretch = true;
-        monster.MovementSpeed = 0f;
+        monster.CurMovementSpeed = 0f;
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 3);
     }
 

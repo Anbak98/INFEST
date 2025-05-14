@@ -1,5 +1,6 @@
 using Cinemachine;
 using Fusion;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -19,12 +20,11 @@ public class Player : NetworkBehaviour
     public bool isInteraction = false;
     public PlayerAnimationController animationController;
     [HideInInspector] public PlayerData data; 
-    [HideInInspector] public PlayerStatHandler statHandler;
+    public PlayerStatHandler statHandler;
     public PlayerAttackedEffectController attackedEffectController;
     public PlayerCameraHandler cameraHandler;
     public Store store;
     public Inventory inventory;
-    public CharacterInfoInstance characterInfoInstance;
     public GameObject FirstPersonCamera;    // CinemachineVirtualCamera를 가지고 있는 오브젝트
     private Vector3 _forward = Vector3.forward;
     public WeaponSpawner Weapons;// SY
@@ -75,19 +75,18 @@ public class Player : NetworkBehaviour
             Debug.Log("Local Player 설정 완료");
         }
 
-        if (characterInfoInstance == null) // 캐릭터인스턴스, 인벤토리 설정
+        if (statHandler != null)
         {
-            characterInfoInstance = new(1);
 
             for (int i = 0; i < Weapons.Weapons.Count; i++)
             {
-                if (Weapons.Weapons[i].key == characterInfoInstance.data.StartAuxiliaryWeapon)
+                if (Weapons.Weapons[i].key == statHandler.info.data.StartAuxiliaryWeapon)
                 {
                     inventory.auxiliaryWeapon[0] = Weapons.Weapons[i];
                     inventory.auxiliaryWeapon[0].IsCollected = true;
                 }
 
-                if (Weapons.Weapons[i].key == characterInfoInstance.data.StartWeapon1)
+                if (Weapons.Weapons[i].key == statHandler.info.data.StartWeapon1)
                 {
                     inventory.weapon[0] = Weapons.Weapons[i];
                     inventory.weapon[0].IsCollected = true;
@@ -99,9 +98,9 @@ public class Player : NetworkBehaviour
 
             for (int i = 0; i < Consumes.Consumes.Count; i++)
             {
-                if (Consumes.Consumes[i].key == characterInfoInstance.data.StartConsumeItem1)
+                if (Consumes.Consumes[i].key == statHandler.info.data.StartConsumeItem1)
                 {
-                    int itemChk = characterInfoInstance.data.StartConsumeItem1 % 10000;
+                    int itemChk = statHandler.info.data.StartConsumeItem1 % 10000;
                     bool throwingWeapon = itemChk < 800 && itemChk > 700;
                     bool recoveryItem = itemChk < 900 && itemChk > 800;
                     bool shieldItme = itemChk < 1000 && itemChk > 900;
@@ -124,6 +123,7 @@ public class Player : NetworkBehaviour
             inventory.consume[1] = Consumes.Consumes[3];
         }
     }
+
 
     /// <summary>
     /// 마지막으로 ChangeDetector를 호출한 이후 네트워크화된 속성에 발생한 모든 변경 사항을 반복
@@ -149,11 +149,5 @@ public class Player : NetworkBehaviour
     {
         FirstPersonRoot.SetActive(firstPerson);
         ThirdPersonRoot.SetActive(firstPerson == false);
-    }
-
-    // 피격
-    public void TakeDamage(int amount)
-    {
-        statHandler.TakeDamage(amount);
     }
 }

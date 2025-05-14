@@ -7,7 +7,7 @@ public class Monster_RageFang_Attack_Rush : MonsterStateNetworkBehaviour<Monster
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
         monster.IsRush = true;
         phase.skillCoolDown[5] = TickTimer.CreateFromSeconds(Runner, monster.skills[5].CoolDown);
         phase.patternTickTimer = TickTimer.CreateFromSeconds(Runner, 3);

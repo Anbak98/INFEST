@@ -14,7 +14,9 @@ public class SirenController : NetworkBehaviour
     {
         if (sirenSound != null && sirenSoundClip != null)
         {
-            sirenSound.PlayOneShot(sirenSoundClip);
+            sirenSound.clip = sirenSoundClip;
+            sirenSound.Play();
+            StartCoroutine(StopSirenSoundAfterSeconds(9.3f));
         }
 
         var allMonsters = FindObjectsOfType<MonsterNetworkBehaviour>();
@@ -23,9 +25,14 @@ public class SirenController : NetworkBehaviour
             monster.PlayerDetectorCollider.radius = monster.info.DetectAreaWave;
         }
 
-        siren.isTrigger = true;
         StartCoroutine(MonsterDetectTime(30f, allMonsters));
         StartCoroutine(ResetTriggerAfterDelay(420f));
+    }
+
+    private IEnumerator StopSirenSoundAfterSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        sirenSound.Stop();
     }
 
     private IEnumerator MonsterDetectTime(float delay, MonsterNetworkBehaviour[] allMonsters)
@@ -41,6 +48,6 @@ public class SirenController : NetworkBehaviour
     private IEnumerator ResetTriggerAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        siren.isTrigger = false;
+        Siren.isTrigger = false;
     }
 }

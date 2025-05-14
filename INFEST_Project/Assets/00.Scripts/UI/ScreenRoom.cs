@@ -76,7 +76,7 @@ public class ScreenRoom : UIScreen
     #region Button Methode
     public void OnPressedMedicButton()
     {
-        PlayerPrefs.SetInt("Job", (int)JOB.Medic);
+        PlayerPrefs.SetInt("Job", (int)JOB.BattleMedic);
         UpdateMyProfile();
 
         if (Room != null)
@@ -94,7 +94,7 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedSWATButton()
     {
-        PlayerPrefs.SetInt("Job", (int)JOB.SWAT);
+        PlayerPrefs.SetInt("Job", (int)JOB.Commander);
         UpdateMyProfile();
 
         if (Room != null)
@@ -127,6 +127,7 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedPlaySoloGame()
     {
+        AnalyticsManager.analyticsBeforeInGame(10, 0);
         _matchManager.PlayerSoloGame();
     }
 

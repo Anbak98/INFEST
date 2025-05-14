@@ -1,4 +1,3 @@
-using Mono.Cecil;
 
 public class Monster_RageFang_Phase_Wonder : MonsterPhase<Monster_RageFang>
 {

@@ -10,8 +10,6 @@ public class PlayerSitIdleState : PlayerSitState
     }
     public override void Enter()
     {
-        stateMachine.StatHandler.MoveSpeedModifier = 0;
-
         base.Enter();
         Debug.Log("SitIdle상태 진입");
 

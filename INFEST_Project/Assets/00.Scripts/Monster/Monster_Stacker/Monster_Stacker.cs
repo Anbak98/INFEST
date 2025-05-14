@@ -3,7 +3,7 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
 {
     public override void Render()
     {
-        animator.SetFloat("MovementSpeed", MovementSpeed);
+        animator.SetFloat("MovementSpeed", CurMovementSpeed);
         if (IsAttack)
         {
             animator.SetTrigger("IsAttack");
@@ -14,6 +14,6 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
             animator.SetBool("IsDead", IsDead);
         }
 
-        AIPathing.speed = MovementSpeed;
+        AIPathing.speed = CurMovementSpeed;
     }
 }

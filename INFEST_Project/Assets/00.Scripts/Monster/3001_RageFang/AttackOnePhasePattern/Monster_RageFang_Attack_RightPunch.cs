@@ -7,7 +7,7 @@ public class Monster_RageFang_Attack_RightPunch : MonsterStateNetworkBehaviour<M
     public override void Enter()
     {
         base.Enter();
-        monster.MovementSpeed = 0;
+        monster.CurMovementSpeed = 0;
         monster.IsRightPunch = true;
         phase.patternTickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }

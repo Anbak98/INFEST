@@ -6,100 +6,141 @@ using UnityEngine;
 
 public class PlayerStatHandler : NetworkBehaviour
 {
-    // Networked 붙으면 서버로 자동 전송
-    [Networked] public int MaxHealth { get; set; }
-    [Networked] public int MoveSpeed { get; set; }
-    [Networked] public int MoveSpeedModifier { get; set; }
-    [Networked] public int RotationDamping { get; set; }
+    public CharacterInfoInstance info;
 
-    [Networked] public int JumpPower { get; set; }
-    [Networked] public int AttackPower { get; set; }
-    [Networked] public int DefensePower { get; set; }
-    [Networked] public int CurrentHealth { get; set; }
     [Networked] public bool IsDead { get; set; }
+
+    [Networked] public int CurSpeedMove { get; set; }
+    [Networked] public int CurHealth { get; set; }                          // 체력
+    [Networked] public int CurDefGear { get; set; }                         // 방어구 체력
+    [Networked] public int CurDef { get; set; }
+    [Networked] public int CurGold { get; set; }                            // 시작 골드
+    [Networked] public int CurTeamCoin { get; set; }                        // 시작 팀코인
+    [Networked] public int curstate { get; set; }                           // 캐릭터 상태
 
     public event Action OnDeath;
     public event Action OnRespawn;
     public event Action<float> OnHealthChanged;
 
 
-
-    // 직업에 따라 다른 능력치로 생성
-    public void Init(int maxHealth, int moveSpeed, int moveSpeedModifier, int rotationDamping, int jumpPower, int attackPower, int defensePower)
+    public override void Spawned()
     {
-        MaxHealth = maxHealth;
-        MoveSpeed = moveSpeed;
-        MoveSpeedModifier = moveSpeedModifier;
-        RotationDamping = rotationDamping;
-        JumpPower = jumpPower;
-        AttackPower = attackPower;
-        DefensePower = defensePower;
-        CurrentHealth = MaxHealth;
-        IsDead = false;
-    }
-
-    // 리팩토링을 위한 메서드
-    // StatData를 사용하는 식으로 개선
-    public void InitFromData(PlayerStatData data)
-    {
-        MaxHealth = data.maxHp;
-        MoveSpeed = data.speedMove;
-        JumpPower = 10; // 데이터에 없으면 기본값
-        AttackPower = 20; // 데이터에 없으면 기본값
-        DefensePower = data.def;
-        CurrentHealth = MaxHealth;
-        // 그 외 여러가지 추가
-    }
-    public void SetToData(PlayerStatData data)
-    {
-
-    }
+        base.Spawned();
 
 
+        info = new(1);
+        CurHealth = info.data.Health;
+        CurDefGear = info.data.DefGear;
+        CurDef = info.data.Def;
+        CurGold = info.data.StartGold;
+        CurTeamCoin = info.data.StartTeamCoin;
+        CurSpeedMove = info.data.SpeedMove;
+        curstate = info.data.State;
 
-    // 아이템 사용, 장비 시 stat 변동
-    public void SetModifier(int? health = null, int? speed = null, int? jump = null, int? attack = null, int? defense = null)
-    {
-        if (health.HasValue) MaxHealth = health.Value;
-        if (speed.HasValue) MoveSpeed = speed.Value;
-        if (jump.HasValue) JumpPower = jump.Value;
-        if (attack.HasValue) AttackPower = attack.Value;
-        if (defense.HasValue) DefensePower = defense.Value;
+        //Player _player = GetComponent<Player>();
+        //if (_player == null)
+        //{
+
+        //    for (int i = 0; i < _player.Weapons.Weapons.Count; i++)
+        //    {
+        //        if (_player.Weapons.Weapons[i].key == info.data.StartAuxiliaryWeapon)
+        //        {
+        //            _player.inventory.auxiliaryWeapon[0] = _player.Weapons.Weapons[i];
+        //            _player.inventory.auxiliaryWeapon[0].IsCollected = true;
+        //        }
+
+        //        if (_player.Weapons.Weapons[i].key == info.data.StartWeapon1)
+        //        {
+        //            _player.inventory.weapon[0] = _player.Weapons.Weapons[i];
+        //            _player.inventory.weapon[0].IsCollected = true;
+        //        }
+
+        //        if (_player.inventory.auxiliaryWeapon[0] != null && _player.inventory.weapon[0] != null)
+        //            break;
+        //    }
+
+        //    for (int i = 0; i < _player.Consumes.Consumes.Count; i++)
+        //    {
+        //        if (_player.Consumes.Consumes[i].key == _player.statHandler.info.data.StartConsumeItem1)
+        //        {
+        //            int itemChk = _player.statHandler.info.data.StartConsumeItem1 % 10000;
+        //            bool throwingWeapon = itemChk < 800 && itemChk > 700;
+        //            bool recoveryItem = itemChk < 900 && itemChk > 800;
+        //            bool shieldItme = itemChk < 1000 && itemChk > 900;
+
+        //            if (throwingWeapon)
+        //                _player.inventory.consume[0] = _player.Consumes.Consumes[i];
+
+        //            if (recoveryItem)
+        //                _player.inventory.consume[1] = _player.Consumes.Consumes[i];
+
+        //            if (shieldItme)
+        //                _player.inventory.consume[2] = _player.Consumes.Consumes[i];
+        //            break;
+
+        //        }
+
+        //    }
+        //    _player.inventory.equippedWeapon = _player.inventory.auxiliaryWeapon[0];
+        //    _player.inventory.consume[0] = _player.Consumes.Consumes[2];
+        //    _player.inventory.consume[1] = _player.Consumes.Consumes[3];
+        //}
     }
 
     // 피격
     public void TakeDamage(int amount)
     {
-        CurrentHealth -= amount;
-        OnHealthChanged?.Invoke(-amount);
-        if (CurrentHealth <= 0)
+        int damage = amount - CurDef;
+
+        if (damage <= 0)
         {
-            CurrentHealth = 0;
-            HandleDeath();
+            damage = 1;
         }
+
+        if (CurDefGear > damage)
+        {
+            CurDefGear -= damage;
+        }
+        else if (CurDefGear >= 0)
+        {
+            damage -= CurDefGear;
+            CurDefGear = 0;
+
+            CurHealth -= damage;
+            OnHealthChanged?.Invoke(-amount);
+            if (CurHealth <= 0)
+            {
+                CurHealth = 0;
+                HandleDeath();
+            }
+        }
+
+        if (CurDefGear < 0)
+            CurDefGear = 0;
     }
+
     public void SetHealth(int amount)
     {
         //if (CurrentHealth <= 0)
         //    return;
 
-        CurrentHealth = amount;
+        CurHealth = amount;
         OnHealthChanged?.Invoke(amount);
-        if (CurrentHealth <= 0)
+        if (CurHealth <= 0)
         {
-            CurrentHealth = 0;
-            //HandleDeath();
+            CurHealth = 0;
         }
-        else if (IsDead && CurrentHealth > 0)
+        else if (IsDead && CurHealth > 0)
         {
             IsDead = false;
             HandleRespawn();
         }
     }
+
     // 회복
     public void Heal(int amount)
     {
-        CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
+        CurHealth = Mathf.Min(CurHealth + amount, CurHealth);
         OnHealthChanged?.Invoke(amount);
     }
     // 사망
@@ -114,35 +155,36 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         OnRespawn?.Invoke();
     }
-    // 지속시간 스탯 버프 처리
-    public void ApplyTemporaryBuff(
-    int? speedDelta = null,
-    int? jumpDelta = null,
-    int? attackDelta = null,
-    int? defenseDelta = null,
-    int duration = 5)
-    {
-        StartCoroutine(ApplyBuffCoroutine(speedDelta, jumpDelta, attackDelta, defenseDelta, duration));
-    }
-    private IEnumerator ApplyBuffCoroutine(
-    int? speedDelta,
-    int? jumpDelta,
-    int? attackDelta,
-    int? defenseDelta,
-    int duration)
-    {
-        // 스탯 변경
-        if (speedDelta.HasValue) MoveSpeed += speedDelta.Value;
-        if (jumpDelta.HasValue) JumpPower += jumpDelta.Value;
-        if (attackDelta.HasValue) AttackPower += attackDelta.Value;
-        if (defenseDelta.HasValue) DefensePower += defenseDelta.Value;
 
-        yield return new WaitForSeconds(duration);
+    //// 지속시간 스탯 버프 처리
+    //public void ApplyTemporaryBuff(
+    //int? speedDelta = null,
+    //int? jumpDelta = null,
+    //int? attackDelta = null,
+    //int? defenseDelta = null,
+    //int duration = 5)
+    //{
+    //    StartCoroutine(ApplyBuffCoroutine(speedDelta, jumpDelta, attackDelta, defenseDelta, duration));
+    //}
+    //private IEnumerator ApplyBuffCoroutine(
+    //int? speedDelta,
+    //int? jumpDelta,
+    //int? attackDelta,
+    //int? defenseDelta,
+    //int duration)
+    //{
+    //    // 스탯 변경
+    //    if (speedDelta.HasValue) info.CurSpeedMove += speedDelta.Value;
+    //    if (jumpDelta.HasValue) JumpPower += jumpDelta.Value;
+    //    if (attackDelta.HasValue) AttackPower += attackDelta.Value;
+    //    if (defenseDelta.HasValue) info.CurDefGear += defenseDelta.Value;
 
-        // 스탯 복구
-        if (speedDelta.HasValue) MoveSpeed -= speedDelta.Value;
-        if (jumpDelta.HasValue) JumpPower -= jumpDelta.Value;
-        if (attackDelta.HasValue) AttackPower -= attackDelta.Value;
-        if (defenseDelta.HasValue) DefensePower -= defenseDelta.Value;
-    }
+    //    yield return new WaitForSeconds(duration);
+
+    //    // 스탯 복구
+    //    if (speedDelta.HasValue) info.CurSpeedMove -= speedDelta.Value;
+    //    if (jumpDelta.HasValue) JumpPower -= jumpDelta.Value;
+    //    if (attackDelta.HasValue) AttackPower -= attackDelta.Value;
+    //    if (defenseDelta.HasValue) info.CurDefGear -= defenseDelta.Value;
+    //}
 }

@@ -21,7 +21,7 @@ public class GrenadeExplosion : NetworkBehaviour
     private void Awake()
     {
         if (!Object.HasStateAuthority) return;
-        _damage = grenadeProjectile.obj.instance.data.Effect/100;
+        _damage = grenadeProjectile.obj.instance.data.Effect/10;
         _player = grenadeProjectile.obj.GetComponent<Grenade>()._player;
     }
     public void Explosion()
@@ -35,7 +35,7 @@ public class GrenadeExplosion : NetworkBehaviour
         foreach (UnityEngine.Collider other in colliders)
         {
                 Player _otherplayer = other.GetComponentInParent<Player>();
-                _otherplayer.TakeDamage(_damage);
+                _otherplayer.statHandler.TakeDamage(_damage);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
@@ -73,7 +73,7 @@ public class GrenadeExplosion : NetworkBehaviour
     {
         if (_monster == null) return;
 
-        if (_monster.CurrentHealth == 0 || _monster.IsDead == true) return;
+        if (_monster.CurHealth == 0 || _monster.IsDead == true) return;
 
         if (_monster.ApplyDamage(_player.Runner.LocalPlayer, _damage, Vector3.zero, Vector3.zero, 0, false) == false)
             return;
@@ -97,7 +97,7 @@ public class GrenadeExplosion : NetworkBehaviour
     private void EmpEeffect(MonsterNetworkBehaviour _monster)
     {
         // _monster.FSM.ChangeState<PJ_HI_Idle>();
-        StartCoroutine(_monster.Slow(_monster.MovementSpeed * _iceDebuff, _debuffTime));
+        StartCoroutine(_monster.Slow(_monster.CurMovementSpeed * _iceDebuff, _debuffTime));
 
     }
 
