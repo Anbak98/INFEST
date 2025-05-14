@@ -6,7 +6,7 @@ using UnityEngine;
 public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
 {
     public TickTimer[] skillCoolDown = new TickTimer[4];
-    public TickTimer patternTickTimer;
+    [ReadOnly, SerializeField] private List<int> activatedSkilles;
     public int nextPatternIndex = 0;
 
     public override void MachineEnter()
@@ -17,7 +17,6 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         {
             skillCoolDown[i] = TickTimer.CreateFromSeconds(Runner, 0);
         }
-        patternTickTimer = TickTimer.CreateFromSeconds(Runner, 0);
     }
 
     public override void MachineExecute()
@@ -25,9 +24,9 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         base.MachineExecute();
         monster.AIPathing.SetDestination(monster.target.position);
 
-        if(!monster.AIPathing.pathPending)
+        if (!monster.AIPathing.pathPending)
         {
-            if (patternTickTimer.Expired(Runner))
+            if (monster.IsReadyForChangingState)
             {
                 CaculateAttackType(monster.AIPathing.remainingDistance);
 
@@ -50,66 +49,32 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     {
         //List<int> activatedSkills = new();
         Debug.Log($"[AttackType] Dist: {distance}, Cool2: {skillCoolDown[2].Expired(Runner)}, Cool3: {skillCoolDown[3].Expired(Runner)}");
+        activatedSkilles = new();
 
-        if (distance <= 5f)
+        for (int i = 1; i < skillCoolDown.Length; ++i)
         {
-            if (skillCoolDown[2].Expired(Runner))
-            {
-                Debug.Log("패턴2 선택");
-                skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, 7f);
-                nextPatternIndex = 2;
+            if (skillCoolDown[i].ExpiredOrNotRunning(Runner)) 
+            { 
+                if(distance <= 3f)
+                {
+                    activatedSkilles.Add(i);
+                }
+                else if (distance <= 5f)
+                {
+                    if(i != 1)
+                        activatedSkilles.Add(i);
+                }
             }
-            else if (skillCoolDown[3].Expired(Runner))
-            {
-                Debug.Log("패턴3 선택");
-                skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10f);
-                nextPatternIndex = 3;
-            }
-            else if (distance <= 3f)
-            {
-                Debug.Log("패턴1 선택");
-                nextPatternIndex = 1;
-            }
+        }
+
+        if (activatedSkilles.Count > 0)
+        {
+            monster.IsReadyForChangingState = false;
+            nextPatternIndex = activatedSkilles[Random.Range(0, activatedSkilles.Count)];
         }
         else
         {
-            nextPatternIndex = 0; // Run
+            nextPatternIndex = 0;
         }
-
-        patternTickTimer = TickTimer.CreateFromSeconds(Runner, 3f);
-
-        //for (int i = 1; i < skillCoolDown.Length; ++i)
-        //{
-        //    if (skillCoolDown[i].Expired(Runner))
-        //    {
-        //        if (distance <= 3)
-        //        {
-        //            activatedSkills.Add(i);
-        //        }
-        //        else if (distance <= 5)
-        //        {
-        //            activatedSkills.Add(i);
-        //        }
-        //    }
-        //}
-
-        //Debug.Log(activatedSkills.Count);
-
-        //if (activatedSkills.Count == 0)
-        //{
-        //    Debug.Log(distance);
-        //    if (distance <= 5)
-        //    {
-        //        nextPatternIndex = 1;
-        //    }
-        //    else
-        //    {
-        //        nextPatternIndex = 0;
-        //    }
-
-        //    return;
-        //}        
-
-        //ChangeState<Bowmeter_Run>();
     }
 }
