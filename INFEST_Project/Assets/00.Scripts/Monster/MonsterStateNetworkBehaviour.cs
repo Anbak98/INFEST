@@ -20,5 +20,5 @@ public abstract class MonsterStateNetworkBehaviour<T, F> : BaseMonsterStateNetwo
     {
         this.monster = monster as T;
         this.phase = phase as F;
-    }
+    }    
 }
