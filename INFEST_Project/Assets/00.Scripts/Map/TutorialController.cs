@@ -6,9 +6,8 @@ public class TutorialController : MonoBehaviour
     int _page = 0;
 
     public void TextChanged()
-    { 
-        if( _tutorial != null )
-            _tutorial = Global.Instance.UIManager.Show<UITutorial>();
+    {
+        _tutorial = Global.Instance.UIManager.Show<UITutorial>();
 
         switch (_page)
         {
