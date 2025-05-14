@@ -10,7 +10,8 @@ public class Monster_RageFang_Attack_FlexingMuscles : MonsterStateNetworkBehavio
         monster.CurMovementSpeed = 0;
         monster.IsFlexingMuscles = true;
         phase.skillCoolDown[4] = TickTimer.CreateFromSeconds(Runner, monster.skills[4].CoolDown);
-        phase.patternTickTimer = TickTimer.CreateFromSeconds(Runner, 3);
+        phase.flexingMusclesBuffTimer = TickTimer.CreateFromSeconds(Runner, 30);
+        monster.IsReadyForChangingState = false;
     }
 
     public override void Exit()

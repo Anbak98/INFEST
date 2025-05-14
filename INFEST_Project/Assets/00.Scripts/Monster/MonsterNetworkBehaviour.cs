@@ -45,29 +45,27 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Header("Monster Status")]
     public SphereCollider PlayerDetectorCollider;
 
-    [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))]
-    public float CurMovementSpeed { get; set; }
-    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))]
-    public float CurDetectorRadius { get; private set; }
-    [Networked] public int CurHealth { get; private set; } = -1;
-    public int CurDamage { get; private set; }
-    public int CurDef { get; private set; }
+    [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
+    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; private set; }
+    [Networked] public int CurHealth { get; set; } = -1;
+    [field: SerializeField] public int CurDamage { get; set; }
+    [field: SerializeField] public int CurDef { get; set; }
     [Networked] public NetworkBool IsAttack { get; set; } = false;
-    [Networked] public NetworkBool IsDead { get; set; } = false;
+    [Networked, OnChangedRender(nameof(OnDead))] public NetworkBool IsDead { get; set; } = false;
 
-
-    [field: ReadOnly] public Transform target { get; private set;}
-    private List<Transform> targets = new();
+    [ReadOnly] public Transform target;
+    [ReadOnly, SerializeField] private List<Transform> targets = new();
     private Dictionary<Transform, PlayerMethodFromMonster> targetBridges = new();
 
+    public virtual void OnDead()
+    {
+    }
 
     public override void Spawned()
     { 
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
 
-        float userCount = Runner.SessionInfo.PlayerCount / 4;
-
-        CurHealth = (int)(info.MinHealth * userCount);
+        CurHealth = info.MinHealth * Runner.SessionInfo.PlayerCount;
         CurMovementSpeed = info.SpeedMove;
         CurDamage = info.MinAtk;
         CurDef = info.MinDef;
@@ -76,6 +74,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         AIPathing.enabled = true;
         AIPathing.speed = info.SpeedMove;
+    }
+
+    public void Move()
+    {
+        AIPathing.SetDestination(target.position);
     }
 
     public bool IsLookPlayer()
@@ -99,10 +102,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         if (targets.Count > 1)
         {
             Transform newTarget;
-            do
-            {
-                newTarget = targets[Random.Range(0, targets.Count)];
-            } while (target != newTarget);
+            newTarget = targets[Random.Range(0, targets.Count)];
             target = newTarget;
         }
         else if (targets.Count == 1)
@@ -149,6 +149,14 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             bridge.ApplyDamage(key, damage);
         }
     }
+    public void TryAttackTarget(Transform target, int damage)
+    {
+        if (targetBridges.TryGetValue(target, out PlayerMethodFromMonster bridge))
+        {
+            bridge.ApplyDamage(key, damage);
+        }
+    }
+
     private void OnChangedMovementSpeed()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
@@ -160,8 +168,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         PlayerDetectorCollider.radius = CurDetectorRadius;
     }
 
-    public bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
+    public virtual bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
     {
+        Debug.Log("HI");
+        if (isCritical)
+            Debug.Log("HeadShot");
         if (CurHealth <= 0f)
             return false;
 

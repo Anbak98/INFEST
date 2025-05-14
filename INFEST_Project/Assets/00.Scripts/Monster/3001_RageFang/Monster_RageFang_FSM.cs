@@ -5,10 +5,8 @@ public class Monster_RageFang_FSM : MonsterFSM<Monster_RageFang>
         if (other.gameObject.layer == 7)
         {
             monster.TryAddTarget(other.transform);
-            if (monster.target == null || monster.target.gameObject.layer != 7)
-            {
-                monster.SetTarget(other.transform);
-            }
+            monster.SetTargetRandomly();
+            monster.FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
         }
     }
 }

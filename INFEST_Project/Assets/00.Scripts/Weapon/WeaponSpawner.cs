@@ -30,7 +30,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void Fire(bool holdingPressed)
     {
-        Debug.Log(_activeWeaponIndex);
+        Debug.Log(_weapons.Count + "    " + _activeWeaponIndex);
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         _weapons[_activeWeaponIndex].Fire(holdingPressed);
     }
@@ -54,7 +54,9 @@ public class WeaponSpawner : NetworkBehaviour
         _value = value;
         _switchTimer = TickTimer.CreateFromSeconds(Runner, delay);
         _saleChk = Sale;
-        RPC_OnChangeWeapon(delay);
+
+        if(HasStateAuthority)
+            RPC_OnChangeWeapon(delay);
 
         //SetWeaponVisible();
 

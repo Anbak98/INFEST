@@ -1,5 +1,7 @@
 using Fusion;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEngine;
 
 public class Monster_RageFang : BaseMonster<Monster_RageFang>
 {
@@ -25,6 +27,20 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
 
     [Networked, OnChangedRender(nameof(OnIsRush))]
     public NetworkBool IsRush { get; set; } = false;
+    [Networked, OnChangedRender(nameof(OnIsJumpAttack))]
+    public NetworkBool IsJumpAttack { get; set; } = false;
+
+    [Networked, OnChangedRender(nameof(OnIsContinousAttack))]
+    public NetworkBool IsContinousAttack { get; set; } = false;
+
+    [Networked, OnChangedRender(nameof(OnIsQuickRollToRun))]
+    public NetworkBool IsQuickRollToRun { get; set; } = false;
+
+    [Networked, OnChangedRender(nameof(OnIsTurnAttack))]
+    public NetworkBool IsTurnAttack{ get; set; } = false;
+
+    [Networked, OnChangedRender(nameof(OnIsRoaring))]
+    public NetworkBool IsRoaring { get; set; } = false;
 
     public override void Spawned()
     {
@@ -36,6 +52,15 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
     }
 
+    public override void OnDead()
+    {
+        base.OnDead();
+        if(IsDead)
+        {
+            FSM.ChangePhase<Monster_RageFang_Phase_Dead>();
+        }
+    }
+
     private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);
     private void OnIsStretchChanged() => animator.SetBool("IsStretch", IsStretch);
     private void OnIsRightPunch() => animator.SetBool("IsRightPunch", IsRightPunch);
@@ -43,4 +68,9 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     private void OnIsJumping() => animator.SetBool("IsJumping", IsJumping);
     private void OnIsFlexingMuscles() => animator.SetBool("IsFlexingMuscles", IsFlexingMuscles);
     private void OnIsRush() => animator.SetBool("IsRush", IsRush);
+    private void OnIsJumpAttack() => animator.SetBool("IsJumpAttack", IsJumpAttack);
+    private void OnIsContinousAttack() => animator.SetBool("IsContinousAttack", IsContinousAttack);
+    private void OnIsQuickRollToRun() => animator.SetBool("IsQuickRollToRun", IsQuickRollToRun);
+    private void OnIsTurnAttack() => animator.SetBool("IsTurnAttack", IsTurnAttack);
+    private void OnIsRoaring() => animator.Play("AttackTwoPhase.Monster_RageFang_Roaring");
 }

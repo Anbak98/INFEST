@@ -20,4 +20,14 @@ public class BaseMonsterStateNetworkBehaviour : NetworkBehaviour
     public virtual void Exit()
     {
     }
+
+    public virtual void Attack()
+    {
+
+    }
+
+    public virtual void Effect()
+    {
+
+    }
 }

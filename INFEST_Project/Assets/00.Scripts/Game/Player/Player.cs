@@ -34,6 +34,7 @@ public class Player : NetworkBehaviour
     public Transform CameraHandle;
     public GameObject FirstPersonRoot;
     public GameObject ThirdPersonRoot;
+    public GameObject HandRoot;
     private ChangeDetector _changeDetector;
     public Material _material;
     private TMP_Text _messages;
@@ -147,7 +148,7 @@ public class Player : NetworkBehaviour
 
     private void SetFirstPersonVisuals(bool firstPerson)
     {
-        FirstPersonRoot.SetActive(firstPerson);
+        HandRoot.SetActive(firstPerson);
         ThirdPersonRoot.SetActive(firstPerson == false);
     }
 }

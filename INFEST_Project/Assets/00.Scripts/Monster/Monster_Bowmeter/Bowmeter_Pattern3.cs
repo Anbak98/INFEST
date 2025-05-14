@@ -15,7 +15,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
 
         //monster.targetStatHandler = monster.target.GetComponent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(10);
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, 10);
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }
 
     public override void Execute()
@@ -24,7 +24,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
 
         if (_tickTimer.Expired(Runner))
         {
-            phase.ChangeState<Bowmeter_Idle>();
+            phase.ChangeState<Bowmeter_Run>();
         }
     }
 

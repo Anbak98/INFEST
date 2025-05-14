@@ -196,7 +196,6 @@ public class Weapon : NetworkBehaviour
     /// </summary>
     public void Fire(bool holdingPressed)
     {
-        Debug.Log("holdingPressed: " + holdingPressed);
         if (!IsCollected) return;
         if (!holdingPressed && !instance.data.IsAutpmatic) return;
         if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
@@ -228,37 +227,37 @@ public class Weapon : NetworkBehaviour
 
     private Vector3 firePositionForGizmo;
     private Vector3 fireDirectionForGizmo;
-    //private void OnDrawGizmos()
-    //{
-    //    if (!Application.isPlaying) return;
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying) return;
 
-    //    // Ray 정보
-    //    Vector3 rayOrigin = firePositionForGizmo;
-    //    Vector3 rayDir = fireDirectionForGizmo.normalized;
+        // Ray 정보
+        Vector3 rayOrigin = firePositionForGizmo;
+        Vector3 rayDir = fireDirectionForGizmo.normalized;
 
-    //    // Raycast 시각화
-    //    if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
-    //        Object.InputAuthority, out var hit, HitMask, HitOptions.None))
-    //    {
-    //        // Ray
-    //        Gizmos.color = Color.green;
-    //        Gizmos.DrawLine(rayOrigin, hit.Point);
+        // Raycast 시각화
+        if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
+            Object.InputAuthority, out var hit, HitMask, HitOptions.None))
+        {
+            // Ray
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(rayOrigin, hit.Point);
 
-    //        // Hit point
-    //        Gizmos.color = Color.red;
-    //        Gizmos.DrawSphere(hit.Point, 0.1f);
+            // Hit point
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(hit.Point, 0.1f);
 
-    //        // Normal
-    //        Gizmos.color = Color.yellow;
-    //        Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
-    //    }
-    //    else
-    //    {
-    //        // Missed ray
-    //        Gizmos.color = Color.gray;
-    //        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * instance.data.WeaponRange);
-    //    }
-    //}
+            // Normal
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
+        }
+        else
+        {
+            // Missed ray
+            Gizmos.color = Color.gray;
+            Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * instance.data.WeaponRange);
+        }
+    }
 
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
@@ -331,7 +330,7 @@ public class Weapon : NetworkBehaviour
         if (enemyHealth == null || enemyHealth.IsDead == true)
             return;
 
-        float damageMultiplier = enemyHitbox is BodyHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
+        float damageMultiplier = enemyHitbox is HeadHitbox bodyHitbox ? bodyHitbox.DamageMultiplier : 1f;
         bool isCriticalHit = damageMultiplier > 1f;
 
         float hitdamage = instance.data.Atk * damageMultiplier;
@@ -340,7 +339,7 @@ public class Weapon : NetworkBehaviour
         //    damage *= 2f;
         //}
 
-        if (enemyHealth.ApplyDamage(Object.InputAuthority, instance.data.Atk, pos, dir, Type, isCriticalHit) == false)
+        if (enemyHealth.ApplyDamage(Object.InputAuthority, hitdamage, pos, dir, Type, isCriticalHit) == false)
             return;
 
         //if (HasInputAuthority && Runner.IsForward)
