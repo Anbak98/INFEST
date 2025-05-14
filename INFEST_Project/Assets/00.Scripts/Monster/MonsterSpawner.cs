@@ -23,15 +23,13 @@ public class MonsterSpawner : NetworkBehaviour
     public override void Spawned()
     {
         MonsterMap.Init();
-        SpawnMonsterOnWave(transform);
-        tickTimer = TickTimer.CreateFromSeconds(Runner, 0);
     }
 
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
 
-        if (tickTimer.Expired(Runner))
+        if (tickTimer.ExpiredOrNotRunning(Runner))
         {
             if (spawnNum > 0)
             {
@@ -43,8 +41,7 @@ public class MonsterSpawner : NetworkBehaviour
             }
         }
     }    
-
-    public void AllocateSpawnCommand(int monsterKey, Vector3 position)
+    public void AllocateSpawnCommand(int monsterKey, int monsterNum,Vector3 position)
     {
         if (spawnNum > 0)
         {
@@ -52,6 +49,7 @@ public class MonsterSpawner : NetworkBehaviour
         }
         else
         {
+            this.spawnNum = monsterNum;
             this.monsterKey = monsterKey;
             this.spawnPosition = position;
         }
@@ -104,12 +102,7 @@ public class MonsterSpawner : NetworkBehaviour
                         if (mnb is Monster_Grita grita)
                         {
                             grita.spawner = FindObjectOfType<MonsterSpawner>(); 
-                            grita.FSM.ChangePhase<Grita_Phase_Wander>();                            
-                        }
-
-                        if (mnb is Monster_Bowmeter bo)
-                        {
-                            bo.FSM.ChangePhase<Bowmeter_Phase_Chase>();
+                            grita.FSM.ChangePhase<Grita_Phase_Wander>();
                         }
                     }
                 }

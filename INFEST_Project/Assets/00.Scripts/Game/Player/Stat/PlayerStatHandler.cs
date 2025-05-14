@@ -27,7 +27,6 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         base.Spawned();
 
-
         info = new(1);
         CurHealth = info.data.Health;
         CurDefGear = info.data.DefGear;
@@ -68,6 +67,8 @@ public class PlayerStatHandler : NetworkBehaviour
 
         if (CurDefGear < 0)
             CurDefGear = 0;
+
+        Debug.Log(CurHealth);
     }
 
     public void SetHealth(int amount)
@@ -99,6 +100,7 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         // MyDebug.Log($"PlayerStatHandler HandleDeath : {CurrentHealth}"); 
         IsDead = true;
+
         OnDeath?.Invoke();
     }
     // ¸®½ºÆù
