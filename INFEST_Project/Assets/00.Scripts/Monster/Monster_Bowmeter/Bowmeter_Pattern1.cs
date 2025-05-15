@@ -36,11 +36,8 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     {
         if (((1 << other.gameObject.layer) & collisionLayers) != 0)
         {
-            if (other.TryGetComponent<PlayerMethodFromMonster>(out var bridge))
-            {
-                Debug.Log("아야");
-                Attack();
-            }
+            Debug.Log("아야");
+            Attack();
 
             Runner.Despawn(Object);
         }

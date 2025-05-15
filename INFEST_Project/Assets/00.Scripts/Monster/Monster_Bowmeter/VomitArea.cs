@@ -23,7 +23,7 @@ public class VomitArea : NetworkBehaviour
     {
         if (((1 << other.gameObject.layer) & collisionLayers) != 0)
         {
-            if (other.TryGetComponent<PlayerMethodFromMonster>(out var bridge))
+            if (other.TryGetComponent<TargetableFromMonster>(out var bridge))
             {
                 int damage = 20; // 적절한 데미지 수치 설정
                 bridge.ApplyDamage(0, damage); // key는 필요에 따라 수정
