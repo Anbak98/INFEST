@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class GritaSkillTable : IKeyedItem
+public class GritaSkillTable
 {
     /// <summary>
     /// ID
@@ -40,7 +40,5 @@ public class GritaSkillTable : IKeyedItem
     /// 사용 우선순위
     /// </summary>
     public int SkillPriority;
-
-    public int Key => key;
 
 }

@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class GoreHaulSkillTable
+public class CommonSkillTable
 {
     /// <summary>
     /// ID
