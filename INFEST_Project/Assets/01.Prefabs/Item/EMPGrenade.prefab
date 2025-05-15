@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 6158749292796947954}
   - component: {fileID: 7464039723157102699}
   - component: {fileID: 2488993872954485098}
+  - component: {fileID: -8067635932934431558}
   m_Layer: 0
   m_Name: EMPGrenade
   m_TagString: Untagged
@@ -290,6 +291,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 6158749292796947954}
+  - {fileID: -8067635932934431558}
   - {fileID: 2316756459061943599}
   ForceRemoteRenderTimeframe: 0
 --- !u!95 &2488993872954485098
@@ -313,6 +315,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8067635932934431558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5748552149967151030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &6890962310764723443
 GameObject:
   m_ObjectHideFlags: 0

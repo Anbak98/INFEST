@@ -45,7 +45,7 @@ public class GrenadeProjectile : NetworkBehaviour
         {
             if (!GrenadeExplosion.gameObject.activeSelf)
             {
-                RPC_Explode();
+                RPC_Explode(transform.position);
                 _lifeTimer = TickTimer.None;
             }
             return;
@@ -61,7 +61,7 @@ public class GrenadeProjectile : NetworkBehaviour
             {
                 transform.position = hits.GameObject.transform.root.position + new Vector3(0,0.01f,0);
 
-                RPC_Explode();
+                RPC_Explode(transform.position);
                 _lifeTimer = TickTimer.None;
                 return;
             }
@@ -104,11 +104,7 @@ public class GrenadeProjectile : NetworkBehaviour
             }
         }
 
-
-
-
         transform.position = newPosition;
-
     }
     private bool HandleCollision(RaycastHit hit)
     {
@@ -118,7 +114,7 @@ public class GrenadeProjectile : NetworkBehaviour
         if (hitLayer == 6)
         {
             transform.position = hit.transform.root.position + new Vector3(0, 0.01f, 0); ;
-            RPC_Explode();
+            RPC_Explode(transform.position);
             _lifeTimer = TickTimer.None;
             return true;
         }
@@ -145,8 +141,9 @@ public class GrenadeProjectile : NetworkBehaviour
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_Explode()
+    private void RPC_Explode(Vector3 pos)
     {
+        transform.position = pos;
         explosionParticles.SetActive(true);
         GrenadeExplosion.gameObject.SetActive(true);
         GrenadeExplosion.Explosion();
@@ -174,9 +171,10 @@ public class GrenadeProjectile : NetworkBehaviour
         animator.SetBool(_isStopHash, true);
     }
 
-    public void GetGrenade(Grenade grenade)
+    public void GetGrenade(Grenade grenade, Vector3 velocity)
     {
         obj = grenade;
+        _velocity = velocity;
     }
 
 

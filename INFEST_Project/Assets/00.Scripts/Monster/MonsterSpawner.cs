@@ -105,6 +105,11 @@ public class MonsterSpawner : NetworkBehaviour
                             grita.spawner = FindObjectOfType<MonsterSpawner>(); 
                             grita.FSM.ChangePhase<Grita_Phase_Wander>();
                         }
+
+                        if(mnb is Monster_Bowmeter bo)
+                        {
+                            bo.FSM.ChangePhase<Bowmeter_Phase_Chase>();
+                        }
                     }
                 }
 
