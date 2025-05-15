@@ -9,6 +9,9 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     public Action<string> changeUI;
     public List<int> idList;
     public InputManager inputManager;
+    public GameObject activatelighting;
+    public SphereCollider col;
+    
 
     #region  »óÁ¡ ÄÝ¶óÀÌ´õ Æ®¸®°Å ¸Þ¼Òµå
 
@@ -25,7 +28,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         if (_storeController.activeTime)
         {
-            _storeController.RPC_Timer(_playerRef);
+            _storeController.AddTimer();
         }
     }
 
@@ -47,7 +50,8 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         //_storeController.uIShopView.interactionText.gameObject.SetActive(false); 
         Global.Instance.UIManager.Hide<UIInteractiveView>();
         _storeController.uIShopView = Global.Instance.UIManager.Show<UIShopView>();
-        _storeController.Activate();
+        //_storeController.Activate();
+        _storeController.uIShopView.StoreInIt(this);
 
         _storeController.uIShopView.UpdateButtonState();
     }
