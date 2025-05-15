@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
 public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
 {
-    [Networked, OnChangedRender(nameof(OnIsChasePhase))]
+    public Dictionary<int, BowmeterSkillTable> skills;
+
+    [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
     public NetworkBool IsIdle { get; set; } = false;
-    [Networked, OnChangedRender(nameof(OnIsChasePhase))]
+    [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
     public NetworkBool IsWalk { get; set; } = false;
 
     [Networked, OnChangedRender(nameof(OnIsChasePhase))]
@@ -29,12 +32,12 @@ public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
     private int _patternTwoHash { get; set; }
     private int _patternThiHash { get; set; }
 
-
     public override void Spawned()
     {
         base.Spawned();
         _wonderParameterHash = Animator.StringToHash("Wonder.Idle");
         _chaseParameterHash = Animator.StringToHash("Chase.Run");
+        skills = DataManager.Instance.GetDictionary<BowmeterSkillTable>();
     }
 
 

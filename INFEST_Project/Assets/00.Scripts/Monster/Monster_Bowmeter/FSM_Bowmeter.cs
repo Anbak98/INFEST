@@ -1,12 +1,12 @@
 public class FSM_Bowmeter : MonsterFSM<Monster_Bowmeter>
 {
-    public override void FixedUpdateNetwork()
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        base.FixedUpdateNetwork();
-
-        if (monster.IsLookPlayer())
+        if (other.gameObject.layer == 7)
         {
-            ChangePhase<Bowmeter_Phase_Chase>();
+            monster.TryAddTarget(other.transform);
+            monster.SetTargetRandomly();
+            monster.FSM.ChangePhase<Bowmeter_Phase_Chase>();
         }
     }
 }

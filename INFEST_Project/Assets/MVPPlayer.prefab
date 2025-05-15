@@ -1655,6 +1655,8 @@ MonoBehaviour:
   _virtualCamera: {fileID: 241464025491880770}
   _shakeDuration: 0.5
   _shakeIntensity: 2
+  _audioSource: {fileID: 0}
+  _attackedSounds: []
 --- !u!1 &3221995816451142729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,15 +3995,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c492b17e818e89345be2f617b4bbdab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _MaxHealth: 100
-  _MoveSpeed: 20
-  _MoveSpeedModifier: 0
-  _RotationDamping: 0
-  _JumpPower: 0
-  _AttackPower: 0
-  _DefensePower: 0
-  _CurrentHealth: 100
   _IsDead: 0
+  _CurSpeedMove: 0
+  _CurHealth: 0
+  _CurDefGear: 0
+  _CurDef: 0
+  _CurGold: 0
+  _CurTeamCoin: 0
+  _curstate: 0
 --- !u!114 &3724504915549296076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4051,6 +4052,7 @@ MonoBehaviour:
   CameraHandle: {fileID: 7721353801691121081}
   FirstPersonRoot: {fileID: 5118857599195776093}
   ThirdPersonRoot: {fileID: 1055682366495237838}
+  HandRoot: {fileID: 1055682366495237838}
   _material: {fileID: 0}
   _spawnedProjectile: 0
 --- !u!114 &8280481667216219239
