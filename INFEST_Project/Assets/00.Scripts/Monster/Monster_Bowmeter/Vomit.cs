@@ -14,7 +14,7 @@ public class Vomit : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        transform.position += transform.forward * speed * Runner.DeltaTime;        
+        transform.position += Runner.DeltaTime * speed * transform.forward;        
 
         elapsed += Runner.DeltaTime;
 
