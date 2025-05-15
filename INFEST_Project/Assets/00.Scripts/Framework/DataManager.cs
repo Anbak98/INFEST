@@ -20,6 +20,7 @@ public class DataManager : SingletonBehaviour<DataManager>
             {typeof(SpawnTable), new DataLoader<SpawnTable>("JSON/SpawnTable") },
             {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
             //==========Common Monster==========
+            {typeof(CommonSkillTable), new DataLoader<CommonSkillTable>("JSON/CommonSkillTable") },
             
             //===========Elite Monster==========
             {typeof(BowmeterSkillTable), new DataLoader<BowmeterSkillTable>("JSON/BowmeterSkillTable") },

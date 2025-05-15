@@ -31,7 +31,7 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
         base.Effect();
 
         var spawnedVomit = Runner.Spawn(vomit, phase.vomitPosition.position, phase.vomitPosition.rotation);
-                
+
         if (spawnedVomit != null)
         {
             spawnedVomit.GetComponent<Vomit>().ownerPattern1 = this;
