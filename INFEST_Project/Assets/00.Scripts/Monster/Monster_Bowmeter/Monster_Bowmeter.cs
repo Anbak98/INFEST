@@ -42,10 +42,10 @@ public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
 
     public override void OnWave(Transform target)
     {
-        base.OnWave();
+        base.OnWave(target);
         TryAddTarget(target);
         SetTarget(target);
-        FSM.ChangePhase<Stacker_Phase_Chase>();
+        FSM.ChangePhase<Bowmeter_Phase_Chase>();
     }
 
 

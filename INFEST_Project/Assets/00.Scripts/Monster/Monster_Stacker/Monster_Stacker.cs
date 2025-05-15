@@ -4,7 +4,7 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
 {
     public override void OnWave(Transform target)
     {
-        base.OnWave();
+        base.OnWave(target);
         TryAddTarget(target);
         SetTarget(target);
         FSM.ChangePhase<Stacker_Phase_Chase>();
