@@ -2,49 +2,64 @@ using UnityEngine;
 
 public class TutorialController : MonoBehaviour
 {
-    UITutorial _tutorial;
+    public UITutorial tutorial;
     public int page = 0;
     public GameObject[] wall;
     public MVPStageSpawner spawner;
+    public GameObject arrow;
+    public GameObject[] shopArrow;
+    public Transform[] arrowPosition; 
     [SerializeField] private GameObject _spwaPosition;
     MonsterSpawner monsterSpawner;
+
+    Vector3 _pos;
     public void TextChanged()
     {
-        _tutorial = Global.Instance.UIManager.Show<UITutorial>();
-
+        tutorial = Global.Instance.UIManager.Show<UITutorial>();
+        if(arrowPosition.Length > page)
+        {
+            _pos = arrowPosition[page].position;
+            _pos.y = 7f;
+            arrow.transform.position = _pos;
+        }
+        
         switch (page)
         {
             case 0:
                 WallDeactivate(0);
-                _tutorial.tutorialText.text = "공원으로 이동하세요!";
-                _tutorial.toolTipText.text = "W,S,A,D - 이동\r\nSpace Bar - 점프\r\nShift - 달리기";
+                
                 break;
             case 1:
-                monsterSpawner = spawner.monsterSpawner;
                 WallAtivate(0);
+                monsterSpawner = spawner.monsterSpawner;
                 monsterSpawner.AllocateSpawnCommand(1001,1, _spwaPosition.transform.position);
-                _tutorial.tutorialText.text = "공원에 있는 좀비를 잡으세요!";
-                _tutorial.toolTipText.text = "Left Mouse - 사격\r\nRight Mouse - 조준\r\nMouse Wheel- 무기 변경";
+                
                 break;
             case 2:
                 WallDeactivate(1);
                 WallDeactivate(0);
-                _tutorial.tutorialText.text = "상점을 이용해서 정비하세요!\r\n(상점은 랜덤으로 활성화됩니다.)";
-                _tutorial.toolTipText.text = "F - 상호작용";
+                shopArrow[0].gameObject.SetActive(true);
+                shopArrow[1].gameObject.SetActive(true);
+                Player.local.statHandler.CurGold += 1500;
+                
                 break;
             case 3:
-                _tutorial.tutorialText.text = "빈공터로 이동하세요!";
-                _tutorial.toolTipText.text = "";
+                shopArrow[0].gameObject.SetActive(false);
+                shopArrow[1].gameObject.SetActive(false);
+               
                 break;
             case 4:
-                monsterSpawner.AllocateSpawnCommand(1001, 100, Vector3.zero);
-                _tutorial.tutorialText.text = "아이템을 활용하여 좀비를 잡고 생존하세요.";
-                _tutorial.toolTipText.text = "G - 수류탄 사용\r\nE - 회복 아이템 사용\r\nV - 설치 아이템 사용";
+                arrow.gameObject.SetActive(false);
+                for(int i = 0; i < 10; i++)
+                {
+                    monsterSpawner.SpawnMonsterOnWave(arrow.transform);
+
+                }
                 break;
             default:
                 return;
         }
-
+        tutorial.TextChanged(page);
         page++;
 
 }

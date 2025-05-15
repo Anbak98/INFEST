@@ -10,6 +10,7 @@ public class TutorialShop : MonoBehaviour
         if (Player.local.isInteraction)
         {
             tutorialController.TextChanged();
+            tutorialController.tutorial.ShowImage();
             Destroy(gameObject);
         }
     }

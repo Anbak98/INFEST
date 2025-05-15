@@ -34,7 +34,7 @@ public class StoreController : NetworkBehaviour
             if (storeTimer.ExpiredOrNotRunning(Runner))
             {
                 activeTime = true;
-                if (aiiStores.Count < 3)
+                if (aiiStores.Count < 4)
                 {
                     RPC_Hide(_randomIndex);
                     LightHide(_randomIndex);
@@ -69,7 +69,7 @@ public class StoreController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            if (aiiStores.Count < 3)
+            if (aiiStores.Count < 4)
             {
                 _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
                 RPC_Show(_randomIndex);
