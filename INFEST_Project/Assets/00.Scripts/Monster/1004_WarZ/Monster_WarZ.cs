@@ -38,6 +38,15 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
     private void OnIsWave() => animator.SetBool("IsWave", IsWave);  // 웨이브 생성과 관련된 곳에서 가져와서 bool값을 바꾼다
 
 
+    public override void OnWave(Transform target)
+    {
+        base.OnWave(target);
+        TryAddTarget(target);
+        SetTarget(target);
+        FSM.ChangePhase<WarZ_Phase_Chase>();
+    }
+
+
 
     public float GetCurrentAnimLength()
     {

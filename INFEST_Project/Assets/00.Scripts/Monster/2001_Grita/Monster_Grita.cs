@@ -132,4 +132,13 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
         spawner.SpawnMonsterOnWave(spawner.transform);
     }
+
+
+    public override void OnWave(Transform target)
+    {
+        base.OnWave(target);
+        TryAddTarget(target);
+        SetTarget(target);
+        FSM.ChangePhase<Grita_Phase_Chase>();
+    }
 }
