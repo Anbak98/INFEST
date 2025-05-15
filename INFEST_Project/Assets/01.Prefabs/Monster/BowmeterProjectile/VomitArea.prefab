@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5850870784039101595, guid: f4007b55b1269c74cacc13fa4705389e, type: 3}
+  - {fileID: 8679896608117608327, guid: d122194a0332d4844aa408022e14d319, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,3 +141,5 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  tickInterval: 1
+  tickDamage: 20
