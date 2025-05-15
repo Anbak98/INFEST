@@ -86,7 +86,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         CurMovementSpeed = info.SpeedMove;
 
-        PlayerDetectorCollider.radius = info.DetectAreaNormal;
+        CurDetectorRadius = info.DetectAreaNormal;
 
         AIPathing.enabled = true;
         AIPathing.speed = info.SpeedMove;

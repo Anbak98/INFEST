@@ -22,6 +22,8 @@ public class PlayerStatHandler : NetworkBehaviour
     public event Action OnRespawn;
     public event Action<float> OnHealthChanged;
 
+    public PlayerAttackedEffectController effect;
+
 
     public override void Spawned()
     {
@@ -57,7 +59,7 @@ public class PlayerStatHandler : NetworkBehaviour
             CurDefGear = 0;
 
             CurHealth -= damage;
-            OnHealthChanged?.Invoke(-amount);
+            RPC_Effect(-1);
             if (CurHealth <= 0)
             {
                 CurHealth = 0;
@@ -77,7 +79,7 @@ public class PlayerStatHandler : NetworkBehaviour
         //    return;
 
         CurHealth = amount;
-        OnHealthChanged?.Invoke(amount);
+        RPC_Effect(1);
         if (CurHealth <= 0)
         {
             CurHealth = 0;
@@ -87,6 +89,12 @@ public class PlayerStatHandler : NetworkBehaviour
             IsDead = false;
             HandleRespawn();
         }
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    public void RPC_Effect(float amount)
+    {
+        effect.CalledWhenPlayerAttacked(-1);
     }
 
     // È¸º¹

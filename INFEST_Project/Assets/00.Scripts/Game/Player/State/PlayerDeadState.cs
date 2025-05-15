@@ -30,6 +30,7 @@ public class PlayerDeadState : PlayerBaseState
 
     public override void Exit()
     {
+        player.FirstPersonRoot.SetActive(true);
     }
 
     public override void OnUpdate(NetworkInputData data)
