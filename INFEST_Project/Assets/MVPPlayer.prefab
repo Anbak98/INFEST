@@ -1655,8 +1655,10 @@ MonoBehaviour:
   _virtualCamera: {fileID: 241464025491880770}
   _shakeDuration: 0.5
   _shakeIntensity: 2
-  _audioSource: {fileID: 0}
-  _attackedSounds: []
+  _audioSource: {fileID: 8423387528518379381}
+  _attackedSounds:
+  - {fileID: 8300000, guid: 1e6aeef3f5adc8c498c63f6fb6e3ecde, type: 3}
+  - {fileID: 8300000, guid: 7e3a17a9da333524293e1ef9942fbefa, type: 3}
 --- !u!1 &3221995816451142729
 GameObject:
   m_ObjectHideFlags: 0

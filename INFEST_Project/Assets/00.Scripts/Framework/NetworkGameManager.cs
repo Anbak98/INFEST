@@ -1,16 +1,6 @@
 using UnityEngine;
 
-public class NetworkGameManager : MonoBehaviour
+public class NetworkGameManager : SingletonNetworkBehaviour<NetworkGameManager>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public EnhancedMonsterSpawner monsterSpawner;
 }
