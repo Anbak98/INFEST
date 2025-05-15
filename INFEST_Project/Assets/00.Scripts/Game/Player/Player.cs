@@ -29,8 +29,6 @@ public class Player : NetworkBehaviour
     private Vector3 _forward = Vector3.forward;
     public WeaponSpawner Weapons;// SY
     public ConsumeSpawner Consumes;// SY
-    public float MoveSpeed = 6f;
-    public float JumpForce = 10f;
     public Transform CameraHandle;
     public GameObject FirstPersonRoot;
     public GameObject ThirdPersonRoot;
