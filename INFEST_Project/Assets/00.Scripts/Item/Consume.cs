@@ -15,6 +15,7 @@ public class Consume : NetworkBehaviour
     {
         instance = new(key);
     }
+
     public void AddNum()
     {
         curNum++;

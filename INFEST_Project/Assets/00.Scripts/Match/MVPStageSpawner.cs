@@ -143,7 +143,7 @@ public class MVPStageSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 monsterSpawner = runner.Spawn(_monsterSpawnerPrefab, Vector3.zero).GetComponent<MonsterSpawner>();
                 //monsterSpawner.SpawnMonsterOnWave();
 
-                runner.Spawn(_storePrefab, Vector3.zero);
+                runner.Spawn(_storePrefab, /*Vector3.zero*/new Vector3(15.6f,0,-57));
 
                 //runner.Spawn(_fieldMonsterSpawnPrefab, Vector3.zero);
 

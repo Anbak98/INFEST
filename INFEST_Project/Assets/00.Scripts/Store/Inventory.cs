@@ -61,7 +61,7 @@ public class Inventory : MonoBehaviour
 
     public void RemoveConsumeItem(int index)
     {
-        consume[index].RemoveNum();
+        consume[index].RemoveNum(); 
         if (consume[index].curNum == 0)
         consume[index] = null;
     }

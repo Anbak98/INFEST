@@ -345,33 +345,33 @@ public class UIShopView : UIScreen
     //}
     public void OnClickAllBtn()
     {
-        _store.RPC_RequestTryAllSupplement(Player.local, Player.local.Runner.LocalPlayer);
+        _store.RPC_TryAllSupplement(Player.local, Player.local.Runner.LocalPlayer);
     }
 
     public void OnClickDefBtn()
     {
 
-        _store.RPC_RequestTryDefSupplement(Player.local, Player.local.Runner.LocalPlayer);
+        _store.RPC_TryDefSupplement(Player.local);
     }
 
     public void OnClickBulletSupplementBtn(int index)
     {
-        _store.RPC_RequestTryBulletSupplement(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TryBulletSupplement(Player.local, index);
     }
 
     public void OnClickItmeSupplementBtn(int index)
     {
-        _store.RPC_RequestTryItmeSupplement(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TryItmeSupplement(Player.local,index);
     }
 
     public void OnClickBuyBtn(int index)
     {
-        _store.RPC_RequestTryBuy(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TryBuy(Player.local, index);
     }
 
     public void OnClickSaleBtn(int index)
     {
-        _store.RPC_RequestTrySale(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TrySale(Player.local, index);
 
     }
 
