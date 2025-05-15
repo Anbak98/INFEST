@@ -58,10 +58,10 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
                 monsterSpawnQueue.Enqueue(1001);
             }
 
-            //for (int i = 0; i < 14; i++)
-            //{
-            //    monsterSpawnQueue.Enqueue(1002);
-            //}
+            for (int i = 0; i < 14; i++)
+            {
+                monsterSpawnQueue.Enqueue(1002);
+            }
 
             //for (int i = 0; i < 1; i++)
             //{

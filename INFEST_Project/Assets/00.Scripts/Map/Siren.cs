@@ -21,7 +21,6 @@ public class Siren : MonoBehaviour
 
             float delay = Random.Range(5f, 30f);
             StartCoroutine(DelayedSiren(delay, _player));
-            NetworkGameManager.Instance.monsterSpawner.CallWave(other.transform);
         }
     }
 
@@ -31,6 +30,7 @@ public class Siren : MonoBehaviour
 
         if (_controller != null && player != null)
         {
+            NetworkGameManager.Instance.monsterSpawner.CallWave(player.transform);
             _controller.RPC_PlaySirenSound(player, player.Object.InputAuthority);
         }
     }

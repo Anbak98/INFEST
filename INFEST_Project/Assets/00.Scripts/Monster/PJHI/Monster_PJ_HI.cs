@@ -5,6 +5,8 @@ public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
     public override void OnWave(Transform target)
     {
         base.OnWave(target);
+        TryAddTarget(target);
+        SetTarget(target);
         FSM.ChangePhase<PJ_HI_Phase_Chase>();
     }
 
