@@ -49,6 +49,17 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
 
 
 
+
+    public override void OnWave(Transform target)
+    {
+        base.OnWave(target);
+        TryAddTarget(target);
+        SetTarget(target);
+        FSM.ChangePhase<DeadCop_Phase_Chase>();
+    }
+
+
+
     public float GetCurrentAnimLength()
     {
         AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(0);
