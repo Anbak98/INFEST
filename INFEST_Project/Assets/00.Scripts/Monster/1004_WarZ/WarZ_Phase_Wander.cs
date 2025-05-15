@@ -9,6 +9,7 @@ public class WarZ_Phase_Wander : MonsterPhase<Monster_WarZ>
         base.MachineEnter();
         monster.PhaseIndex = 0;
         monster.animator.Play("Wander.WarZ_Idle");
+        Debug.Log("Wander");
     }
 
     public override void MachineExecute()

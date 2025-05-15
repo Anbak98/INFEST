@@ -11,6 +11,7 @@ public class WarZ_Wave_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, War
 
         monster.CurMovementSpeed = 0f;
         monster.IsDropKick = true;
+        Debug.Log("Drop Kick");
 
         // 애니메이션이 끝나기 전에는 상태가 안바뀐다
         monster.IsReadyForChangingState = false;
