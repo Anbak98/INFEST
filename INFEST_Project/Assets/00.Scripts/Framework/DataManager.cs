@@ -17,9 +17,16 @@ public class DataManager : SingletonBehaviour<DataManager>
             {typeof(MonsterInfo), new DataLoader<MonsterInfo>("JSON/MonsterInfo") },
             {typeof(MonsterState), new DataLoader<MonsterState>("JSON/MonsterState") },
             {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
+            {typeof(SpawnTable), new DataLoader<SpawnTable>("JSON/SpawnTable") },
             {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
-            {typeof(RageFangSkillTable), new DataLoader<RageFangSkillTable>("JSON/RageFangSkillTable") },
+            //==========Common Monster==========
+            
+            //===========Elite Monster==========
             {typeof(BowmeterSkillTable), new DataLoader<BowmeterSkillTable>("JSON/BowmeterSkillTable") },
+            {typeof(GritaSkillTable), new DataLoader<GritaSkillTable>("JSON/GritaSkillTable") },
+            {typeof(GoreHaulSkillTable), new DataLoader<GoreHaulSkillTable>("JSON/GoreHaulSkillTable") },
+            //===========Boss Monster============
+            {typeof(RageFangSkillTable), new DataLoader<RageFangSkillTable>("JSON/RageFangSkillTable") },
         };
     }
 

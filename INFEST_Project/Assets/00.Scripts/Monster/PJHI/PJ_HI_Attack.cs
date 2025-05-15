@@ -11,8 +11,11 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
     {
         base.Enter();
 
-        if (monster.IsDead || monster.target == null)
+        if (monster.IsDead || monster.target == null || !monster.AIPathing.pathPending)
+        {
+            phase.ChangeState<PJ_HI_Run>();
             return;
+        }
 
         monster.CurMovementSpeed = 0f;
         monster.IsAttack = true;
@@ -20,7 +23,6 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
         //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
         //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
 
-        monster.TryAttackTarget(monster.info.MinAtk);
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
     }
 
@@ -48,5 +50,11 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
     public override void Exit()
     {
         base.Exit(); 
+    }
+
+    public override void Attack()
+    {
+        base.Attack();        
+        monster.TryAttackTarget(monster.info.MinAtk);
     }
 }

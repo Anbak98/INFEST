@@ -1,34 +1,38 @@
 using Fusion;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
+using System.Linq;
 using UnityEngine;
 
 public class EnhancedMonsterSpawner : NetworkBehaviour
 {
-    [SerializeField] private LayerMask waveTriggerLayer;
+    [SerializeField] private LayerMask spawnPointLayerMask;
     [SerializeField] private MonsterScriptableObject MonsterMap;
 
-    private UnityEngine.Collider[] spawnPoints;
+    private List<UnityEngine.Collider> spawnPoints = new();
     private TickTimer spawnDelayTimer;
 
-    private Queue<int> monsterSpawnQueue;
+    private Queue<int> monsterSpawnQueue = new();
     private Transform target;
+
+    public override void Spawned()
+    {
+        base.Spawned();
+        MonsterMap.Init();
+    }
 
     public override void FixedUpdateNetwork()
     {
         if (spawnDelayTimer.ExpiredOrNotRunning(Runner))
         {
-            if (monsterSpawnQueue.Count > 0)
+            if (monsterSpawnQueue.Count > 0 && spawnPoints.Count > 0)
             {
-                int rand = Random.Range(0, spawnPoints.Length);
+                int rand = Random.Range(0, spawnPoints.Count);
                 NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterSpawnQueue.Dequeue()), spawnPoints[rand].transform.position);
                 MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
 
-                mnb.target = target;
-                mnb.OnWave();
+                mnb.OnWave(target);
 
-                spawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.025f);
+                spawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.1f);
             }
         }
     }
@@ -40,12 +44,12 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
         do
         {
-            spawnPoints = Physics.OverlapSphere(transform.position, distance, waveTriggerLayer);
+            spawnPoints = Physics.OverlapSphere(transform.position, distance, spawnPointLayerMask).ToList();
             distance *= 2;
             iteral--;
-        } while (spawnPoints == null && iteral > 0);
+        } while (spawnPoints.Count == 0 && iteral > 0);
 
-        if (spawnPoints != null)
+        if (spawnPoints.Count > 0)
         {
             monsterSpawnQueue = new();
 
@@ -59,10 +63,10 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
                 monsterSpawnQueue.Enqueue(1002);
             }
 
-            for (int i = 0; i < 1; i++)
-            {
-                monsterSpawnQueue.Enqueue(2001);
-            }
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    monsterSpawnQueue.Enqueue(2001);
+            //}
 
             target = from;
         }

@@ -54,6 +54,14 @@ MonoBehaviour:
   - {fileID: 4975100464883497465}
   - {fileID: 1884502166914101870}
   currentState: {fileID: 0}
+  activatedSkilles: 
+  nextPatternIndex: 0
+  vomitPosition: {fileID: 4789660616035405072}
+  vomit: {fileID: 3069780997764708765, guid: e950cddd909e66441b5f9161491f5e2d, type: 3}
+  vomitRazer: {fileID: 4440739344851885405, guid: b73c78c57498c1f468141b1eb3372120,
+    type: 3}
+  vomitAndArea: {fileID: 3011687967179104519, guid: 4ac4bea66b46a41429d9e111e9490baf,
+    type: 3}
 --- !u!1 &178268710794448737
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7364537239819181596
 Transform:
   m_ObjectHideFlags: 0
@@ -478,6 +486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5285863035899519372}
   - component: {fileID: 4894731086373848282}
+  - component: {fileID: 1544677704411391898}
   m_Layer: 0
   m_Name: FSM
   m_TagString: Untagged
@@ -523,6 +532,27 @@ MonoBehaviour:
   - {fileID: 2459271075620962626}
   - {fileID: 6654670487370016960}
   - {fileID: 4088609017718946468}
+--- !u!135 &1544677704411391898
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441195213366909200}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1476495648540905432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2042549c559f8e4db85f9b99ee806aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obj: {fileID: 0}
+  obj: {fileID: 3538729305018353930}
 --- !u!1 &3498241209396598105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,6 +1839,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbc842c5c85ca34c9a1d65d539d3918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  vomit: {fileID: 3069780997764708765, guid: e950cddd909e66441b5f9161491f5e2d, type: 3}
 --- !u!1 &4294422722676774160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,6 +2580,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1188a7be2bae76d4ca3b2fea1ec61f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vomitAndArea:
+    RawGuidValue: 4ac4bea66b46a41429d9e111e9490baf
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &6751340752166368874
 GameObject:
   m_ObjectHideFlags: 0
@@ -3016,7 +3055,7 @@ Animator:
   m_GameObject: {fileID: 8151744517634112110}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 24f49a4b990689c48b4e3ad7006f7f86, type: 2}
+  m_Controller: {fileID: 9100000, guid: 171093c10df770542aff8cb8b9fd9c81, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3170,16 +3209,38 @@ MonoBehaviour:
     type: 3}
   hitSound: {fileID: 2361689577952305667}
   hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
-  PlayerDetectorCollider: {fileID: 1990698850509791576}
-  _CurrentHealth: -1
+  PlayerDetectorCollider: {fileID: 1544677704411391898}
+  _CurMovementSpeed: 0
+  _CurDetectorRadius: 0
+  _CurHealth: -1
+  <CurDamage>k__BackingField: 0
+  <CurDef>k__BackingField: 0
+  _BaseHealth: -1
+  <BaseDamage>k__BackingField: 0
+  <BaseDef>k__BackingField: 0
+  _OffsetHealth: -1
+  <OffsetDamage>k__BackingField: 0
+  <OffsetDef>k__BackingField: 0
   _IsAttack:
     _value: 0
   _IsDead:
     _value: 0
-  _MovementSpeed: 0
   target: {fileID: 0}
   targets: []
   FSM: {fileID: 4894731086373848282}
+  IsReadyForChangingState: 1
+  _IsIdle:
+    _value: 0
+  _IsWalk:
+    _value: 0
+  _IsRun:
+    _value: 0
+  _IsPunch:
+    _value: 0
+  _IsBwack:
+    _value: 0
+  _IsShoot:
+    _value: 0
 --- !u!1 &8170907623208670062
 GameObject:
   m_ObjectHideFlags: 0
@@ -3543,6 +3604,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebaf7573e043a6a488f944e4ba46c24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  vomit: {fileID: 4440739344851885405, guid: b73c78c57498c1f468141b1eb3372120, type: 3}
 --- !u!1 &9099599891274095653
 GameObject:
   m_ObjectHideFlags: 0

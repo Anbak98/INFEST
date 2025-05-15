@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
@@ -8,6 +7,8 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     public TickTimer[] skillCoolDown = new TickTimer[4];
     [ReadOnly, SerializeField] private List<int> activatedSkilles;
     public int nextPatternIndex = 0;
+
+    public Transform vomitPosition;
 
     public override void MachineEnter()
     {
@@ -22,7 +23,11 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     public override void MachineExecute()
     {
         base.MachineExecute();
-        monster.AIPathing.SetDestination(monster.target.position);
+
+        if (monster.IsReadyForChangingState)
+        {
+            monster.AIPathing.SetDestination(monster.target.position);
+        }
 
         if (!monster.AIPathing.pathPending)
         {
@@ -47,24 +52,24 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
 
     public void CaculateAttackType(float distance)
     {
-        //List<int> activatedSkills = new();
-        Debug.Log($"[AttackType] Dist: {distance}, Cool2: {skillCoolDown[2].Expired(Runner)}, Cool3: {skillCoolDown[3].Expired(Runner)}");
         activatedSkilles = new();
 
-        for (int i = 1; i < skillCoolDown.Length; ++i)
+        bool pattern1Ready = skillCoolDown[1].ExpiredOrNotRunning(Runner);
+
+        for (int i = 2; i < skillCoolDown.Length; ++i)
         {
-            if (skillCoolDown[i].ExpiredOrNotRunning(Runner)) 
-            { 
-                if(distance <= 3f)
+            if (skillCoolDown[i].ExpiredOrNotRunning(Runner))
+            {                
+                if (distance <= monster.skills[2].UseRange)
                 {
                     activatedSkilles.Add(i);
                 }
-                else if (distance <= 5f)
-                {
-                    if(i != 1)
-                        activatedSkilles.Add(i);
-                }
             }
+        }
+
+        if (activatedSkilles.Count == 0 && distance <= monster.skills[1].UseRange && pattern1Ready)
+        {
+            activatedSkilles.Add(1);
         }
 
         if (activatedSkilles.Count > 0)
