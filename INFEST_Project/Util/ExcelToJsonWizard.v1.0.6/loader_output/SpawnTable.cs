@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class SpawnTable : IKeyedItem
+public class SpawnTable
 {
     /// <summary>
     /// ID
@@ -46,5 +46,4 @@ public class SpawnTable : IKeyedItem
     /// </summary>
     public float ScreamPer5Min;
 
-    public int Key => key;
 }

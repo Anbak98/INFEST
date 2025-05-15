@@ -7,6 +7,11 @@ using UnityEngine;
 // 소리 지르기
 // 몬스터 스폰하기
 
+/// <summary>
+/// 웨이브를 잘못 이해해서 바꾸는 중이다
+/// 이건 임시로 남겼다
+///
+/// </summary>
 public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
     TickTimer _animTickTimer;
@@ -37,7 +42,7 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         // Enter에서 공격했으니 RunWave로 상태전환
         if (_animTickTimer.Expired(Runner))     // 재생 끝나고 true
         {
-            phase.ChangeState<Grita_RunWave>();
+            phase.ChangeState<Grita_Wave_Run>();
         }
     }
 
