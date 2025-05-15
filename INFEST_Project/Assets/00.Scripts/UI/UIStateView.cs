@@ -39,7 +39,7 @@ public class UIStateView : UIScreen
         SetJobIcon();
         SetWeaponIcon();
 
-        _characterInfo = Player.local.statHandler.info.data;
+        _characterInfo = Player.local.statHandler.info.data; // 각각의 플레이어 정보를 넣어주지 않으면 불가능.
         _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
         ChoiceJob();
 

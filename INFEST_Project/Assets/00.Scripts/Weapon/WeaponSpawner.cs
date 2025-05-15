@@ -18,7 +18,7 @@ public struct IKTransforms
 
 public class WeaponSpawner : NetworkBehaviour
 {
-
+    [SerializeField] private Player _player;
     public List<Weapon> Weapons;
     public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
     private TickTimer _switchTimer { get; set; }
@@ -96,8 +96,7 @@ public class WeaponSpawner : NetworkBehaviour
         Debug.Log("ÈÄ : "+_activeWeaponIndex);
         
         GetActiveWeapon().OnEquipped(); 
-        if(HasInputAuthority)
-            Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+        _player.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
         Invoke(nameof(SetWeaponVisible), 0.1f);
 
         _saleChk = false;
@@ -412,7 +411,7 @@ public class WeaponSpawner : NetworkBehaviour
 
         for(int i = 0; i< _weapons.Count; i++)
         {
-            if (_weapons[i].key == Player.local.statHandler.info.data.StartAuxiliaryWeapon)
+            if (_weapons[i].key == _player.statHandler.info.data.StartAuxiliaryWeapon)
                 _activeWeaponIndex = i;
         }
         GetActiveWeapon().gameObject.SetActive(true);

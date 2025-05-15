@@ -10,8 +10,8 @@ public class TutorialController : MonoBehaviour
     public GameObject[] shopArrow;
     public Transform[] arrowPosition; 
     [SerializeField] private GameObject _spwaPosition;
-    MonsterSpawner monsterSpawner;
-
+    MonsterSpawner _monsterSpawner;
+    [HideInInspector] public Player player;
     Vector3 _pos;
     public void TextChanged()
     {
@@ -31,8 +31,8 @@ public class TutorialController : MonoBehaviour
                 break;
             case 1:
                 WallAtivate(0);
-                monsterSpawner = spawner.monsterSpawner;
-                monsterSpawner.AllocateSpawnCommand(1001,1, _spwaPosition.transform.position);
+                _monsterSpawner = spawner.monsterSpawner;
+                _monsterSpawner.AllocateSpawnCommand(1001,1, _spwaPosition.transform.position);
                 
                 break;
             case 2:
@@ -40,7 +40,7 @@ public class TutorialController : MonoBehaviour
                 WallDeactivate(0);
                 shopArrow[0].gameObject.SetActive(true);
                 shopArrow[1].gameObject.SetActive(true);
-                Player.local.statHandler.CurGold += 1500;
+                player.statHandler.CurGold += 1500;
                 
                 break;
             case 3:
@@ -52,7 +52,7 @@ public class TutorialController : MonoBehaviour
                 arrow.gameObject.SetActive(false);
                 for(int i = 0; i < 10; i++)
                 {
-                    monsterSpawner.SpawnMonsterOnWave(arrow.transform);
+                    _monsterSpawner.SpawnMonsterOnWave(arrow.transform);
 
                 }
                 break;
