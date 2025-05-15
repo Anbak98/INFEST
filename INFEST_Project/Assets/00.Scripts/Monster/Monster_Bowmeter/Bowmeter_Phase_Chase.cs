@@ -9,9 +9,6 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     public int nextPatternIndex = 0;
 
     public Transform vomitPosition;
-    public Vomit vomit;
-    public Vomit vomitRazer;
-    public VomitAndArea vomitAndArea;
 
     public override void MachineEnter()
     {
@@ -62,15 +59,15 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         for (int i = 2; i < skillCoolDown.Length; ++i)
         {
             if (skillCoolDown[i].ExpiredOrNotRunning(Runner))
-            {
-                if (distance <= 20f)
+            {                
+                if (distance <= monster.skills[2].UseRange)
                 {
                     activatedSkilles.Add(i);
                 }
             }
         }
 
-        if (activatedSkilles.Count == 0 && distance <= 10f && pattern1Ready)
+        if (activatedSkilles.Count == 0 && distance <= monster.skills[1].UseRange && pattern1Ready)
         {
             activatedSkilles.Add(1);
         }

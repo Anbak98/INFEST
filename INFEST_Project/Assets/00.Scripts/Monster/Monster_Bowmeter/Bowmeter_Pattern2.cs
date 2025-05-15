@@ -32,17 +32,11 @@ public class Bowmeter_Pattern2 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Effect()
     {
         base.Effect();
-        Runner.Spawn(phase.vomitRazer, phase.vomitPosition.position, phase.vomitPosition.rotation);
-    }
+        var spawnedVomit = Runner.Spawn(vomit, phase.vomitPosition.position, phase.vomitPosition.rotation);
 
-    public void OnTriggerEnter(UnityEngine.Collider other)
-    {
-        if (((1 << other.gameObject.layer) & collisionLayers) != 0)
+        if (spawnedVomit != null)
         {
-            Debug.Log("¾Æ¾ß");
-            Attack();
-
-            Runner.Despawn(Object);
+            spawnedVomit.GetComponent<Vomit>().ownerPattern2 = this;
         }
     }
 

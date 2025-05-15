@@ -31,29 +31,11 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Effect()
     {
         base.Effect();
-        Runner.Spawn(phase.vomitAndArea, phase.vomitPosition.position, phase.vomitPosition.rotation);
-    }
+        var spawnedVomit = Runner.Spawn(vomitAndArea, phase.vomitPosition.position, phase.vomitPosition.rotation);
 
-    public void OnTriggerEnter(UnityEngine.Collider other)
-    {
-        if (((1 << other.gameObject.layer) & collisionLayers) != 0)
+        if (spawnedVomit != null)
         {
-            Debug.Log("¾Æ¾ß");
-            Attack();
-
-            SpawnVomitArea();
-            Runner.Despawn(Object);
-        }
-    }
-
-    private void SpawnVomitArea()
-    {
-        if (vomitAndArea.IsValid)
-        {
-            Vector3 spawnPosition = transform.position;
-            spawnPosition.y = 0f;
-
-            Runner.Spawn(vomitAndArea, spawnPosition, Quaternion.identity);
+            spawnedVomit.GetComponent<VomitAndArea>().ownerPattern3 = this;
         }
     }
 

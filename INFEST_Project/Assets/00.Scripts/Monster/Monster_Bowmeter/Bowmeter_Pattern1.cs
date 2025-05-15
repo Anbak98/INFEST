@@ -10,7 +10,7 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     {
         base.Enter();
         monster.IsPunch = true;
-        monster.CurMovementSpeed = 0f;        
+        monster.CurMovementSpeed = 0f;
                 
         phase.skillCoolDown[1] = TickTimer.CreateFromSeconds(Runner, 1f);
     }
@@ -29,19 +29,14 @@ public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Effect()
     {
         base.Effect();
-        Runner.Spawn(vomit, phase.vomitPosition.position, phase.vomitPosition.rotation);
-    }
 
-    public void OnTriggerEnter(UnityEngine.Collider other)
-    {
-        if (((1 << other.gameObject.layer) & collisionLayers) != 0)
+        var spawnedVomit = Runner.Spawn(vomit, phase.vomitPosition.position, phase.vomitPosition.rotation);
+                
+        if (spawnedVomit != null)
         {
-            Debug.Log("¾Æ¾ß");
-            Attack();
-
-            Runner.Despawn(Object);
+            spawnedVomit.GetComponent<Vomit>().ownerPattern1 = this;
         }
-    }
+    }    
 
     public override void Attack()
     {
