@@ -26,7 +26,7 @@ public class SirenController : NetworkBehaviour
         }
 
         StartCoroutine(MonsterDetectTime(30f, allMonsters));
-        StartCoroutine(ResetTriggerAfterDelay(420f));
+        StartCoroutine(ResetTriggerAfterDelay(300f));
     }
 
     private IEnumerator StopSirenSoundAfterSeconds(float seconds)

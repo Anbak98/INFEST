@@ -9,14 +9,14 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     [SerializeField] private AudioSource _screamSound;
     [SerializeField] private AudioClip _screamSoundClip;
 
+    public TickTimer screemCooldownTickTimer;   // 스킬의 쿨타임은 grita의 모든 phase, state가 공유해야한다
 
     public const int screamMaxCount = 2;  // 최대 2번만 가능하다
     public int screamCount = 0;  // 최대 2번만 가능하다
 
-    public TickTimer screamCooldownTimer;
     public const float ScreamCooldownSeconds = 50f;
 
-    public GritaPlayerDetector playerDetector; // 연결 필요
+    //public GritaPlayerDetector playerDetector; // 연결 필요
 
     // 동적으로 연결
     [SerializeField] public MonsterSpawner spawner;
@@ -40,7 +40,14 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     private void OnScreamCount() => animator.SetInteger("ScreamCount", ScreamCount);
     #endregion
 
+    // Timer 초기화 등을 위해 
+    public override void Spawned()
+    {
+        base.Spawned();
 
+        // 스킬의 Timer 초기화(처음 1번은 그냥 쓸 수 있어야 한다)
+        screemCooldownTickTimer = TickTimer.CreateFromSeconds(Runner, 0f);
+    }
 
     public override void Render()
     {
@@ -51,6 +58,13 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
         if (IsDead)
             animator.SetBool("IsDead", IsDead);
         AIPathing.speed = CurMovementSpeed;
+
+        // 쿨타임 상태 자동 체크
+        if (screemCooldownTickTimer.Expired(Runner))
+        {
+            IsCooltimeCharged = true;
+            //playerDetector.isTriggered = false;
+        }
 
         //// 타겟이 존재할 경우 LookX 계산
         //if (target != null)
@@ -63,13 +77,12 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
         //    LookX = Mathf.Clamp(LookX, -1f, 1f);
         //    animator.SetFloat("LookX", LookX);
         //}
-
     }
 
 
     public bool CanScream()
     {
-        return screamCooldownTimer.ExpiredOrNotRunning(Runner);
+        return screemCooldownTickTimer.Expired(Runner);
     }
 
     // 소리는 Host가 모든 Player로 쏴 주는 RPC 
@@ -83,23 +96,25 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
         screamCount++;
 
-        // 쿨타임 시작
-        screamCooldownTimer = TickTimer.CreateFromSeconds(Runner, ScreamCooldownSeconds);
+        // 쿨타임 시작(두번째 부터는 쿨타임 50초)
+        screemCooldownTickTimer = TickTimer.CreateFromSeconds(Runner, ScreamCooldownSeconds);
+        IsCooltimeCharged = false;
     }
-    #region 쿨타임 후 isTriggered를 false로
-    public void StartScreamCooldown()
-    {
-        playerDetector.isTriggered = true;
-        // 50초 후에 ResetTrigger 함수 자동 호출
-        Invoke(nameof(ResetTrigger), ScreamCooldownSeconds);
-    }
-    private void ResetTrigger()
-    {
-        playerDetector.isTriggered = false;
-        IsCooltimeCharged = true;  
-        Debug.Log("쿨타임 종료: isTriggered = false");
-    }
-    #endregion
+
+    //#region 쿨타임 후 isTriggered를 false로
+    //public void StartScreamCooldown()
+    //{
+    //    playerDetector.isTriggered = true;
+    //    // 50초 후에 ResetTrigger 함수 자동 호출
+    //    Invoke(nameof(ResetTrigger), ScreamCooldownSeconds);
+    //}
+    //private void ResetTrigger()
+    //{
+    //    playerDetector.isTriggered = false;
+    //    IsCooltimeCharged = true;  
+    //    Debug.Log("쿨타임 종료: isTriggered = false");
+    //}
+    //#endregion
 
     public float GetCurrentAnimLength()
     {
@@ -116,8 +131,5 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
         Debug.Log("SpawnAfterAnim 실행");
 
         spawner.SpawnMonsterOnWave(spawner.transform);
-
     }
-
-
 }

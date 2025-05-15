@@ -8,7 +8,7 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
 {
     Vector3 randomPosition;
 
-    public GritaPlayerDetector ditector;
+    //public GritaPlayerDetector ditector;
 
     public override void Enter()
     {
@@ -20,9 +20,8 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
 
     public override void Execute()
     {
-        base.Execute();// 아직 경로가 계산되지 않았거나 도착한 경우
-        // Ditector의 Trigger가 발동되었다면 ScreamState로 바꿔야한다
-        if (ditector.isTriggered && monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
+        base.Execute();
+        if (/*ditector.isTriggered &&*/ monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
             phase.ChangeState<Grita_Scream>();
 
         if (!monster.AIPathing.pathPending)
@@ -47,7 +46,5 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
         {
             return transform.position; // NavMesh 위의 랜덤 위치를 찾지 못한 경우 현재 위치를 반환합니다.
         }
-
     }
-
 }
