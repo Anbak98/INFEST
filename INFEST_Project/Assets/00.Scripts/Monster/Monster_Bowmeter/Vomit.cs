@@ -10,11 +10,11 @@ public class Vomit : NetworkBehaviour
     private float elapsed = 0f;
 
     public Bowmeter_Pattern1 ownerPattern1;
-    public Bowmeter_Pattern2 ownerPattern2;
+    public Bowmeter_Pattern2 ownerPattern2;    
 
     public override void FixedUpdateNetwork()
     {
-        transform.position += transform.forward * speed * Runner.DeltaTime;
+        transform.position += Runner.DeltaTime * speed * transform.forward;        
 
         elapsed += Runner.DeltaTime;
 

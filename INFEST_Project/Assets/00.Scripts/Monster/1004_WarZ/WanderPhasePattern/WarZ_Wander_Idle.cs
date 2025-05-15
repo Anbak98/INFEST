@@ -6,13 +6,14 @@ using UnityEngine;
 public class WarZ_Wander_Idle : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Phase_Wander>
 {
     [SerializeField]
-    private float DurationTime = 7.0f;
+    private float DurationTime = 2.0f;
     public TickTimer _tickTimer;
 
     public override void Enter()
     {
         base.Enter();
         monster.CurMovementSpeed = 0f;
+
         _tickTimer = TickTimer.CreateFromSeconds(Runner, DurationTime);
     }
 

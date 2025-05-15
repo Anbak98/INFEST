@@ -1,11 +1,10 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WarZ_Wave_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Phase_Wave>
 {
-    Transform _target;
-
     public override void Enter()
     {
         base.Enter();
@@ -17,23 +16,6 @@ public class WarZ_Wave_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Pha
         base.Execute();
 
         monster.AIPathing.SetDestination(monster.target.position);
-
-        // 아직 경로가 계산되지 않았거나 도착한 경우
-        if (/*monster.AIPathing.enabled &&*/ !monster.AIPathing.pathPending)
-        {
-            //monster.AIPathing.SetDestination(_target.position);
-
-            if (monster.AIPathing.remainingDistance <= 0.5f)
-            {
-                phase.ChangeState<WarZ_Wave_DropKick>();
-            }
-            else if (monster.AIPathing.remainingDistance > 0.5f && monster.AIPathing.remainingDistance < 1.0f)
-            {
-                phase.ChangeState<WarZ_Wave_Punch>();
-            }
-            // wave 해제조건은 공통으로 몬스터 숫자를 다 잡으면 IsWave를 false로 만들 것이다
-            // FSM_DeadCop에서 작성
-        }
     }
 
     public override void Exit()
