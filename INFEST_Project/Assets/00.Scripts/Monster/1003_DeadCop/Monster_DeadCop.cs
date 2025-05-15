@@ -27,7 +27,7 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
 
     private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);
     private void OnIsRightPunch() => animator.SetBool("IsRightPunch", IsRightPunch);
-    private void OnIsHeadButt() => animator.SetBool("IsDropKick", IsHeadButt);
+    private void OnIsHeadButt() => animator.SetBool("IsHeadButt", IsHeadButt);
 
     private void OnIsDead() => animator.SetBool("IsDead", IsDead);
 

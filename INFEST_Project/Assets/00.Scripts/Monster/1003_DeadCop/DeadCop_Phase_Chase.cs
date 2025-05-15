@@ -34,13 +34,13 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
                 switch (nextPatternIndex)
                 {
                     case 0:
-                        ChangeState<WarZ_Chase_Run>(); break;
+                        ChangeState<DeadCop_Chase_Run>(); break;
                     case 1:
-                        ChangeState<WarZ_Chase_DropKick>(); break;
+                        ChangeState<DeadCop_Chase_HeadButt>(); break;
                     case 2:
-                        ChangeState<WarZ_Chase_Punch>(); break;
+                        ChangeState<DeadCop_Chase_Punch>(); break;
                     case 3:
-                        monster.FSM.ChangePhase<WarZ_Phase_Wander>(); break;
+                        monster.FSM.ChangePhase<DeadCop_Phase_Wander>(); break;
                 }
             }
         }
