@@ -225,39 +225,39 @@ public class Weapon : NetworkBehaviour
         curMagazineBullet--;
     }
 
-    private Vector3 firePositionForGizmo;
-    private Vector3 fireDirectionForGizmo;
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying) return;
+    //private Vector3 firePositionForGizmo;
+    //private Vector3 fireDirectionForGizmo;
+    //private void OnDrawGizmos()
+    //{
+    //    if (!Application.isPlaying) return;
 
-        // Ray 정보
-        Vector3 rayOrigin = firePositionForGizmo;
-        Vector3 rayDir = fireDirectionForGizmo.normalized;
+    //    // Ray 정보
+    //    Vector3 rayOrigin = firePositionForGizmo;
+    //    Vector3 rayDir = fireDirectionForGizmo.normalized;
 
-        // Raycast 시각화
-        if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
-            Object.InputAuthority, out var hit, HitMask, HitOptions.None))
-        {
-            // Ray
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(rayOrigin, hit.Point);
+    //    // Raycast 시각화
+    //    if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
+    //        Object.InputAuthority, out var hit, HitMask, HitOptions.None))
+    //    {
+    //        // Ray
+    //        Gizmos.color = Color.green;
+    //        Gizmos.DrawLine(rayOrigin, hit.Point);
 
-            // Hit point
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(hit.Point, 0.1f);
+    //        // Hit point
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawSphere(hit.Point, 0.1f);
 
-            // Normal
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
-        }
-        else
-        {
-            // Missed ray
-            Gizmos.color = Color.gray;
-            Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * instance.data.WeaponRange);
-        }
-    }
+    //        // Normal
+    //        Gizmos.color = Color.yellow;
+    //        Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
+    //    }
+    //    else
+    //    {
+    //        // Missed ray
+    //        Gizmos.color = Color.gray;
+    //        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * instance.data.WeaponRange);
+    //    }
+    //}
 
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
@@ -266,8 +266,8 @@ public class Weapon : NetworkBehaviour
         //Vector3 direction = _fireTransform.forward;
         Vector3 origin = firePosition;
         Vector3 direction = fireDirection;
-        firePositionForGizmo = firePosition;
-        fireDirectionForGizmo = fireDirection;
+        //firePositionForGizmo = firePosition;
+        //fireDirectionForGizmo = fireDirection;
 
         var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
 
