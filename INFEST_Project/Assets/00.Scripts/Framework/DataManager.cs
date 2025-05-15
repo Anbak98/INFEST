@@ -19,7 +19,7 @@ public class DataManager : SingletonBehaviour<DataManager>
             {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
             {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
             {typeof(RageFangSkillTable), new DataLoader<RageFangSkillTable>("JSON/RageFangSkillTable") },
-            {typeof(EliteMonsterSkillTable), new DataLoader<EliteMonsterSkillTable>("JSON/EliteMonsterSkillTable") },
+            {typeof(BowmeterSkillTable), new DataLoader<BowmeterSkillTable>("JSON/BowmeterSkillTable") },
         };
     }
 
