@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public class VomitAndArea : NetworkBehaviour
+public class VomitRazer : NetworkBehaviour
 {
     public float speed = 5f;
     public float lifetime = 3f;
-    public VomitArea vomitAreaPrefab;
     public LayerMask collisionLayers;
 
     private float elapsed = 0f;
 
-    public Bowmeter_Pattern3 ownerPattern3;
+    public Bowmeter_Pattern2 ownerPattern2;    
 
     public override void FixedUpdateNetwork()
     {
@@ -22,7 +19,6 @@ public class VomitAndArea : NetworkBehaviour
 
         if (elapsed >= lifetime)
         {
-            SpawnVomitArea();
             Runner.Despawn(Object);
         }
     }
@@ -31,19 +27,9 @@ public class VomitAndArea : NetworkBehaviour
     {
         if (((1 << other.gameObject.layer) & collisionLayers) != 0)
         {
-            ownerPattern3?.Attack();
+            ownerPattern2?.Attack();
 
-            SpawnVomitArea();
             Runner.Despawn(Object);
         }
-    }
-
-    private void SpawnVomitArea()
-    {
-        Vector3 spawnPosition = transform.position;
-
-        spawnPosition.y = 0f;
-
-        Runner.Spawn(vomitAreaPrefab, spawnPosition, Quaternion.identity);
     }
 }
