@@ -44,7 +44,6 @@ public class VomitArea : NetworkBehaviour
         {
             if (other.TryGetComponent<TargetableFromMonster>(out var player))
             {
-                Debug.Log("밟았다");
                 affectedPlayers.Add(player);
             }
         }
@@ -56,7 +55,6 @@ public class VomitArea : NetworkBehaviour
         {
             if (other.TryGetComponent<TargetableFromMonster>(out var player))
             {
-                Debug.Log("나왔다");
                 affectedPlayers.Remove(player);
             }
         }
