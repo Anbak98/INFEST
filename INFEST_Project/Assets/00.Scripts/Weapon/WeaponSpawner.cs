@@ -64,7 +64,7 @@ public class WeaponSpawner : NetworkBehaviour
         //GetActiveWeapon().RPC_OnEquipped();
 
     }
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_OnChangeWeapon(float delay)
     {
         if (_weapons.Count <= 1) return;
@@ -96,7 +96,8 @@ public class WeaponSpawner : NetworkBehaviour
         Debug.Log("ÈÄ : "+_activeWeaponIndex);
         
         GetActiveWeapon().OnEquipped(); 
-        Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+        if(HasInputAuthority)
+            Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
         Invoke(nameof(SetWeaponVisible), 0.1f);
 
         _saleChk = false;
