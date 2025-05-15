@@ -81,48 +81,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!206 &-8351419291324198679
-BlendTree:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree
-  m_Childs:
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: e0e7401be32919c4a804566d67699b97,
-      type: 3}
-    m_Threshold: -1
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: MoveSpeed
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: f00c48f847c18d84db8987d99ce5f8a4,
-      type: 3}
-    m_Threshold: 0
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: MoveSpeed
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: b375916dd26f9fb4c890683344d8a1ae,
-      type: 3}
-    m_Threshold: 1
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: MoveSpeed
-    m_Mirror: 0
-  m_BlendParameter: LookX
-  m_BlendParameterY: MoveSpeed
-  m_MinThreshold: -1
-  m_MaxThreshold: 1
-  m_UseAutomaticThresholds: 0
-  m_NormalizedBlendValues: 0
-  m_BlendType: 0
 --- !u!1101 &-7633980699127014619
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -155,7 +113,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Scream 0
+  m_Name: Grita_Scream
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -168,7 +126,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: b2c7759447c0bc44591c2c6d60d4448d,
+  m_Motion: {fileID: -203655887218126122, guid: 08db50755fe0fe64698236855cda2b30,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -182,7 +140,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Run 0
+  m_Name: Grita_Run
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -388,7 +346,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Attack 0
+  m_Name: Grita_Attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -402,7 +360,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 12a62862a16ad484a8fab711d28e8289,
+  m_Motion: {fileID: -203655887218126122, guid: a59999d9a2867ef47b29d8cf74f5a6c3,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -416,7 +374,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Idle 0
+  m_Name: Grita_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -430,7 +388,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: f00c48f847c18d84db8987d99ce5f8a4,
+  m_Motion: {fileID: -203655887218126122, guid: a43a2c0ccf88dfd44a36c751a4bcef89,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -575,7 +533,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Dying
+  m_Name: Grita_Dead
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -588,7 +546,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: d8ca920270cf59a499fa3f53391c5e5c,
+  m_Motion: {fileID: -203655887218126122, guid: 5971b0ad42bd70b4a9073acdeba9720d,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -602,7 +560,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Run 0
+  m_Name: Grita_Run
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -682,7 +640,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Walk 0
+  m_Name: Grita_Walk
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -696,7 +654,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 7b64df213484c4c4390b240c825e4f84,
+  m_Motion: {fileID: -203655887218126122, guid: e5c7ce0d7789eca47ad1eadb65410893,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -1144,7 +1102,7 @@ AnimatorStateMachine:
     m_Position: {x: 710, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1586549567283520096}
-    m_Position: {x: 380, y: 400, z: 0}
+    m_Position: {x: 470, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6023521315117650687}
     m_Position: {x: 350, y: 200, z: 0}
@@ -1155,30 +1113,26 @@ AnimatorStateMachine:
     m_State: {fileID: 9172246116128718929}
     m_Position: {x: 710, y: 30, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 5204003892056406245}
-    m_Position: {x: -150, y: 260, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: 3644917673489247295}
     m_Position: {x: 80, y: 200, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 613613879511715818}
-    m_Position: {x: 230, y: -270, z: 0}
+    m_Position: {x: 230, y: -380, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -1802087699219377645}
-    m_Position: {x: 0, y: -190, z: 0}
+    m_Position: {x: 0, y: -300, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 4695170949193202875}
-    m_Position: {x: 450, y: -190, z: 0}
+    m_Position: {x: 470, y: -300, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 5352172138654707781}
-    m_Position: {x: 230, y: -100, z: 0}
-  m_AnyStateTransitions:
-  - {fileID: 8361015589473356481}
+    m_Position: {x: 200, y: -210, z: 0}
+  m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 40, y: 360, z: 0}
+  m_AnyStatePosition: {x: -150, y: 0, z: 0}
   m_EntryPosition: {x: -140, y: 70, z: 0}
   m_ExitPosition: {x: 850, y: 130, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -1230,32 +1184,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &5204003892056406245
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Idle Blend Tree
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: -8351419291324198679}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &5325599238779715027
 AnimatorState:
   serializedVersion: 6
@@ -1263,7 +1191,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grita Attack 0
+  m_Name: Grita_Attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1277,7 +1205,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 12a62862a16ad484a8fab711d28e8289,
+  m_Motion: {fileID: -203655887218126122, guid: a59999d9a2867ef47b29d8cf74f5a6c3,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -1500,31 +1428,6 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9423077
-  m_HasExitTime: 0
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &8361015589473356481
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: IsDead
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -1586549567283520096}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
