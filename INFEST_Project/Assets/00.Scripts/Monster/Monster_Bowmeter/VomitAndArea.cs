@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -42,7 +40,7 @@ public class VomitAndArea : NetworkBehaviour
     {
         Vector3 spawnPosition = transform.position;
 
-        spawnPosition.y = 0f;
+        spawnPosition.y = 0.05f;
 
         Runner.Spawn(vomitAreaPrefab, spawnPosition, Quaternion.identity);
     }
