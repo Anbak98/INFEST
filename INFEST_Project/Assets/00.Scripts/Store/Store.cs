@@ -22,7 +22,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_RequestInteraction(Player _player, PlayerRef _playerRef)
     {
-
         RPC_Interaction(_player, _playerRef);
 
         if (_storeController.activeTime)
@@ -91,17 +90,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
     #region OnTriggerEnter È£Ãâ
     /// <summary>
-    /// »óÁ¡ÀÇ ¿µ¿ª¿¡ µé¾î°¬À»¶§ ¿äÃ»ÇÏ´Â ¸Þ¼Òµå
-    /// </summary>
-    /// <param name="_player"></param>
-    /// <param name="_playerRef"></param>
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestEnterShopZone(Player _player, PlayerRef _playerRef)
-    {
-        RPC_EnterShopZone(_player, _playerRef);
-    }
-
-    /// <summary>
     /// »óÁ¡ ¿µ¿ª ·ÎÁ÷
     /// </summary>
     /// <param name="_player"></param>
@@ -117,17 +105,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     #endregion
 
     #region OnTriggerExit È£Ãâ
-    /// <summary>
-    /// »óÁ¡À» ¶°³µÀ»¶§ ¿äÃ»ÇÏ´Â ¸Þ¼Òµå
-    /// </summary>
-    /// <param name="_player"></param>
-    /// <param name="_playerRef"></param>
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestLeaveShopZone(Player _player, PlayerRef _playerRef)
-    {
-        RPC_LeaveShopZone(_player, _playerRef);
-    }
-
     /// <summary>
     /// »óÁ¡À» ¶°³µÀ»¶§
     /// </summary>
