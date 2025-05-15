@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_AttackWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
+public class Grita_Wave_Attack : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
     private TickTimer _tickTimer;
 
@@ -36,11 +36,11 @@ public class Grita_AttackWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
             {
                 if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<Grita_AttackWave>();
+                    phase.ChangeState<Grita_Wave_Attack>();
                 }
                 else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
                 {
-                    phase.ChangeState<Grita_RunWave>();
+                    phase.ChangeState<Grita_Wave_Run>();
                 }
             }
         }

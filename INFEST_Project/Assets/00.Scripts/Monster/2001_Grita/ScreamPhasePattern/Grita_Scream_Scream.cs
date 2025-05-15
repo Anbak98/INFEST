@@ -6,7 +6,7 @@ using UnityEngine;
 // Wave가 아니다
 // Scream상태에서 할 일
 // 소리 지르기
-public class Grita_Scream : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
+public class Grita_Scream_Scream : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
 {
     public TickTimer _animTickTimer;
 

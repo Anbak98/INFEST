@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Wave Phase의 첫번째 상태
 // ScreamWave의 우선순위 > AttackWave의 우선순위
-public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
+public class Grita_Wave_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
     public override void Enter()
     {
@@ -27,7 +27,7 @@ public class Grita_RunWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_P
             phase.ChangeState<Grita_ScreamWave>();
             // 쿨타임 중이거나, 아니면 2번 실행했다면 Attack
             if (!monster.CanScream() || monster.screamCount >= Monster_Grita.screamMaxCount)
-                phase.ChangeState<Grita_AttackWave>();
+                phase.ChangeState<Grita_Wave_Attack>();
         }
         else if (!monster.IsLookPlayer() && monster.AIPathing.remainingDistance > 15f)
         {

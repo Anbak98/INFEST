@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // WonderPhase에만 포함된 상태
-public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
+public class Grita_Wander_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
 {
     Vector3 randomPosition;
 
@@ -22,13 +22,13 @@ public class Grita_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
     {
         base.Execute();
         if (/*ditector.isTriggered &&*/ monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
-            phase.ChangeState<Grita_Scream>();
+            phase.ChangeState<Grita_Scream_Scream>();
 
         if (!monster.AIPathing.pathPending)
         {
             if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
             {
-                phase.ChangeState<Grita_Idle>();
+                phase.ChangeState<Grita_Wander_Idle>();
             }
         }
     }

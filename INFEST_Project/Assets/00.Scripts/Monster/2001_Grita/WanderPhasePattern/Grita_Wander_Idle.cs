@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
+public class Grita_Wander_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wander>
 {
     public TickTimer idleTickTimer;
 
@@ -28,11 +28,11 @@ public class Grita_Idle : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phas
     {
         base.Execute();
         if (/*ditector.isTriggered && */monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
-            phase.ChangeState<Grita_Scream>();
+            phase.ChangeState<Grita_Scream_Scream>();
 
         if (idleTickTimer.Expired(Runner)) // 일정 시간 초과하면 true 리턴
         {
-            phase.ChangeState<Grita_Walk>(); // state 교체
+            phase.ChangeState<Grita_Wander_Walk>(); // state 교체
         }
     }
 }

@@ -674,7 +674,6 @@ Transform:
   m_Children:
   - {fileID: 8414442561482198676}
   - {fileID: 9068526885235319539}
-  - {fileID: 7455795760697539127}
   m_Father: {fileID: 4715724224646867579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9144427468234448182
@@ -692,9 +691,8 @@ MonoBehaviour:
   states:
   - {fileID: 7367107830253526925}
   - {fileID: 6232978198553751103}
-  - {fileID: 8083592736345999337}
   currentState: {fileID: 0}
---- !u!1 &1250356328301986980
+--- !u!1 &1182704429219814713
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -702,43 +700,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1464398340246148828}
-  - component: {fileID: 6451380940787002042}
+  - component: {fileID: 4006833908066436430}
+  - component: {fileID: 722487069425764869}
   m_Layer: 0
-  m_Name: Dead
+  m_Name: Scream
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1464398340246148828
+--- !u!4 &4006833908066436430
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250356328301986980}
+  m_GameObject: {fileID: 1182704429219814713}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3968935011137846790}
+  m_Father: {fileID: 8126822422899529360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6451380940787002042
+--- !u!114 &722487069425764869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250356328301986980}
+  m_GameObject: {fileID: 1182704429219814713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f03139863d2fdd54b9b7ed1db1248321, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e729205aa67b8c44a519ba6a411bc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obj: {fileID: 1478963113393865172}
 --- !u!1 &1259462464801368116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,9 +1760,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2766110880937528403}
+  - {fileID: 8126822422899529360}
   - {fileID: 2189449827943412193}
   - {fileID: 5765936335004564169}
-  - {fileID: 3968935011137846790}
   m_Father: {fileID: 9084751411537330646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4877765757947123194
@@ -1784,9 +1781,9 @@ MonoBehaviour:
   currentPhase: {fileID: 9144427468234448182}
   phases:
   - {fileID: 9144427468234448182}
+  - {fileID: 5342527938692769832}
   - {fileID: 3986741747919360910}
   - {fileID: 5396497802439543786}
-  - {fileID: 5814481705821730403}
 --- !u!135 &1577059504474232142
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2122,7 +2119,6 @@ Transform:
   m_Children:
   - {fileID: 1369296089193473591}
   - {fileID: 153459498892797726}
-  - {fileID: 3021593020417599447}
   m_Father: {fileID: 4715724224646867579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5396497802439543786
@@ -2140,7 +2136,6 @@ MonoBehaviour:
   states:
   - {fileID: 7801068188080358075}
   - {fileID: 7968995533009127471}
-  - {fileID: 5688832090947200682}
   currentState: {fileID: 0}
 --- !u!1 &4915900879702815309
 GameObject:
@@ -2358,16 +2353,14 @@ MonoBehaviour:
   - {fileID: 9144427468234448182}
   - {fileID: 7367107830253526925}
   - {fileID: 6232978198553751103}
-  - {fileID: 8083592736345999337}
+  - {fileID: 5342527938692769832}
+  - {fileID: 722487069425764869}
   - {fileID: 3986741747919360910}
   - {fileID: 525449445426149300}
   - {fileID: 5385320678448468602}
   - {fileID: 5396497802439543786}
   - {fileID: 7801068188080358075}
   - {fileID: 7968995533009127471}
-  - {fileID: 5688832090947200682}
-  - {fileID: 5814481705821730403}
-  - {fileID: 6451380940787002042}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &7156887524021147276
 MonoBehaviour:
@@ -3159,7 +3152,7 @@ Transform:
   - {fileID: 7175194934315135493}
   m_Father: {fileID: 7346392545438963825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7405210440516201023
+--- !u!1 &7405946272578765460
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3167,89 +3160,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7455795760697539127}
-  - component: {fileID: 8083592736345999337}
+  - component: {fileID: 8126822422899529360}
+  - component: {fileID: 5342527938692769832}
   m_Layer: 0
-  m_Name: Scream
+  m_Name: ScreamPhase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7455795760697539127
+--- !u!4 &8126822422899529360
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7405210440516201023}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2766110880937528403}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8083592736345999337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7405210440516201023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e729205aa67b8c44a519ba6a411bc4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &7548009587173202529
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3968935011137846790}
-  - component: {fileID: 5814481705821730403}
-  m_Layer: 0
-  m_Name: DeadPhase
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3968935011137846790
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7548009587173202529}
+  m_GameObject: {fileID: 7405946272578765460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1464398340246148828}
+  - {fileID: 4006833908066436430}
   m_Father: {fileID: 4715724224646867579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5814481705821730403
+--- !u!114 &5342527938692769832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7548009587173202529}
+  m_GameObject: {fileID: 7405946272578765460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28740a4bffd73624c851b2e39ee8080f, type: 3}
+  m_Script: {fileID: 11500000, guid: aa06b872319e59d4586d6456f8013aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   states:
-  - {fileID: 6451380940787002042}
+  - {fileID: 722487069425764869}
   currentState: {fileID: 0}
 --- !u!1 &7589774915435458531
 GameObject:
@@ -3561,50 +3510,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bdd662be1c9bf74abe4909457643aa5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &8783722256647788938
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3021593020417599447}
-  - component: {fileID: 5688832090947200682}
-  m_Layer: 0
-  m_Name: ScreamWave
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3021593020417599447
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8783722256647788938}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5765936335004564169}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5688832090947200682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8783722256647788938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1121983e71d3ad40b2743adb2a32abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8894215760704394990
