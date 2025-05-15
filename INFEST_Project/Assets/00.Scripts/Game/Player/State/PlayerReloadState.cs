@@ -29,7 +29,8 @@ public class PlayerReloadState : PlayerBaseState
         // 장전 애니메이션 1회 실행 이 되고 바로 나가야하는데... 이를 어떻게 확인?
         bool currentIsReloading = data.isReloading; // 외부에서 bool 가져오기
 
-        Debug.Log(prevIsReloading + "   " + data.isReloading);
+        // 이동하면서 재장전 가능하다
+        PlayerMove(data);
 
         // false → true로 바뀌는 순간만 감지 (즉, 입력이 딱 들어온 그 순간)
         if (!prevIsReloading && data.isReloading)
