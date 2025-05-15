@@ -230,4 +230,13 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             hitSound.PlayOneShot(hitSoundClip);
         }
     }
+
+    /// <summary>
+    /// MonsterSpawner가 target으로 들어가있을때 외부에서 지우기 위해
+    /// </summary>
+    public void ClearTargetList()
+    {
+        targets.Clear();
+    }
+
 }

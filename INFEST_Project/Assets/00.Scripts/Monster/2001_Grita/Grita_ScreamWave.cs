@@ -9,8 +9,7 @@ using UnityEngine;
 
 public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
-    public TickTimer _tickTimer;
-
+    TickTimer _animTickTimer;
     public override void Enter()
     {
         base.Enter();
@@ -24,7 +23,7 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         monster.Rpc_Scream();
         float animLength = monster.GetCurrentAnimLength();
 
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, animLength);   // 해당 시간이 지난 다음 다음 진행
+        _animTickTimer = TickTimer.CreateFromSeconds(Runner, animLength);   // 애니메이션 재생 시간 타이머
 
         // Spawn
         monster.StartCoroutine(monster.SpawnAfterAnim(animLength));
@@ -36,11 +35,10 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         base.Execute();
 
         // Enter에서 공격했으니 RunWave로 상태전환
-        if (_tickTimer.Expired(Runner))     // _tickTimer가 해당 시간만큼 지나면 true가 된다
+        if (_animTickTimer.Expired(Runner))     // 재생 끝나고 true
         {
             phase.ChangeState<Grita_RunWave>();
         }
-
     }
 
     public override void Exit()
@@ -51,10 +49,9 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
     }
 }
 
-// 추가 스폰
+// Wave phase
 // MonsterSpawner가 알아서 해주니까 몬스터 생성되는건 RPC가 필요하지 않다
 // SpawnMonsterOnWave에서 내부적으로 Runner.Spawn으로 생성
 // host에서 1번만 호출하면 된다
-
 // 몬스터를 7~10 추가 스폰
 // 몬스터별로 스폰 확률이 다르니까 기획서를 참고

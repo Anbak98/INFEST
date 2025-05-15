@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.30692166, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1786,6 +1786,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterSpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 5529938839071238273, guid: c599246f0e0a3414f88a5b53600b82fb,
+        type: 3}
+      propertyPath: MonsterKey
+      value: 2001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529938839071238273, guid: c599246f0e0a3414f88a5b53600b82fb,
+        type: 3}
+      propertyPath: MonsterMap
+      value: 
+      objectReference: {fileID: 11400000, guid: 51a0e1bdd60a09c4eb1aae585ad1fdd7,
+        type: 2}
     - target: {fileID: 5529938839071238273, guid: c599246f0e0a3414f88a5b53600b82fb,
         type: 3}
       propertyPath: points.Array.size
