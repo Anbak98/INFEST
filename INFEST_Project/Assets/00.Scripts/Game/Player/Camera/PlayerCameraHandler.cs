@@ -63,15 +63,15 @@ public class PlayerCameraHandler : NetworkBehaviour
             yRotation += mouseDelta.x * _sensitivity * Time.deltaTime;
             xRotation -= mouseDelta.y * _sensitivity * Time.deltaTime;
             xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+
+            _parentTransform.eulerAngles = new Vector3(0f, yRotation, 0f); // X축 회전만 적용
+            _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
         }
     }
 
     public override void Render()
     {
         base.Render();
-
-        _parentTransform.eulerAngles = new Vector3(0f, yRotation, 0f); // X축 회전만 적용
-        _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
     }
 
     public Vector3 GetCameraForwardOnXZ()

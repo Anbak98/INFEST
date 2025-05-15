@@ -61,7 +61,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     [ReadOnly] public Transform target;
     [ReadOnly, SerializeField] private List<Transform> targets = new();
-    private Dictionary<Transform, PlayerMethodFromMonster> targetBridges = new();
+    private Dictionary<Transform, TargetableFromMonster> targetBridges = new();
+
+    public virtual void OnWave()
+    {
+
+    }
 
     public virtual void OnDead()
     {
@@ -110,15 +115,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void SetTargetRandomly()
     {
-        if (targets.Count > 1)
+        if (targets.Count > 0)
         {
             Transform newTarget;
             newTarget = targets[Random.Range(0, targets.Count)];
             target = newTarget;
-        }
-        else if (targets.Count == 1)
-        {
-            target = targets[0];
         }
     }
 
@@ -131,7 +132,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         if(!targets.Contains(target))
         {
-            if(target.TryGetComponent<PlayerMethodFromMonster>(out PlayerMethodFromMonster bridge))
+            if(target.TryGetComponent<TargetableFromMonster>(out TargetableFromMonster bridge))
             {
                 targets.Add(target);
                 targetBridges.Add(target, bridge);
@@ -155,14 +156,14 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void TryAttackTarget(int damage)
     {
-        if(targetBridges.TryGetValue(target, out PlayerMethodFromMonster bridge))
+        if(targetBridges.TryGetValue(target, out TargetableFromMonster bridge))
         {
             bridge.ApplyDamage(key, damage);
         }
     }
     public void TryAttackTarget(Transform target, int damage)
     {
-        if (targetBridges.TryGetValue(target, out PlayerMethodFromMonster bridge))
+        if (targetBridges.TryGetValue(target, out TargetableFromMonster bridge))
         {
             bridge.ApplyDamage(key, damage);
         }
