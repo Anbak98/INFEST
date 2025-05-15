@@ -46,7 +46,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public SphereCollider PlayerDetectorCollider;
 
     [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
-    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; private set; }
+    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; set; }
     [Networked] public int CurHealth { get; set; } = -1;
     [field: SerializeField] public int CurDamage { get; set; }
     [field: SerializeField] public int CurDef { get; set; }
@@ -61,7 +61,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     [ReadOnly] public Transform target;
     [ReadOnly, SerializeField] private List<Transform> targets = new();
-    private Dictionary<Transform, PlayerMethodFromMonster> targetBridges = new();
+    private Dictionary<Transform, TargetableFromMonster> targetBridges = new();
+
+    public virtual void OnWave(Transform target)
+    {
+        this.target = target;
+    }
 
     public virtual void OnDead()
     {
@@ -110,15 +115,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void SetTargetRandomly()
     {
-        if (targets.Count > 1)
+        if (targets.Count > 0)
         {
             Transform newTarget;
             newTarget = targets[Random.Range(0, targets.Count)];
             target = newTarget;
-        }
-        else if (targets.Count == 1)
-        {
-            target = targets[0];
         }
     }
 
@@ -131,7 +132,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         if(!targets.Contains(target))
         {
-            if(target.TryGetComponent<PlayerMethodFromMonster>(out PlayerMethodFromMonster bridge))
+            if(target.TryGetComponent<TargetableFromMonster>(out TargetableFromMonster bridge))
             {
                 targets.Add(target);
                 targetBridges.Add(target, bridge);
@@ -155,14 +156,14 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void TryAttackTarget(int damage)
     {
-        if(targetBridges.TryGetValue(target, out PlayerMethodFromMonster bridge))
+        if(targetBridges.TryGetValue(target, out TargetableFromMonster bridge))
         {
             bridge.ApplyDamage(key, damage);
         }
     }
     public void TryAttackTarget(Transform target, int damage)
     {
-        if (targetBridges.TryGetValue(target, out PlayerMethodFromMonster bridge))
+        if (targetBridges.TryGetValue(target, out TargetableFromMonster bridge))
         {
             bridge.ApplyDamage(key, damage);
         }
@@ -230,4 +231,13 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             hitSound.PlayOneShot(hitSoundClip);
         }
     }
+
+    /// <summary>
+    /// MonsterSpawner가 target으로 들어가있을때 외부에서 지우기 위해
+    /// </summary>
+    public void ClearTargetList()
+    {
+        targets.Clear();
+    }
+
 }

@@ -37,6 +37,7 @@ public class MonsterSpawner : NetworkBehaviour
                 {
                     Runner.Spawn(MonsterMap.GetByKey(monsterKey), spawnPosition);
                     tickTimer = TickTimer.CreateFromSeconds(Runner, 0.1f);
+                    --spawnNum;
                 }
             }
         }
@@ -103,6 +104,11 @@ public class MonsterSpawner : NetworkBehaviour
                         {
                             grita.spawner = FindObjectOfType<MonsterSpawner>(); 
                             grita.FSM.ChangePhase<Grita_Phase_Wander>();
+                        }
+
+                        if(mnb is Monster_Bowmeter bo)
+                        {
+                            bo.FSM.ChangePhase<Bowmeter_Phase_Chase>();
                         }
                     }
                 }
