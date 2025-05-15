@@ -9,10 +9,7 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
     public override void MachineEnter()
     {
         base.MachineEnter();
-        //monster.IsReadyForChangingState = false;
-
         monster.PhaseIndex = 1;
-        Debug.Log("Chase");
 
         monster.animator.Play("Chase.DeadCop_Run");
     }

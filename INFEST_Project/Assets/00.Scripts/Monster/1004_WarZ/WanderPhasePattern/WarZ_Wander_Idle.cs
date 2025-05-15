@@ -13,7 +13,6 @@ public class WarZ_Wander_Idle : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_
     {
         base.Enter();
         monster.CurMovementSpeed = 0f;
-        Debug.Log("Idle");
 
         _tickTimer = TickTimer.CreateFromSeconds(Runner, DurationTime);
     }

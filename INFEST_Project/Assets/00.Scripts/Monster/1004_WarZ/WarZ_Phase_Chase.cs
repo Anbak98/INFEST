@@ -9,11 +9,9 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
     public override void MachineEnter()
     {
         base.MachineEnter();
-        //monster.IsReadyForChangingState = false;
+        monster.animator.Play("Chase.WarZ_Run");
         monster.PhaseIndex = 1;
 
-        Debug.Log("Chase");
-        monster.animator.Play("Chase.WarZ_Run");
     }
 
 

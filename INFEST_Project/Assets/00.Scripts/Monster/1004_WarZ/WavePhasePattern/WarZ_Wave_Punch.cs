@@ -11,8 +11,6 @@ public class WarZ_Wave_Punch : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_P
         monster.CurMovementSpeed = 0f;
         monster.IsRightPunch= true;
 
-        Debug.Log("Punch");
-
         // 애니메이션이 끝나기 전에는 상태가 안바뀐다
         monster.IsReadyForChangingState = false;
     }

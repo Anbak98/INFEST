@@ -10,7 +10,6 @@ public class WarZ_Chase_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Ph
         //_target = monster.target;
         monster.CurMovementSpeed = monster.info.SpeedMove;
 
-        Debug.Log("Run");
         Debug.Log(monster.target.transform.position);
     }
 
