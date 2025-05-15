@@ -143,7 +143,6 @@ public class PlayerController : NetworkBehaviour
 
         // SkinnedMeshRenderer 컴포넌트 비활성화 (캐릭터 등 스킨드 메시 처리)
         SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-        Debug.Log(skinnedRenderers.Length);
         foreach (var smr in skinnedRenderers)
         {
             smr.enabled = false;

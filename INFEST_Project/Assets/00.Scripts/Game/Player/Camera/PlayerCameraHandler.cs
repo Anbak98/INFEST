@@ -19,8 +19,8 @@ public class PlayerCameraHandler : NetworkBehaviour
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
-    [Networked] public float xRotation { get; set; } = 0f;
-    [Networked] public float yRotation { get; set; } = 0f;
+    public float xRotation { get; set; } = 0f;
+    public float yRotation { get; set; } = 0f;
 
     private Camera _mainCam;    // 1인칭 카메라
     public bool isMenu;
@@ -56,16 +56,19 @@ public class PlayerCameraHandler : NetworkBehaviour
 
         if (statHandler.CurHealth <= 0) return;
 
-        if (GetInput(out NetworkInputData data))
+        if(HasStateAuthority)
         {
-            Vector2 mouseDelta = data.lookDelta;
+            if (GetInput(out NetworkInputData data))
+            {
+                Vector2 mouseDelta = data.lookDelta;
 
-            yRotation += mouseDelta.x * _sensitivity * Time.deltaTime;
-            xRotation -= mouseDelta.y * _sensitivity * Time.deltaTime;
-            xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+                yRotation = mouseDelta.x * _sensitivity * Time.deltaTime;
+                xRotation -= mouseDelta.y * _sensitivity * Time.deltaTime;
+                xRotation = Mathf.Clamp(xRotation, -80f, 80f);
 
-            _parentTransform.eulerAngles = new Vector3(0f, yRotation, 0f); // X축 회전만 적용
-            _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
+                _parentTransform.Rotate(yRotation * Vector3.up);
+                _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
+            }
         }
     }
 

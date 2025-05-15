@@ -1827,6 +1827,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7721353801691121081}
   - component: {fileID: 3268070573558879607}
+  - component: {fileID: 9222881174541471598}
   m_Layer: 6
   m_Name: CameraHandle
   m_TagString: Untagged
@@ -1865,12 +1866,27 @@ MonoBehaviour:
   _scopeCam: {fileID: 0}
   _cameraHolder: {fileID: 7721353801691121081}
   _sensitivity: 5
-  _parentTransform: {fileID: 227759289204617595}
-  _xRotation: 0
-  _yRotation: 0
+  _parentTransform: {fileID: 3834324505224384244}
   isMenu: 0
   statHandler: {fileID: 3147526191137004029}
   virtualCamera: {fileID: 241464025491880770}
+--- !u!114 &9222881174541471598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3697546439029722335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &3819623328929040217
 GameObject:
   m_ObjectHideFlags: 0
@@ -3886,6 +3902,7 @@ MonoBehaviour:
   - {fileID: 3072078453906701333}
   - {fileID: 686141162492240600}
   - {fileID: 3268070573558879607}
+  - {fileID: 9222881174541471598}
   - {fileID: 7032259557335484116}
   - {fileID: 749016921998632051}
   - {fileID: 4359307007718460345}
@@ -4020,6 +4037,7 @@ MonoBehaviour:
   _CurGold: 0
   _CurTeamCoin: 0
   _curstate: 0
+  effect: {fileID: 8335810917877115477}
 --- !u!114 &3724504915549296076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4065,7 +4083,7 @@ MonoBehaviour:
   Weapons: {fileID: 7032259557335484116}
   Consumes: {fileID: 3479017057160561563}
   CameraHandle: {fileID: 7721353801691121081}
-  FirstPersonRoot: {fileID: 5118857599195776093}
+  FirstPersonRoot: {fileID: 3972149564953791667}
   ThirdPersonRoot: {fileID: 1055682366495237838}
   HandRoot: {fileID: 5118857599195776093}
   _material: {fileID: 0}

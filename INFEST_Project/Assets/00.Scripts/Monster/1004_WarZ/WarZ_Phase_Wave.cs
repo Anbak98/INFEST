@@ -19,10 +19,6 @@ public class WarZ_Phase_Wave : MonsterPhase<Monster_WarZ>
     public override void MachineExecute()
     {
         base.MachineExecute();
-
-        //if (monster.PlayerDetectorCollider.radius != monster.info.DetectAreaWave)
-        //    monster.PlayerDetectorCollider.radius = monster.info.DetectAreaWave;
-
         monster.AIPathing.SetDestination(monster.target.position);
 
         // 생성되자마자 공격되는거 방지

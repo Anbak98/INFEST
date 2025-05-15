@@ -8,13 +8,13 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
 {
     public TickTimer animTickTimer;   // 애니메이션의 재생시간동안 다른 동작으로 못바꾼다(특히 공격)
 
-    //[Networked, OnChangedRender(nameof(OnIsHeadButt))]
-    //public NetworkBool IsHeadButt { get; set; } = false;
+    [Networked, OnChangedRender(nameof(OnPhaseIndexChanged))]
+    public short PhaseIndex { get; set; } = 0;
 
-
-    [Networked, OnChangedRender(nameof(OnIsRunning))]
-    public NetworkBool IsRunning { get; set; } = false;
-
+    [Networked, OnChangedRender(nameof(OnIsRightPunch))]
+    public NetworkBool IsRightPunch { get; set; } = false;
+    [Networked, OnChangedRender(nameof(OnIsHeadButt))]
+    public NetworkBool IsHeadButt { get; set; } = false;
 
 
     [Networked, OnChangedRender(nameof(OnIsWave))]
@@ -23,30 +23,18 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
     public override void Render()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
-        animator.SetFloat("Distance", AIPathing.remainingDistance);
-
-        if (IsAttack)
-        {
-            animator.SetTrigger("IsAttack");
-        }
-        if (IsDead)
-        {
-            animator.SetBool("IsDead", IsDead);
-        }
-        AIPathing.speed = CurMovementSpeed;
     }
-    //private void OnIsHeadButt() => animator.SetBool("IsHeadButt", IsHeadButt);
 
+    private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);
+    private void OnIsRightPunch() => animator.SetBool("IsRightPunch", IsRightPunch);
+    private void OnIsHeadButt() => animator.SetBool("IsHeadButt", IsHeadButt);
 
-    // 처음 상태 애니메이션 재생
-    //private void OnIsIdle() => animator.Play("Wander.DeadCop_Idle");
+    private void OnIsDead() => animator.SetBool("IsDead", IsDead);
+
     private void OnIsRunning() => animator.Play("Wander.DeadCop_Run");
-
 
     // 웨이브 시작, 종료조건 
     private void OnIsWave() => animator.SetBool("IsWave", IsWave);  // 웨이브 생성과 관련된 곳에서 가져와서 bool값을 바꾼다
-
-
 
 
 
@@ -57,8 +45,6 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
         SetTarget(target);
         FSM.ChangePhase<DeadCop_Phase_Chase>();
     }
-
-
 
     public float GetCurrentAnimLength()
     {

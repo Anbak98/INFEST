@@ -9,10 +9,9 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
     public override void MachineEnter()
     {
         base.MachineEnter();
-        //monster.IsReadyForChangingState = false;
+        monster.animator.Play("Chase.WarZ_Run");
         monster.PhaseIndex = 1;
 
-        monster.animator.Play("Chase.WarZ_Run");
     }
 
 
@@ -47,28 +46,32 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
     public void CaculateAttackType(float distance)
     {
         // 달릴때는 모든 상태로 변환이 가능하다
-        // 느리면 Wander로 돌아가고, 
-        // 빠른 경우에는 가까울 때 DropKick, 멀면 Punch 하면 된다
+        // 너무 멀거나 느리면 Wander로 돌아가고
+        if (distance > 10f /*|| monster.CurMovementSpeed <= 1*/)
+        {
+            /// Wander -> Idle
+            nextPatternIndex = 3;
+            return;
+        }
+
+        // 가까울 때 DropKick, 멀면 Punch 하면 된다
         if (distance <= 0.5)
         {
             // DropKick
             nextPatternIndex = 2;
+            return;
         }
         else if (distance > 0.5f && distance < 1.0f)
         {
             // Punch
             nextPatternIndex = 1;
+            return;
         }
-        else if (distance > 1.0f && distance < 10f)
+        else
         {
             // Run
             nextPatternIndex = 0;
-        }
-        else if (distance > 10f)
-        {
-            // Wander -> Idle
-            nextPatternIndex = 3;
+            ChangeState<WarZ_Chase_Run>();
         }
     }
-
 }

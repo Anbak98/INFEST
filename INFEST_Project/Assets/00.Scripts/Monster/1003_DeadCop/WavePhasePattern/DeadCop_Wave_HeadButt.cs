@@ -9,43 +9,25 @@ public class DeadCop_Wave_HeadButt : MonsterStateNetworkBehaviour<Monster_DeadCo
     {
         base.Enter();
 
-        if (monster.IsDead || monster.target == null)
-            return;
-
         monster.CurMovementSpeed = 0f;
-        monster.IsAttack = true;
+        monster.IsHeadButt = true;
 
-        //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
-        //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
-
-        float animTime = monster.GetCurrentAnimLength();
-        monster.animTickTimer = TickTimer.CreateFromSeconds(Runner, animTime);
+        // 애니메이션이 끝나기 전에는 상태가 안바뀐다
+        monster.IsReadyForChangingState = false;
     }
 
-    public override void Execute()
-    {
-        base.Execute();
-        if (monster.animTickTimer.Expired(Runner))
-        {
-            monster.AIPathing.SetDestination(monster.target.position);
-            if (!monster.AIPathing.pathPending && !monster.IsDead)
-            {
-                if (monster.AIPathing.remainingDistance <= 0.5f)
-                {
-                    phase.ChangeState<DeadCop_Wave_HeadButt>();
-                }
-                else
-                {
-                    monster.IsAttack = false;
-                    phase.ChangeState<DeadCop_Wave_Run>();
-                }
-            }
-        }
-    }
 
     public override void Exit()
     {
         base.Exit();
+        monster.IsHeadButt = false;
     }
+
+    public override void Attack()
+    {
+        base.Attack();
+        monster.TryAttackTarget((int)(monster.CurDamage /** monster.skills[1].DamageCoefficient*/));
+    }
+
 
 }

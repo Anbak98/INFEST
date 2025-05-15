@@ -8,8 +8,6 @@ public class Grita_Wander_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Gri
 {
     Vector3 randomPosition;
 
-    //public GritaPlayerDetector ditector;
-
     public override void Enter()
     {
         base.Enter();
@@ -18,20 +16,6 @@ public class Grita_Wander_Walk : MonsterStateNetworkBehaviour<Monster_Grita, Gri
         monster.AIPathing.SetDestination(randomPosition); // NavMeshAgent의 목표 위치를 랜덤 위치로 설정합니다.
     }
 
-    public override void Execute()
-    {
-        base.Execute();
-        if (/*ditector.isTriggered &&*/ monster.CanScream() && monster.screamCount < Monster_Grita.screamMaxCount)
-            phase.ChangeState<Grita_Scream_Scream>();
-
-        if (!monster.AIPathing.pathPending)
-        {
-            if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
-            {
-                phase.ChangeState<Grita_Wander_Idle>();
-            }
-        }
-    }
     private Vector3 GetRandomPositionOnNavMesh()
     {
         Vector3 randomDirection = Random.insideUnitSphere * 3f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.

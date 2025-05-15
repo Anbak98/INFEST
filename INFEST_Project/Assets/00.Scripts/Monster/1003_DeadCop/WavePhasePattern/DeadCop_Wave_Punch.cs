@@ -1,48 +1,27 @@
 using Fusion;
+using UnityEngine;
 
 public class DeadCop_Wave_Punch : MonsterStateNetworkBehaviour<Monster_DeadCop, DeadCop_Phase_Wave>
 {
-    private TickTimer _tickTimer;
-
     public override void Enter()
     {
         base.Enter();
-
-        if (monster.IsDead || monster.target == null)
-            return;
-
         monster.CurMovementSpeed = 0f;
-        monster.IsAttack = true;
+        monster.IsRightPunch = true;
 
-        //monster.targetStatHandler = monster.target.GetComponentInParent<PlayerStatHandler>();
-        //monster.targetStatHandler.TakeDamage(Random.Range(monster.info.MinAtk, monster.info.MaxAtk));
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
-    }
-
-    public override void Execute()
-    {
-        base.Execute();
-        if (_tickTimer.Expired(Runner))
-        {
-            monster.AIPathing.SetDestination(monster.target.position);
-            if (!monster.AIPathing.pathPending && !monster.IsDead)
-            {
-                if (monster.AIPathing.remainingDistance > 0.5f && monster.AIPathing.remainingDistance < 1.0f)
-                {
-                    phase.ChangeState<DeadCop_Wave_Punch>();
-                }
-                else
-                {
-                    monster.IsAttack = false;
-                    phase.ChangeState<DeadCop_Wave_Run>();
-                }
-            }
-        }
+        // 애니메이션이 끝나기 전에는 상태가 안바뀐다
+        monster.IsReadyForChangingState = false;
     }
 
     public override void Exit()
     {
         base.Exit();
+        monster.IsRightPunch = false;
     }
 
+    public override void Attack()
+    {
+        base.Attack();
+        monster.TryAttackTarget((int)(monster.CurDamage /** monster.skills[1].DamageCoefficient*/));
+    }
 }

@@ -37,6 +37,11 @@ public class MonsterInfo : IKeyedItem
     public int HealthPer5Min;
 
     /// <summary>
+    /// 쳬력 계수
+    /// </summary>
+    public float HPCoef;
+
+    /// <summary>
     /// 시작 시 공격력
     /// </summary>
     public int MinAtk;
@@ -52,6 +57,11 @@ public class MonsterInfo : IKeyedItem
     public int AtkPer5Min;
 
     /// <summary>
+    /// 공격력 계수
+    /// </summary>
+    public float AtkCoef;
+
+    /// <summary>
     /// 시작 시 방어력
     /// </summary>
     public int MinDef;
@@ -65,6 +75,11 @@ public class MonsterInfo : IKeyedItem
     /// 5분당 방어력 증가량
     /// </summary>
     public int DefPer5Min;
+
+    /// <summary>
+    /// 방어력 계수
+    /// </summary>
+    public float DefCoef;
 
     /// <summary>
     /// 이동속도

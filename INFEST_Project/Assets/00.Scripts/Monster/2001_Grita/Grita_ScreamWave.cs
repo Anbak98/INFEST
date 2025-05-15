@@ -14,7 +14,6 @@ using UnityEngine;
 /// </summary>
 public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Wave>
 {
-    TickTimer _animTickTimer;
     public override void Enter()
     {
         base.Enter();
@@ -26,24 +25,13 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         Debug.Log("Scream Wave Enter");
 
         monster.Rpc_Scream();
-        float animLength = monster.GetCurrentAnimLength();
-
-        _animTickTimer = TickTimer.CreateFromSeconds(Runner, animLength);   // 애니메이션 재생 시간 타이머
-
-        // Spawn
-        monster.StartCoroutine(monster.SpawnAfterAnim(animLength));
     }
+
     public override void Execute()
     {
         // 코루틴 돌때 여기 실행되는지 확인
         Debug.Log("Execute 실행");
         base.Execute();
-
-        // Enter에서 공격했으니 RunWave로 상태전환
-        if (_animTickTimer.Expired(Runner))     // 재생 끝나고 true
-        {
-            phase.ChangeState<Grita_Wave_Run>();
-        }
     }
 
     public override void Exit()

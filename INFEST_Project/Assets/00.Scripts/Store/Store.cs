@@ -6,9 +6,7 @@ using UnityEngine;
 public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) 수행해준다.
 {
     public StoreController _storeController;
-    public Action<string> changeUI;
     public List<int> idList;
-    public InputManager inputManager;
     public GameObject activatelighting;
     public SphereCollider col;
 
