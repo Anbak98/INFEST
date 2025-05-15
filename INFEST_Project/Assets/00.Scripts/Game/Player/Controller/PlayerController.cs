@@ -43,6 +43,8 @@ public class PlayerController : NetworkBehaviour
         player.statHandler.OnHealthChanged += (amount) => player.attackedEffectController.CalledWhenPlayerAttacked(amount);
         player.statHandler.OnDeath += OnDeath;
         player.statHandler.OnRespawn += OnRespawn;
+
+        networkCharacterController.maxSpeed = player.statHandler.CurSpeedMove;
     }
 
     public override void FixedUpdateNetwork()

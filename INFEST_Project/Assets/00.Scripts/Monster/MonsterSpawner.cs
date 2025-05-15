@@ -37,6 +37,7 @@ public class MonsterSpawner : NetworkBehaviour
                 {
                     Runner.Spawn(MonsterMap.GetByKey(monsterKey), spawnPosition);
                     tickTimer = TickTimer.CreateFromSeconds(Runner, 0.1f);
+                    --spawnNum;
                 }
             }
         }

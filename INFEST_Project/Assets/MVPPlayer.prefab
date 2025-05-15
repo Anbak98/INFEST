@@ -1655,8 +1655,10 @@ MonoBehaviour:
   _virtualCamera: {fileID: 241464025491880770}
   _shakeDuration: 0.5
   _shakeIntensity: 2
-  _audioSource: {fileID: 0}
-  _attackedSounds: []
+  _audioSource: {fileID: 8423387528518379381}
+  _attackedSounds:
+  - {fileID: 8300000, guid: 1e6aeef3f5adc8c498c63f6fb6e3ecde, type: 3}
+  - {fileID: 8300000, guid: 7e3a17a9da333524293e1ef9942fbefa, type: 3}
 --- !u!1 &3221995816451142729
 GameObject:
   m_ObjectHideFlags: 0
@@ -4061,12 +4063,10 @@ MonoBehaviour:
   FirstPersonCamera: {fileID: 6996409761476354241}
   Weapons: {fileID: 7032259557335484116}
   Consumes: {fileID: 3479017057160561563}
-  MoveSpeed: 6
-  JumpForce: 10
   CameraHandle: {fileID: 7721353801691121081}
   FirstPersonRoot: {fileID: 5118857599195776093}
   ThirdPersonRoot: {fileID: 1055682366495237838}
-  HandRoot: {fileID: 6845016335980209178}
+  HandRoot: {fileID: 5118857599195776093}
   _material: {fileID: 0}
   _spawnedProjectile: 0
 --- !u!114 &8280481667216219239
@@ -4550,7 +4550,7 @@ PrefabInstance:
     - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
         type: 3}
@@ -4678,6 +4678,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
         type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 28672
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
+        type: 3}
       propertyPath: muzzleParticle
       value: 
       objectReference: {fileID: 8556029012856238810, guid: 90d22cc92b3fbbb4fa2b43c643ff7d47,
@@ -4783,7 +4788,7 @@ PrefabInstance:
     - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
         type: 3}
@@ -4947,7 +4952,7 @@ PrefabInstance:
     - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
         type: 3}
@@ -5001,7 +5006,7 @@ PrefabInstance:
     - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
         type: 3}
@@ -5110,7 +5115,7 @@ PrefabInstance:
     - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
         type: 3}
@@ -5865,7 +5870,7 @@ PrefabInstance:
     - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
         type: 3}
@@ -5974,7 +5979,7 @@ PrefabInstance:
     - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
         type: 3}
@@ -6028,7 +6033,7 @@ PrefabInstance:
     - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
         type: 3}
@@ -6142,7 +6147,7 @@ PrefabInstance:
     - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
         type: 3}
@@ -6301,7 +6306,7 @@ PrefabInstance:
     - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
         type: 3}
@@ -6410,7 +6415,7 @@ PrefabInstance:
     - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
         type: 3}
@@ -6469,7 +6474,7 @@ PrefabInstance:
     - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
@@ -6587,7 +6592,7 @@ PrefabInstance:
     - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
@@ -6856,7 +6861,7 @@ PrefabInstance:
     - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
@@ -6965,7 +6970,7 @@ PrefabInstance:
     - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
         type: 3}
@@ -7114,7 +7119,7 @@ PrefabInstance:
     - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 2047
+      value: 28672
       objectReference: {fileID: 0}
     - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
         type: 3}

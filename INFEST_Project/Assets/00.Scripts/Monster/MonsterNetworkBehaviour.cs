@@ -46,7 +46,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public SphereCollider PlayerDetectorCollider;
 
     [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
-    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; private set; }
+    [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; set; }
     [Networked] public int CurHealth { get; set; } = -1;
     [field: SerializeField] public int CurDamage { get; set; }
     [field: SerializeField] public int CurDef { get; set; }
@@ -63,9 +63,9 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [ReadOnly, SerializeField] private List<Transform> targets = new();
     private Dictionary<Transform, TargetableFromMonster> targetBridges = new();
 
-    public virtual void OnWave()
+    public virtual void OnWave(Transform target)
     {
-
+        this.target = target;
     }
 
     public virtual void OnDead()

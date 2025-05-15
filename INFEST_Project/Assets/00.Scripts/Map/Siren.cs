@@ -30,6 +30,7 @@ public class Siren : MonoBehaviour
 
         if (_controller != null && player != null)
         {
+            NetworkGameManager.Instance.monsterSpawner.CallWave(player.transform);
             _controller.RPC_PlaySirenSound(player, player.Object.InputAuthority);
         }
     }
