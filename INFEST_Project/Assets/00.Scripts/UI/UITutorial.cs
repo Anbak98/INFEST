@@ -6,6 +6,8 @@ using UnityEngine;
 public class UITutorial : UIScreen
 {
     public TextMeshProUGUI tutorialText;
+    public TextMeshProUGUI toolTipText;
+
 
     protected override void Start()
     {
