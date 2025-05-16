@@ -1,3 +1,4 @@
+using System.Threading;
 using Fusion;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
         base.Spawned();
         _wonderParameterHash = Animator.StringToHash("Wonder.Idle");
         _chaseParameterHash = Animator.StringToHash("Chase.Run");
+
+        CurMovementSpeed = info.SpeedMoveWave;
     }
 
     public override void Render()
