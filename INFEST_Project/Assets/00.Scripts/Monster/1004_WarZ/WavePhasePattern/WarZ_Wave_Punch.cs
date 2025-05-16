@@ -19,6 +19,7 @@ public class WarZ_Wave_Punch : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_P
     {
         base.Exit();
         monster.IsRightPunch= false;
+        phase.ChangeState<WarZ_Wave_Run>();
     }
 
     public override void Attack()
