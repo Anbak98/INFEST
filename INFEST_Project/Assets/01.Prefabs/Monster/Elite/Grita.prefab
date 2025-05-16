@@ -736,8 +736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e729205aa67b8c44a519ba6a411bc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audio: {fileID: 5239818236640914457}
-  _screamingSound: {fileID: 8300000, guid: ac9462c0ab56dd7429b47173135d3b11, type: 3}
+  _audio: {fileID: 0}
+  _screamingSound: {fileID: 0}
 --- !u!1 &1259462464801368116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,7 +1783,7 @@ MonoBehaviour:
   currentPhase: {fileID: 9144427468234448182}
   phases:
   - {fileID: 9144427468234448182}
-  - {fileID: 5269401168759469641}
+  - {fileID: 0}
   - {fileID: 3986741747919360910}
   - {fileID: 5396497802439543786}
   patternCount: 0
@@ -3208,8 +3208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63c9892cf0e29849857c587f4b9a3f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states:
-  - {fileID: 722487069425764869}
+  states: []
   currentState: {fileID: 0}
   patternCount: 0
   nextPatternIndex: 0

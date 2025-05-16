@@ -42,10 +42,7 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
         commonSkill = DataManager.Instance.GetDictionary<CommonSkillTable>();
         OnIsWonderPhase();
         OnIsChasePhase();
-        OnIsPunch();
-
-        _wonderParameterHash = Animator.StringToHash("Wonder.Idle");
-        _chaseParameterHash = Animator.StringToHash("Chase.Run");
+        OnIsPunch();                
 
         CurMovementSpeed = info.SpeedMoveWave;
     }
@@ -71,7 +68,4 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
         SetTarget(target);
         FSM.ChangePhase<Stacker_Phase_Chase>();
     }
-
-    private void OnIsWonderPhase() { if (IsIdle) animator.Play(_wonderParameterHash); }
-    private void OnIsChasePhase() { if (IsRun) animator.Play(_chaseParameterHash); }
 }
