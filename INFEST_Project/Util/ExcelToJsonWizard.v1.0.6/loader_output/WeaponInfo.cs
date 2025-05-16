@@ -67,7 +67,7 @@ public class WeaponInfo
     public bool IsAutpmatic;
 
     /// <summary>
-    /// 총알 속도
+    /// 공격속도
     /// </summary>
     public float FireRate;
 
