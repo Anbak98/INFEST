@@ -53,6 +53,7 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     public void CaculateAttackType(float distance)
     {
         activatedSkilles = new();
+        monster.SetTarget(monster.target.transform);
 
         bool pattern1Ready = skillCoolDown[1].ExpiredOrNotRunning(Runner);
 

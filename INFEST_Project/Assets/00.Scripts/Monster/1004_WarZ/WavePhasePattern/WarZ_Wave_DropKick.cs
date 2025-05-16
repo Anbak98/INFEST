@@ -20,6 +20,7 @@ public class WarZ_Wave_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, War
     {
         base.Exit();
         monster.IsDropKick = false;
+        phase.ChangeState<WarZ_Wave_Run>();
     }
 
     public override void Attack()

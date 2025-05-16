@@ -8,6 +8,7 @@ public class Stacker_Walk : MonsterStateNetworkBehaviour<Monster_Stacker, Stacke
     public override void Enter()
     {
         base.Enter();
+        monster.IsWalk = true;
         monster.CurMovementSpeed = monster.info.SpeedMove;
         randomPosition = GetRandomPositionOnNavMesh(); // NavMesh 위의 랜덤한 위치를 가져옵니다.
         monster.AIPathing.SetDestination(randomPosition); // NavMeshAgent의 목표 위치를 랜덤 위치로 설정합니다.
@@ -23,6 +24,12 @@ public class Stacker_Walk : MonsterStateNetworkBehaviour<Monster_Stacker, Stacke
                 phase.ChangeState<Stacker_Idle>();
             }
         }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        monster.IsWalk = false;
     }
 
     private Vector3 GetRandomPositionOnNavMesh()

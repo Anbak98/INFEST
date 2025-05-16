@@ -1,12 +1,13 @@
 public class FSM_Stacker : MonsterFSM<Monster_Stacker>
 {
-    public override void FixedUpdateNetwork()
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        base.FixedUpdateNetwork();
-
-        if (monster.IsLookPlayer())
+        if (other.gameObject.layer == 7)
         {
-            ChangePhase<Stacker_Phase_Chase>();
+            monster.TryAddTarget(other.transform);
+            monster.SetTargetRandomly();
+            monster.SetTarget(other.transform);
+            monster.FSM.ChangePhase<Stacker_Phase_Chase>();
         }
     }
 }
