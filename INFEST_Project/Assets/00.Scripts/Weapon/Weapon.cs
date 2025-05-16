@@ -106,17 +106,18 @@ public class Weapon : NetworkBehaviour
         //    }
         //}
 
-        if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
-        {
-            IsReloading = false;
-            curBullet--;
-            curMagazineBullet++;
-            //if (HasInputAuthority)
-            //    instance.ReloadShotgun(possessionAmmo, curClip);
-            if (curMagazineBullet < instance.data.MagazineBullet)
-                Reload();
-        }
-        else if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
+        //if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
+        //{
+        //    IsReloading = false;
+        //    curBullet--;
+        //    curMagazineBullet++;
+        //    //if (HasInputAuthority)
+        //    //    instance.ReloadShotgun(possessionAmmo, curClip);
+        //    if (curMagazineBullet < instance.data.MagazineBullet)
+        //        Reload();
+        //}
+        //else
+        if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
         {
             IsReloading = false;
             curBullet += curMagazineBullet;
