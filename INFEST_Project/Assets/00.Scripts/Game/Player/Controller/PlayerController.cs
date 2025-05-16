@@ -239,21 +239,21 @@ public class PlayerController : NetworkBehaviour
     // 플레이어가 땅 위에 있는지?
     public bool IsGrounded() => networkCharacterController.Grounded;
     public float GetVerticalVelocity() => verticalVelocity;
-    //private void OnGUI()
-    //{
-    //    if (HasInputAuthority)
-    //    {
-    //        GUILayout.Label(stateMachine.currentState.ToString());
-    //        GUILayout.Label(DEBUG_DATA.ToString());
-    //        //
-    //        GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
-    //        GUILayout.Label("PlayerController position: " + transform.position.ToString());
-    //        GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
-    //        GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-    //        GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
-    //        //
-    //        GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
-    //        //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
-    //    }
-    //}
+    private void OnGUI()
+    {
+        if (HasInputAuthority)
+        {
+            GUILayout.Label(stateMachine.currentState.ToString());
+            GUILayout.Label(DEBUG_DATA.ToString());
+            //
+            GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
+            GUILayout.Label("PlayerController position: " + transform.position.ToString());
+            GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
+            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+            //
+            GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+            //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
+        }
+    }
 }
