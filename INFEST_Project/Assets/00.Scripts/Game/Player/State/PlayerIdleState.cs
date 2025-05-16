@@ -64,11 +64,6 @@ public class PlayerIdleState : PlayerGroundState
             stateMachine.ChangeState(stateMachine.AimState);
         }
 
-        //if(stateMachine.Player.Weapons != null && data.isReloading)
-        //{
-        //    stateMachine.ChangeState(stateMachine.ReloadState);
-        //}
-
 
         // 앉는 상태는 잠금
         //if (controller.IsGrounded() && data.isSitting)

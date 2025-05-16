@@ -26,8 +26,6 @@ public class PlayerStateMachine
     public PlayerAimAttackState AimAttackState { get; private set; }
     public PlayerAimAttackWalkState AimAttackWalkState { get; private set; }
 
-    public PlayerReloadState ReloadState { get; private set; }
-
     // Air
     public PlayerJumpState JumpState { get; private set; }
     public PlayerFallState FallState { get; private set; }
@@ -96,7 +94,7 @@ public class PlayerStateMachine
         AimAttackState = new PlayerAimAttackState(controller, this);
         AimAttackWalkState = new PlayerAimAttackWalkState(controller, this);
 
-        ReloadState = new PlayerReloadState(controller, this);
+        //ReloadState = new PlayerReloadState(controller, this);
         
         JumpState = new PlayerJumpState(controller, this);
         FallState = new PlayerFallState(controller, this);

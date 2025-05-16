@@ -258,14 +258,14 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Reload
     private void StartReloadState(InputAction.CallbackContext context)
     {
-        //Debug.Log("[Input] TriggerReload - Reload triggered");
+        Debug.Log("[Input] TriggerReload - Reload triggered");
         _isReloading = true;
         /// 방식 참고해서 나중에 State Machine에서 구현한다
         //Invoke(nameof(CancelReloadState), 0.1f);    // CancelReloadState를 0.1초 뒤에 호출하는 방식
     }
     private void CancelReloadState(InputAction.CallbackContext context)
     {
-        //Debug.Log("[Input] ResetReloadState - Reload reset");
+        Debug.Log("[Input] ResetReloadState - Reload reset");
         _isReloading = false;
     }
     public bool GetIsReloading() => _isReloading;
