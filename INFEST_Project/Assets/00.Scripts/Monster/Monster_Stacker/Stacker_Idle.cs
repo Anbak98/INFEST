@@ -7,6 +7,7 @@ public class Stacker_Idle : MonsterStateNetworkBehaviour<Monster_Stacker, Stacke
     public override void Enter()
     {
         base.Enter();
+        monster.IsIdle = true;
         monster.CurMovementSpeed = 0f;
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
@@ -19,5 +20,11 @@ public class Stacker_Idle : MonsterStateNetworkBehaviour<Monster_Stacker, Stacke
         {
             phase.ChangeState<Stacker_Walk>();
         }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        monster.IsIdle = false;
     }
 }

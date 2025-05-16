@@ -343,6 +343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1962471830794963129}
   - component: {fileID: 8319871427358612485}
+  - component: {fileID: 7967761131257807667}
   m_Layer: 0
   m_Name: FSM
   m_TagString: Untagged
@@ -388,6 +389,27 @@ MonoBehaviour:
   - {fileID: 8886210566158704274}
   - {fileID: 73845493544552503}
   - {fileID: 1156373938560833738}
+--- !u!135 &7967761131257807667
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930083621893679491}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1356661826985562065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,73 +1054,6 @@ Transform:
   - {fileID: 5815489970004244702}
   m_Father: {fileID: 2738017299687510482}
   m_LocalEulerAnglesHint: {x: -3.6373172, y: -4.4339294, z: 18.303644}
---- !u!1 &3057197448693998084
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2371753348841125519}
-  - component: {fileID: 5052248017230947469}
-  - component: {fileID: 5829288436927987931}
-  m_Layer: 11
-  m_Name: DetectPlayerByMonster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2371753348841125519
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3057197448693998084}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6205163159084411306}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5052248017230947469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3057197448693998084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81ee5e811f01c0d4db07237a9f85314e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monster: {fileID: 9217737986315806052}
---- !u!135 &5829288436927987931
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3057197448693998084}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3432671912613124414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,7 +2495,6 @@ Transform:
   - {fileID: 1962471830794963129}
   - {fileID: 3480355322484749546}
   - {fileID: 942133231455516106}
-  - {fileID: 2371753348841125519}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7006171198609829961
@@ -2779,16 +2733,26 @@ MonoBehaviour:
     type: 3}
   hitSound: {fileID: 6573686536218448580}
   hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
-  PlayerDetectorCollider: {fileID: 5829288436927987931}
-  _CurrentHealth: 180
+  PlayerDetectorCollider: {fileID: 7967761131257807667}
+  _CurMovementSpeed: 0
+  _CurDetectorRadius: 0
+  _CurHealth: -1
+  <CurDamage>k__BackingField: 0
+  <CurDef>k__BackingField: 0
+  _BaseHealth: -1
+  <BaseDamage>k__BackingField: 0
+  <BaseDef>k__BackingField: 0
+  _OffsetHealth: -1
+  <OffsetDamage>k__BackingField: 0
+  <OffsetDef>k__BackingField: 0
   _IsAttack:
     _value: 0
   _IsDead:
     _value: 0
-  _MovementSpeed: 0
   target: {fileID: 0}
   targets: []
   FSM: {fileID: 8319871427358612485}
+  IsReadyForChangingState: 1
 --- !u!1 &7415789846046760664
 GameObject:
   m_ObjectHideFlags: 0
