@@ -13,6 +13,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
 
     [Networked] public bool isJumping { get; set; }
+
     [Networked] public bool isGrounded { get; set; }
     [Networked] public bool isReloading { get; set; }
     [Networked] public bool isFiring { get; set; }
@@ -145,6 +146,8 @@ public class PlayerAnimationController : NetworkBehaviour
         playerAnimator.SetFloat(LookYParameterHash, lookDelta.y);
 
         playerAnimator.SetBool(JumpParameterHash, isJumping);
+        //playerAnimator.SetTrigger(JumpParameterHash);
+
         playerAnimator.SetBool(GroundedParameterHash, isGrounded);
 
         playerAnimator.SetBool(ReloadParameterHash, isReloading);
