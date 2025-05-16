@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class VomitRazer : NetworkBehaviour
 {
-    public float speed = 5f;
+    public float speed = 0.1f;
     public float lifetime = 3f;
     public LayerMask collisionLayers;
 
@@ -28,8 +28,7 @@ public class VomitRazer : NetworkBehaviour
         if (((1 << other.gameObject.layer) & collisionLayers) != 0)
         {
             ownerPattern2?.Attack();
-
-            Runner.Despawn(Object);
+            collisionLayers = 0;
         }
     }
 }

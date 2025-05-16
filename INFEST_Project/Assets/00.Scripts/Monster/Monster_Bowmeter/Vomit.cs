@@ -10,7 +10,6 @@ public class Vomit : NetworkBehaviour
     private float elapsed = 0f;
 
     public Bowmeter_Pattern1 ownerPattern1;
-    public Bowmeter_Pattern2 ownerPattern2;    
 
     public override void FixedUpdateNetwork()
     {
@@ -29,7 +28,6 @@ public class Vomit : NetworkBehaviour
         if (((1 << other.gameObject.layer) & collisionLayers) != 0)
         {
             ownerPattern1?.Attack();
-            ownerPattern2?.Attack();
 
             Runner.Despawn(Object);
         }

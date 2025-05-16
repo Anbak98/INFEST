@@ -6,6 +6,8 @@ using KINEMATION.KAnimationCore.Runtime.Core;
 using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 [Serializable]
@@ -125,10 +127,29 @@ public class WeaponSpawner : NetworkBehaviour
         }
     }
 
+    public void OnThrowGrenade()
+    {
+        _animator.SetTrigger(THROW_GRENADE);
+        Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);
+    }
+
     public void ThrowGrenade()
     {
+        _player.Consumes.ActivateGrenade();
         GetActiveWeapon().gameObject.SetActive(false);
-        Invoke(nameof(SetWeaponVisible), 5f);
+        Invoke(nameof(Throw), 1.5f);
+        Invoke(nameof(SetWeaponVisible), 0.5f);
+        //Invoke(nameof(DeactivateGrenade), 0.5f);
+    }
+
+    private void Throw()
+    {
+        _player.Consumes.Throw();
+    }
+
+    private void DeactivateGrenade()
+    {
+        _player.Consumes.DeactivateGrenade();
     }
 
     #region Model
