@@ -32,7 +32,7 @@ public class Weapon : NetworkBehaviour
     //public float recoilReturnTime = 0.5f;
     //public float splash;
     public LayerMask HitMask;
-        public float reloadTime = 2.0f; // 장전 속도
+    public float reloadTime = 2.0f; // 장전 속도
 
     //[Header("Ammo")]
     //public int startClip = 30; // 시작 탄창의 탄약
@@ -105,17 +105,18 @@ public class Weapon : NetworkBehaviour
         //    }
         //}
 
-        if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
-        {
-            IsReloading = false;
-            curBullet--;
-            curMagazineBullet++;
-            //if (HasInputAuthority)
-            //    instance.ReloadShotgun(possessionAmmo, curClip);
-            if (curMagazineBullet < instance.data.MagazineBullet)
-                Reload();
-        }
-        else if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
+        //if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
+        //{
+        //    IsReloading = false;
+        //    curBullet--;
+        //    curMagazineBullet++;
+        //    //if (HasInputAuthority)
+        //    //    instance.ReloadShotgun(possessionAmmo, curClip);
+        //    if (curMagazineBullet < instance.data.MagazineBullet)
+        //        Reload();
+        //}
+        //else
+        if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
         {
             IsReloading = false;
             curBullet += curMagazineBullet;

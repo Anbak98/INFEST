@@ -12,7 +12,7 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
         monster.animator.Play("Chase.DeadCop_Run");
         monster.PhaseIndex = 1;
         nextPatternIndex = 0;
-        ChangeState<WarZ_Chase_Run>(); // currentState를 강제로 1번 변경
+        ChangeState<DeadCop_Chase_Run>(); // currentState를 강제로 1번 변경
     }
 
 
@@ -28,7 +28,7 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
             // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다
         }
         if (monster.target == null)
-            monster.FSM.ChangePhase<WarZ_Phase_Wander>();
+            monster.FSM.ChangePhase<DeadCop_Phase_Wander>();
 
         monster.AIPathing.SetDestination(monster.target.position);
 

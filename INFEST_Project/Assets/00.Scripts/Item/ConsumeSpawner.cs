@@ -7,6 +7,7 @@ public class ConsumeSpawner : NetworkBehaviour
 {
     [SerializeField] private Player _player;
     public List<Consume> Consumes;
+    public List<GameObject> visibleGrenade;
 
     public void Throw()
     {
@@ -32,6 +33,25 @@ public class ConsumeSpawner : NetworkBehaviour
         {
             if (Consumes[i].key == _player.inventory.consume[2]?.key)
                 Consumes[i].CollMounting();
+        }
+    }
+
+
+    public void ActivateGrenade()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (Consumes[i].key == _player.inventory.consume[0]?.key)
+                visibleGrenade[i].SetActive(true);
+        }
+    }
+
+    public void DeactivateGrenade()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (Consumes[i].key == _player.inventory.consume[0]?.key)
+                visibleGrenade[i].SetActive(false);
         }
     }
 }
