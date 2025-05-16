@@ -13,7 +13,11 @@ public class Stacker_Phase_Chase : MonsterPhase<Monster_Stacker>
     public override void MachineExecute()
     {
         base.MachineExecute();
-        monster.AIPathing.SetDestination(monster.target.position);
+
+        if (monster.IsReadyForChangingState)
+        {
+            monster.AIPathing.SetDestination(monster.target.position);
+        }
 
         if (!monster.AIPathing.pathPending)
         {

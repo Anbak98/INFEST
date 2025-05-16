@@ -2,12 +2,21 @@ using Fusion;
 
 public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Chase>
 {
+    private TickTimer _tickTimer;
+
     public override void Enter()
     {
         base.Enter();
 
-        monster.CurMovementSpeed = 0f;
         monster.IsPunch = true;
+        monster.CurMovementSpeed = 0f;
+
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
+    }
+
+    public override void Execute()
+    {
+        base.Execute();
     }
 
     public override void Exit()

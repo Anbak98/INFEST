@@ -12,14 +12,27 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
     {
         base.MachineEnter();
         monster.animator.Play("Wave.DeadCop_Run");
+        monster.PhaseIndex = 1;
+        nextPatternIndex = 0;
+        ChangeState<DeadCop_Wave_Run>(); // currentState를 강제로 1번 변경
+
         // 플레이어의 인식범위 늘린다
         monster.PlayerDetectorCollider.radius = monster.info.DetectAreaWave;
-
     }
 
     public override void MachineExecute()
     {
         base.MachineExecute();
+        if (true/*타겟의 체력 <= 0*/)    // 임시로 항상 실행되게 만들었다
+        {
+            monster.target = null;
+            // 새로운 목표를 설정한다
+            monster.SetTargetRandomly();
+            // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다
+        }
+        if (monster.target == null)
+            monster.FSM.ChangePhase<WarZ_Phase_Wander>();
+
         monster.AIPathing.SetDestination(monster.target.position);
 
         // 생성되자마자 공격되는거 방지
@@ -55,9 +68,14 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
 
     public void CaculateAttackType(float distance)
     {
-        // 달릴때는 모든 상태로 변환이 가능하다
-        // 느리면 Wander로 돌아가고, 
-        // 빠른 경우에는 가까울 때 DropKick, 멀면 Punch 하면 된다
+        // 너무 멀거나 Wander로 돌아가야한다       
+        if (distance > 10f)
+        {
+            /// Wander -> Idle
+            monster.TryRemoveTarget(monster.target);    // Wander에서 이동할때는 target이 아니라 randomPosition으로 이동하니까 null문제 발생하지 않는다
+            nextPatternIndex = 3;
+            return;
+        }
         if (distance <= 0.5)
         {
             // DropKick
@@ -73,12 +91,6 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
             // Run
             nextPatternIndex = 0;
         }
-        /// 아마 Wave 시간 간격 초과였던거 같은데...?
-        else if (distance > 10f)
-        {
-
-            // Wander -> Idle
-            nextPatternIndex = 3;
-        }
+        /// Wave 시간 간격 초과하면 원래 상태로 돌아간다
     }
 }

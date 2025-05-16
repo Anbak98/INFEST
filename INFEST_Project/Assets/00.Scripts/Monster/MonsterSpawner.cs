@@ -90,7 +90,7 @@ public class MonsterSpawner : NetworkBehaviour
 
                         mnb.SetTarget(waveTarget);
 
-                        if(mnb is Monster_PJ_HI pj)
+                        if (mnb is Monster_PJ_HI pj)
                         {
                             pj.FSM.ChangePhase<PJ_HI_Phase_Chase>();
                         }
