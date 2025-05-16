@@ -126,7 +126,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -497688465526345628, guid: f402df61056da1b4b807580add9dd75c, type: 3}
+  m_Mesh: {fileID: -497688465526345628, guid: 4bb29243cbc5c3845add7852e363c5e6, type: 3}
   m_Bones:
   - {fileID: 8378998114158991541}
   - {fileID: 7531580920547252058}
@@ -2556,7 +2556,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1962471830794963129}
@@ -2807,12 +2807,26 @@ MonoBehaviour:
   _CurHealth: -1
   <CurDamage>k__BackingField: 0
   <CurDef>k__BackingField: 0
+  _BaseHealth: -1
+  <BaseDamage>k__BackingField: 0
+  <BaseDef>k__BackingField: 0
+  _OffsetHealth: -1
+  <OffsetDamage>k__BackingField: 0
+  <OffsetDef>k__BackingField: 0
   _IsAttack:
     _value: 0
   _IsDead:
     _value: 0
   target: {fileID: 0}
+  targets: []
   FSM: {fileID: 3608102175748486747}
+  IsReadyForChangingState: 1
+  _IsWonderPhase:
+    _value: 0
+  _IsChasePhase:
+    _value: 0
+  _IsPunch:
+    _value: 0
 --- !u!1 &7426032713725516538
 GameObject:
   m_ObjectHideFlags: 0

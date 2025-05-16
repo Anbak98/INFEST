@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class CommonSkillTable : IKeyedItem
+public class CommonSkillTable
 {
     /// <summary>
     /// ID
@@ -35,6 +35,5 @@ public class CommonSkillTable : IKeyedItem
     /// 스킬 사용 범위
     /// </summary>
     public float UseRange;
-    public int Key => key;
 
 }

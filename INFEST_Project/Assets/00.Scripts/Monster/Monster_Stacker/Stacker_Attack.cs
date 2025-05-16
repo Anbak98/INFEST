@@ -2,8 +2,6 @@ using Fusion;
 
 public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Chase>
 {
-    public TickTimer _tickTimer;
-
     public override void Enter()
     {
         base.Enter();
@@ -28,6 +26,6 @@ public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker, Stac
     public override void Attack()
     {
         base.Attack();
-        monster.TryAttackTarget(monster.info.MinAtk);
+        monster.TryAttackTarget(monster.CurDamage);
     }
 }

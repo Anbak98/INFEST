@@ -83,7 +83,7 @@ public class PlayerController : NetworkBehaviour
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
             {
-                player.Weapons.ThrowGrenade();
+                //player.Weapons.ThrowGrenade();
                 player.Consumes.Throw();
             }
 
@@ -143,7 +143,6 @@ public class PlayerController : NetworkBehaviour
 
         // SkinnedMeshRenderer 컴포넌트 비활성화 (캐릭터 등 스킨드 메시 처리)
         SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-        Debug.Log(skinnedRenderers.Length);
         foreach (var smr in skinnedRenderers)
         {
             smr.enabled = false;
@@ -225,6 +224,16 @@ public class PlayerController : NetworkBehaviour
     public void StartReload(NetworkInputData data)
     {
         // TODO
+        if (!player.isInteraction)
+        {
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_RELOAD))
+            {
+
+                player.Weapons.Reload();
+
+                //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+            }
+        }
     }
 
     // 플레이어가 땅 위에 있는지?

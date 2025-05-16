@@ -30,7 +30,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
             //{
             Debug.Log("Á¢ÃË " + other.name);
             //_inside.Add(_player);
-            _store.RPC_RequestEnterShopZone(_player, _player.Object.InputAuthority);
+            _store.RPC_EnterShopZone(_player, _player.Object.InputAuthority);
             _player.inStoreZoon = true;
 
             //}
@@ -72,7 +72,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
             Debug.Log("Á¢ÃË ÇØÁ¦ " + other.name);
 
             //_inside.Remove(_player);
-            _store.RPC_RequestLeaveShopZone(player, _player.Object.InputAuthority);
+            _store.RPC_LeaveShopZone(player, _player.Object.InputAuthority);
 
             //Exit(_player, _store);
         }
@@ -86,7 +86,7 @@ public class Collider : MonoBehaviour // À¯Àú°¡ »óÁ¡¿¡ ÁøÀÔÇß°í »óÈ£ÀÛ¿ëÇÏ´ÂÁö Ã
         _player.inStoreZoon = false;
 
 
-        _store.RPC_RequestLeaveShopZone(_player, _player.Object.InputAuthority);
+        _store.RPC_LeaveShopZone(_player, _player.Object.InputAuthority);
         _player = null;
 
     }

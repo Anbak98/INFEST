@@ -46,8 +46,6 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
         FSM.ChangePhase<WarZ_Phase_Chase>();
     }
 
-
-
     public float GetCurrentAnimLength()
     {
         AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(0);

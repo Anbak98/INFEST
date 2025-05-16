@@ -32,7 +32,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
                 mnb.OnWave(target);
 
-                spawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.1f);
+                spawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
             }
         }
     }
@@ -44,7 +44,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
         do
         {
-            spawnPoints = Physics.OverlapSphere(transform.position, distance, spawnPointLayerMask).ToList();
+            spawnPoints = Physics.OverlapSphere(from.position, distance, spawnPointLayerMask).ToList();
             distance *= 2;
             iteral--;
         } while (spawnPoints.Count == 0 && iteral > 0);

@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class ConsumeSpawner : NetworkBehaviour
 {
+    [SerializeField] private Player _player;
     public List<Consume> Consumes;
 
     public void Throw()
     {
         for(int i=0; i<3; i++)
         {
-            if (Consumes[i].key == Player.local.inventory.consume[0]?.key)
+            if (Consumes[i].key == _player.inventory.consume[0]?.key)
                 Consumes[i].CollThrow();
         }
     }
@@ -20,7 +21,7 @@ public class ConsumeSpawner : NetworkBehaviour
     {
         for (int i = 3; i < 4; ++i)
         {
-            if (Consumes[i].key == Player.local.inventory.consume[1]?.key)
+            if (Consumes[i].key == _player.inventory.consume[1]?.key)
                 Consumes[i].CollHeal();
         }
     }
@@ -29,7 +30,7 @@ public class ConsumeSpawner : NetworkBehaviour
     {
         for (int i = 4; i < 5; ++i)
         {
-            if (Consumes[i].key == Player.local.inventory.consume[2]?.key)
+            if (Consumes[i].key == _player.inventory.consume[2]?.key)
                 Consumes[i].CollMounting();
         }
     }

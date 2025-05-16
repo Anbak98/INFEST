@@ -7,9 +7,10 @@ public class TutorialShop : MonoBehaviour
     private void Update()
     {
         if (tutorialController.page != 3) return;
-        if (Player.local.isInteraction)
+        if (tutorialController.player.isInteraction)
         {
             tutorialController.TextChanged();
+            tutorialController.tutorial.ShowImage();
             Destroy(gameObject);
         }
     }

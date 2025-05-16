@@ -1,9 +1,11 @@
 using System.Threading;
 using Fusion;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster_Stacker : BaseMonster<Monster_Stacker>
 {
+
     [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
     public NetworkBool IsIdle { get; set; } = false;
     [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
@@ -12,16 +14,36 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
     [Networked, OnChangedRender(nameof(OnIsChasePhase))]
     public NetworkBool IsRun { get; set; } = false;
 
+    public Dictionary<int, CommonSkillTable> commonSkill;
+
+    [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
+    public NetworkBool IsWonderPhase { get; set; } = false;
+
+    [Networked, OnChangedRender(nameof(OnIsChasePhase))]
+    public NetworkBool IsChasePhase { get; set; } = false;
+
+
     [Networked, OnChangedRender(nameof(OnIsPunch))]
     public NetworkBool IsPunch { get; set; } = false;
+
 
     private int _wonderParameterHash { get; set; }
 
     private int _chaseParameterHash { get; set; }
 
+    private void OnIsWonderPhase() { if (IsWonderPhase) animator.Play("Wonder.Idle"); }
+    private void OnIsChasePhase() { if (IsChasePhase) animator.Play("Chase.Run"); }
+    private void OnIsPunch() => animator.SetBool("IsPunch", IsPunch);
+
+
     public override void Spawned()
     {
         base.Spawned();
+        commonSkill = DataManager.Instance.GetDictionary<CommonSkillTable>();
+        OnIsWonderPhase();
+        OnIsChasePhase();
+        OnIsPunch();
+
         _wonderParameterHash = Animator.StringToHash("Wonder.Idle");
         _chaseParameterHash = Animator.StringToHash("Chase.Run");
 
@@ -40,8 +62,8 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
         {
             FSM.ChangePhase<Stacker_Phase_Dead>();
         }
-    }
-
+    }       
+    
     public override void OnWave(Transform target)
     {
         base.OnWave(target);
@@ -52,6 +74,4 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
 
     private void OnIsWonderPhase() { if (IsIdle) animator.Play(_wonderParameterHash); }
     private void OnIsChasePhase() { if (IsRun) animator.Play(_chaseParameterHash); }
-
-    private void OnIsPunch() => animator.SetBool("IsPunch", IsPunch);
 }

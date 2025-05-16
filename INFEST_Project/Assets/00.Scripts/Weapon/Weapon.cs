@@ -424,7 +424,7 @@ public class Weapon : NetworkBehaviour
         //gunRecoil.ChangePosition(_startPosition);
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         IsAiming = false;
-        StopAiming();
+        instance.StopAiming();
 
 
         Debug.Log("조준끝\n 집탄율 : " + instance.concentration);

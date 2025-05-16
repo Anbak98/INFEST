@@ -22,7 +22,6 @@ public class PickUpCoinController : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_AddGold(Player player)
     {
-        if (player != Player.local) return;
         Debug.Log("¡¢√À");
         player.statHandler.CurGold += 1000;
     }

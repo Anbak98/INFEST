@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
 
     public void AddConsumeItme(Consume item)
     {
-        int key = item.instance.data.key % 10000;
+        int key = item.key % 10000;
         if (key < 800)
         {
             if (consume[0] == null)
@@ -61,7 +61,7 @@ public class Inventory : MonoBehaviour
 
     public void RemoveConsumeItem(int index)
     {
-        consume[index].RemoveNum();
+        consume[index].RemoveNum(); 
         if (consume[index].curNum == 0)
         consume[index] = null;
     }

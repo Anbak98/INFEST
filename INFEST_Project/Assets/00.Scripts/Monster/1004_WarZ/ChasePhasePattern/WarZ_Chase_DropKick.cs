@@ -16,27 +16,6 @@ public class WarZ_Chase_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, Wa
         monster.IsReadyForChangingState = false;
     }
 
-    //public override void Execute()
-    //{
-    //    base.Execute();
-
-    //    //monster.AIPathing.SetDestination(monster.target.position);
-    //    //if (monster.animTickTimer.Expired(Runner))
-    //    //{
-    //    //    if (!monster.AIPathing.pathPending /*&& !monster.IsDead*/)
-    //    //    {
-    //    //        if (monster.AIPathing.remainingDistance <= 0.5f)
-    //    //        {
-    //    //            phase.ChangeState<WarZ_Chase_DropKick>();
-    //    //        }
-    //    //        else
-    //    //        {
-    //    //            monster.IsAttack = false;
-    //    //            phase.ChangeState<WarZ_Chase_Run>();
-    //    //        }
-    //    //    }
-    //    //}
-    //}
 
     public override void Exit()
     {
