@@ -69,8 +69,8 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
         else
         {
             // Run
-            nextPatternIndex = 0;
             ChangeState<DeadCop_Chase_Run>();
+            nextPatternIndex = 0;
         }
     }
 

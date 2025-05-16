@@ -745,7 +745,10 @@ MonoBehaviour:
   targets: []
   FSM: {fileID: 3796872193394634844}
   IsReadyForChangingState: 1
-  _IsRunning:
+  _PhaseIndex: 0
+  _IsRightPunch:
+    _value: 0
+  _IsDropKick:
     _value: 0
   _IsWave:
     _value: 0
@@ -876,6 +879,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b85fb24eacefb489c879d592b1ee09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 5
+  attackAngle: 90
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &978332160439622063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,6 +2190,7 @@ MonoBehaviour:
   - {fileID: 1010061006151526775}
   - {fileID: 6020034518522867767}
   currentState: {fileID: 0}
+  nextPatternIndex: 0
 --- !u!1 &4163244808070530913
 GameObject:
   m_ObjectHideFlags: 0
@@ -2787,6 +2796,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7167989a9835946a8718ef7ed45934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 5
+  attackAngle: 90
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &5783978153121243833
 GameObject:
   m_ObjectHideFlags: 0
@@ -3983,6 +3997,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 014f1b3c56ccba3478b5dc2fe2ac59ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 5
+  attackAngle: 90
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &8617749581448039505
 GameObject:
   m_ObjectHideFlags: 0
@@ -4027,6 +4046,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9be1d6272832652438dac693e180e69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 5
+  attackAngle: 90
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &8650693130152473349
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,6 +4103,8 @@ MonoBehaviour:
   - {fileID: 7710609844761053710}
   - {fileID: 4204232132621548293}
   currentState: {fileID: 0}
+  patternCount: 0
+  nextPatternIndex: 0
 --- !u!1 &8735206090339297130
 GameObject:
   m_ObjectHideFlags: 0

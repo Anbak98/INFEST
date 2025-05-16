@@ -45,11 +45,14 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
 
     public void CaculateAttackType(float distance)
     {
-        // 달릴때는 모든 상태로 변환이 가능하다
-        // 너무 멀거나 느리면 Wander로 돌아가고
-        if (distance > 10f /*|| monster.CurMovementSpeed <= 1*/)
+        // Run에서는 모든 상태로 변환이 가능하다
+        // 타겟인 플레이어가 없거나(?) 애초에 타겟인 플레이어가 있어서 Chase에 들어온거니까
+
+        // 너무 멀거나, 타겟의 체력이 0이거나(bool값으로 0처리) 타겟을 null로 하고 Wander로 돌아가고        
+        if (distance > 10f /*|| 타겟의 체력 0 */)
         {
             /// Wander -> Idle
+            monster.TryRemoveTarget(monster.target);    // Wander에서 이동할때는 target이 아니라 randomPosition으로 이동하니까 null문제 발생하지 않는다
             nextPatternIndex = 3;
             return;
         }
@@ -70,8 +73,15 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         else
         {
             // Run
+            //ChangeState<WarZ_Chase_Run>();
             nextPatternIndex = 0;
-            ChangeState<WarZ_Chase_Run>();
         }
+
+        // 타겟을 바꿔주는 로직
+        // 타겟의 체력0 체크
+        // 타겟에 다른 몬스터가 있다면
+        // 없으면 알아서 idle이 되겠지
+        //monster.SetTargetRandomly();
+
     }
 }

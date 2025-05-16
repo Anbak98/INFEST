@@ -21,6 +21,10 @@ public class WarZ_Chase_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, Wa
     {
         base.Exit();
         monster.IsDropKick = false;
+        // 애니메이션은 정지하더라도
+        // Phase_Chase의 currentState가 DropKick으로 남아있으므로
+        // Run으로 바꿔야한다
+        phase.ChangeState<WarZ_Chase_Run>();
     }
 
     public override void Attack()
