@@ -39,7 +39,7 @@ public class UIStateView : UIScreen
         SetJobIcon();
         SetWeaponIcon();
 
-        _characterInfo = Player.local.statHandler.info.data;
+        _characterInfo = Player.local.statHandler.info.data; // 각각의 플레이어 정보를 넣어주지 않으면 불가능.
         _weaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
         ChoiceJob();
 
@@ -124,17 +124,17 @@ public class UIStateView : UIScreen
                 bulletText.text = $"{Player.local.inventory.auxiliaryWeapon[0].curMagazineBullet}/{Player.local.inventory.auxiliaryWeapon[0].curBullet}";
             else if(Player.local.inventory.equippedWeapon.key == Player.local.inventory.weapon[0]?.key)
                 bulletText.text = $"{Player.local.inventory.weapon[0].curMagazineBullet}/{Player.local.inventory.weapon[0].curBullet}";
-            else if (Player.local.inventory.equippedWeapon.key == Player.local.inventory.weapon[1]?.key)
+            else if(Player.local.inventory.equippedWeapon.key == Player.local.inventory.weapon[1]?.key)
                 bulletText.text = $"{Player.local.inventory.weapon[1].curMagazineBullet}/{Player.local.inventory.weapon[1].curBullet}";
         }
-        else
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                if (Player.local.inventory.equippedWeapon.key == Player.local.inventory.consume[i]?.key)
-                    bulletText.text = $"1/{Player.local.inventory.consume[i].curNum}";
-            }
-        }
+        //else
+        //{
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        if (Player.local.inventory.equippedWeapon.key == Player.local.inventory.consume[i]?.key)
+        //            bulletText.text = $"1/{Player.local.inventory.consume[i].curNum}";
+        //    }
+        //}
 
 
         //if (_characterInfo == null) return;

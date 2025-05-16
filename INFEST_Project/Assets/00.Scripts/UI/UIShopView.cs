@@ -73,6 +73,8 @@ public class UIShopView : UIScreen
     //public TextMeshProUGUI mainWeapon2Name;
     public TextMeshProUGUI[] itemName; // 아이템 이름
 
+    public Image[] iconImage;
+
     [Networked]
     public Profile Info { get; set; }
 
@@ -162,7 +164,7 @@ public class UIShopView : UIScreen
 
     public void DefSet()
     {
-        defText.text = $"{Player.local.statHandler.CurDefGear}/200";
+        defText.text = $"{Player.local.statHandler.CurDefGear}/200"; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
     }
 
     private void GoldSet()
@@ -345,33 +347,33 @@ public class UIShopView : UIScreen
     //}
     public void OnClickAllBtn()
     {
-        _store.RPC_RequestTryAllSupplement(Player.local, Player.local.Runner.LocalPlayer);
+        _store.RPC_TryAllSupplement(Player.local, Player.local.Runner.LocalPlayer);
     }
 
     public void OnClickDefBtn()
     {
 
-        _store.RPC_RequestTryDefSupplement(Player.local, Player.local.Runner.LocalPlayer);
+        _store.RPC_TryDefSupplement(Player.local);
     }
 
     public void OnClickBulletSupplementBtn(int index)
     {
-        _store.RPC_RequestTryBulletSupplement(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TryBulletSupplement(Player.local, index);
     }
 
     public void OnClickItmeSupplementBtn(int index)
     {
-        _store.RPC_RequestTryItmeSupplement(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TryItmeSupplement(Player.local,index);
     }
 
     public void OnClickBuyBtn(int index)
     {
-        _store.RPC_RequestTryBuy(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TryBuy(Player.local, index);
     }
 
     public void OnClickSaleBtn(int index)
     {
-        _store.RPC_RequestTrySale(Player.local, Player.local.Runner.LocalPlayer, index);
+        _store.RPC_TrySale(Player.local, index);
 
     }
 
@@ -381,13 +383,18 @@ public class UIShopView : UIScreen
         {
             for (int i = 0; i < saleButton.Count; i++)
             {
+
+
                 saleButton[i].interactable = false;
+                
             }
         }
         else
         {
             for (int i = 0; i < saleButton.Count; i++)
             {
+                if (_store.idList[i] % 10000 > 700) return;
+
                 saleButton[i].interactable = true;
             }
         }
@@ -509,6 +516,7 @@ public class UIShopView : UIScreen
         DefSet();
         AllSupplementSet();
         ResetText();
+        IconSet();
     }
     public void SaleSet(int index)
     {
@@ -616,5 +624,49 @@ public class UIShopView : UIScreen
                 }
                 break;
         }
+    }
+
+    public void IconSet()
+    {
+        if(Player.local.inventory.auxiliaryWeapon[0] != null)
+        {
+            iconImage[0].sprite = Player.local.inventory.auxiliaryWeapon[0].icon;
+            iconImage[0].color = Color.white;
+
+        }
+        else
+        {
+            iconImage[0].color = Color.black;
+        }
+
+        if (Player.local.inventory.weapon[0] != null)
+        {
+            iconImage[1].sprite = Player.local.inventory.weapon[0].icon;
+            iconImage[1].color = Color.white;
+
+        }
+        else
+        {
+            iconImage[1].color = Color.black;
+        }
+
+        if (Player.local.inventory.weapon[1] != null)
+        {
+            iconImage[2].sprite = Player.local.inventory.weapon[1].icon;
+            iconImage[2].color = Color.white;
+
+        }
+        else
+        {
+            iconImage[2].color = Color.black;
+        }
+
+
+
+
+        //icon[3] = Player.local.inventory.consume[0].icon;
+        //icon[4] = Player.local.inventory.consume[1].icon;
+        //icon[5] = Player.local.inventory.consume[2].icon;
+
     }
 }

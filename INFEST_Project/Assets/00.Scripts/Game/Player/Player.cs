@@ -105,13 +105,25 @@ public class Player : NetworkBehaviour
                     bool shieldItme = itemChk < 1000 && itemChk > 900;
 
                     if (throwingWeapon)
+                    {
                         inventory.consume[0] = Consumes.Consumes[i];
+                        inventory.AddConsumeItme(inventory.consume[0]);
+
+                    }
 
                     if (recoveryItem)
+                    {
                         inventory.consume[1] = Consumes.Consumes[i];
+                        inventory.AddConsumeItme(inventory.consume[1]);
+
+                    }
 
                     if (shieldItme)
+                    {
                         inventory.consume[2] = Consumes.Consumes[i];
+                        inventory.AddConsumeItme(inventory.consume[2]);
+
+                    }
                     break;
 
                 }
@@ -120,6 +132,8 @@ public class Player : NetworkBehaviour
             inventory.equippedWeapon = inventory.auxiliaryWeapon[0];
             inventory.consume[0] = Consumes.Consumes[2];
             inventory.consume[1] = Consumes.Consumes[3];
+            inventory.AddConsumeItme(inventory.consume[0]);
+            inventory.AddConsumeItme(inventory.consume[1]);
         }
     }
 

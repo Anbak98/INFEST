@@ -18,7 +18,7 @@ public struct IKTransforms
 
 public class WeaponSpawner : NetworkBehaviour
 {
-
+    [SerializeField] private Player _player;
     public List<Weapon> Weapons;
     public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
     private TickTimer _switchTimer { get; set; }
@@ -64,7 +64,7 @@ public class WeaponSpawner : NetworkBehaviour
         //GetActiveWeapon().RPC_OnEquipped();
 
     }
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_OnChangeWeapon(float delay)
     {
         if (_weapons.Count <= 1) return;
@@ -78,7 +78,7 @@ public class WeaponSpawner : NetworkBehaviour
         //Invoke(nameof(Delay), delay);
         //int _intValue = _value > 0f ? 1 : -1;
         //_activeWeaponIndex += _activeWeaponIndex + _intValue > _weapons.Count - 1 ? 0 : _activeWeaponIndex + _intValue < 0 ? _weapons.Count - 1 : _intValue;
-        Debug.Log("전 : " + _activeWeaponIndex);
+        
         _removeIndex = _activeWeaponIndex;
         _activeWeaponIndex += _value > 0f ? 1 : -1;
 
@@ -93,10 +93,10 @@ public class WeaponSpawner : NetworkBehaviour
 
         if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
         if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
-        Debug.Log("후 : "+_activeWeaponIndex);
+        
         
         GetActiveWeapon().OnEquipped(); 
-        Player.local.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+        _player.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
         Invoke(nameof(SetWeaponVisible), 0.1f);
 
         _saleChk = false;
@@ -411,7 +411,7 @@ public class WeaponSpawner : NetworkBehaviour
 
         for(int i = 0; i< _weapons.Count; i++)
         {
-            if (_weapons[i].key == Player.local.statHandler.info.data.StartAuxiliaryWeapon)
+            if (_weapons[i].key == _player.statHandler.info.data.StartAuxiliaryWeapon)
                 _activeWeaponIndex = i;
         }
         GetActiveWeapon().gameObject.SetActive(true);

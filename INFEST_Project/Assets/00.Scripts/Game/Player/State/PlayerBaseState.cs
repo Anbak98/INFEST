@@ -49,6 +49,11 @@ public abstract class PlayerBaseState : IState
         {
             stateMachine.ChangeState(stateMachine.DeadState);
         }
+
+        if(data.isReloading)
+        {
+            stateMachine.ChangeState(stateMachine.ReloadState);
+        }
     }
     public virtual void PhysicsUpdate(NetworkInputData data)
     {
@@ -89,8 +94,8 @@ public abstract class PlayerBaseState : IState
     }
     protected void Reload(NetworkInputData data)
     {
-        player.Weapons.Reload();
         // ¿Â¿¸
+        controller.StartReload(data);
     }
 
     protected void PlayerRun(NetworkInputData data)

@@ -34,7 +34,7 @@ public class StoreController : NetworkBehaviour
             if (storeTimer.ExpiredOrNotRunning(Runner))
             {
                 activeTime = true;
-                if (aiiStores.Count < 3)
+                if (aiiStores.Count < 4)
                 {
                     RPC_Hide(_randomIndex);
                     LightHide(_randomIndex);
@@ -69,7 +69,7 @@ public class StoreController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            if (aiiStores.Count < 3)
+            if (aiiStores.Count < 4)
             {
                 _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
                 RPC_Show(_randomIndex);
@@ -132,7 +132,7 @@ public class StoreController : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EndTImer()
     {
-        if (!Player.local.inStoreZoon) return;
+        if (!Player.local.inStoreZoon) return; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 

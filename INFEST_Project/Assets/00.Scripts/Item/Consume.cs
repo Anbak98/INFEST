@@ -9,7 +9,12 @@ public class Consume : NetworkBehaviour
     public ConsumeInstance instance;
     public Player _player;
 
-    [Networked] public int curNum { get; set; }    // 현재 아이템 갯수
+    [Networked] public int curNum { get; set; } = 0;  // 현재 아이템 갯수
+
+    public void Awake()
+    {
+        instance = new(key);
+    }
 
     public void AddNum()
     {
@@ -21,11 +26,7 @@ public class Consume : NetworkBehaviour
         curNum--;
         curNum = Mathf.Max(curNum, 0);
     }
-    public override void Spawned()
-    {
-        instance = new(key);
-        curNum = 1;
-    }
+
 
     public virtual void Throw()
     {

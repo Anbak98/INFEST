@@ -12,6 +12,7 @@ public class TutorialTrigger : MonoBehaviour
         if (other.gameObject.layer == _playerLayer)
         {
             tutorialController.TextChanged();
+            tutorialController.player = other.gameObject.GetComponentInParent<Player>();
             Destroy(gameObject);
         }
     }
