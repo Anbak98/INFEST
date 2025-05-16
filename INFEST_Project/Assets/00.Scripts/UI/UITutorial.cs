@@ -1,7 +1,5 @@
-using System.Collections;
-using Fusion;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UITutorial : UIScreen
@@ -9,7 +7,6 @@ public class UITutorial : UIScreen
     public TextMeshProUGUI tutorialText;
     public TextMeshProUGUI toolTipText;
     public Image shopImage;
-
     protected override void Start()
     {
         base.Start();
