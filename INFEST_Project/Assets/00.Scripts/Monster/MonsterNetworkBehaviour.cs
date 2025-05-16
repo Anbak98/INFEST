@@ -144,7 +144,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         if (this.target == target)
         {
-            target = null;
+            this.target = null;
         }
 
         if (targets.Contains(target))
