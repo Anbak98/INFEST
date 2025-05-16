@@ -40,7 +40,7 @@ public class VomitAndArea : NetworkBehaviour
     {
         Vector3 spawnPosition = transform.position;
 
-        spawnPosition.y = 0.05f;
+        spawnPosition.y = 0f;
 
         Runner.Spawn(vomitAreaPrefab, spawnPosition, Quaternion.identity);
     }

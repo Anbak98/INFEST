@@ -32,7 +32,7 @@ public class Bowmeter_Pattern2 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
 
     public override void Effect()
     {
-        base.Effect();        
+        base.Effect();
 
         var spawnedVomit = Runner.Spawn(vomitRazer, phase.vomitPosition.position, phase.vomitPosition.rotation);
 
