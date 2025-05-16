@@ -224,6 +224,16 @@ public class PlayerController : NetworkBehaviour
     public void StartReload(NetworkInputData data)
     {
         // TODO
+        if (!player.isInteraction)
+        {
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_RELOAD))
+            {
+
+                player.Weapons.Reload();
+
+                //delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
+            }
+        }
     }
 
     // 플레이어가 땅 위에 있는지?

@@ -78,7 +78,7 @@ public class WeaponSpawner : NetworkBehaviour
         //Invoke(nameof(Delay), delay);
         //int _intValue = _value > 0f ? 1 : -1;
         //_activeWeaponIndex += _activeWeaponIndex + _intValue > _weapons.Count - 1 ? 0 : _activeWeaponIndex + _intValue < 0 ? _weapons.Count - 1 : _intValue;
-        Debug.Log("전 : " + _activeWeaponIndex);
+        
         _removeIndex = _activeWeaponIndex;
         _activeWeaponIndex += _value > 0f ? 1 : -1;
 
@@ -93,7 +93,7 @@ public class WeaponSpawner : NetworkBehaviour
 
         if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
         if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
-        Debug.Log("후 : "+_activeWeaponIndex);
+        
         
         GetActiveWeapon().OnEquipped(); 
         _player.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
