@@ -7,7 +7,6 @@ public class WarZ_Chase_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Ph
     public override void Enter()
     {
         base.Enter();
-        //_target = monster.target;
         monster.CurMovementSpeed = monster.info.SpeedMove;
 
         Debug.Log(monster.target.transform.position);

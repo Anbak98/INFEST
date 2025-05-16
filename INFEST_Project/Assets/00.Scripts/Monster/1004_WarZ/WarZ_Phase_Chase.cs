@@ -11,13 +11,17 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         base.MachineEnter();
         monster.animator.Play("Chase.WarZ_Run");
         monster.PhaseIndex = 1;
-
+        nextPatternIndex = 0;
+        ChangeState<WarZ_Chase_Run>(); // currentState를 강제로 1번 변경
     }
 
 
     public override void MachineExecute()
     {
         base.MachineExecute();
+        if (monster.target == null)
+            monster.FSM.ChangePhase<WarZ_Phase_Wander>(); 
+
         monster.AIPathing.SetDestination(monster.target.position);
 
         // 생성되자마자 공격되는거 방지
@@ -48,7 +52,7 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         // Run에서는 모든 상태로 변환이 가능하다
         // 타겟인 플레이어가 없거나(?) 애초에 타겟인 플레이어가 있어서 Chase에 들어온거니까
 
-        // 너무 멀거나, 타겟의 체력이 0이거나(bool값으로 0처리) 타겟을 null로 하고 Wander로 돌아가고        
+        // 너무 멀거나, 타겟의 체력이 0이거나(bool값으로 0처리) 타겟을 null로 하고 Wander로 돌아가야한다       
         if (distance > 10f /*|| 타겟의 체력 0 */)
         {
             /// Wander -> Idle
