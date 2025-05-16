@@ -1,22 +1,31 @@
 public class Stacker_Phase_Chase : MonsterPhase<Monster_Stacker>
 {
+    public override void MachineEnter()
+    {
+        base.MachineEnter();        
+    }
+
     public override void MachineExecute()
     {
         base.MachineExecute();
 
         if (monster.IsReadyForChangingState)
         {
-            monster.SetTargetRandomly();
-            monster.SetTarget(monster.target.transform);
             monster.AIPathing.SetDestination(monster.target.position);
+        }
 
-            if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
+        if (!monster.AIPathing.pathPending)
+        {
+            if (monster.IsReadyForChangingState)
             {
-                ChangeState<Stacker_Attack>();
-            }
-            else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
-            {
-                ChangeState<Stacker_Run>();
+                if (monster.AIPathing.remainingDistance <= 2f)
+                {
+                    ChangeState<Stacker_Attack>();
+                }
+                else if (monster.AIPathing.remainingDistance > 2f)
+                {
+                    ChangeState<Stacker_Run>();
+                }
             }
         }
     }
