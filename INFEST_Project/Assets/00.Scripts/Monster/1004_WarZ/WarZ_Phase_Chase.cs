@@ -9,6 +9,7 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
     public override void MachineEnter()
     {
         base.MachineEnter();
+
         monster.animator.Play("Chase.WarZ_Run");
         monster.PhaseIndex = 1;
         nextPatternIndex = 0;
@@ -19,8 +20,16 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
     public override void MachineExecute()
     {
         base.MachineExecute();
+        /// target의 체력이 0이면 null로 만든다
+        if (true/*타겟의 체력 <= 0*/)    // 임시로 항상 실행되게 만들었다
+        {
+            monster.target = null;
+            // 새로운 목표를 설정한다
+            monster.SetTargetRandomly();
+            // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다
+        }
         if (monster.target == null)
-            monster.FSM.ChangePhase<WarZ_Phase_Wander>(); 
+            monster.FSM.ChangePhase<WarZ_Phase_Wander>();
 
         monster.AIPathing.SetDestination(monster.target.position);
 
@@ -49,11 +58,8 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
 
     public void CaculateAttackType(float distance)
     {
-        // Run에서는 모든 상태로 변환이 가능하다
-        // 타겟인 플레이어가 없거나(?) 애초에 타겟인 플레이어가 있어서 Chase에 들어온거니까
-
-        // 너무 멀거나, 타겟의 체력이 0이거나(bool값으로 0처리) 타겟을 null로 하고 Wander로 돌아가야한다       
-        if (distance > 10f /*|| 타겟의 체력 0 */)
+        // 너무 멀거나 Wander로 돌아가야한다       
+        if (distance > 10f)
         {
             /// Wander -> Idle
             monster.TryRemoveTarget(monster.target);    // Wander에서 이동할때는 target이 아니라 randomPosition으로 이동하니까 null문제 발생하지 않는다
@@ -77,15 +83,7 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         else
         {
             // Run
-            //ChangeState<WarZ_Chase_Run>();
             nextPatternIndex = 0;
         }
-
-        // 타겟을 바꿔주는 로직
-        // 타겟의 체력0 체크
-        // 타겟에 다른 몬스터가 있다면
-        // 없으면 알아서 idle이 되겠지
-        //monster.SetTargetRandomly();
-
     }
 }

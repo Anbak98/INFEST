@@ -8,7 +8,6 @@ public class WarZ_Chase_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, Wa
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("DropKick");
         monster.CurMovementSpeed = 0f;
         monster.IsDropKick = true;
 
