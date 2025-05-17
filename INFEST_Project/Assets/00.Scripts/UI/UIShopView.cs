@@ -383,10 +383,9 @@ public class UIShopView : UIScreen
         {
             for (int i = 0; i < saleButton.Count; i++)
             {
-
+                if (_store.idList[i] % 10000 > 700) return;
 
                 saleButton[i].interactable = false;
-                
             }
         }
         else
