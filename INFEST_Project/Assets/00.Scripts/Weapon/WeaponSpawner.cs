@@ -108,6 +108,7 @@ public class WeaponSpawner : NetworkBehaviour
     {
         RPC_OnAim(_isAiming);
     }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_OnAim(bool value)
     {
@@ -126,10 +127,14 @@ public class WeaponSpawner : NetworkBehaviour
         }
     }
 
+    bool throwChk = false;
     public void OnThrowGrenade()
     {
+        if (throwChk) return;
+        throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
         Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.6f);
     }
 
     public void ThrowGrenade()
@@ -144,6 +149,7 @@ public class WeaponSpawner : NetworkBehaviour
     private void Throw()
     {
         _player.Consumes.Throw();
+        throwChk = false;
     }
 
     private void DeactivateGrenade()
