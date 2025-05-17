@@ -381,19 +381,15 @@ public class UIShopView : UIScreen
     {
         if (HasOnlyOneNonNullInAllArrays())
         {
-            for (int i = 0; i < saleButton.Count; i++)
+            for (int i = 0; i < 2; i++)
             {
-                if (_store.idList[i] % 10000 > 700) return;
-
                 saleButton[i].interactable = false;
             }
         }
         else
         {
-            for (int i = 0; i < saleButton.Count; i++)
+            for (int i = 0; 2 < saleButton.Count; i++)
             {
-                if (_store.idList[i] % 10000 > 700) return;
-
                 saleButton[i].interactable = true;
             }
         }
