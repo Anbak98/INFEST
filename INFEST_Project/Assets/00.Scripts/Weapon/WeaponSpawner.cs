@@ -130,6 +130,7 @@ public class WeaponSpawner : NetworkBehaviour
     bool throwChk = false;
     public void OnThrowGrenade()
     {
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (throwChk) return;
         throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
