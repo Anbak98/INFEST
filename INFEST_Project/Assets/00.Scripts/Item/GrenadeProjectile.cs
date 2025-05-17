@@ -149,7 +149,7 @@ public class GrenadeProjectile : NetworkBehaviour
         GrenadeExplosion.Explosion();
         StopAnimation();
         if (HasStateAuthority)
-            Invoke(nameof(Despawn), 1f);
+            Invoke(nameof(Despawn), 0.8f);
     }
 
     public void Init(Vector3 initialVelocity, Vector3 startPosition)

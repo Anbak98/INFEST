@@ -21,6 +21,7 @@ public class Weapon : NetworkBehaviour
     public FPSWeapon FPSWeapon;
     public EWeaponType Type; // 무기 종류
     public Sprite icon;
+    public Rocket rocket;
 
     [Header("Firing")]
     //public bool isAutomatic = false; // 연사 or 단발
@@ -264,28 +265,41 @@ public class Weapon : NetworkBehaviour
 
         if (HasStateAuthority)
         {
-            if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
-                    Object.InputAuthority, out var hit, HitMask, hitOptions))
+            if (Type == EWeaponType.Launcher && rocket != null)
             {
-                projectileData.hitPosition = hit.Point;
-                projectileData.hitNormal = hit.Normal;
-
-                if (hit.Hitbox != null)
+                if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
+                Object.InputAuthority, out var hit))
                 {
-                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                    transform.position = hit.GameObject.transform.root.position + new Vector3(0, 0.01f, 0);
+                    RPC_Explode(transform.position);
+                    return;
+                }
+            }
+            else{
+                if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
+                        Object.InputAuthority, out var hit, HitMask, hitOptions))
+                {
+                    projectileData.hitPosition = hit.Point;
+                    projectileData.hitNormal = hit.Normal;
+
+                    if (hit.Hitbox != null)
+                    {
+                        ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                    }
+                    else
+                    {
+                        projectileData.showHitEffect = true;
+                    }
                 }
                 else
                 {
-                    projectileData.showHitEffect = true;
+                    projectileData.hitPosition = origin + direction * instance.data.WeaponRange;
+                    projectileData.hitNormal = -direction;
+                    projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
                 }
             }
-            else
-            {
-                projectileData.hitPosition = origin + direction * instance.data.WeaponRange;
-                projectileData.hitNormal = -direction;
-                projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
-            }
         }
+
 
         Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
 
@@ -310,6 +324,15 @@ public class Weapon : NetworkBehaviour
         //      o.GetComponent<Bullet>().Init(pos, maxHitDistance);
         //  });
 
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_Explode(Vector3 pos)
+    {
+        transform.position = pos;
+        rocket.explosion.SetActive(true);
+        rocket.render.SetActive(false);
+        rocket.Explosion();
     }
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
