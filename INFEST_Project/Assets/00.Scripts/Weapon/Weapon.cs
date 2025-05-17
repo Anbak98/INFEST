@@ -68,7 +68,6 @@ public class Weapon : NetworkBehaviour
     private bool _reloadingVisible; // 보이는 리로딩 상태
     //[SerializeField] private Transform _fireTransform; // 총구 위치
     //[SerializeField] private NetworkPrefabRef _realProjectilePrefab;
-    public ParticleSystem muzzleParticle;
 
     public override void FixedUpdateNetwork()
     {
@@ -320,7 +319,6 @@ public class Weapon : NetworkBehaviour
         //      o.GetComponent<Bullet>().Init(pos, maxHitDistance);
         //  });
 
-        Rpc_MuzzleParticle();
     }
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
@@ -407,13 +405,6 @@ public class Weapon : NetworkBehaviour
         dummy.transform.position = pos;
         dummy.transform.rotation = Quaternion.LookRotation(dir);
         dummy.SetHit(hitPos, hitNormal, showHitEffect);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void Rpc_MuzzleParticle()
-    {
-        muzzleParticle.transform.position = firstPersonMuzzleTransform.position;
-        muzzleParticle.Play();
     }
 
     public void StopAiming()

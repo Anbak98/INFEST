@@ -139,7 +139,7 @@ public class WeaponSpawner : NetworkBehaviour
         GetActiveWeapon().gameObject.SetActive(false);
         Invoke(nameof(Throw), 1.5f);
         Invoke(nameof(SetWeaponVisible), 0.5f);
-        //Invoke(nameof(DeactivateGrenade), 0.5f);
+        Invoke(nameof(DeactivateGrenade), 0.5f);
     }
 
     private void Throw()
