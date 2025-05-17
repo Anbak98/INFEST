@@ -134,7 +134,7 @@ public class WeaponSpawner : NetworkBehaviour
         throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
         Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);
-        _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.6f);
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
     }
 
     public void ThrowGrenade()
@@ -143,7 +143,7 @@ public class WeaponSpawner : NetworkBehaviour
         GetActiveWeapon().gameObject.SetActive(false);
         Invoke(nameof(Throw), 1.5f);
         Invoke(nameof(SetWeaponVisible), 0.5f);
-        Invoke(nameof(DeactivateGrenade), 0.5f);
+        Invoke(nameof(DeactivateGrenade), 1.5f);
     }
 
     private void Throw()
