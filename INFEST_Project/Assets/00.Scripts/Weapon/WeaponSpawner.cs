@@ -6,8 +6,6 @@ using KINEMATION.KAnimationCore.Runtime.Core;
 using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 [Serializable]

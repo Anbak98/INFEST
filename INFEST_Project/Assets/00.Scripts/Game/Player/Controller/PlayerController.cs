@@ -59,7 +59,7 @@ public class PlayerController : NetworkBehaviour
             {
 
                 if (!player.isInteraction)
-                    player.store.RPC_RequestInteraction(player, Object.InputAuthority);
+                    player.store.RPC_RequestInteraction(Object.InputAuthority);
                 else 
                     player.store.RPC_RequestStopInteraction(Object.InputAuthority);
 

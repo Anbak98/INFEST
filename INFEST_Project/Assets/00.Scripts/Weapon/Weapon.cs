@@ -132,25 +132,16 @@ public class Weapon : NetworkBehaviour
     {
 
         instance = new(key);
-        FPSWeapon.activeAmmo = curMagazineBullet;
         //_basicDispersion = Dispersion;
         ////curClip = Mathf.Clamp(curClip, 0, startClip);
         //possessionAmmo = maxAmmo;
         //curClip = startClip;
         if (instance == null) return;
 
-        //damage = instance.data.Atk;
-        //maxHitDistance = instance.data.WeaponRange;
         Type = (EWeaponType)instance.data.WeaponType;
         curMagazineBullet = instance.data.MagazineBullet;
         curBullet = instance.data.MaxBullet;
-        //recoilForce = instance.data.RecoilForce;
-        //recoilReturnTime = instance.data.RecoilReturnTime;
-        //dispersion = instance.data.Concentration;
-        //splash = instance.data.Splash;
-        //isAutomatic = instance.data.IsAutpmatic;
-        //fireRate = instance.data.FireRate * 100f;
-        //ProjectilesPerShot = instance.data.ProjectilesPerShot;
+        FPSWeapon.activeAmmo = curMagazineBullet;
 
 
         _visibleFireCount = _fireCount;
