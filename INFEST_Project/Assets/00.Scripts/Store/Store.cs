@@ -20,9 +20,9 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// <param name="_player"></param>
     /// <param name="_playerRef"></param>
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestInteraction(Player _player, PlayerRef _playerRef)
+    public void RPC_RequestInteraction(PlayerRef _playerRef)
     {
-        RPC_Interaction(_player, _playerRef);
+        RPC_Interaction(_playerRef);
 
         if (_storeController.activeTime)
         {
@@ -35,22 +35,13 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     /// </summary>
     /// 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_Interaction(Player _player, [RpcTarget] PlayerRef _playerRef)
+    public void RPC_Interaction([RpcTarget] PlayerRef _playerRef)
     {
-        // if (_playerRef != _player.Runner.LocalPlayer) return;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-
-
-        //isInteraction = false;
-        //_storeController.uIShopView.bg.gameObject.SetActive(true);
-        //_storeController.uIShopView.profile.gameObject.SetActive(true);
-        //_storeController.uIShopView.interactionText.gameObject.SetActive(false); 
         Global.Instance.UIManager.Hide<UIInteractiveView>();
         _storeController.uIShopView = Global.Instance.UIManager.Show<UIShopView>();
-        //_storeController.Activate();
         _storeController.uIShopView.StoreInIt(this);
-
         _storeController.uIShopView.UpdateButtonState();
     }
     #endregion
@@ -77,11 +68,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-
-        //_storeController.uIShopView.interactionText.gameObject.SetActive(true);
-        //_storeController.uIShopView.bg.gameObject.SetActive(false);
-        //_storeController.uIShopView.profile.gameObject.SetActive(false);
         Global.Instance.UIManager.Show<UIInteractiveView>();
         Global.Instance.UIManager.Hide<UIShopView>();
 
@@ -97,9 +83,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EnterShopZone(Player _player, [RpcTarget] PlayerRef _playerRef)
     {
-        //_storeController.uIShopView.bg.gameObject.SetActive(false);
-        //_storeController.uIShopView.profile.gameObject.SetActive(false);
-        //_storeController.uIShopView.interactionText.gameObject.SetActive(true);
         Global.Instance.UIManager.Show<UIInteractiveView>();
     }
     #endregion
@@ -117,9 +100,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
         Cursor.lockState = CursorLockMode.Locked;
 
         _player.isInteraction = false;
-        //_storeController.uIShopView.bg.gameObject.SetActive(false);
-        //_storeController.uIShopView.profile.gameObject.SetActive(false);
-        //_storeController.uIShopView.interactionText.gameObject.SetActive(false);
         Global.Instance.UIManager.Hide<UIInteractiveView>();
         Global.Instance.UIManager.Hide<UIShopView>();
     }

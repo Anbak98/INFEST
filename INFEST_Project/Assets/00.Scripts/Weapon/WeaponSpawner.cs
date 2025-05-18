@@ -6,8 +6,6 @@ using KINEMATION.KAnimationCore.Runtime.Core;
 using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 [Serializable]
@@ -77,10 +75,6 @@ public class WeaponSpawner : NetworkBehaviour
     {
         GetActiveWeapon().gameObject.SetActive(false);
 
-        //Invoke(nameof(Delay), delay);
-        //int _intValue = _value > 0f ? 1 : -1;
-        //_activeWeaponIndex += _activeWeaponIndex + _intValue > _weapons.Count - 1 ? 0 : _activeWeaponIndex + _intValue < 0 ? _weapons.Count - 1 : _intValue;
-        
         _removeIndex = _activeWeaponIndex;
         _activeWeaponIndex += _value > 0f ? 1 : -1;
 
@@ -95,10 +89,15 @@ public class WeaponSpawner : NetworkBehaviour
 
         if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
         if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
-        
-        
-        GetActiveWeapon().OnEquipped(); 
+
+        GetActiveWeapon().OnEquipped();
+
         _player.inventory.equippedWeapon = _weapons[_activeWeaponIndex];
+
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, 0.8f);
+        if (_weapons[_activeWeaponIndex].key == Weapons[0].key)
+            _switchTimer = TickTimer.CreateFromSeconds(Runner, 4f);
+
         Invoke(nameof(SetWeaponVisible), 0.1f);
 
         _saleChk = false;
@@ -109,6 +108,7 @@ public class WeaponSpawner : NetworkBehaviour
     {
         RPC_OnAim(_isAiming);
     }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_OnAim(bool value)
     {
@@ -127,10 +127,15 @@ public class WeaponSpawner : NetworkBehaviour
         }
     }
 
+    bool throwChk = false;
     public void OnThrowGrenade()
     {
+        if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+        if (throwChk) return;
+        throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
         Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
     }
 
     public void ThrowGrenade()
@@ -139,12 +144,13 @@ public class WeaponSpawner : NetworkBehaviour
         GetActiveWeapon().gameObject.SetActive(false);
         Invoke(nameof(Throw), 1.5f);
         Invoke(nameof(SetWeaponVisible), 0.5f);
-        Invoke(nameof(DeactivateGrenade), 0.5f);
+        Invoke(nameof(DeactivateGrenade), 1.5f);
     }
 
     private void Throw()
     {
         _player.Consumes.Throw();
+        throwChk = false;
     }
 
     private void DeactivateGrenade()
