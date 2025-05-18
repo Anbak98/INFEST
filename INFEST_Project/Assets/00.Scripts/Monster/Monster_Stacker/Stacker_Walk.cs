@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Stacker_Walk : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Chase>
+public class Stacker_Walk : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker_Phase_Wonder>
 {
     Vector3 randomPosition;
 

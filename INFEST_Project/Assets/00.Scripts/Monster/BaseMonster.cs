@@ -1,3 +1,4 @@
+using INFEST.Game;
 using System;
 using UnityEngine;
 
@@ -7,6 +8,20 @@ public class BaseMonster<T> : MonsterNetworkBehaviour where T : BaseMonster<T>
     public MonsterFSM<T> FSM;
 
     public bool IsReadyForChangingState = true;
+
+    public override void Spawned()
+    {
+        base.Spawned();
+
+        FSM.Init();
+
+        NetworkGameManager.Instance.monsterSpawner.SpawnedNum++;
+
+        if (NetworkGameManager.Instance.gameState == GameState.Wave)
+        {
+            OnWave();
+        }
+    }
 
     public void OnAnimationEventIsReady()
     {

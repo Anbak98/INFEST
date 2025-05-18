@@ -34,22 +34,22 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
     private Vector3 GetRandomPositionOnNavMesh()
     {
         float minDistance = 10f;
-        float maxDistance = 20f;
+        float maxDistance = 100f;
 
-        // 방향 벡터를 구하고, 최소~최대 거리 사이의 랜덤 거리만큼 곱합니다.
-        Vector3 randomDirection = Random.onUnitSphere;
-        randomDirection.y = 0; // 수평면에서만 이동하도록 y값을 0으로 만듭니다.
-        randomDirection *= Random.Range(minDistance, maxDistance);
-        randomDirection += transform.position;
+        for (int i = 0; i < 5; i++)
+        {
+            Vector3 randomDirection = Random.onUnitSphere;
+            randomDirection.y = 0;
+            randomDirection *= Random.Range(minDistance, maxDistance);
+            randomDirection += transform.position;
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 3, NavMesh.AllAreas)) // 랜덤 위치가 NavMesh 위에 있는지 확인합니다.
-        {
-            return hit.position; // NavMesh 위의 랜덤 위치를 반환합니다.
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 3, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
         }
-        else
-        {
-            return transform.position; // NavMesh 위의 랜덤 위치를 찾지 못한 경우 현재 위치를 반환합니다.
-        }
+
+        // 모든 시도 실패 시 현재 위치 반환
+        return transform.position;
     }
 }

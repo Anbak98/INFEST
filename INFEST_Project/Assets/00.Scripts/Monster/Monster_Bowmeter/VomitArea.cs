@@ -31,7 +31,7 @@ public class VomitArea : NetworkBehaviour
         {
             foreach (var player in affectedPlayers)
             {
-                player.ApplyDamage(0, tickDamage);
+                player.ApplyDamage(null, tickDamage);
             }
 
             damageTickTimer = TickTimer.CreateFromSeconds(Runner, tickInterval);

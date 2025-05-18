@@ -18,6 +18,7 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
     {
         base.Exit();
         monster.IsPunch = false;
+        monster.SetTargetRandomly();
     }
 
     public override void Attack()

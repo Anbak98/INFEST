@@ -1,8 +1,10 @@
 using Fusion;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
 {
+    public Dictionary<int, CommonSkillTable> CommonSkillTable;
 
     [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
     public NetworkBool IsWonderPhase { get; set; } = false;
@@ -20,21 +22,19 @@ public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
     public override void Spawned()
     {
         base.Spawned();
-        OnIsWonderPhase();
-        OnIsChasePhase();
-        OnIsPunch();
+
+        CommonSkillTable = DataManager.Instance.GetDictionary<CommonSkillTable>();
+
     }
 
-    public override void OnWave(Transform target)
+    protected override void OnWave()
     {
-        base.OnWave(target);
-        TryAddTarget(target);
-        SetTarget(target);
+        base.OnWave();
         IsChasePhase = true;
         FSM.ChangePhase<PJ_HI_Phase_Chase>();
     }
 
-    public override void OnDead()
+    protected override void OnDead()
     {
         base.OnDead();
         FSM.ChangePhase<PJ_HI_Phase_Dead>();

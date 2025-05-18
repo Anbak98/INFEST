@@ -18,6 +18,6 @@ public class Grita_Chase_Attack : MonsterStateNetworkBehaviour<Monster_Grita, Gr
     public override void Attack()
     {
         base.Attack();
-        monster.TryAttackTarget(monster.target, (int)(monster.CurDamage * monster.skill[1].DamageCoefficient));
+        monster.TryAttackTarget((int)(monster.CurDamage * monster.skill[1].DamageCoefficient));
     }
 }

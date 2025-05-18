@@ -18,7 +18,7 @@ public class PJ_HI_Dead : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Phas
         base.Execute();
 
         if(_tickTimer.Expired(Runner))
-        {
+        {            
             if(HasStateAuthority)
             {
                 Runner.Despawn(obj);
