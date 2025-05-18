@@ -28,6 +28,9 @@ public class DataManager : SingletonBehaviour<DataManager>
             {typeof(GoreHaulSkillTable), new DataLoader<GoreHaulSkillTable>("JSON/GoreHaulSkillTable") },
             //===========Boss Monster============
             {typeof(RageFangSkillTable), new DataLoader<RageFangSkillTable>("JSON/RageFangSkillTable") },
+            //=======Shop && MysteryBox =========
+            {typeof(ShopItemAppearanceTable), new DataLoader<ShopItemAppearanceTable>("JSON/ShopItemAppearanceTable") },
+            {typeof(MysteryBoxTable), new DataLoader<MysteryBoxTable>("JSON/MysteryBoxTable") },
         };
     }
 
