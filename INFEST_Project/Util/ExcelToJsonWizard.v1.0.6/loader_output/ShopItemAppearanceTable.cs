@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class ShopItemAppearanceTable : IKeyedItem
+public class ShopItemAppearanceTable
 {
     /// <summary>
     /// ID
@@ -35,5 +35,5 @@ public class ShopItemAppearanceTable : IKeyedItem
     /// 헬모드 존재 개수
     /// </summary>
     public int HellMode;
-    public int Key => key;
+
 }
