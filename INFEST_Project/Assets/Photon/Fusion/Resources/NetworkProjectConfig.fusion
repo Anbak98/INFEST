@@ -5,10 +5,10 @@
     "LagCompensation": {
         "Enabled": true,
         "HitboxBufferLengthInMs": 200,
-        "HitboxDefaultCapacity": 512,
+        "HitboxDefaultCapacity": 10244,
         "CachedStaticCollidersSize": 64
     },
-    "EnqueueIncompleteSynchronousSpawns": false,
+    "EnqueueIncompleteSynchronousSpawns": true,
     "InvokeRenderInBatchMode": true,
     "NetworkIdIsObjectName": false,
     "HideNetworkObjectInactivityGuard": false,

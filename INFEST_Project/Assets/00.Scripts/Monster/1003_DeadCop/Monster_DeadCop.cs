@@ -41,7 +41,7 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
         base.OnDead();
         if (IsDead)
         {
-            FSM.ChangePhase<WarZ_Phase_Dead>();
+            FSM.ChangePhase<DeadCop_Phase_Dead>();
         }
     }
 
