@@ -15,6 +15,8 @@ namespace INFEST.Game
     {
         public Action OnValueChanged;
 
+        public List<Transform> PlayerSpawnPoints;
+
         [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, NetworkId> PlayerObjs => default;
 
