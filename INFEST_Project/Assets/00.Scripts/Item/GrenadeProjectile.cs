@@ -98,14 +98,11 @@ public class GrenadeProjectile : NetworkBehaviour
             if (hitCount > 0)
             {
                 RaycastHit closestHit = _hitBuffer[0];
-                Debug.Log("진입 전 : " + closestHit);
                 for (int i = 1; i < hitCount; i++)
                 {
                     if (_hitBuffer[i].distance < closestHit.distance)
                     {
                         closestHit = _hitBuffer[i];
-                        Debug.Log("진입 후 변경 : " + closestHit.collider.gameObject.name);
-
                     }
                 }
 
