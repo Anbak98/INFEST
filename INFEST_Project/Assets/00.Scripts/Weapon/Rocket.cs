@@ -45,7 +45,7 @@ public class Rocket : NetworkBehaviour
             if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 10f,
                     Object.InputAuthority, out var hits))
             {
-                transform.position = hits.GameObject.transform.root.position + new Vector3(0, 0.01f, 0);
+                //transform.position = hits.GameObject.transform.root.position + new Vector3(0, 0.01f, 0);
 
                 RPC_Explode(transform.position);
                 _explosionTime = TickTimer.None;
@@ -74,7 +74,7 @@ public class Rocket : NetworkBehaviour
                     }
                 }
 
-                transform.position = closestHit.transform.position + new Vector3(0, 0.01f, 0); ;
+                //transform.position = closestHit.transform.position + new Vector3(0, 0.01f, 0); ;
                 RPC_Explode(transform.position);
                 _explosionTime = TickTimer.None;
                 return;
@@ -90,7 +90,7 @@ public class Rocket : NetworkBehaviour
     {
         if (!HasStateAuthority) return;
 
-        Invoke(nameof(RPC_Despawn), 0.8f);
+        Invoke(nameof(Despawn), 0.8f);
 
         UnityEngine.Collider[] colliders = Physics.OverlapSphere(transform.position, weapon.instance.data.Splash, 1 << _playerLayer);
 
@@ -137,8 +137,7 @@ public class Rocket : NetworkBehaviour
 
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_Despawn()
+    private void Despawn()
     {
         if (Object == null) return;
 

@@ -9,7 +9,7 @@ public class PlayerStatHandler : NetworkBehaviour
 {
     public CharacterInfoInstance info;
 
-    public PlayerRef owner;
+    [Networked] public PlayerRef owner {get; set;}
  
     [Networked] public bool IsDead { get; set; }
 
@@ -38,6 +38,7 @@ public class PlayerStatHandler : NetworkBehaviour
         owner = player;
         CurGold += info.data.StartGold;
     }
+
     public override void Spawned()
     {
         base.Spawned();

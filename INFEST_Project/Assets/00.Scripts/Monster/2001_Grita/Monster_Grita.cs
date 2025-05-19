@@ -91,4 +91,10 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
         base.OnWave();
         FSM.ChangePhase<Grita_Phase_Chase>();
     }
+
+    protected override void OnDead()
+    {
+        base.OnDead();
+        FSM.ChangePhase<Grita_Phase_Dead>();
+    }
 }

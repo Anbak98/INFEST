@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
@@ -36,11 +37,12 @@ public class UIStateView : UIScreen
     {
         base.Awake();
 
+        localPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
         SetJobIcon();
         SetWeaponIcon();
 
-        _characterInfo = Player.local.statHandler.info.data; // 각각의 플레이어 정보를 넣어주지 않으면 불가능.
-        _weaponInfo = Player.local.inventory.equippedWeapon.instance.data;
+        _characterInfo = localPlayer.statHandler.info.data; // 각각의 플레이어 정보를 넣어주지 않으면 불가능.
+        _weaponInfo = localPlayer.inventory.equippedWeapon.instance.data;
         ChoiceJob();
 
         UpdateJobIcon();
@@ -50,9 +52,9 @@ public class UIStateView : UIScreen
 
     private void Update()
     {
-        if(Player.local != null)
+        if(localPlayer != null)
             UpdatePlayerState();
-        if (Player.local.inventory != null)
+        if (localPlayer.inventory != null)
             UpdateWeaponIcon();
 
     }
@@ -105,37 +107,38 @@ public class UIStateView : UIScreen
         }
     }
 
+    Player localPlayer;
     public void UpdatePlayerState()
     {
-        if (Player.local.statHandler.info == null) return;
+        if (localPlayer.statHandler.info == null) return;
 
-        PlayerStatHandler _info = Player.local.statHandler;
+        PlayerStatHandler _info = localPlayer.statHandler;
 
         hpText.text = _info.CurHealth.ToString();
         defText.text = _info.CurDefGear.ToString();
         goldText.text = _info.CurGold.ToString();
 
-        if (Player.local.inventory.equippedWeapon == null)
+        if (localPlayer.inventory.equippedWeapon == null)
         {
             bulletText.text = " - / - ";
             return;
         }
 
-        if (Player.local.inventory.equippedWeapon.key % 10000 < 600)
+        if (localPlayer.inventory.equippedWeapon.key % 10000 < 700)
         {
-            if(Player.local.inventory.equippedWeapon.key == Player.local.inventory.auxiliaryWeapon[0]?.key)
-                bulletText.text = $"{Player.local.inventory.auxiliaryWeapon[0].curMagazineBullet}/{Player.local.inventory.auxiliaryWeapon[0].curBullet}";
-            else if(Player.local.inventory.equippedWeapon.key == Player.local.inventory.weapon[0]?.key)
-                bulletText.text = $"{Player.local.inventory.weapon[0].curMagazineBullet}/{Player.local.inventory.weapon[0].curBullet}";
-            else if(Player.local.inventory.equippedWeapon.key == Player.local.inventory.weapon[1]?.key)
-                bulletText.text = $"{Player.local.inventory.weapon[1].curMagazineBullet}/{Player.local.inventory.weapon[1].curBullet}";
+            if(localPlayer.inventory.equippedWeapon.key == localPlayer.inventory.auxiliaryWeapon[0]?.key)
+                bulletText.text = $"{localPlayer.inventory.auxiliaryWeapon[0].curMagazineBullet}/{localPlayer.inventory.auxiliaryWeapon[0].curBullet}";
+            else if(localPlayer.inventory.equippedWeapon.key == localPlayer.inventory.weapon[0]?.key)
+                bulletText.text = $"{localPlayer.inventory.weapon[0].curMagazineBullet}/{localPlayer.inventory.weapon[0].curBullet}";
+            else if(localPlayer.inventory.equippedWeapon.key == localPlayer.inventory.weapon[1]?.key)
+                bulletText.text = $"{localPlayer.inventory.weapon[1].curMagazineBullet}/{localPlayer.inventory.weapon[1].curBullet}";
         }
         //else
         //{
         //    for (int i = 0; i < 3; i++)
         //    {
-        //        if (Player.local.inventory.equippedWeapon.key == Player.local.inventory.consume[i]?.key)
-        //            bulletText.text = $"1/{Player.local.inventory.consume[i].curNum}";
+        //        if (localPlayer.inventory.equippedWeapon.key == localPlayer.inventory.consume[i]?.key)
+        //            bulletText.text = $"1/{localPlayer.inventory.consume[i].curNum}";
         //    }
         //}
 
@@ -173,7 +176,7 @@ public class UIStateView : UIScreen
     public void UpdateWeaponIcon()
     {
         SetWeaponIcon();
-        _weaponInfo = Player.local.inventory.equippedWeapon.instance.data;
+        _weaponInfo = localPlayer.inventory.equippedWeapon.instance.data;
         int weaponType = (int)_weaponInfo.WeaponType;
 
         switch (weaponType)

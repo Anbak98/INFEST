@@ -14,13 +14,7 @@ public class Monster_RageFang_Phase_AttackTwo : MonsterPhase<Monster_RageFang>
     public override void MachineEnter()
     {
         base.MachineEnter();
-        monster.CurMovementSpeed = 0;
         monster.IsReadyForChangingState = false;
-
-        monster.IsRoaring = true;
-
-        monster.CurDamage += monster.CurDamage / 20;
-        monster.CurDef += monster.CurDef / 20;
     }
 
     public override void MachineExecute()
