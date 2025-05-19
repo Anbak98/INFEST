@@ -7,9 +7,9 @@ namespace INFEST.Game
 {
     public enum GameState
     {
-        None = 1,
-        Wave = 2,
-        Boss = 3
+        None,
+        Wave,
+        Boss
     }
 
     public class NetworkGameManager : SingletonNetworkBehaviour<NetworkGameManager>
@@ -20,17 +20,17 @@ namespace INFEST.Game
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
 
+        public int playerCount = 0;
+
         public void VictoryGame()
         {
-            GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
-            //AnalyticsManager.analyticsGameEnd(1, 0, Runner.SimulationTime, )
-            gev.Victory();
+            //GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            //gev.Victory();
         }
         public void DefeatGame()
         {
-            GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
-            //AnalyticsManager.analyticsGameEnd(2, )
-            gev.Defeat();
+            //GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            //gev.Defeat();
         }
     }
 }

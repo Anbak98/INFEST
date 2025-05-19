@@ -114,8 +114,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.GetInput(EPlayerInput.menu).started += OpenMenu;
         //_inputManager.GetInput(EPlayerInput.menu).canceled += CloseMenu;
 
-        //_inputManager.GetInput(EPlayerInput.heal).started += StartChangeCamera;
-        //_inputManager.GetInput(EPlayerInput.heal).canceled += CancelChangeCamera;
+        _inputManager.MoveGetInput(EPlayerInput.changeCamera).started += StartChangeCamera;
+        _inputManager.MoveGetInput(EPlayerInput.changeCamera).canceled += CancelChangeCamera;
     }
 
     //private void OnDisable()
@@ -144,16 +144,16 @@ public class PlayerInputActionHandler : MonoBehaviour
 
     //    _inputManager.GetInput(EPlayerInput.interaction).started -= StartInteraction;
     //    //_inputManager.GetInput(EPlayerInput.interaction).canceled -= CancelInteraction;
-                      
+
     //    _inputManager.MoveGetInput(EPlayerInput.grenade).started -= StartGrenade;
     //    _inputManager.MoveGetInput(EPlayerInput.grenade).canceled -= CancelGrenade;
-                      
+
     //    _inputManager.MoveGetInput(EPlayerInput.heal).started -= StartHeal;
     //    _inputManager.MoveGetInput(EPlayerInput.heal).canceled -= CancelHeal;
-                      
+
     //    _inputManager.MoveGetInput(EPlayerInput.shield).started -= StartShield;
     //    _inputManager.MoveGetInput(EPlayerInput.shield).canceled -= CancelShield;
-                      
+
     //    _inputManager.MoveGetInput(EPlayerInput.run).started -= StartRunState;
     //    _inputManager.MoveGetInput(EPlayerInput.run).canceled -= CancelRunState;
 
@@ -449,6 +449,8 @@ public class PlayerInputActionHandler : MonoBehaviour
             isShotgunOnFiring = _isShotgunOnFiring,
             isOnZoom = _isOnZoom,
 
+            isChangingCamera = _isChangingCamera,
+
             scrollValue = _isSwapVelue
         };
 
@@ -470,6 +472,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _isUsingHeal = false;
         _isUsingShield = false;
         _isInteracting = false;
+        _isChangingCamera = false;
+
         // 샷건의 경우 누르고 있어도 발사가 되면 안되니까 막아놓았다
         if (_isShotgunOnFiring) data.buttons.Set(NetworkInputData.BUTTON_FIREPRESSED, true);   // 구조체의 변수를 바꾼거고
         _isShotgunOnFiring = false;    // PlayerInputHandler의 변수를 바꾼거다
