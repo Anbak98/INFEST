@@ -50,9 +50,9 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
     protected override void OnWave()
     {
         base.OnWave();
-        TryAddTarget(target);
-        SetTarget(target);
-        FSM.ChangePhase<DeadCop_Phase_Chase>();
+        //TryAddTarget(target);
+        //SetTarget(target);
+        FSM.ChangePhase<WarZ_Phase_Wave>();
     }
     public float GetCurrentAnimLength()
     {
