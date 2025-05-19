@@ -1,23 +1,25 @@
 using Cinemachine;
+using Fusion;
+using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 앉아 있는 상태
-// SitIdle, Waddle, SitAttack, SitReload
 public class PlayerDeadState : PlayerBaseState
 {
-    float respawnTime = 0f;  // 30초(네트워크 시간 동기화 필요)
+    float respawnTime = 30f;  // 30초(네트워크 시간 동기화 필요)
+
     //public MVPStageSpawner stageSpawner;
     //List<Player> alivePlayerList = new List<Player>();
+
 
     List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
     public int currentPlayerIndex = 0;
 
+    List<PlayerRef> playerRefs = new List<PlayerRef>();
+
     public PlayerDeadState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
-        //stageSpawner = GameObject.FindFirstObjectByType<MVPStageSpawner>();
-        //Debug.Log("stageSpawner: " + stageSpawner.name);
     }
 
     public override void Enter()
@@ -26,6 +28,12 @@ public class PlayerDeadState : PlayerBaseState
         stateMachine.IsDead = true;
 
         player.FirstPersonRoot.SetActive(false);
+
+        //// 현재 접속중인 플레이어 정보들 저장
+        //playerRefs = NetworkGameManager.Instance.gamePlayers.GetPlayerRefs();
+
+        // 플레이어가 죽으면 timer는 스폰 타임만 돌아가야한다(플레이어에 적용되는 시간 중에서 가장 긴 시간은 리스폰 시간이므로, 나머지 시간은 적용된 거나 마찬가지
+        player.tickTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime); // 자신의 runner는 player.Runner
     }
 
     public override void Exit()
@@ -65,13 +73,14 @@ public class PlayerDeadState : PlayerBaseState
             }
         }
 
-
         // 30초 후 체력 100 채우고 Idle 상태로 전환
-        //Debug.Log(respawnTime);   // 네트워크 동기화가 필요함
-        if (respawnTime >= 30f)
+        Debug.Log(player.tickTimer);   // 테스트
+        if (player.tickTimer.Expired(player.Runner))
         {
-            // 자신이 spawn 되었던 위치로
-            //player.transform.position = stageSpawner.playerSpawnPoint.transform.position;
+            // 플레이어 리스폰
+            int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
+            player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
+
 
             statHandler.SetHealth(100);
             player.animationController.Die = false;
@@ -100,12 +109,31 @@ public class PlayerDeadState : PlayerBaseState
     // 입력을 하지 않는 동안에는 놔두겠지만, 입력을 하면, 새로 검사해서 살아있는것으로 List를 갱신
     public void FindAlivePlayers()
     {
+        // 현재 접속중인 플레이어 정보들 저장
+        playerRefs = NetworkGameManager.Instance.gamePlayers.GetPlayerRefs();
+
         // CinemachineVirtualCamera의 priority를 0초기화
         foreach (var virtualCamera in alivePlayerCameras)
         {
             virtualCamera.Priority = 0;
         }
         alivePlayerCameras.Clear();
+
+        // playerRefs에 있는 플레이어들의 virtualCamera들 저장
+        foreach (var playerRef in playerRefs)
+        {
+            // NetworkObject 가져오기
+            if (player.Runner.TryGetPlayerObject(playerRef, out NetworkObject netObj))
+            {
+                // Player 컴포넌트 접근
+                Player otherPlayer = netObj.GetComponent<Player>();
+                if (otherPlayer != null && otherPlayer.statHandler.CurHealth > 0)
+                {
+                    PlayerCameraHandler otherCamHandler = otherPlayer.GetComponentInChildren<PlayerCameraHandler>();
+                    alivePlayerCameras.Add(otherCamHandler.virtualCamera);
+                }
+            }
+        }
 
         // 생존자 체크(살아있는 플레이어들만 alivePlayerCameras에 남겨야한다)
         // 생존자는 계속 변경되므로 매 프레임마다 체크한다
@@ -125,6 +153,7 @@ public class PlayerDeadState : PlayerBaseState
         //        alivePlayerCameras.Add(cam);
         //    }
         //}
+
     }
 
     // 다른 플레이어의 카메라 전환(관전모드)
@@ -141,7 +170,7 @@ public class PlayerDeadState : PlayerBaseState
         var targetPlayer = targetCam.GetComponentInParent<Player>();
         if (targetPlayer != null)
         {
-            targetPlayer.FirstPersonRoot.SetActive(true); 
+            targetPlayer.FirstPersonRoot.SetActive(true);
             targetPlayer.ThirdPersonRoot.SetActive(false);
         }
     }

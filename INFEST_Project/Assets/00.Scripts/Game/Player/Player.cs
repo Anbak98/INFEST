@@ -39,6 +39,8 @@ public class Player : NetworkBehaviour
 
     [Networked] public bool spawnedProjectile { get; set; }
 
+    public TickTimer tickTimer; // 플레이어에 적용되는 Timer는 한가지로 모두 해결 가능할지도 모른다
+
     public override void Spawned()
     {
         /// 기존의 데이터
