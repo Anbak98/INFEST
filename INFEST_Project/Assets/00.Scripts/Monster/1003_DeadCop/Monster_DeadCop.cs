@@ -36,22 +36,22 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
     // 웨이브 시작, 종료조건 
     private void OnIsWave() => animator.SetBool("IsWave", IsWave);  // 웨이브 생성과 관련된 곳에서 가져와서 bool값을 바꾼다
 
-    public override void OnDead()
+    protected override void OnDead()
     {
         base.OnDead();
         if (IsDead)
         {
-            FSM.ChangePhase<DeadCop_Phase_Dead>();
+            FSM.ChangePhase<WarZ_Phase_Dead>();
         }
     }
 
 
-    public override void OnWave(Transform target)
+    protected override void OnWave()
     {
-        base.OnWave(target);
+        base.OnWave();
         TryAddTarget(target);
         SetTarget(target);
-        FSM.ChangePhase<DeadCop_Phase_Chase>();
+        FSM.ChangePhase<WarZ_Phase_Chase>();
     }
 
     public float GetCurrentAnimLength()
