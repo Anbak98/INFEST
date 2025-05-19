@@ -14,7 +14,7 @@ public class MonsterFSM<T> : NetworkBehaviour where T : BaseMonster<T>
 
     private Dictionary<Type, MonsterPhase<T>> phaseMap = new();
 
-    public override void Spawned()
+    public void Init()
     {
         foreach (MonsterPhase<T> m in phases)
         {

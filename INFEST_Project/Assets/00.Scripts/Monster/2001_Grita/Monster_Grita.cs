@@ -86,11 +86,9 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
         IsCooltimeCharged = false;
     }
 
-    public override void OnWave(Transform target)
+    protected override void OnWave()
     {
-        base.OnWave(target);
-        TryAddTarget(target);
-        SetTarget(target);
+        base.OnWave();
         FSM.ChangePhase<Grita_Phase_Chase>();
     }
 }

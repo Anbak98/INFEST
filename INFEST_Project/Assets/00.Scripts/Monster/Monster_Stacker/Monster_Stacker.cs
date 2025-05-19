@@ -52,20 +52,18 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
     }
 
-    public override void OnDead()
+    protected override void OnDead()
     {
         base.OnDead();
         if (IsDead)
         {
             FSM.ChangePhase<Stacker_Phase_Dead>();
         }
-    }       
-    
-    public override void OnWave(Transform target)
+    }
+
+    protected override void OnWave()
     {
-        base.OnWave(target);
-        TryAddTarget(target);
-        SetTarget(target);
+        base.OnWave();
         FSM.ChangePhase<Stacker_Phase_Chase>();
     }
 }

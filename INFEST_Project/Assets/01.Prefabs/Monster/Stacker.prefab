@@ -2579,7 +2579,7 @@ Animator:
   m_GameObject: {fileID: 7311980623345109625}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ef409557f83b9524c9070e3086c4690c, type: 2}
+  m_Controller: {fileID: 9100000, guid: b237672898550a449b9ee491cfdf56a9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2728,12 +2728,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 1002
   AIPathing: {fileID: 8541060984460718935}
+  PlayerDetectorCollider: {fileID: 7967761131257807667}
+  target: {fileID: 0}
+  targets: []
   animator: {fileID: 6900176941767614314}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
   hitSound: {fileID: 6573686536218448580}
   hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
-  PlayerDetectorCollider: {fileID: 7967761131257807667}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1
@@ -2749,8 +2751,6 @@ MonoBehaviour:
     _value: 0
   _IsDead:
     _value: 0
-  target: {fileID: 0}
-  targets: []
   FSM: {fileID: 8319871427358612485}
   IsReadyForChangingState: 1
   _IsIdle:

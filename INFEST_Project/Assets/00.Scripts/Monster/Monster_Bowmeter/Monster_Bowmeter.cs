@@ -40,21 +40,18 @@ public class Monster_Bowmeter : BaseMonster<Monster_Bowmeter>
         skills = DataManager.Instance.GetDictionary<BowmeterSkillTable>();
     }
 
-    public override void OnWave(Transform target)
+    protected override void OnWave()
     {
-        base.OnWave(target);
-        TryAddTarget(target);
-        SetTarget(target);
+        base.OnWave();
         FSM.ChangePhase<Bowmeter_Phase_Chase>();
     }
-
 
     public override void Render()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
     }
 
-    public override void OnDead()
+    protected override void OnDead()
     {
         base.OnDead();
         if (IsDead)

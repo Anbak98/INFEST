@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,14 +28,18 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     //  "DropGold": 30,
     //  "FieldSpawn": true,
     //  "LimitSpawnCount": 9999
-    public MonsterInfo info {get; private set;}
+    public MonsterInfo info { get; private set; }
 
     [Header("Monster Number depends on Data Table")]
-    public int key = -1; 
+    public int key = -1;
 
     [Header("Monster Control Helper")]
     [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
     public NavMeshAgent AIPathing;
+    public SphereCollider PlayerDetectorCollider;
+    [ReadOnly] public Transform target;
+    [ReadOnly, SerializeField] private List<Transform> targets = new();
+    private Dictionary<Transform, TargetableFromMonster> targetBridges = new();
 
     [Header("Monster Render Helper")]
     public Animator animator;
@@ -42,9 +47,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public AudioSource hitSound;
     public AudioClip hitSoundClip;
 
-    [Header("Monster Status")]
-    public SphereCollider PlayerDetectorCollider;
-
+    [field: Header("Monster Status")]
     [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
     [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; set; }
     [Networked] public int CurHealth { get; set; } = -1;
@@ -59,30 +62,21 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Networked] public NetworkBool IsAttack { get; set; } = false;
     [Networked, OnChangedRender(nameof(OnDead))] public NetworkBool IsDead { get; set; } = false;
 
-    [ReadOnly] public Transform target;
-    [ReadOnly, SerializeField] private List<Transform> targets = new();
-    private Dictionary<Transform, TargetableFromMonster> targetBridges = new();
-
-    public virtual void OnWave(Transform target)
-    {
-        this.target = target;
-    }
-
-    public virtual void OnDead()
-    {
-    }
-
     public override void Spawned()
-    { 
+    {
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
 
-        BaseHealth = info.MinHealth * Runner.SessionInfo.PlayerCount;
-        BaseDamage = info.MinAtk;
-        BaseDef = info.MinDef;
+        BaseHealth = (int)(info.MinHealth * (1 + info.HPCoef * (Runner.SessionInfo.PlayerCount - 1)));
+        BaseDamage = (int)(info.MinAtk * (1 + info.AtkCoef * (Runner.SessionInfo.PlayerCount - 1)));
+        BaseDef = (int)(info.MinDef * (1 + info.DefCoef * (Runner.SessionInfo.PlayerCount - 1)));
 
-        CurHealth = BaseHealth;
-        CurDamage = BaseDamage;
-        CurDef = BaseDef;
+        OffsetHealth = (int)(info.HealthPer5Min * (Runner.SimulationTime / 300));
+        OffsetDamage = (int)(info.AtkPer5Min * (Runner.SimulationTime / 300));
+        OffsetDef = (int)(info.DefPer5Min * (Runner.SimulationTime / 300));
+
+        CurHealth = BaseHealth + OffsetHealth;
+        CurDamage = BaseDamage + OffsetDamage;
+        CurDef = BaseDef + OffsetDef;
 
         CurMovementSpeed = info.SpeedMove;
 
@@ -92,22 +86,34 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         AIPathing.speed = info.SpeedMove;
     }
 
-    public void Move()
+    public override void Despawned(NetworkRunner runner, bool hasState)
     {
-        AIPathing.SetDestination(target.position);
+        base.Despawned(runner, hasState);
+
+        NetworkGameManager.Instance.monsterSpawner.SpawnedNum--;
     }
 
     public bool IsLookPlayer()
     {
-        foreach(var _target in targets)
+        foreach (var _target in targets)
         {
             Vector3 dirToTarget = (target.transform.position - transform.position).normalized;
             float dot = Vector3.Dot(dirToTarget, transform.forward.normalized);
-            if( dot > Mathf.Cos(30f * Mathf.Deg2Rad))
+            if (dot > Mathf.Cos(30f * Mathf.Deg2Rad))
             {
                 target = _target;
                 return true;
             }
+        }
+
+        return false;
+    }
+    public bool IsFindPlayer()
+    {
+        if(targets.Count > 0)
+        {
+            SetTargetRandomly();
+            return true;
         }
 
         return false;
@@ -123,19 +129,19 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         }
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Transform newTarget)
     {
-        this.target = target;
+        this.target = newTarget;
     }
 
-    public void TryAddTarget(Transform target)
+    public void TryAddTarget(Transform newTarget)
     {
-        if(!targets.Contains(target))
+        if (!targets.Contains(newTarget))
         {
-            if(target.TryGetComponent<TargetableFromMonster>(out TargetableFromMonster bridge))
+            if (newTarget.TryGetComponent(out TargetableFromMonster bridge))
             {
-                targets.Add(target);
-                targetBridges.Add(target, bridge);
+                targets.Add(newTarget);
+                targetBridges.Add(newTarget, bridge);
             }
         }
     }
@@ -145,34 +151,27 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         if (this.target == target)
         {
             this.target = null;
-        }
 
-        if (targets.Contains(target))
-        {
-            targets.Remove(target);
-            targetBridges.Remove(target);
+            if (targets.Contains(target))
+            {
+                targets.Remove(target);
+                targetBridges.Remove(target);
+            }
         }
     }
 
     public void TryAttackTarget(int damage)
     {
-        if(targetBridges.TryGetValue(target, out TargetableFromMonster bridge))
-        {
-            bridge.ApplyDamage(key, damage);
-        }
-    }
-    public void TryAttackTarget(Transform target, int damage)
-    {
         if (targetBridges.TryGetValue(target, out TargetableFromMonster bridge))
         {
-            bridge.ApplyDamage(key, damage);
+            bridge.ApplyDamage(this, damage);
         }
     }
 
     private void OnChangedMovementSpeed()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
-        AIPathing.speed = CurMovementSpeed;
+        AIPathing.speed = CurMovementSpeed * 2.8f;
     }
 
     private void OnChangedDetectorRadiusSpeed()
@@ -182,7 +181,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public virtual bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
     {
-        Debug.Log("HI");
         if (isCritical)
             Debug.Log("HeadShot");
         if (CurHealth <= 0f)
@@ -193,6 +191,8 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         if (CurHealth <= 0f)
         {
             CurHealth = 0;
+            NetworkGameManager.Instance.gamePlayers.AddKillCount(instigator, 1);
+            NetworkGameManager.Instance.gamePlayers.AddGoldCount(instigator, info.DropGold);
             IsDead = true;
         }
 
@@ -240,4 +240,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         targets.Clear();
     }
 
+    protected virtual void OnWave()
+    {
+    }
+
+    protected virtual void OnDead()
+    {
+    }
 }
