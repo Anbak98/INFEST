@@ -297,7 +297,7 @@ public class Weapon : NetworkBehaviour
                     projectileData.hitNormal = -fireDirection;
                     projectileData.showHitEffect = false; // �浹 �� ������ ��Ʈ����Ʈ ����
                 }
-                Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+                Rpc_SpawnDummyProjectile(firePosition, fireDirection, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
                 _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
                 _fireCount++;
             }
