@@ -6,6 +6,16 @@ public class PJ_HI_Phase_Wonder : MonsterPhase<Monster_PJ_HI>
         monster.IsWonderPhase = true;
     }
 
+    public override void MachineExecute()
+    {
+        base.MachineExecute();
+
+        if (monster.IsLookPlayer() && !monster.IsDead)
+        {
+            monster.FSM.ChangePhase<PJ_HI_Phase_Chase>();
+        }
+    }
+
     public override void MachineExit()
     {
         base.MachineExit();

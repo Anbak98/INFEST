@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using TMPro;
 using UnityEngine;
 
@@ -9,11 +10,11 @@ public class UIScoreboardRow : MonoBehaviour
     public TextMeshProUGUI deaths;
     public TextMeshProUGUI golds;
 
-    public void SetData(PlayerScoreData data)
+    public void SetData(PlayerRef player)
     {
-        kills.text = data.kills.ToString();
-        deaths.text = data.deaths.ToString();
-        golds.text = data.gold.ToString("N0");
+        kills.text = NetworkGameManager.Instance.gamePlayers.GetKillCount(player).ToString();
+        deaths.text = NetworkGameManager.Instance.gamePlayers.GetDeathCount(player).ToString();
+        golds.text = NetworkGameManager.Instance.gamePlayers.GetGoldCount(player).ToString();
     }
 
     public void SetNickname(string name)

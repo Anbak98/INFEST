@@ -1,6 +1,5 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
+using INFEST.Game;
 using UnityEngine;
 
 // Wave가 아니다
