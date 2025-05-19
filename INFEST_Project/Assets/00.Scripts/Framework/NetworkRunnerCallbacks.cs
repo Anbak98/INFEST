@@ -21,13 +21,18 @@ namespace INFEST.Game
             {
                 _InputManager.Init();
                 _playerInputActionHandler.Init();
-                NetworkGameManager.Instance.playerCount++;
             }
 
             if (runner.IsServer)
             {
-                NetworkObject netObj = runner.Spawn(_playerPrefab, inputAuthority: player);
+                NetworkObject netObj = runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[runner.SessionInfo.PlayerCount - 1].position, inputAuthority: player);
                 NetworkGameManager.Instance.gamePlayers.AddPlayerObj(player, netObj.Id);
+                netObj.GetComponent<PlayerStatHandler>().Init(player);
+
+                if (runner.LocalPlayer == player)
+                {
+                    NetworkGameManager.Instance.playerCount++;
+                }
             }
         }
 

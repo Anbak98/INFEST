@@ -9,7 +9,7 @@ public class PlayerStatHandler : NetworkBehaviour
 {
     public CharacterInfoInstance info;
 
-    public PlayerRef player;
+    public PlayerRef owner;
  
     [Networked] public bool IsDead { get; set; }
 
@@ -18,7 +18,11 @@ public class PlayerStatHandler : NetworkBehaviour
     [Networked] public int CurDefGear { get; set; }                         // 방어구 체력
     [Networked] public int CurDef { get; set; }
     // 방어구 체력
-    [Networked] public int CurGold { get; set; }
+    public int CurGold 
+    {
+        get => NetworkGameManager.Instance.gamePlayers.GetGoldCount(owner); 
+        set => NetworkGameManager.Instance.gamePlayers.SetGoldCount(owner, value); 
+    }
     // 시작 골드
     [Networked] public int CurTeamCoin { get; set; }                        // 시작 팀코인
     [Networked] public int curstate { get; set; }                           // 캐릭터 상태
@@ -29,7 +33,11 @@ public class PlayerStatHandler : NetworkBehaviour
 
     public PlayerAttackedEffectController effect;
 
-
+    public void Init(PlayerRef player)
+    {
+        owner = player;
+        CurGold += info.data.StartGold;
+    }
     public override void Spawned()
     {
         base.Spawned();
@@ -38,7 +46,6 @@ public class PlayerStatHandler : NetworkBehaviour
         CurHealth = info.data.Health;
         CurDefGear = info.data.DefGear;
         CurDef = info.data.Def;
-        CurGold = info.data.StartGold;
         CurTeamCoin = info.data.StartTeamCoin;
         CurSpeedMove = info.data.SpeedMove;
         curstate = info.data.State;
