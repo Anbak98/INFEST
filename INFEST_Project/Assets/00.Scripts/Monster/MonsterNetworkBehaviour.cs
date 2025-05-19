@@ -260,5 +260,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     protected virtual void OnDead()
     {
+        AnalyticsManager.analyticsZombieKill(key);
     }
 }

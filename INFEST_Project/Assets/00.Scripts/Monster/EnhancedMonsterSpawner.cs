@@ -9,6 +9,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
     [SerializeField] private LayerMask spawnPointLayerMask;
     [SerializeField] private MonsterScriptableObject MonsterMap;
 
+    public int WaveNum = 0;
     public int SpawnedNum = 0;
     public int SpawnedLimit = 51;
     public int SpawnWaitingNum = 0;
@@ -96,6 +97,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             NetworkGameManager.Instance.gameState = GameState.Wave;
 
             waveCaller = from;
+            WaveNum++;
         }
     }
 

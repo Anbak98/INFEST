@@ -7,9 +7,9 @@ namespace INFEST.Game
 {
     public enum GameState
     {
-        None,
-        Wave,
-        Boss
+        None = 1,
+        Wave = 2,
+        Boss = 3
     }
 
     public class NetworkGameManager : SingletonNetworkBehaviour<NetworkGameManager>
@@ -23,11 +23,13 @@ namespace INFEST.Game
         public void VictoryGame()
         {
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            //AnalyticsManager.analyticsGameEnd(1, 0, Runner.SimulationTime, )
             gev.Victory();
         }
         public void DefeatGame()
         {
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            //AnalyticsManager.analyticsGameEnd(2, )
             gev.Defeat();
         }
     }

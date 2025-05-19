@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Fusion;
+using INFEST.Game;
 
 /// <summary>
 /// 캐릭터 동작 처리를 한다
@@ -59,9 +60,14 @@ public class PlayerController : NetworkBehaviour
             {
 
                 if (!player.isInteraction)
+                {
                     player.store.RPC_RequestInteraction(Object.InputAuthority);
-                else 
+                    AnalyticsManager.analyticsShopPopupOpen(0, NetworkGameManager.Instance.gamePlayers.GetGoldCount(Object.InputAuthority));
+                }
+                else
+                {
                     player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+                }
 
                 player.isInteraction = !player.isInteraction;
 
@@ -83,16 +89,19 @@ public class PlayerController : NetworkBehaviour
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
             {
+                AnalyticsManager.analyticsUseItem(2, 10701, (int)NetworkGameManager.Instance.gameState);
                 player.Weapons.OnThrowGrenade();
             }
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
             {
+                AnalyticsManager.analyticsUseItem(1, 10801, (int)NetworkGameManager.Instance.gameState);
                 player.Consumes.Heal();
             }
 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
             {
+                AnalyticsManager.analyticsUseItem(3, 10901, (int)NetworkGameManager.Instance.gameState);
                 player.Consumes.Mounting();
             }
         }

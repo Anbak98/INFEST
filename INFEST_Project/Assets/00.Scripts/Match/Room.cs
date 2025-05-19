@@ -126,6 +126,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
         if (Runner.LocalPlayer == HostPlayer)
         {
             RPC_BrodcastPlayGame();
+            AnalyticsManager.analyticsBeforeInGame(Runner.SessionInfo.PlayerCount * 10 + 0, 1);
         }
     }
 

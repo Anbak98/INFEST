@@ -32,6 +32,7 @@ public class Siren : MonoBehaviour
         if (_controller != null && player != null)
         {
             NetworkGameManager.Instance.monsterSpawner.CallWave(player.transform);
+            //AnalyticsManager.analyticsWave(2, NetworkGameManager.Instance.Runner.SimulationTime, , )
             _controller.RPC_PlaySirenSound(player, player.Object.InputAuthority);
         }
     }

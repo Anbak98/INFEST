@@ -51,10 +51,9 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
 
     //==========================커스텀 이벤트=============================
 
-    public static void analyticsMatching(bool success, int matchingType = 0)
+    public static void analyticsMatching(int matchingType = 0)
     {
         var customEvent = new CustomEvent("Matching_Info"); //event
-        customEvent["SUCCESS_MATCH"] = success; //parameter
         if (matchingType != 0) customEvent["MATCHING_APPROACH_TYPE"] = matchingType; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
