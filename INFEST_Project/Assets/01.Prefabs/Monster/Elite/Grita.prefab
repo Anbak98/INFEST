@@ -736,8 +736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e729205aa67b8c44a519ba6a411bc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audio: {fileID: 0}
-  _screamingSound: {fileID: 0}
+  _audio: {fileID: 5239818236640914457}
+  _screamingSound: {fileID: 8300000, guid: 1f5445d77843fe44cb66abf1a10befa2, type: 3}
 --- !u!1 &1259462464801368116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,7 +1783,7 @@ MonoBehaviour:
   currentPhase: {fileID: 9144427468234448182}
   phases:
   - {fileID: 9144427468234448182}
-  - {fileID: 0}
+  - {fileID: 5269401168759469641}
   - {fileID: 3986741747919360910}
   - {fileID: 5396497802439543786}
   patternCount: 0
@@ -2553,12 +2553,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 2001
   AIPathing: {fileID: 747123212112229405}
+  PlayerDetectorCollider: {fileID: 1577059504474232142}
+  target: {fileID: 0}
+  targets: []
   animator: {fileID: 3530269456948744796}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
   hitSound: {fileID: 0}
   hitSoundClip: {fileID: 0}
-  PlayerDetectorCollider: {fileID: 1577059504474232142}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1
@@ -2574,8 +2576,6 @@ MonoBehaviour:
     _value: 0
   _IsDead:
     _value: 0
-  target: {fileID: 0}
-  targets: []
   FSM: {fileID: 4877765757947123194}
   IsReadyForChangingState: 1
   _screamSound: {fileID: 0}
@@ -3208,7 +3208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63c9892cf0e29849857c587f4b9a3f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states: []
+  states:
+  - {fileID: 722487069425764869}
   currentState: {fileID: 0}
   patternCount: 0
   nextPatternIndex: 0
