@@ -9,23 +9,16 @@ public class PlayerStatHandler : NetworkBehaviour
 {
     public CharacterInfoInstance info;
 
+    public PlayerRef player;
+ 
     [Networked] public bool IsDead { get; set; }
 
     [Networked] public int CurSpeedMove { get; set; }
     [Networked] public int CurHealth { get; set; }                          // 체력
     [Networked] public int CurDefGear { get; set; }                         // 방어구 체력
     [Networked] public int CurDef { get; set; }
-    public int CurGold 
-    { 
-        get
-        { 
-            return NetworkGameManager.Instance.gamePlayers.GetGoldCount(Runner.LocalPlayer); 
-        }
-        set
-        {
-            NetworkGameManager.Instance.gamePlayers.AddGoldCount(Runner.LocalPlayer, value);
-        }
-    }       
+    // 방어구 체력
+    [Networked] public int CurGold { get; set; }
     // 시작 골드
     [Networked] public int CurTeamCoin { get; set; }                        // 시작 팀코인
     [Networked] public int curstate { get; set; }                           // 캐릭터 상태
@@ -45,7 +38,7 @@ public class PlayerStatHandler : NetworkBehaviour
         CurHealth = info.data.Health;
         CurDefGear = info.data.DefGear;
         CurDef = info.data.Def;
-        NetworkGameManager.Instance.gamePlayers.AddGoldCount(Runner.LocalPlayer, info.data.StartGold);
+        CurGold = info.data.StartGold;
         CurTeamCoin = info.data.StartTeamCoin;
         CurSpeedMove = info.data.SpeedMove;
         curstate = info.data.State;
@@ -81,8 +74,6 @@ public class PlayerStatHandler : NetworkBehaviour
 
         if (CurDefGear < 0)
             CurDefGear = 0;
-
-        Debug.Log(CurHealth);
     }
 
     public void SetHealth(int amount)
