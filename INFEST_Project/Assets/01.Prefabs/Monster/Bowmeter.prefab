@@ -221,6 +221,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monster: {fileID: 5443904504862824468}
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &1990698850509791576
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1836,7 +1839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionLayers:
     serializedVersion: 2
-    m_Bits: 35904
+    m_Bits: 35008
   vomit: {fileID: 2707850765340437744, guid: 4fa728777d44d9641869823cc7f30479, type: 3}
 --- !u!1 &4294422722676774160
 GameObject:
@@ -2579,7 +2582,7 @@ MonoBehaviour:
     type: 3}
   collisionLayers:
     serializedVersion: 2
-    m_Bits: 35904
+    m_Bits: 35008
 --- !u!1 &6751340752166368874
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,12 +3202,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 2003
   AIPathing: {fileID: 3178971020889968604}
+  PlayerDetectorCollider: {fileID: 1544677704411391898}
+  target: {fileID: 0}
+  targets: []
   animator: {fileID: 4425305436443460934}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
   hitSound: {fileID: 2361689577952305667}
   hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
-  PlayerDetectorCollider: {fileID: 1544677704411391898}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1
@@ -3220,8 +3225,6 @@ MonoBehaviour:
     _value: 0
   _IsDead:
     _value: 0
-  target: {fileID: 0}
-  targets: []
   FSM: {fileID: 4894731086373848282}
   IsReadyForChangingState: 1
   _IsIdle:
@@ -3601,10 +3604,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionLayers:
     serializedVersion: 2
-    m_Bits: 35904
+    m_Bits: 35008
   vomitRazer: {fileID: 3668478955301033916, guid: b73c78c57498c1f468141b1eb3372120,
     type: 3}
-  razer: {fileID: 7101344183842061706, guid: 711b3d455864515438297b4c62aa2fff, type: 3}
 --- !u!1 &9099599891274095653
 GameObject:
   m_ObjectHideFlags: 0
