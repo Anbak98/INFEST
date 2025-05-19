@@ -79,7 +79,7 @@ namespace INFEST.Game
             List<PlayerRef> refs = new();
             foreach (var playerObj in PlayerObjs)
             {
-                refs.Add(playerObj.Key);
+                refs.Add(playerObj.Key);                
             }
             return refs;
         }

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using Fusion;
+using Cinemachine;
+using System.Collections.Generic;
+using INFEST.Game;
 
 /// <summary>
 /// 캐릭터 동작 처리를 한다
@@ -11,7 +14,7 @@ using Fusion;
 /// FixedUpdateNetwork()에서 Fusion으로부터 받은 입력 데이터를 기반으로 시뮬레이션 수행.
 /// </summary>
 public enum PlayerLockState
-{ 
+{
     Free,
     MoveLock
 }
@@ -36,6 +39,16 @@ public class PlayerController : NetworkBehaviour
     protected string hitTatgetId;
     [Networked] protected TickTimer delay { get; set; }
 
+    // 리스폰
+    [Networked] private TickTimer respawnTimer { get; set; }
+    float respawnTime = 10f;
+
+    // 관전모드
+    List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
+    public int currentPlayerIndex = 0;
+    List<PlayerRef> playerRefs = new List<PlayerRef>();
+    private int previousTime = -1;
+
     public override void Spawned()
     {
         stateMachine = new PlayerStateMachine(player, this);
@@ -45,6 +58,9 @@ public class PlayerController : NetworkBehaviour
         player.statHandler.OnRespawn += OnRespawn;
 
         networkCharacterController.maxSpeed = player.statHandler.CurSpeedMove;
+
+        // 관전모드를 위해 임시
+        alivePlayerCameras.Add(player.cameraHandler.virtualCamera);
     }
 
     public override void FixedUpdateNetwork()
@@ -60,7 +76,7 @@ public class PlayerController : NetworkBehaviour
 
                 if (!player.isInteraction)
                     player.store.RPC_RequestInteraction(Object.InputAuthority);
-                else 
+                else
                     player.store.RPC_RequestStopInteraction(Object.InputAuthority);
 
                 player.isInteraction = !player.isInteraction;
@@ -96,12 +112,182 @@ public class PlayerController : NetworkBehaviour
                 player.Consumes.Mounting();
             }
         }
+        // 죽은 경우에 시점 전환
+        if (stateMachine.IsDead)
+        {
+            float remaining = respawnTimer.RemainingTime(Runner) ?? 0f;
+            // 정수 단위로 바뀔 때만 로그 출력
+            int currentTime = Mathf.FloorToInt(remaining);
+            if (currentTime != previousTime)
+            {
+                Debug.Log($"남은 시간: {currentTime}초");
+                previousTime = currentTime;
+            }
+
+            // 키 입력시 
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q(입력안받음, 
+            {
+                FindAlivePlayers(); // 생존자 갱신
+
+                Debug.Log("이전 플레이어 카메라로 관전합니다 ");
+                // 이전 인덱스의 카메라를 가져온다
+                if (alivePlayerCameras.Count > 0)
+                {
+                    currentPlayerIndex = (alivePlayerCameras.Count + currentPlayerIndex - 1) % alivePlayerCameras.Count;
+                    SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+                }
+
+            }
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))    // E
+            {
+                FindAlivePlayers(); // 생존자 갱신
+                Debug.Log("다음 플레이어 카메라로 관전합니다 ");
+                // 다음 인덱스의 카메라를 가져온다
+                if (alivePlayerCameras.Count > 0)
+                {
+                    currentPlayerIndex = (currentPlayerIndex + 1) % alivePlayerCameras.Count;
+                    SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+                }
+
+            }
+
+        }
+        // 타이머 만료되면 리스폰 처리
+        if (respawnTimer.Expired(player.Runner))
+        {
+            respawnTimer = TickTimer.None; // 재호출 방지
+            OnRespawn();
+        }
     }
 
+    #region 부활,관전모드
+    private void OnDeath()
+    {
+        FindAlivePlayers(); // 리스트 갱신
+        respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
+
+        player.ThirdPersonRoot.SetActive(true);
+        stateMachine.ChangeState(stateMachine.DeadState);
+
+        // MeshRenderer 컴포넌트 비활성화
+        MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
+        foreach (var mr in meshRenderers)
+        {
+            mr.enabled = false;
+        }
+        // SkinnedMeshRenderer 컴포넌트 비활성화 (캐릭터 등 스킨드 메시 처리)
+        SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+        foreach (var smr in skinnedRenderers)
+        {
+            smr.enabled = false;
+        }
+
+        Debug.Log($"Disabled {meshRenderers.Length} MeshRenderer(s) and {skinnedRenderers.Length} SkinnedMeshRenderer(s).");
+    }
+    private void OnRespawn()
+    {
+        Debug.Log("리스폰");
+        int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
+        player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
+
+        // MeshRenderer 컴포넌트 활성화
+        MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(false);
+        foreach (var mr in meshRenderers)
+        {
+            mr.enabled = true;
+        }
+        // SkinnedMeshRenderer 컴포넌트 활성화 (캐릭터 등 스킨드 메시 처리)
+        SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(false);
+        foreach (var smr in skinnedRenderers)
+        {
+            smr.enabled = true;
+        }
+
+
+        stateMachine.IsDead = false;
+
+        player.FirstPersonRoot.SetActive(true);
+        player.ThirdPersonRoot.SetActive(false);
+
+        // 관전모드 초기화
+        ResetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+
+        Debug.Log("1");
+
+        player.statHandler.SetHealth(200);
+        stateMachine.ChangeState(stateMachine.IdleState);
+    }
+
+    public void FindAlivePlayers()
+    {
+        // 현재 접속중인 플레이어 정보들 저장
+        playerRefs = NetworkGameManager.Instance.gamePlayers.GetPlayerRefs();
+
+        // CinemachineVirtualCamera의 priority를 0초기화
+        foreach (var virtualCamera in alivePlayerCameras)
+        {
+            virtualCamera.Priority = 0;
+        }
+        alivePlayerCameras.Clear();
+
+        // playerRefs에 있는 플레이어들의 virtualCamera들 저장
+        foreach (var playerRef in playerRefs)
+        {
+            // NetworkObject 가져오기
+
+            // Player 컴포넌트 접근
+            Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
+            if (otherPlayer != null && otherPlayer.statHandler.CurHealth > 0)
+            {
+                PlayerCameraHandler otherCamHandler = otherPlayer.GetComponentInChildren<PlayerCameraHandler>();
+                alivePlayerCameras.Add(otherCamHandler.virtualCamera);
+            }
+        }
+    }
+    public void SetSpectatorTarget(CinemachineVirtualCamera targetCam)
+    {
+        if (targetCam == null) return;
+        // 자신의 virtualcamera의 priority를 0으로 
+        player.FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+
+        // 타겟의 우선순위를 높이면 자동으로 Live
+        targetCam.Priority = 100;
+
+        // targetCam을 가진 오브젝트의 3인칭 프리팹 비활성화, 1인칭 프리팹 활성화
+        var targetPlayer = targetCam.GetComponentInParent<Player>();
+        if (targetPlayer != null)
+        {
+            targetPlayer.FirstPersonRoot.SetActive(true);
+            targetPlayer.ThirdPersonRoot.SetActive(false);
+        }
+    }
+
+    public void ResetSpectatorTarget(CinemachineVirtualCamera targetCam)
+    {
+        if (targetCam == null) return;
+        // 우선순위를 낮추면 자동으로 Standby
+        targetCam.Priority = 0;
+
+        // 자신의 우선순위 100으로 
+        player.FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
+
+        // targetCam을 가진 오브젝트의 3인칭 프리팹 활성화, 1인칭 프리팹 비활성화
+        var targetPlayer = targetCam.GetComponentInParent<Player>();
+        if (targetPlayer != null)
+        {
+            targetPlayer.FirstPersonRoot.SetActive(false);
+            targetPlayer.ThirdPersonRoot.SetActive(true);
+        }
+    }
+    #endregion
+
+
+
+    #region 이동, 점프
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     private void HandleMovement(NetworkInputData data)
     {
-        if(LockState == PlayerLockState.MoveLock)
+        if (LockState == PlayerLockState.MoveLock)
         {
             networkCharacterController.Move(
                 Vector3.zero
@@ -127,35 +313,6 @@ public class PlayerController : NetworkBehaviour
             player.transform.forward = camForward;
         }
     }
-
-    private void OnDeath()
-    {
-        player.ThirdPersonRoot.SetActive(true);
-        stateMachine.ChangeState(stateMachine.DeadState);
-
-        // MeshRenderer 컴포넌트 비활성화
-        MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
-        foreach (var mr in meshRenderers)
-        {
-            mr.enabled = false;
-        }
-
-        // SkinnedMeshRenderer 컴포넌트 비활성화 (캐릭터 등 스킨드 메시 처리)
-        SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-        foreach (var smr in skinnedRenderers)
-        {
-            smr.enabled = false;
-        }
-
-        Debug.Log($"Disabled {meshRenderers.Length} MeshRenderer(s) and {skinnedRenderers.Length} SkinnedMeshRenderer(s).");
-    }
-    private void OnRespawn()
-    {
-        player.FirstPersonRoot.SetActive(true);
-        player.ThirdPersonRoot.SetActive(false);
-        stateMachine.ChangeState(stateMachine.IdleState);
-    }
-
     public void ApplyGravity()
     {
         if (IsGrounded())
@@ -238,6 +395,7 @@ public class PlayerController : NetworkBehaviour
     // 플레이어가 땅 위에 있는지?
     public bool IsGrounded() => networkCharacterController.Grounded;
     public float GetVerticalVelocity() => verticalVelocity;
+    #endregion
     private void OnGUI()
     {
         if (HasInputAuthority)
