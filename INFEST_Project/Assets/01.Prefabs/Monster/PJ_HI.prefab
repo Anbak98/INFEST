@@ -126,7 +126,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -497688465526345628, guid: 4bb29243cbc5c3845add7852e363c5e6, type: 3}
+  m_Mesh: {fileID: -497688465526345628, guid: 94271f5b4682aee4895a4735922ba4e1, type: 3}
   m_Bones:
   - {fileID: 8378998114158991541}
   - {fileID: 7531580920547252058}
@@ -968,7 +968,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2251819979789314082}
-  - component: {fileID: 6973359882226475605}
   m_Layer: 14
   m_Name: mixamorig5:Spine1
   m_TagString: Untagged
@@ -992,26 +991,6 @@ Transform:
   - {fileID: 1512060726138304701}
   m_Father: {fileID: 7531580920547252058}
   m_LocalEulerAnglesHint: {x: -0.99568355, y: -4.9738073, z: 0.45251125}
---- !u!114 &6973359882226475605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2391944372609806302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 3
-  SphereRadius: 0
-  CapsuleRadius: 0.15
-  BoxExtents: {x: 0, y: 0, z: 0}
-  CapsuleExtents: 0.4
-  Offset: {x: 0, y: -0.2, z: 0}
-  Root: {fileID: 2018823644459947275}
-  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2588700904354526019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,8 +1116,8 @@ MonoBehaviour:
   SphereRadius: 0
   CapsuleRadius: 0.07
   BoxExtents: {x: 0, y: 0, z: 0}
-  CapsuleExtents: 0.5
-  Offset: {x: 0, y: 0.25, z: 0}
+  CapsuleExtents: 0.6
+  Offset: {x: 0, y: 0.2, z: 0}
   Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2784435785035087788
@@ -1357,6 +1336,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monster: {fileID: 2070522734220542947}
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!135 &8227249028229613044
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1902,7 +1884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4544592939376556457}
-  - component: {fileID: 3667624559071425815}
+  - component: {fileID: 5354906035043527720}
   m_Layer: 13
   m_Name: mixamorig5:Head
   m_TagString: Untagged
@@ -1926,7 +1908,7 @@ Transform:
   - {fileID: 4193285982419745148}
   m_Father: {fileID: 7731029698578907818}
   m_LocalEulerAnglesHint: {x: -4.1503525, y: 0.22469726, z: 0.77403367}
---- !u!114 &3667624559071425815
+--- !u!114 &5354906035043527720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1935,17 +1917,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5281076310338547539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0dde4e14b78a7c24abb71ef8645e159c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 3
-  SphereRadius: 0.12
+  SphereRadius: 0
   CapsuleRadius: 0.09
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.25
   Offset: {x: 0, y: 0.09, z: 0.05}
-  Root: {fileID: 2018823644459947275}
-  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  Root: {fileID: 0}
+  GizmosColor: {r: 1, g: 0.015686275, b: 0.02745098, a: 1}
+  DamageMultiplier: 2
 --- !u!1 &5314309908229481976
 GameObject:
   m_ObjectHideFlags: 0
@@ -2679,10 +2662,10 @@ MonoBehaviour:
   - {fileID: 9093981411210920832}
   - {fileID: 1041156051793079882}
   - {fileID: 3414650535947347109}
-  - {fileID: 6973359882226475605}
+  - {fileID: 0}
   - {fileID: 8034058703909803772}
   - {fileID: 3627981605192036150}
-  - {fileID: 3667624559071425815}
+  - {fileID: 0}
   - {fileID: 2801098052342808127}
   - {fileID: 7299259346688601142}
   - {fileID: 8357321618041405346}
@@ -2796,12 +2779,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 1001
   AIPathing: {fileID: 8541060984460718935}
+  PlayerDetectorCollider: {fileID: 8227249028229613044}
+  target: {fileID: 0}
+  targets: []
   animator: {fileID: 6900176941767614314}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
   hitSound: {fileID: 6573686536218448580}
   hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
-  PlayerDetectorCollider: {fileID: 8227249028229613044}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1
@@ -2817,8 +2802,6 @@ MonoBehaviour:
     _value: 0
   _IsDead:
     _value: 0
-  target: {fileID: 0}
-  targets: []
   FSM: {fileID: 3608102175748486747}
   IsReadyForChangingState: 1
   _IsWonderPhase:
@@ -2910,8 +2893,8 @@ MonoBehaviour:
   SphereRadius: 0
   CapsuleRadius: 0.16
   BoxExtents: {x: 0, y: 0, z: 0}
-  CapsuleExtents: 0.45
-  Offset: {x: 0, y: -0.04, z: 0}
+  CapsuleExtents: 0.6
+  Offset: {x: 0, y: -0.1, z: 0}
   Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &7596005134736654789
@@ -3295,8 +3278,8 @@ MonoBehaviour:
   SphereRadius: 0
   CapsuleRadius: 0.07
   BoxExtents: {x: 0, y: 0, z: 0}
-  CapsuleExtents: 0.5
-  Offset: {x: 0, y: 0.25, z: 0}
+  CapsuleExtents: 0.6
+  Offset: {x: 0, y: 0.2, z: 0}
   Root: {fileID: 2018823644459947275}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8498094562419402430

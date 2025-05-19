@@ -3412,6 +3412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStatHandler: {fileID: 3147526191137004029}
+  health: 0
 --- !u!1 &6045832199881364628
 GameObject:
   m_ObjectHideFlags: 0
@@ -4575,6 +4576,7 @@ MonoBehaviour:
   - {fileID: 3906248093585814299}
   - {fileID: 6377256312871968595}
   - {fileID: 2866427704731707063}
+  - {fileID: 8607171778640618711}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &1036566270813735001
 Rigidbody:
@@ -4665,7 +4667,6 @@ MonoBehaviour:
   _CurHealth: 0
   _CurDefGear: 0
   _CurDef: 0
-  _CurGold: 0
   _CurTeamCoin: 0
   _curstate: 0
   effect: {fileID: 8335810917877115477}
