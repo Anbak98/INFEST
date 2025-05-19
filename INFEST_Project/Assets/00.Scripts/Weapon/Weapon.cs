@@ -209,7 +209,7 @@ public class Weapon : NetworkBehaviour
             //int id = Animator.StringToHash("Fire");
             //animator.SetTrigger(id);
             //camRecoil.ApplyCamRecoil(IsAiming ? 0.5f : 1f);
-            //gunRecoil.ApplyGunRecoil(Dispersion);
+            //gunRecoil.ApplyGunRecoil(Dispersion);            
             FireProjectile(firstPersonMuzzleTransform.position, projectileDirection);
         }
 
@@ -256,8 +256,8 @@ public class Weapon : NetworkBehaviour
         var projectileData = new ProjectileData();
         //Vector3 origin = _fireTransform.position;
         //Vector3 direction = _fireTransform.forward;
-        Vector3 origin = firePosition;
-        Vector3 direction = fireDirection;
+        //Vector3 origin = firePosition;
+        //Vector3 direction = fireDirection;
         //firePositionForGizmo = firePosition;
         //fireDirectionForGizmo = fireDirection;
 
@@ -293,15 +293,15 @@ public class Weapon : NetworkBehaviour
                 }
                 else
                 {
-                    projectileData.hitPosition = origin + direction * instance.data.WeaponRange;
-                    projectileData.hitNormal = -direction;
+                    projectileData.hitPosition = firePosition + fireDirection * instance.data.WeaponRange;
+                    projectileData.hitNormal = -fireDirection;
                     projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
                 }
             }
         }
 
 
-        Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+        Rpc_SpawnDummyProjectile(firePosition, fireDirection, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
 
         //if (HasStateAuthority)
         //{
