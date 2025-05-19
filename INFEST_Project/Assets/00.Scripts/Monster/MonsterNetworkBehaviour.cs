@@ -118,6 +118,19 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         return false;
     }
+    public bool IsTargetDead()
+    {
+        if(target != null)
+        {
+            if (targetBridges.TryGetValue(target, out var bridge))
+            {
+                if (bridge.CurHealth <= 0)
+                    return true;
+            }
+        }
+
+        return false;
+    }
 
     public void SetTargetRandomly()
     {
