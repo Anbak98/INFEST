@@ -35,6 +35,7 @@ public class PlayerStatHandler : NetworkBehaviour
 
     public void Init(PlayerRef player)
     {
+        info = new(1);
         owner = player;
         CurGold += info.data.StartGold;
     }

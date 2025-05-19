@@ -113,6 +113,8 @@ namespace INFEST.Game
                     nickname = nickname,
                     job = job
                 });
+
+                GetPlayerObj(player).GetComponent<PlayerStatHandler>().Init(player);
             }
         }
     }

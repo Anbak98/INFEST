@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using INFEST.Game;
 using UnityEngine;
 
 public class StoreController : NetworkBehaviour
@@ -110,11 +111,11 @@ public class StoreController : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     public void RPC_EndTImer()
     {
-        if (!Player.local.inStoreZoon) return; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
+        if (!NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon) return; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        Player.local.inStoreZoon = false;
+        NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon = false;
         //uIShopView.interactionText.gameObject.SetActive(false);
         //uIShopView.bg.gameObject.SetActive(false);
         Global.Instance.UIManager.Hide<UIInteractiveView>();
@@ -168,24 +169,24 @@ public class StoreController : NetworkBehaviour
     //        toRegisterNum[i] = 7;
     //    }
 
-        
 
-        
+
+
 
     //    for (i = 0; i < aiiStores[0].idList.Count; i++) 
     //    {
     //        for (j = 0; j < toRegisterNum.Length - toRegisterNum[i]; j++)
     //        {
-                
+
     //            randomNum = UnityEngine.Random.RandomRange(0, aiiStores.Count);
     //            while (randomNum && !maxRegistered[0])
     //                randomActive[randomNum] = false;
     //        }
-                
+
 
     //        for(j = 0; j < aiiStores.Count; j++)
     //        {
-                
+
     //            if (!randomActive[j])
     //            {
     //                aiiStores[i].idList[i] = 0;
@@ -196,7 +197,7 @@ public class StoreController : NetworkBehaviour
 
     //    }
 
-        
+
     //}
 
     //private bool AuxiliaryWeaponChk()
