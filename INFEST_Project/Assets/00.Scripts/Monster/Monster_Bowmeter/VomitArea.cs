@@ -9,7 +9,7 @@ public class VomitArea : NetworkBehaviour
 
     public LayerMask collisionLayers;
     public float tickInterval = 1f;
-    public int tickDamage = 20;
+    public int tickDamage = 55;
     
     private HashSet<TargetableFromMonster> affectedPlayers = new();
 
