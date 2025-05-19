@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public class Mounting : NetworkBehaviour
+public class Mounting : TargetableFromMonster
 {
     [Networked] public float curDurability { get; set; }
 
@@ -18,12 +18,13 @@ public class Mounting : NetworkBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void TakeDamage(int amount)
+    public override void ApplyDamage(MonsterNetworkBehaviour attacker, int amount)
     {
         curDurability -= amount;
         if (curDurability <= 0)
         {
             curDurability = 0;
+            attacker.TryRemoveTarget(transform);
             Runner.Despawn(Object);
         }
     }
@@ -38,8 +39,4 @@ public class Mounting : NetworkBehaviour
     {
         animator.SetTrigger(_isStopHash);
     }
-
-
-
-
 }
