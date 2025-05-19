@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using System.Collections.Generic;
 
 public class Monster_RageFang : BaseMonster<Monster_RageFang>
@@ -25,6 +26,7 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
 
     [Networked, OnChangedRender(nameof(OnIsRush))]
     public NetworkBool IsRush { get; set; } = false;
+
     [Networked, OnChangedRender(nameof(OnIsJumpAttack))]
     public NetworkBool IsJumpAttack { get; set; } = false;
 
@@ -50,13 +52,15 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
     }
 
-    public override void OnDead()
+    protected override void OnDead()
     {
         base.OnDead();
         if(IsDead)
         {
             FSM.ChangePhase<Monster_RageFang_Phase_Dead>();
         }
+
+        NetworkGameManager.Instance.VictoryGame();
     }
 
     private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);

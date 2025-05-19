@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,31 +9,54 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
     [SerializeField] private LayerMask spawnPointLayerMask;
     [SerializeField] private MonsterScriptableObject MonsterMap;
 
-    private List<UnityEngine.Collider> spawnPoints = new();
-    private TickTimer spawnDelayTimer;
+    public int SpawnedNum = 0;
+    public int SpawnedLimit = 51;
+    public int SpawnWaitingNum = 0;
 
-    private Queue<int> monsterSpawnQueue = new();
-    private Transform target;
+    private TickTimer waveSpawnDelayTimer;
+    private List<UnityEngine.Collider> waveSpawnPoints = new();
+    [SerializeField] private Queue<int> waveMonsterSpawnQueue = new();
+    private Transform waveCaller;
+    private Dictionary<int, SpawnTable> monsterSpawnTables = new();
+
+
+    private TickTimer fieldSpawnDelayTimer;
 
     public override void Spawned()
     {
         base.Spawned();
         MonsterMap.Init();
+        monsterSpawnTables = DataManager.Instance.GetDictionary<SpawnTable>();
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (spawnDelayTimer.ExpiredOrNotRunning(Runner))
+        if (SpawnWaitingNum <= 0)
         {
-            if (monsterSpawnQueue.Count > 0 && spawnPoints.Count > 0)
+            NetworkGameManager.Instance.gameState = GameState.None;
+        }
+
+        if (waveSpawnDelayTimer.ExpiredOrNotRunning(Runner))
+        {
+            if (NetworkGameManager.Instance.gameState == GameState.Wave && SpawnedNum < SpawnedLimit && waveMonsterSpawnQueue.Count > 0 && waveSpawnPoints.Count > 0)
             {
-                int rand = Random.Range(0, spawnPoints.Count);
-                NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterSpawnQueue.Dequeue()), spawnPoints[rand].transform.position);
+                int rand = Random.Range(0, waveSpawnPoints.Count);
+                NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(waveMonsterSpawnQueue.Dequeue()), waveSpawnPoints[rand].transform.position);
                 MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
 
-                mnb.OnWave(target);
+                mnb.TryAddTarget(waveCaller);
+                mnb.SetTarget(waveCaller);
+                waveSpawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
 
-                spawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
+                SpawnWaitingNum--;
+            }
+        }
+
+        if (fieldSpawnDelayTimer.ExpiredOrNotRunning(Runner))
+        {
+            if (NetworkGameManager.Instance.gameState == GameState.None)
+            {
+
             }
         }
     }
@@ -44,31 +68,34 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
         do
         {
-            spawnPoints = Physics.OverlapSphere(from.position, distance, spawnPointLayerMask).ToList();
+            waveSpawnPoints = Physics.OverlapSphere(from.position, distance, spawnPointLayerMask).ToList();
             distance *= 2;
             iteral--;
-        } while (spawnPoints.Count == 0 && iteral > 0);
+        } while (waveSpawnPoints.Count == 0 && iteral > 0);
 
-        if (spawnPoints.Count > 0)
+        if (waveSpawnPoints.Count > 0)
         {
-            monsterSpawnQueue = new();
+            waveMonsterSpawnQueue = new();
 
-            for (int i = 0; i < 35; i++)
+            foreach (var mst in monsterSpawnTables)
             {
-                monsterSpawnQueue.Enqueue(1001);
+                int spawnNum = mst.Value.StartByWave + mst.Value.WavePer5Min * (int)(Runner.SimulationTime / 300);
+
+                if(NetworkGameManager.Instance.gameState != GameState.Wave)
+                {
+                    spawnNum *= 5;
+                }
+
+                for (int i = 0; i < spawnNum; i++)
+                {
+                    SpawnWaitingNum++;
+                    waveMonsterSpawnQueue.Enqueue(mst.Key);
+                }
             }
 
-            for (int i = 0; i < 14; i++)
-            {
-                monsterSpawnQueue.Enqueue(1002);
-            }
+            NetworkGameManager.Instance.gameState = GameState.Wave;
 
-            //for (int i = 0; i < 1; i++)
-            //{
-            //    monsterSpawnQueue.Enqueue(2001);
-            //}
-
-            target = from;
+            waveCaller = from;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public struct PlayerScoreData : INetworkStruct
 {
@@ -30,7 +31,12 @@ public class ScoreboardManager : NetworkBehaviour
     {
         Instance = this;
         //scoreboardView = UIScoreboardView.Instance;
-    }   
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+    }
 
     public void OnPlayerJoined(PlayerRef newPlayer, CharacterInfoData info)
     {
@@ -53,8 +59,8 @@ public class ScoreboardManager : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_BroadcastAddPlayerRow(PlayerRef player, CharacterInfoData info, PlayerScoreData score)
     {
-        scoreboardView.AddPlayerRow(player, info);
-        scoreboardView.UpdatePlayerRow(player, score);
+        scoreboardView.AddPlayerRow(player);
+        scoreboardView.UpdatePlayerRow(player);
     }  
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -62,8 +68,8 @@ public class ScoreboardManager : NetworkBehaviour
     {
         if (Runner.LocalPlayer == newPlayer)
         {
-            scoreboardView.AddPlayerRow(existingPlayer, info);
-            scoreboardView.UpdatePlayerRow(existingPlayer, score);
+            scoreboardView.AddPlayerRow(existingPlayer);
+            scoreboardView.UpdatePlayerRow(existingPlayer);
         }
     }
 
@@ -74,7 +80,7 @@ public class ScoreboardManager : NetworkBehaviour
         {
             data.kills++;
             PlayerScores.Set(player, data);
-            scoreboardView.UpdatePlayerRow(player, data);
+            scoreboardView.UpdatePlayerRow(player);
         }
     }
 
@@ -85,7 +91,7 @@ public class ScoreboardManager : NetworkBehaviour
         {
             data.deaths++;
             PlayerScores.Set(player, data);
-            scoreboardView.UpdatePlayerRow(player, data);
+            scoreboardView.UpdatePlayerRow(player);
         }
     }
 
@@ -101,7 +107,7 @@ public class ScoreboardManager : NetworkBehaviour
             {
                 data.gold += amount;
                 PlayerScores.Set(player, data);
-                scoreboardView.UpdatePlayerRow(player, data);
+                scoreboardView.UpdatePlayerRow(player);
             }
         }
     }    

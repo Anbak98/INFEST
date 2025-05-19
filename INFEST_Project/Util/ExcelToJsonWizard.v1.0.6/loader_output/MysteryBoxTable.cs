@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class MysteryBoxTable : IKeyedItem
+public class MysteryBoxTable
 {
     /// <summary>
     /// ID
@@ -35,5 +35,5 @@ public class MysteryBoxTable : IKeyedItem
     /// 헬모드 등장확률
     /// </summary>
     public int HellProbability;
-    public int Key => key;
+
 }

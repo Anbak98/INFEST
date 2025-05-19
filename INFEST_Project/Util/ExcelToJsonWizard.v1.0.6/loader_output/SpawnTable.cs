@@ -24,7 +24,7 @@ public class SpawnTable
     /// <summary>
     /// 10분당 스폰 웨이브 비율 증감량
     /// </summary>
-    public int WavePer5Min;
+    public int WavePer10Min;
 
     /// <summary>
     /// 필드 초기 스폰 확률

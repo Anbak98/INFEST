@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Fusion;
+using INFEST.Game;
 using UnityEngine;
 
 public class UIScoreboardView : UIScreen
@@ -10,16 +11,24 @@ public class UIScoreboardView : UIScreen
     //public UIScoreboardRow rowPrefab;
 
     private Dictionary<PlayerRef, UIScoreboardRow> activeRows = new();
+    private GamePlayerHandler gamePlayerHandler;
 
     public override void Awake()
     {
         base.Awake();
+        Init();
+        Hide();
     }
 
     public override void Init()
     {
         //Instance = this;                
         base.Init();
+        gamePlayerHandler = NetworkGameManager.Instance.gamePlayers;
+
+        UpdateScoreboard();
+        gamePlayerHandler.OnValueChanged += UpdateScoreboard;
+
         Hide();
     }
 
@@ -33,9 +42,20 @@ public class UIScoreboardView : UIScreen
         base.Hide();        
     }
 
-    public void AddPlayerRow(PlayerRef player, CharacterInfoData info)
+    public void UpdateScoreboard()
     {
-        if (activeRows.ContainsKey(player)) return;
+        foreach (var player in gamePlayerHandler.GetPlayerRefs())
+        {
+            AddPlayerRow(player);
+            UpdatePlayerRow(player);
+        }
+    }
+
+
+    public void AddPlayerRow(PlayerRef player)
+    {
+        if (activeRows.ContainsKey(player)) 
+            return;
         
         foreach (Transform child in rowParent)
         {
@@ -43,7 +63,6 @@ public class UIScoreboardView : UIScreen
             if (row != null && !row.gameObject.activeSelf)
             {
                 row.gameObject.SetActive(true);
-                row.SetNickname(info.nickname.ToString());
                 activeRows[player] = row;
                 return;
             }
@@ -59,11 +78,12 @@ public class UIScoreboardView : UIScreen
         }
     }
 
-    public void UpdatePlayerRow(PlayerRef player, PlayerScoreData data)
+    public void UpdatePlayerRow(PlayerRef player)
     {
+
         if (activeRows.TryGetValue(player, out var row))
         {
-            row.SetData(data);
+            row.SetData(player);
         }
     }
 }

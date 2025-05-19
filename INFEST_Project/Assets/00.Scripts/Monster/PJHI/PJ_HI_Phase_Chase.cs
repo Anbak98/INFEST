@@ -20,7 +20,7 @@ public class PJ_HI_Phase_Chase : MonsterPhase<Monster_PJ_HI>
         {
             if (monster.IsReadyForChangingState)
             {
-                if (monster.AIPathing.remainingDistance <= 2f)
+                if (monster.AIPathing.remainingDistance <= monster.CommonSkillTable[1].UseRange)
                 {
                     ChangeState<PJ_HI_Attack>();
                 }
