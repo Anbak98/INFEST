@@ -23,7 +23,7 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
     public override void MachineExecute()
     {
         base.MachineExecute();
-        if (true/*타겟의 체력 <= 0*/)    // 임시로 항상 실행되게 만들었다
+        if (monster.IsTargetDead())
         {
             monster.target = null;
             // 새로운 목표를 설정한다
@@ -31,7 +31,10 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
             // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다
         }
         if (monster.target == null)
+        {
             monster.FSM.ChangePhase<DeadCop_Phase_Wander>();
+            return;
+        }
 
         monster.AIPathing.SetDestination(monster.target.position);
 
