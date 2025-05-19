@@ -80,7 +80,7 @@ public class NetworkGameStarter : MonoBehaviour
                 GameMode = mode,
                 SessionName = "TestRoom",
                 Scene = scene,
-                ObjectProvider = gameObject.AddComponent<PoolObjectProvider>(),
+                //ObjectProvider = gameObject.AddComponent<PoolObjectProvider>(),
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
             _runner.AddCallbacks(_callbacks);
