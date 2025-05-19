@@ -101,9 +101,12 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public int justSpawnMonsterKey = -1;
 
-    public void JustFieldSpawn(Transform from)
+    public void JustFieldSpawn(Transform from, int? monsterKey = -1)
     {
         waveCaller = from;
+
+        if (monsterKey == -1) 
+            monsterKey = justSpawnMonsterKey;
 
         int distance = 15;
         int iteral = 5;
@@ -120,19 +123,22 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
         NetworkGameManager.Instance.gameState = GameState.None;
 
 
-        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(justSpawnMonsterKey), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
+        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey.Value), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
         MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
 
         mnb.TryAddTarget(waveCaller);
         mnb.SetTarget(waveCaller);
     }
 
-    public void JustWaveSpawn(Transform from)
+    public void JustWaveSpawn(Transform from, int? monsterKey = -1)
     {
         waveCaller = from;
 
         int distance = 15;
         int iteral = 5;
+
+        if (monsterKey == -1)
+            monsterKey = justSpawnMonsterKey;
 
         List<UnityEngine.Collider> justSpawnPoint;
 
@@ -146,7 +152,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
         NetworkGameManager.Instance.gameState = GameState.Wave;
 
 
-        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(justSpawnMonsterKey), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
+        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey.Value), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
         MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
 
         mnb.TryAddTarget(waveCaller);
