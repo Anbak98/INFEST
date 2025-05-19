@@ -42,9 +42,9 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
         commonSkill = DataManager.Instance.GetDictionary<CommonSkillTable>();
         OnIsWonderPhase();
         OnIsChasePhase();
-        OnIsPunch();                
+        OnIsPunch();
 
-        CurMovementSpeed = info.SpeedMoveWave;
+        //CurMovementSpeed = info.SpeedMoveWave;
     }
 
     public override void Render()
@@ -64,6 +64,7 @@ public class Monster_Stacker : BaseMonster<Monster_Stacker>
     protected override void OnWave()
     {
         base.OnWave();
+        IsChasePhase = true;
         FSM.ChangePhase<Stacker_Phase_Chase>();
     }
 }
