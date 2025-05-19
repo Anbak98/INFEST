@@ -9,7 +9,7 @@ public class Bowmeter_Idle : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowm
         base.Enter();
         monster.IsIdle = true;
         monster.CurMovementSpeed = 0f;
-        _tickTimer = TickTimer.CreateFromSeconds(Runner, 1);
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
 
     public override void Execute()
