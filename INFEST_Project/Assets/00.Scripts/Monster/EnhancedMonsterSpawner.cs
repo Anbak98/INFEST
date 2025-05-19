@@ -101,6 +101,12 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public int justSpawnMonsterKey = -1;
 
+    public void SpawnOnPos(Transform pos, int monsterKey = 1001)
+    {
+        NetworkGameManager.Instance.gameState = GameState.None;
+        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey), pos.transform.position);
+    }
+
     public void JustFieldSpawn(Transform from, int? monsterKey = -1)
     {
         waveCaller = from;
