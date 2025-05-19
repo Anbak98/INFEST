@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,18 @@ public class PlayerStatHandler : NetworkBehaviour
     [Networked] public int CurHealth { get; set; }                          // 체력
     [Networked] public int CurDefGear { get; set; }                         // 방어구 체력
     [Networked] public int CurDef { get; set; }
-    [Networked] public int CurGold { get; set; }                            // 시작 골드
+    public int CurGold 
+    { 
+        get
+        { 
+            return NetworkGameManager.Instance.gamePlayers.GetGoldCount(Runner.LocalPlayer); 
+        }
+        set
+        {
+            NetworkGameManager.Instance.gamePlayers.AddGoldCount(Runner.LocalPlayer, value);
+        }
+    }       
+    // 시작 골드
     [Networked] public int CurTeamCoin { get; set; }                        // 시작 팀코인
     [Networked] public int curstate { get; set; }                           // 캐릭터 상태
 
@@ -33,7 +45,7 @@ public class PlayerStatHandler : NetworkBehaviour
         CurHealth = info.data.Health;
         CurDefGear = info.data.DefGear;
         CurDef = info.data.Def;
-        CurGold = info.data.StartGold;
+        NetworkGameManager.Instance.gamePlayers.AddGoldCount(Runner.LocalPlayer, info.data.StartGold);
         CurTeamCoin = info.data.StartTeamCoin;
         CurSpeedMove = info.data.SpeedMove;
         curstate = info.data.State;
@@ -110,6 +122,12 @@ public class PlayerStatHandler : NetworkBehaviour
         IsDead = true;
 
         OnDeath?.Invoke();
+        NetworkGameManager.Instance.playerCount--;
+
+        if (NetworkGameManager.Instance.playerCount <= 0)
+        {
+            NetworkGameManager.Instance.DefeatGame();
+        }
     }
     // 리스폰
     public void HandleRespawn()
