@@ -53,7 +53,7 @@ public class Rocket : NetworkBehaviour
             }
         }
 
-        displacement = transform.forward.normalized * 10f * Runner.DeltaTime;
+        displacement = transform.forward.normalized * 20f * Runner.DeltaTime;
         newPosition = displacement + transform.position;
         if (displacement.sqrMagnitude > 0.0001f)
         {
