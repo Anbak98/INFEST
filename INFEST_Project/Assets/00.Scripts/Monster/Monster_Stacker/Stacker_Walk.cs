@@ -34,7 +34,7 @@ public class Stacker_Walk : MonsterStateNetworkBehaviour<Monster_Stacker, Stacke
 
     private Vector3 GetRandomPositionOnNavMesh()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * 3f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.
+        Vector3 randomDirection = Random.insideUnitSphere * 10f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.
         randomDirection += transform.position; // 랜덤 방향 벡터를 현재 위치에 더합니다.
 
         NavMeshHit hit;

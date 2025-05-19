@@ -24,7 +24,7 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     {
         base.MachineExecute();
 
-        if (monster.IsReadyForChangingState)
+        if (monster.IsReadyForChangingState && monster.target != null)
         {
             monster.AIPathing.SetDestination(monster.target.position);
         }
