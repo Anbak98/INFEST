@@ -13,7 +13,7 @@ public class Stacker_Run : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker
     public override void Execute()
     {
         base.Execute();
-        monster.AIPathing.SetDestination(monster.target.position);
+        //monster.AIPathing.SetDestination(monster.target.position);
 
         if (!monster.AIPathing.pathPending && monster.AIPathing.remainingDistance <= 2f)
         {
