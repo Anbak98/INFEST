@@ -129,7 +129,7 @@ public class MatchManager : SingletonBehaviour<MatchManager>
             });
         } while (Runner.SessionInfo.PlayerCount > 1);
 
-        await Runner.LoadScene("PlayStage(MVP)");
+        await Runner.LoadScene("RuinedCity");
     }
 
     public void PlayPartyGame()

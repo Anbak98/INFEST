@@ -37,7 +37,10 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         info = new(1);
         owner = player;
-        CurGold += info.data.StartGold;
+        if(NetworkGameManager.Instance.gamePlayers.IsValid(owner))
+        {
+            CurGold += info.data.StartGold;
+        }
     }
 
     public override void Spawned()
@@ -109,7 +112,12 @@ public class PlayerStatHandler : NetworkBehaviour
         effect.CalledWhenPlayerAttacked(-1);
     }
 
-    // 회복
+    // 회복eathCount = 0;
+
+        //foreach (var p in NetworkGameManager.Instance.gamePlayers.GetPlayerRefs())
+        //{
+        //    NetworkGameManager.Instance.gamePlayers.GetPlayerObj(p);
+        //}
     public void Heal(int amount)
     {
         CurHealth = Mathf.Min(CurHealth + amount, CurHealth);
@@ -122,12 +130,24 @@ public class PlayerStatHandler : NetworkBehaviour
         IsDead = true;
 
         OnDeath?.Invoke();
-        NetworkGameManager.Instance.playerCount--;
+        //NetworkGameManager.Instance.playerCount--;
 
-        if (NetworkGameManager.Instance.playerCount <= 0)
+        int deathCount = 0;
+
+        foreach (var player in NetworkGameManager.Instance.gamePlayers.GetPlayerRefs())
+        {
+            if(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(player).IsDead)
+            {
+                deathCount++;
+            }
+        }
+
+        if (deathCount >= Runner.SessionInfo.PlayerCount) 
         {
             NetworkGameManager.Instance.DefeatGame();
         }
+
+        //int d
     }
     // 리스폰
     public void HandleRespawn()

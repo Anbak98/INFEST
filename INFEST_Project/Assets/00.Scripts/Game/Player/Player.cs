@@ -14,8 +14,7 @@ using UnityEngine.SocialPlatforms;
 /// </summary>
 public class Player : NetworkBehaviour
 {
-    public static Player local { get; private set; }
-
+    public bool IsDead = false;
     public bool inStoreZoon = false;
     public bool isInteraction = false;
     public PlayerAnimationController animationController;
@@ -70,7 +69,6 @@ public class Player : NetworkBehaviour
 
             FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높이면
 
-            local = this;
             Debug.Log("Local Player 설정 완료");
         }
 

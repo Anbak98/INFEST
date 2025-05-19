@@ -20,8 +20,6 @@ namespace INFEST.Game
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
 
-        public int playerCount = 0;
-
         public void VictoryGame()
         {
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();

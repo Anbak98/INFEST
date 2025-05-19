@@ -25,24 +25,14 @@ namespace INFEST.Game
 
             if (runner.IsServer)
             {
-                NetworkObject netObj = runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[NetworkGameManager.Instance.playerCount].position, inputAuthority: player);
+                NetworkObject netObj = runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[0].position, inputAuthority: player);
                 NetworkGameManager.Instance.gamePlayers.AddPlayerObj(player, netObj.Id);
                 netObj.GetComponent<PlayerStatHandler>().Init(player);
-
-                if (runner.LocalPlayer == player)
-                {
-                    NetworkGameManager.Instance.playerCount++;
-                }
             }
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            if (runner.LocalPlayer == player)
-            {
-                NetworkGameManager.Instance.playerCount++;
-            }
-
             if (runner.IsServer)
             {
                 NetworkGameManager.Instance.gamePlayers.RemovePlayer(player);

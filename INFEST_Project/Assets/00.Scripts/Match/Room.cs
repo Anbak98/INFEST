@@ -141,7 +141,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
         if (Runner.IsSharedModeMasterClient)
         {
-            Runner.LoadScene("PlayStage(MVP)");
+            Runner.LoadScene("RuinedCity");
         }
     }
 
