@@ -141,7 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2beb22150a858274a90c01e5b52ba5e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossSpawnPoints: {fileID: 0}
+  bossSpawnPoint: {fileID: 0}
+  bossPrefab:
+    RawGuidValue: 00000000000000000000000000000000
 --- !u!1 &238622321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,6 +1678,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 76838703195281468, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: justSpawnMonsterKey
+      value: 3001
+      objectReference: {fileID: 0}
     - target: {fileID: 824003170607197887, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
       propertyPath: SortKey

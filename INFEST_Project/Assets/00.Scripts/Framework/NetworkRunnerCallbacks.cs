@@ -25,7 +25,7 @@ namespace INFEST.Game
 
             if (runner.IsServer)
             {
-                NetworkObject netObj = runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[runner.SessionInfo.PlayerCount - 1].position, inputAuthority: player);
+                NetworkObject netObj = runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[NetworkGameManager.Instance.playerCount].position, inputAuthority: player);
                 NetworkGameManager.Instance.gamePlayers.AddPlayerObj(player, netObj.Id);
                 netObj.GetComponent<PlayerStatHandler>().Init(player);
 
