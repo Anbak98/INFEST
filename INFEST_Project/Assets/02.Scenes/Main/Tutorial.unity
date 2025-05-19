@@ -4907,25 +4907,85 @@ PrefabInstance:
       propertyPath: SortKey
       value: 781381509
       objectReference: {fileID: 0}
+    - target: {fileID: 1042188796566493568, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042188796566493568, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042188796566493568, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656192858052116049, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656192858052116049, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656192858052116049, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.6
+      objectReference: {fileID: 0}
     - target: {fileID: 2819210594177276524, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
       propertyPath: m_Name
       value: NetworkGameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6864670198050664421, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864670198050664421, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864670198050664421, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773534054869101838, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773534054869101838, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773534054869101838, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.6
+      objectReference: {fileID: 0}
     - target: {fileID: 7851311580529667776, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.37437
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7851311580529667776, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 114.69914
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7851311580529667776, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.408489
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7851311580529667776, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
@@ -9629,7 +9689,7 @@ MonoBehaviour:
   wall:
   - {fileID: 2146060200}
   - {fileID: 6013866381409181742}
-  spawner: {fileID: 0}
+  _monsterSpawner: {fileID: 0}
   arrow: {fileID: 1141803192}
   shopArrow:
   - {fileID: 828644779}

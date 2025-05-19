@@ -3,6 +3,7 @@ using Fusion;
 using KINEMATION.FPSAnimationPack.Scripts.Weapon;
 using System.IO.Pipes;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum EWeaponType
 {
@@ -19,55 +20,55 @@ public class Weapon : NetworkBehaviour
     public int key;
     public WeaponInstance instance;
     public FPSWeapon FPSWeapon;
-    public EWeaponType Type; // ¹«±â Á¾·ù
+    public EWeaponType Type; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public Sprite icon;
-    public Rocket rocket;
+    public NetworkPrefabRef rocket;
 
     [Header("Firing")]
-    //public bool isAutomatic = false; // ¿¬»ç or ´Ü¹ß
-    //public float damage; // °ø°Ý·Â
-    //public float fireRate = 100f; // °ø°Ý ¼Óµµ
-    //public float maxHitDistance = 100f; // »ç°Å¸®
-    //public float dispersion = 0; // ÁýÅºÀ²
+    //public bool isAutomatic = false; // ï¿½ï¿½ï¿½ï¿½ or ï¿½Ü¹ï¿½
+    //public float damage; // ï¿½ï¿½ï¿½Ý·ï¿½
+    //public float fireRate = 100f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+    //public float maxHitDistance = 100f; // ï¿½ï¿½Å¸ï¿½
+    //public float dispersion = 0; // ï¿½ï¿½Åºï¿½ï¿½
     //public float recoilForce;
     //public float recoilReturnTime = 0.5f;
     //public float splash;
     public LayerMask HitMask;
-    public float reloadTime = 2.0f; // ÀåÀü ¼Óµµ
+    public float reloadTime = 2.0f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
 
     //[Header("Ammo")]
-    //public int startClip = 30; // ½ÃÀÛ ÅºÃ¢ÀÇ Åº¾à
-    //public int curClip = 30; // ÇöÀç ÅºÃ¢ÀÇ Åº¾à
-    //public int possessionAmmo = 0; // º¸À¯ Åº¾à
+    //public int startClip = 30; // ï¿½ï¿½ï¿½ï¿½ ÅºÃ¢ï¿½ï¿½ Åºï¿½ï¿½
+    //public int curClip = 30; // ï¿½ï¿½ï¿½ï¿½ ÅºÃ¢ï¿½ï¿½ Åºï¿½ï¿½
+    //public int possessionAmmo = 0; // ï¿½ï¿½ï¿½ï¿½ Åºï¿½ï¿½
 
-    //public int maxAmmo = 360; // ÃÖ´ë Åº¾à
-    //[Range(1, 20)] public int ProjectilesPerShot = 1; // ¹ß»çÃ¼ ´ç ÃÑ¾Ë¼ö
+    //public int maxAmmo = 360; // ï¿½Ö´ï¿½ Åºï¿½ï¿½
+    //[Range(1, 20)] public int ProjectilesPerShot = 1; // ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ ï¿½Ñ¾Ë¼ï¿½
 
     //[Header("Shop")]
-    //public int weaponPrice; // ÃÑ °¡°Ý
-    //public int ammoPrice; // Åº¾à °¡°Ý
-    [Networked] public int curMagazineBullet { get; set; } // ÇöÀç ÅºÃ¢ÀÇ Åº¾à
-    [Networked] public int curBullet { get; set; } // º¸À¯ Åº¾à
-    [Networked] public NetworkBool IsCollected { get; set; } = false; // º¸À¯ÁßÀÎ°¡?
-    [Networked] public NetworkBool IsReloading { get; set; } = false; // ÀåÀüÁßÀÎ°¡?
-    [Networked] public NetworkBool IsAiming { get; set; } = false; // ÀåÀüÁßÀÎ°¡?
-    [Networked] private TickTimer _fireCooldown { get; set; } // Çàµ¿ ÈÄ ÄðÅ¸ÀÓ
+    //public int weaponPrice; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //public int ammoPrice; // Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [Networked] public int curMagazineBullet { get; set; } // ï¿½ï¿½ï¿½ï¿½ ÅºÃ¢ï¿½ï¿½ Åºï¿½ï¿½
+    [Networked] public int curBullet { get; set; } // ï¿½ï¿½ï¿½ï¿½ Åºï¿½ï¿½
+    [Networked] public NetworkBool IsCollected { get; set; } = false; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½?
+    [Networked] public NetworkBool IsReloading { get; set; } = false; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½?
+    [Networked] public NetworkBool IsAiming { get; set; } = false; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½?
+    [Networked] private TickTimer _fireCooldown { get; set; } // ï¿½àµ¿ ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
     [Networked, Capacity(32)] private NetworkArray<ProjectileData> _projectileData { get; }
-    [Networked] private int _fireCount { get; set; } // ´©Àû ¹ß»ç È½¼ö
+    [Networked] private int _fireCount { get; set; } // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ È½ï¿½ï¿½
 
-    private int _visibleFireCount; // Å¬¶óÀÌ¾ðÆ®°¡ ¸¶Áö¸·À¸·Î Ã³¸®ÇÑ ¹ß»ç ¼ö
+    private int _visibleFireCount; // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½
 
-    private int _fireTicks; // Àç»ç°Ý ½Ã°£
+    private int _fireTicks; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
     private float _basicDispersion;
     //private Vector3 _startPosition = new Vector3(0.15f, 0.5f, 1f);
     //private Vector3 _targetPosition = new Vector3(0, 0.6f, 0.5f);
 
     public Transform firstPersonMuzzleTransform;
     public Transform thirdPersonMuzzleTransform;
-    public DummyProjectile dummyProjectilePrefab; // ÃÑ¾Ë ÇÁ¸®ÆÕ
-    private DummyProjectile dummyProjectile; // ÃÑ¾Ë ÀÎ½ºÅÏ½º
-    private bool _reloadingVisible; // º¸ÀÌ´Â ¸®·Îµù »óÅÂ
-    //[SerializeField] private Transform _fireTransform; // ÃÑ±¸ À§Ä¡
+    public DummyProjectile dummyProjectilePrefab; // ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private DummyProjectile dummyProjectile; // ï¿½Ñ¾ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½
+    private bool _reloadingVisible; // ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½
+    //[SerializeField] private Transform _fireTransform; // ï¿½Ñ±ï¿½ ï¿½ï¿½Ä¡
     //[SerializeField] private NetworkPrefabRef _realProjectilePrefab;
 
     public override void FixedUpdateNetwork()
@@ -149,7 +150,7 @@ public class Weapon : NetworkBehaviour
         _reloadingVisible = IsReloading;
 
         float fireTime = 60f / (instance.data.FireRate * 100);
-        _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime); // ¹Ý¿Ã¸²
+        _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime); // ï¿½Ý¿Ã¸ï¿½
 
         //dummyProjectile = Instantiate(dummyProjectilePrefab, HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform);
         //dummyProjectile.FinishProjectile();
@@ -184,7 +185,7 @@ public class Weapon : NetworkBehaviour
 
 
     /// <summary>
-    /// ¹ß»ç
+    /// ï¿½ß»ï¿½
     /// </summary>
     public void Fire(bool holdingPressed)
     {
@@ -194,7 +195,7 @@ public class Weapon : NetworkBehaviour
         if (curMagazineBullet == 0) return;
         if (IsReloading) return;
         FPSWeapon.RPC_OnFirePressed();
-        Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // ·£´ý°ª °íÁ¤
+        Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         for (int i = 0; i < instance.data.ProjectilesPerShot; i++)
         {
@@ -203,13 +204,13 @@ public class Weapon : NetworkBehaviour
             if (instance.data.Concentration > 0f)
             {
                 var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * instance.data.Concentration);
-                projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward; // ÅºÆÛÁü
+                projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward; // Åºï¿½ï¿½ï¿½ï¿½
             }
 
             //int id = Animator.StringToHash("Fire");
             //animator.SetTrigger(id);
             //camRecoil.ApplyCamRecoil(IsAiming ? 0.5f : 1f);
-            //gunRecoil.ApplyGunRecoil(Dispersion);
+            //gunRecoil.ApplyGunRecoil(Dispersion);            
             FireProjectile(firstPersonMuzzleTransform.position, projectileDirection);
         }
 
@@ -223,11 +224,11 @@ public class Weapon : NetworkBehaviour
     //{
     //    if (!Application.isPlaying) return;
 
-    //    // Ray Á¤º¸
+    //    // Ray ï¿½ï¿½ï¿½ï¿½
     //    Vector3 rayOrigin = firePositionForGizmo;
     //    Vector3 rayDir = fireDirectionForGizmo.normalized;
 
-    //    // Raycast ½Ã°¢È­
+    //    // Raycast ï¿½Ã°ï¿½È­
     //    if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
     //        Object.InputAuthority, out var hit, HitMask, HitOptions.None))
     //    {
@@ -256,8 +257,8 @@ public class Weapon : NetworkBehaviour
         var projectileData = new ProjectileData();
         //Vector3 origin = _fireTransform.position;
         //Vector3 direction = _fireTransform.forward;
-        Vector3 origin = firePosition;
-        Vector3 direction = fireDirection;
+        //Vector3 origin = firePosition;
+        //Vector3 direction = fireDirection;
         //firePositionForGizmo = firePosition;
         //fireDirectionForGizmo = fireDirection;
 
@@ -265,17 +266,16 @@ public class Weapon : NetworkBehaviour
 
         if (HasStateAuthority)
         {
-            if (Type == EWeaponType.Launcher && rocket != null)
+            if (Type == EWeaponType.Launcher)
             {
-                if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
-                Object.InputAuthority, out var hit))
-                {
-                    transform.position = hit.GameObject.transform.root.position + new Vector3(0, 0.01f, 0);
-                    RPC_Explode(transform.position);
-                    return;
-                }
+                Quaternion baseRotation = Quaternion.LookRotation(firePosition);
+                Quaternion offsetRotation = Quaternion.Euler(0, 90f, 0);
+                Quaternion finalRotation = transform.rotation;
+
+                Runner.Spawn(rocket, firePosition, finalRotation, Object.InputAuthority).GetComponent<Rocket>().weapon = this;
             }
-            else{
+            else
+            {
                 if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
                         Object.InputAuthority, out var hit, HitMask, hitOptions))
                 {
@@ -293,15 +293,18 @@ public class Weapon : NetworkBehaviour
                 }
                 else
                 {
-                    projectileData.hitPosition = origin + direction * instance.data.WeaponRange;
-                    projectileData.hitNormal = -direction;
-                    projectileData.showHitEffect = false; // Ãæµ¹ ¾È ÇßÀ¸¸é È÷Æ®ÀÌÆåÆ® ¾øÀ½
+                    projectileData.hitPosition = firePosition + fireDirection * instance.data.WeaponRange;
+                    projectileData.hitNormal = -fireDirection;
+                    projectileData.showHitEffect = false; // ï¿½æµ¹ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
                 }
+                Rpc_SpawnDummyProjectile(firePosition, fireDirection, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+                _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
+                _fireCount++;
             }
         }
 
 
-        Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+       
 
         //if (HasStateAuthority)
         //{
@@ -313,8 +316,7 @@ public class Weapon : NetworkBehaviour
         //        });
         //}
 
-        _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
-        _fireCount++;
+        
         //Runner.Spawn(bullet,
         //transform.position,
         //Quaternion.LookRotation(dir),
@@ -326,14 +328,7 @@ public class Weapon : NetworkBehaviour
 
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_Explode(Vector3 pos)
-    {
-        transform.position = pos;
-        rocket.explosion.SetActive(true);
-        rocket.render.SetActive(false);
-        rocket.Explosion();
-    }
+
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
     {
@@ -362,15 +357,15 @@ public class Weapon : NetworkBehaviour
     }
 
     /// <summary>
-    /// ÀçÀåÀü
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Reload()
     {
-        if (!IsCollected) return; // º¸À¯ÁßÀÌÁö ¾ÊÀ¸¸é
-        if (curMagazineBullet == instance.data.MagazineBullet) return; // ÇöÀç ÅºÃ¢ÀÇ Åº¾àÀÌ ÃÖ´ë¸é
-        if (curBullet <= 0) return; // º¸À¯ÁßÀÎ Åº¾àÀÌ ¾øÀ¸¸é
-        if (IsReloading) return; // ÀåÀüÁßÀÌ¸é
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // Çàµ¿ ÄðÅ¸ÀÓÁßÀÌ¸é
+        if (!IsCollected) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (curMagazineBullet == instance.data.MagazineBullet) return; // ï¿½ï¿½ï¿½ï¿½ ÅºÃ¢ï¿½ï¿½ Åºï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½
+        if (curBullet <= 0) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Åºï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (IsReloading) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // ï¿½àµ¿ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
 
         if(HasStateAuthority)
             FPSWeapon.RPC_OnReload();
@@ -387,20 +382,20 @@ public class Weapon : NetworkBehaviour
             int id = curMagazineBullet == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
             //animator.SetTrigger(id);
         }
-        Debug.Log("ÀåÀü ½ÃÀÛ");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, reloadTime);
 
     }
 
     /// <summary>
-    /// Á¶ÁØ
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Aiming(/*CinemachineVirtualCamera cam*/)
     {
-        if (!IsCollected) return; // º¸À¯ÁßÀÌÁö ¾ÊÀ¸¸é
-        if (curMagazineBullet <= 0) return; // ÇöÀç ÅºÃ¢¿¡ Åº¾àÀÌ ¾øÀ¸¸é
-        if (IsAiming) return; // Á¶ÁØÁßÀÎ°¡?
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // Çàµ¿ÁßÀÎ°¡?
+        if (!IsCollected) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (curMagazineBullet <= 0) return; // ï¿½ï¿½ï¿½ï¿½ ÅºÃ¢ï¿½ï¿½ Åºï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (IsAiming) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½?
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // ï¿½àµ¿ï¿½ï¿½ï¿½Î°ï¿½?
 
 
         //gunRecoil.ChangePosition(_targetPosition);
@@ -409,7 +404,7 @@ public class Weapon : NetworkBehaviour
         instance.IsAiming();
 
         //_cam = cam;
-        Debug.Log("Á¶ÁØÁß\n ÁýÅºÀ² : " + instance.concentration);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n ï¿½ï¿½Åºï¿½ï¿½ : " + instance.concentration);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -423,9 +418,9 @@ public class Weapon : NetworkBehaviour
 
     public void StopAiming()
     {
-        if (!IsCollected) return; // º¸À¯ÁßÀÌÁö ¾ÊÀ¸¸é
-        if (!IsAiming) return; //Á¶ÁØÁßÀÌ ¾Æ´Ñ°¡?
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // Çàµ¿ÁßÀÎ°¡?
+        if (!IsCollected) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (!IsAiming) return; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ñ°ï¿½?
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // ï¿½àµ¿ï¿½ï¿½ï¿½Î°ï¿½?
 
         //gunRecoil.ChangePosition(_startPosition);
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
@@ -433,7 +428,7 @@ public class Weapon : NetworkBehaviour
         instance.StopAiming();
 
 
-        Debug.Log("Á¶ÁØ³¡\n ÁýÅºÀ² : " + instance.concentration);
+        Debug.Log("ï¿½ï¿½ï¿½Ø³ï¿½\n ï¿½ï¿½Åºï¿½ï¿½ : " + instance.concentration);
     }
     private struct ProjectileData : INetworkStruct
     {

@@ -11,10 +11,5 @@ public class TargetableFromMonster : NetworkBehaviour
     {
         playerStatHandler.TakeDamage(damage);
         CurHealth = playerStatHandler.CurHealth;
-
-        if(playerStatHandler.CurHealth <= 0 )
-        {
-            attacker.TryRemoveTarget(transform);
-        }
     }
 }
