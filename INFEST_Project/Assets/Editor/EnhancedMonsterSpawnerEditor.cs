@@ -17,6 +17,14 @@ public class EnhancedMonsterSpawnerEditor : Editor
             {
                 monsterSpawner.CallWave(FindAnyObjectByType<TargetableFromMonster>().transform);
             }
+            if (GUILayout.Button("Just Field Spawn one by monsterKey"))
+            {
+                monsterSpawner.JustFieldSpawn(FindAnyObjectByType<TargetableFromMonster>().transform);
+            }
+            if (GUILayout.Button("Just Wave Spawn one by monsterKey"))
+            {
+                monsterSpawner.JustWaveSpawn(FindAnyObjectByType<TargetableFromMonster>().transform);
+            }
         }
         else
         {

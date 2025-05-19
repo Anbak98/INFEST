@@ -98,4 +98,58 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             waveCaller = from;
         }
     }
+
+    public int justSpawnMonsterKey = -1;
+
+    public void JustFieldSpawn(Transform from)
+    {
+        waveCaller = from;
+
+        int distance = 15;
+        int iteral = 5;
+
+        List<UnityEngine.Collider> justSpawnPoint;
+
+        do
+        {
+            justSpawnPoint = Physics.OverlapSphere(from.position, distance, spawnPointLayerMask).ToList();
+            distance *= 2;
+            iteral--;
+        } while (justSpawnPoint.Count == 0 && iteral > 0);
+
+        NetworkGameManager.Instance.gameState = GameState.None;
+
+
+        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(justSpawnMonsterKey), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
+        MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
+
+        mnb.TryAddTarget(waveCaller);
+        mnb.SetTarget(waveCaller);
+    }
+
+    public void JustWaveSpawn(Transform from)
+    {
+        waveCaller = from;
+
+        int distance = 15;
+        int iteral = 5;
+
+        List<UnityEngine.Collider> justSpawnPoint;
+
+        do
+        {
+            justSpawnPoint = Physics.OverlapSphere(from.position, distance, spawnPointLayerMask).ToList();
+            distance *= 2;
+            iteral--;
+        } while (justSpawnPoint.Count == 0 && iteral > 0);
+
+        NetworkGameManager.Instance.gameState = GameState.Wave;
+
+
+        NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(justSpawnMonsterKey), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
+        MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
+
+        mnb.TryAddTarget(waveCaller);
+        mnb.SetTarget(waveCaller);
+    }
 }

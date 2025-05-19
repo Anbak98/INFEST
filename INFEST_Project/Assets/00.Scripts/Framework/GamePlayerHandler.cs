@@ -61,12 +61,16 @@ namespace INFEST.Game
         {
             PlayerGameGoldCounts.Set(player, PlayerGameGoldCounts.Get(player) + count);
         }
+        public void SetGoldCount(PlayerRef player, int amount)
+        {
+            PlayerGameGoldCounts.Set(player, amount);
+        }
+
         public Player GetPlayerObj(PlayerRef player) => Runner.FindObject(PlayerObjs.Get(player)).GetComponent<Player>();
         public PlayerGameProfile GetProfile(PlayerRef player) => PlayerGameProfiles.Get(player);
         public int GetKillCount(PlayerRef player) => PlayerGameKillCounts.Get(player);
         public int GetDeathCount(PlayerRef player) => PlayerGameDeathCounts.Get(player);
         public int GetGoldCount(PlayerRef player) => PlayerGameGoldCounts.Get(player);
-
 
         public List<PlayerRef> GetPlayerRefs()
         {

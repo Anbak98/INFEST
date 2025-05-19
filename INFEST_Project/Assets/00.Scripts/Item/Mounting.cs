@@ -21,9 +21,11 @@ public class Mounting : TargetableFromMonster
     public override void ApplyDamage(MonsterNetworkBehaviour attacker, int amount)
     {
         curDurability -= amount;
+        CurHealth = (int)curDurability;
         if (curDurability <= 0)
         {
             curDurability = 0;
+            CurHealth = 0;
             attacker.TryRemoveTarget(transform);
             Runner.Despawn(Object);
         }
