@@ -223,19 +223,6 @@ public class UIShopView : UIScreen
             itemPrice[index].text = $"- G";
         }
     }
-    //private void MainWeapon1Set()
-    //{
-    //      .text = $"{main1CurBullet}/{_mainWeaponInfo.MaxBullet}";
-    //    mainWeapon1Bullet.text = $"źâ\n{(_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice}G";
-    //    mainWeapon1Name.text = $"{_mainWeaponInfo.Name}";
-    //}
-    //private void MainWeapon2Set()
-    //{
-    //    weaponText2.text = $"{main2CurBullet}/{_mainWeaponInfo2.MaxBullet}";
-    //    mainWeapon2Bullet.text = $"źâ\n{(_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice}G";
-    //    mainWeapon2Name.text = $"{_mainWeaponInfo2.Name}";
-    //}
-
 
     private void AllSupplementSet()
     {
@@ -270,40 +257,6 @@ public class UIShopView : UIScreen
         }
     }
 
-    //public void OnClickAllBtn()
-    //{
-    //    int subPrice = (_subWeaponInfo.MagazineBullet - subCurBullet) * _subWeaponInfo.BulletPrice;
-    //    int main1Price = (_mainWeaponInfo.MagazineBullet - main1CurBullet) * _mainWeaponInfo.BulletPrice;
-    //    int main2Price = (_mainWeaponInfo2.MagazineBullet - main2CurBullet) * _mainWeaponInfo2.BulletPrice;
-    //    int itemPrice = (_itemInfo.MaxNum - consumeItem) * _itemInfo.Price;
-
-    //    if (_characterInfo.DefGear >= 200)
-    //    {
-    //        localPlayer.characterInfoInstance.curGold -= subPrice + main1Price + main2Price + itemPrice;
-    //    }
-    //    else
-    //    {
-    //        localPlayer.characterInfoInstance.curGold -= 500 + subPrice + main1Price + main2Price + itemPrice;
-    //    }
-
-    //    _characterInfo.DefGear += 200;
-    //    _characterInfo.DefGear = Mathf.Min(_characterInfo.DefGear, 200);
-
-    //    subCurBullet += _subWeaponInfo.MagazineBullet;
-    //    subCurBullet = Mathf.Min(subCurBullet, _subWeaponInfo.MagazineBullet);
-
-    //    main1CurBullet += _mainWeaponInfo.MagazineBullet;
-    //    main1CurBullet = Mathf.Min(main1CurBullet, _mainWeaponInfo.MagazineBullet);
-
-    //    main2CurBullet += _mainWeaponInfo2.MagazineBullet;
-    //    main2CurBullet = Mathf.Min(main2CurBullet, _mainWeaponInfo2.MagazineBullet);
-
-    //    consumeItem += _itemInfo.MaxNum;
-    //    consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
-    //}
-
-
-
     public void BuyItemSet(Store stpre)
     {
         for (int i = 0; i < weaponNames.Length; i++)
@@ -321,34 +274,6 @@ public class UIShopView : UIScreen
         }
     }
 
-    //public void OnClickMainWeapon1()
-    //{
-    //    if (main1CurBullet >= _mainWeaponInfo.MagazineBullet)
-    //        return;
-
-    //    localPlayer.characterInfoInstance.curGold -= _mainWeaponInfo.BulletPrice * (_mainWeaponInfo.MagazineBullet - main1CurBullet);
-    //    main1CurBullet += _mainWeaponInfo.MagazineBullet;
-    //    main1CurBullet = Mathf.Min(main1CurBullet, _mainWeaponInfo.MagazineBullet);        
-    //}
-
-    //public void OnClickMainWeapon2()
-    //{
-    //    if (main2CurBullet >= _mainWeaponInfo2.MagazineBullet)
-    //        return;
-
-    //    localPlayer.characterInfoInstance.curGold -= _mainWeaponInfo2.BulletPrice * (_mainWeaponInfo2.MagazineBullet - main2CurBullet);
-    //    main2CurBullet += _mainWeaponInfo2.MagazineBullet;
-    //    main2CurBullet = Mathf.Min(main2CurBullet, _mainWeaponInfo2.MagazineBullet);
-    //}
-
-    //public void OnClickItemBuy()
-    //{
-    //    if (consumeItem >= _itemInfo.MaxNum) return;
-
-    //    localPlayer.characterInfoInstance.curGold -= _itemInfo.Price;
-    //    consumeItem++;
-    //    consumeItem = Mathf.Min(consumeItem, _itemInfo.MaxNum);
-    //}
     public void OnClickAllBtn()
     {
         _store.RPC_TryAllSupplement(localPlayer, localPlayer.Runner.LocalPlayer);
@@ -476,9 +401,9 @@ public class UIShopView : UIScreen
             else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || localPlayer.statHandler.CurGold < weaponPrice || weaponDuplication)
                 buyButton[i].interactable = false;
 
-            else if ((throwingWeapon && _inv.consume[0] != null) || localPlayer.statHandler.CurGold < consumePrice)
+            else if ((throwingWeapon && _inv.consume[0] != null))
             {
-                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum)
+                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum || localPlayer.statHandler.CurGold < consumePrice)
                     buyButton[i].interactable = false;
             }
 

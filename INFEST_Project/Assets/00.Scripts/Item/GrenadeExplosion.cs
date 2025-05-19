@@ -21,7 +21,7 @@ public class GrenadeExplosion : NetworkBehaviour
     private void Awake()
     {
         if (!Object.HasStateAuthority) return;
-        _damage = grenadeProjectile.obj.instance.data.Effect/10;
+        _damage = grenadeProjectile.obj.instance.data.Effect;
         _player = grenadeProjectile.obj.GetComponent<Grenade>()._player;
     }
     public void Explosion()
@@ -35,7 +35,7 @@ public class GrenadeExplosion : NetworkBehaviour
         foreach (UnityEngine.Collider other in colliders)
         {
                 Player _otherplayer = other.GetComponentInParent<Player>();
-                _otherplayer.statHandler.TakeDamage(_damage);
+                _otherplayer.statHandler.TakeDamage(_damage/2);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
