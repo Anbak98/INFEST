@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: RTT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e81757aafc3eb064585afc17aca635cc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5600788857156934271, guid: e81757aafc3eb064585afc17aca635cc,
     type: 2}
   m_fontSharedMaterials: []
@@ -202,7 +202,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: FPS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e81757aafc3eb064585afc17aca635cc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5600788857156934271, guid: e81757aafc3eb064585afc17aca635cc,
     type: 2}
   m_fontSharedMaterials: []
@@ -337,7 +337,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: CT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e81757aafc3eb064585afc17aca635cc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5600788857156934271, guid: e81757aafc3eb064585afc17aca635cc,
     type: 2}
   m_fontSharedMaterials: []
@@ -472,7 +472,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: ---
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e5ff70185b25d474fa100d719864e1e4, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5670308365971799336, guid: e5ff70185b25d474fa100d719864e1e4,
     type: 2}
   m_fontSharedMaterials: []
@@ -734,7 +734,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Session Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e81757aafc3eb064585afc17aca635cc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5600788857156934271, guid: e81757aafc3eb064585afc17aca635cc,
     type: 2}
   m_fontSharedMaterials: []
@@ -869,7 +869,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Game Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e81757aafc3eb064585afc17aca635cc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5600788857156934271, guid: e81757aafc3eb064585afc17aca635cc,
     type: 2}
   m_fontSharedMaterials: []
@@ -1004,7 +1004,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: region
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e81757aafc3eb064585afc17aca635cc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5600788857156934271, guid: e81757aafc3eb064585afc17aca635cc,
     type: 2}
   m_fontSharedMaterials: []
@@ -1217,7 +1217,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: ---
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e5ff70185b25d474fa100d719864e1e4, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5670308365971799336, guid: e5ff70185b25d474fa100d719864e1e4,
     type: 2}
   m_fontSharedMaterials: []
@@ -1297,6 +1297,7 @@ GameObject:
   - component: {fileID: 766974359772779514}
   - component: {fileID: 8021283397870307024}
   - component: {fileID: 4029220503061306170}
+  - component: {fileID: 5329139303216843120}
   m_Layer: 5
   m_Name: ScoreboardView
   m_TagString: Untagged
@@ -1375,6 +1376,29 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &5329139303216843120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060135605010175523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.5
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1 &8529080856592691349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1466,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: ---
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e5ff70185b25d474fa100d719864e1e4, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -5670308365971799336, guid: e5ff70185b25d474fa100d719864e1e4,
     type: 2}
   m_fontSharedMaterials: []
