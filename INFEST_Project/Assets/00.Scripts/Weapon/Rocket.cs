@@ -53,7 +53,7 @@ public class Rocket : NetworkBehaviour
             }
         }
 
-        displacement = transform.forward.normalized * 10f * Runner.DeltaTime;
+        displacement = transform.forward.normalized * 20f * Runner.DeltaTime;
         newPosition = displacement + transform.position;
         if (displacement.sqrMagnitude > 0.0001f)
         {
@@ -97,7 +97,7 @@ public class Rocket : NetworkBehaviour
         foreach (UnityEngine.Collider other in colliders)
         {
             Player _otherplayer = other.GetComponentInParent<Player>();
-            _otherplayer.statHandler.TakeDamage(_damage);
+            _otherplayer.statHandler.TakeDamage(_damage/2);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
