@@ -3,6 +3,7 @@ using Fusion;
 using KINEMATION.FPSAnimationPack.Scripts.Weapon;
 using System.IO.Pipes;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum EWeaponType
 {
@@ -21,7 +22,7 @@ public class Weapon : NetworkBehaviour
     public FPSWeapon FPSWeapon;
     public EWeaponType Type; // 무기 종류
     public Sprite icon;
-    public Rocket rocket;
+    public NetworkPrefabRef rocket;
 
     [Header("Firing")]
     //public bool isAutomatic = false; // 연사 or 단발
@@ -265,17 +266,16 @@ public class Weapon : NetworkBehaviour
 
         if (HasStateAuthority)
         {
-            if (Type == EWeaponType.Launcher && rocket != null)
+            if (Type == EWeaponType.Launcher)
             {
-                if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
-                Object.InputAuthority, out var hit))
-                {
-                    transform.position = hit.GameObject.transform.root.position + new Vector3(0, 0.01f, 0);
-                    RPC_Explode(transform.position);
-                    return;
-                }
+                Quaternion baseRotation = Quaternion.LookRotation(firePosition);
+                Quaternion offsetRotation = Quaternion.Euler(0, 90f, 0);
+                Quaternion finalRotation = transform.rotation;
+
+                Runner.Spawn(rocket, firePosition, finalRotation, Object.InputAuthority).GetComponent<Rocket>().weapon = this;
             }
-            else{
+            else
+            {
                 if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
                         Object.InputAuthority, out var hit, HitMask, hitOptions))
                 {
@@ -297,11 +297,14 @@ public class Weapon : NetworkBehaviour
                     projectileData.hitNormal = -direction;
                     projectileData.showHitEffect = false; // 충돌 안 했으면 히트이펙트 없음
                 }
+                Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+                _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
+                _fireCount++;
             }
         }
 
 
-        Rpc_SpawnDummyProjectile(origin, direction, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
+       
 
         //if (HasStateAuthority)
         //{
@@ -313,8 +316,7 @@ public class Weapon : NetworkBehaviour
         //        });
         //}
 
-        _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
-        _fireCount++;
+        
         //Runner.Spawn(bullet,
         //transform.position,
         //Quaternion.LookRotation(dir),
@@ -326,14 +328,7 @@ public class Weapon : NetworkBehaviour
 
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_Explode(Vector3 pos)
-    {
-        transform.position = pos;
-        rocket.explosion.SetActive(true);
-        rocket.render.SetActive(false);
-        rocket.Explosion();
-    }
+
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
     {
