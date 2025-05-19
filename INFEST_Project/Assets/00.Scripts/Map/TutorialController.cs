@@ -5,12 +5,11 @@ public class TutorialController : MonoBehaviour
     public UITutorial tutorial;
     public int page = 0;
     public GameObject[] wall;
-    public MVPStageSpawner spawner;
+    public MonsterSpawner _monsterSpawner;
     public GameObject arrow;
     public GameObject[] shopArrow;
     public Transform[] arrowPosition; 
     [SerializeField] private GameObject _spwaPosition;
-    MonsterSpawner _monsterSpawner;
     [HideInInspector] public Player player;
     Vector3 _pos;
     public void TextChanged()
@@ -31,7 +30,6 @@ public class TutorialController : MonoBehaviour
                 break;
             case 1:
                 WallAtivate(0);
-                _monsterSpawner = spawner.monsterSpawner;
                 _monsterSpawner.AllocateSpawnCommand(1001,1, _spwaPosition.transform.position);
                 
                 break;
