@@ -41,7 +41,7 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
         base.OnDead();
         if (IsDead)
         {
-            FSM.ChangePhase<DeadCop_Phase_Dead>();
+            FSM.ChangePhase<WarZ_Phase_Dead>();
         }
     }
 
@@ -51,7 +51,7 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
         base.OnWave();
         TryAddTarget(target);
         SetTarget(target);
-        FSM.ChangePhase<DeadCop_Phase_Chase>();
+        FSM.ChangePhase<WarZ_Phase_Chase>();
     }
 
     public float GetCurrentAnimLength()
