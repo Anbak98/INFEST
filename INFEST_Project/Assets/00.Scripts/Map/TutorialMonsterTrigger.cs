@@ -8,7 +8,7 @@ public class TutorialMonsterTrigger : NetworkBehaviour
 {
     public TutorialController tutorialController;
     private int _monsterLayer = 14;
-    private MonsterNetworkBehaviour _monster;
+    [SerializeField] private MonsterNetworkBehaviour _monster;
 
 
     private void Update()
@@ -19,7 +19,7 @@ public class TutorialMonsterTrigger : NetworkBehaviour
 
             Runner.LagCompensation.OverlapSphere(
                 origin: transform.position,
-                radius: 10f,
+                radius: 20f,
                 hits: hits,
                 layerMask: 1 << _monsterLayer,
                 queryTriggerInteraction: QueryTriggerInteraction.Ignore,

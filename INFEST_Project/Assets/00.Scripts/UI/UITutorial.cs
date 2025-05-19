@@ -48,7 +48,7 @@ public class UITutorial : UIScreen
                 toolTipText.text = "";
                 break;
             case 4:
-                tutorialText.text = "아이템을 활용하여 좀비를 잡고 생존하세요.";
+                tutorialText.text = "잠시후 좀비가 출몰합니다.\r\n(아이템을 활용하여 좀비를 잡고 생존하세요.)";
                 toolTipText.text = "G - 수류탄 사용\r\nE - 회복 아이템 사용\r\nV - 설치 아이템 사용";
                 break;
             default:

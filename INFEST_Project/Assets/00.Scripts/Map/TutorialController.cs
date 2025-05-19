@@ -5,7 +5,8 @@ public class TutorialController : MonoBehaviour
     public UITutorial tutorial;
     public int page = 0;
     public GameObject[] wall;
-    public MonsterSpawner _monsterSpawner;
+    public EnhancedMonsterSpawner _monsterSpawner;
+    public Siren siren;
     public GameObject arrow;
     public GameObject[] shopArrow;
     public Transform[] arrowPosition; 
@@ -30,7 +31,7 @@ public class TutorialController : MonoBehaviour
                 break;
             case 1:
                 WallAtivate(0);
-                _monsterSpawner.AllocateSpawnCommand(1001,1, _spwaPosition.transform.position);
+                _monsterSpawner.SpawnOnPos(_spwaPosition.transform,1001);
                 
                 break;
             case 2:
@@ -48,11 +49,6 @@ public class TutorialController : MonoBehaviour
                 break;
             case 4:
                 arrow.gameObject.SetActive(false);
-                for(int i = 0; i < 10; i++)
-                {
-                    _monsterSpawner.SpawnMonsterOnWave(arrow.transform);
-
-                }
                 break;
             default:
                 return;
