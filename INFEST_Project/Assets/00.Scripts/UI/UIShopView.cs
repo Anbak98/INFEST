@@ -388,7 +388,7 @@ public class UIShopView : UIScreen
         }
         else
         {
-            for (int i = 0; 2 < saleButton.Count; i++)
+            for (int i = 0; i < 2; i++)
             {
                 saleButton[i].interactable = true;
             }

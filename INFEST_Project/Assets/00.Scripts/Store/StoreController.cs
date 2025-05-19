@@ -53,12 +53,6 @@ public class StoreController : NetworkBehaviour
                 RPC_EndTImer();
                 Activate();
             }
-
-            //if (!storeTimer.ExpiredOrNotRunning(Runner))
-            //{
-            //    Activate();
-            //}
-
         }
     }
 
@@ -96,22 +90,6 @@ public class StoreController : NetworkBehaviour
         }
 
     }
-
-    ///// <summary>
-    ///// 상점 상호작용시 타이머 시간 연장
-    ///// </summary>
-    //[Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    //public void RPC_Timer(PlayerRef _playerRef)
-    //{
-    //    if (HasStateAuthority)
-    //    {
-    //        float _remainingTime = storeTimer.RemainingTime(Runner) ?? 0f;
-    //        storeTimer = TickTimer.CreateFromSeconds(Runner, activateTime + _remainingTime);
-    //        activeTime = false;
-    //        Debug.Log("상호작용 후 \n 현재 남은 시간 : " + storeTimer.RemainingTime(Runner));
-    //    }
-    //}
-
     /// <summary>
     /// 상점 상호작용시 타이머 시간 연장
     /// </summary>
@@ -175,4 +153,54 @@ public class StoreController : NetworkBehaviour
 
     }
 
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    //private void RPC_SetStoreKeyList()
+    //{
+    //    int i;
+    //    int j;
+    //    int[] toRegisterNum = new int[aiiStores[0].idList.Count];                       // 상점에 등록될수있는 수
+    //    bool[] randomActive = new bool[aiiStores.Count];                                // 
+    //    bool[,] maxRegistered = new bool[aiiStores.Count, aiiStores[0].idList.Count];   // 최대 등록갯수 초과하는지
+    //    int randomNum;
+
+    //    for (i = 0; i < aiiStores[0].idList.Count; i++)
+    //    {
+    //        toRegisterNum[i] = 7;
+    //    }
+
+        
+
+        
+
+    //    for (i = 0; i < aiiStores[0].idList.Count; i++) 
+    //    {
+    //        for (j = 0; j < toRegisterNum.Length - toRegisterNum[i]; j++)
+    //        {
+                
+    //            randomNum = UnityEngine.Random.RandomRange(0, aiiStores.Count);
+    //            while (randomNum && !maxRegistered[0])
+    //                randomActive[randomNum] = false;
+    //        }
+                
+
+    //        for(j = 0; j < aiiStores.Count; j++)
+    //        {
+                
+    //            if (!randomActive[j])
+    //            {
+    //                aiiStores[i].idList[i] = 0;
+    //            }
+
+    //            toRegisterNum[i]--;
+    //        }
+
+    //    }
+
+        
+    //}
+
+    //private bool AuxiliaryWeaponChk()
+    //{
+    //    return true;
+    //}
 }

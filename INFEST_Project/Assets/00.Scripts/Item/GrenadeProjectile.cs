@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GrenadeProjectile : NetworkBehaviour
 {
+    TickTimer _activeTimer;
     TickTimer _lifeTimer;
     public GrenadeExplosion GrenadeExplosion;
     public GameObject explosionParticles;
@@ -40,6 +41,14 @@ public class GrenadeProjectile : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if (!HasStateAuthority) return;
+
+        if(_activeTimer.Expired(Runner))
+        {
+            RPC_Despawn();
+            return;
+        }
+
+
 
         if (_lifeTimer.Expired(Runner))
         {
@@ -147,9 +156,8 @@ public class GrenadeProjectile : NetworkBehaviour
         explosionParticles.SetActive(true);
         GrenadeExplosion.gameObject.SetActive(true);
         GrenadeExplosion.Explosion();
-        StopAnimation();
-        if (HasStateAuthority)
-            Invoke(nameof(Despawn), 1f);
+        SetAnimation(true);
+        _activeTimer = TickTimer.CreateFromSeconds(Runner,0.5f);
     }
 
     public void Init(Vector3 initialVelocity, Vector3 startPosition)
@@ -159,16 +167,21 @@ public class GrenadeProjectile : NetworkBehaviour
         _time = 0f;
     }
 
-    public void Despawn()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_Despawn()
     {
-        if (Object == null) return;
+        explosionParticles.SetActive(false);
+        GrenadeExplosion.gameObject.SetActive(false);
+        SetAnimation(false);
+        _activeTimer = TickTimer.None;
+        _isStopped = false;
+        if (HasInputAuthority)
+            Runner.Despawn(Object);
 
-        Runner.Despawn(Object);
     }
-
-    public void StopAnimation()
+    public void SetAnimation(bool Stop)
     {
-        animator.SetBool(_isStopHash, true);
+        animator.SetBool(_isStopHash, Stop);
     }
 
     public void GetGrenade(Grenade grenade, Vector3 velocity)
