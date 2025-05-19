@@ -121,7 +121,7 @@ public class UIStateView : UIScreen
             return;
         }
 
-        if (Player.local.inventory.equippedWeapon.key % 10000 < 600)
+        if (Player.local.inventory.equippedWeapon.key % 10000 < 700)
         {
             if(Player.local.inventory.equippedWeapon.key == Player.local.inventory.auxiliaryWeapon[0]?.key)
                 bulletText.text = $"{Player.local.inventory.auxiliaryWeapon[0].curMagazineBullet}/{Player.local.inventory.auxiliaryWeapon[0].curBullet}";
