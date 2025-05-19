@@ -1167,7 +1167,8 @@ MonoBehaviour:
   _roomName: {fileID: 8067371195282338200}
   _joinSessionCode: {fileID: 2511194216285421687}
   _matchManager: {fileID: 0}
-  _playButtonObject: {fileID: 7448260332433689761}
+  _playSoloButtonObject: {fileID: 0}
+  _playPartyButtonObject: {fileID: 0}
   _quickMatchButtonObject: {fileID: 0}
 --- !u!1 &2865078533621473114
 GameObject:
@@ -2224,7 +2225,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3974894115235135663
 RectTransform:
   m_ObjectHideFlags: 0
