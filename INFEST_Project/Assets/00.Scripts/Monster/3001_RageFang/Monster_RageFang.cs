@@ -1,6 +1,7 @@
 using Fusion;
 using INFEST.Game;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Monster_RageFang : BaseMonster<Monster_RageFang>
 {
@@ -61,6 +62,13 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
         }
 
         NetworkGameManager.Instance.VictoryGame();
+    }
+
+    public override bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
+    {
+        target = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(instigator).transform;
+        FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
+        return base.ApplyDamage(instigator, damage, position, direction, weaponType, isCritical);
     }
 
     private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);
