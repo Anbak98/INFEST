@@ -297,12 +297,14 @@ public class UIShopView : UIScreen
 
     public void OnClickBuyBtn(int index)
     {
+        if (localPlayer.inventory.equippedWeapon.IsReloading) return;
         AnalyticsManager.analyticsPurchase(index);
         _store.RPC_TryBuy(localPlayer, index);
     }
 
     public void OnClickSaleBtn(int index)
     {
+        if (localPlayer.inventory.equippedWeapon.IsReloading) return;
         AnalyticsManager.analyticsSell(index);
         _store.RPC_TrySale(localPlayer, index);
 
