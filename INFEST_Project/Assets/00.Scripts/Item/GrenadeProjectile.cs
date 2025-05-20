@@ -125,7 +125,7 @@ public class GrenadeProjectile : NetworkBehaviour
             return true;
         }
 
-        if (hitLayer == 11)
+        if (hitLayer == 11 || hitLayer == 16)
         {
             _isStopped = true;
             transform.position = hit.point + hit.normal * 0.01f;  // 지면 위에 위치 이동

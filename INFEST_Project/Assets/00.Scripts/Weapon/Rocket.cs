@@ -10,7 +10,7 @@ public class Rocket : NetworkBehaviour
     TickTimer _explosionTime;
     [SerializeField] private int _playerLayer = 6;
     [SerializeField] private int _monsterLayer = 14;
-    [SerializeField] private LayerMask _layerMask = 1 << 12;
+    [SerializeField] private LayerMask _layerMask = 1 << 12 | 1<< 16 | 1<< 10;
 
     private float _castRadius = 0.2f;
     private int _damage;
