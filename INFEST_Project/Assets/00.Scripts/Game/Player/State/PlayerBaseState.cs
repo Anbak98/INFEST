@@ -18,7 +18,7 @@ public abstract class PlayerBaseState : IState
 {
     protected PlayerController controller;    // PlayerController, 다른 npc의 controller
     protected PlayerStateMachine stateMachine;    // PlayerStateMachine
-    protected readonly PlayerStatHandler statHandler;   // PlayerStatHandler에 있는 데이터를 읽기만 한다
+    protected readonly PlayerStatHandler statHandler;   // PlayerStatHandler에 있는 데이터를 읽기만 한다    
     protected Player player;
     // 지금은 플레이어의 카메라만 있으니 그냥 하지만
     // 나중에는 다른 카메라(조준에 사용할)를 포함하여 CameraHandler를 통해 카메라에 접근할 수 있음

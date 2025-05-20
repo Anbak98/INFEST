@@ -13,11 +13,9 @@ public class Grita_Scream_Scream : MonsterStateNetworkBehaviour<Monster_Grita, G
     public override void Enter()
     {
         base.Enter();
-
+        
         // Scream
         monster.IsScream = true;
-        monster.IsCooltimeCharged = false;  // ±â¼ú ½èÀ¸´Ï
-        monster.ScreamCount++;
         monster.Rpc_Scream();
     }    
 

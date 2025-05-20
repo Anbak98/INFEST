@@ -14,7 +14,6 @@ public class FSM_WarZ : MonsterFSM<Monster_WarZ>
             monster.TryAddTarget(other.transform);
 
             monster.SetTargetRandomly();
-            monster.FSM.ChangePhase<WarZ_Phase_Chase>();
         }
     }
 }

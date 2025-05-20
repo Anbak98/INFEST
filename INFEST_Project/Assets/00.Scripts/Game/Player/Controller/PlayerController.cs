@@ -68,68 +68,65 @@ public class PlayerController : NetworkBehaviour
         if (GetInput(out NetworkInputData data))
         {
             DEBUG_DATA = data;
-            HandleMovement(data);
-            stateMachine.OnUpdate(data);
-
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
+            if (!player.IsDead)   // 죽지 않았을때만 가능한 동작
             {
+                HandleMovement(data);
+                stateMachine.OnUpdate(data);
 
-                if (!player.isInteraction)
-                    player.store.RPC_RequestInteraction(Object.InputAuthority);
-                else
-                    player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
+                {
 
-                player.isInteraction = !player.isInteraction;
+                    if (!player.isInteraction)
+                        player.store.RPC_RequestInteraction(Object.InputAuthority);
+                    else
+                        player.store.RPC_RequestStopInteraction(Object.InputAuthority);
 
-            }
+                    player.isInteraction = !player.isInteraction;
 
-            if (data.scrollValue.y != 0)
-            {
-                player.Weapons.Swap(data.scrollValue.y);
-            }
+                }
 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
-            {
-                player.Weapons.Aiming(true);
-            }
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
-            {
-                player.Weapons.Aiming(false);
-            }
+                if (data.scrollValue.y != 0)
+                {
+                    player.Weapons.Swap(data.scrollValue.y);
+                }
 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
-            {
-                player.Weapons.OnThrowGrenade();
-            }
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                {
+                    player.Weapons.Aiming(true);
+                }
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+                {
+                    player.Weapons.Aiming(false);
+                }
 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
-            {
-                player.Consumes.Heal();
-            }
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
+                {
+                    player.Weapons.OnThrowGrenade();
+                }
 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
-            {
-                player.Consumes.Mounting();
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
+                {
+                    player.Consumes.Heal();
+                }
+
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
+                {
+                    player.Consumes.Mounting();
+                }
             }
         }
         // 죽은 경우에 시점 전환
-        if (stateMachine.IsDead)
+        if (player.IsDead)
         {
             float remaining = respawnTimer.RemainingTime(Runner) ?? 0f;
             // 정수 단위로 바뀔 때만 로그 출력
             int currentTime = Mathf.FloorToInt(remaining);
             if (currentTime != previousTime)
-            {
-                Debug.Log($"남은 시간: {currentTime}초");
                 previousTime = currentTime;
-            }
-
             // 키 입력시 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q(입력안받음, 
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q
             {
                 FindAlivePlayers(); // 생존자 갱신
-
-                Debug.Log("이전 플레이어 카메라로 관전합니다 ");
                 // 이전 인덱스의 카메라를 가져온다
                 if (alivePlayerCameras.Count > 0)
                 {
@@ -141,16 +138,13 @@ public class PlayerController : NetworkBehaviour
             if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))    // E
             {
                 FindAlivePlayers(); // 생존자 갱신
-                Debug.Log("다음 플레이어 카메라로 관전합니다 ");
                 // 다음 인덱스의 카메라를 가져온다
                 if (alivePlayerCameras.Count > 0)
                 {
                     currentPlayerIndex = (currentPlayerIndex + 1) % alivePlayerCameras.Count;
                     SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
                 }
-
             }
-
         }
         // 타이머 만료되면 리스폰 처리
         if (respawnTimer.Expired(player.Runner))
@@ -163,7 +157,9 @@ public class PlayerController : NetworkBehaviour
     #region 부활,관전모드
     private void OnDeath()
     {
-        FindAlivePlayers(); // 리스트 갱신
+        if (alivePlayerCameras.Count > 0)
+            FindAlivePlayers(); // 리스트 갱신
+
         respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
 
         player.ThirdPersonRoot.SetActive(true);
@@ -203,18 +199,18 @@ public class PlayerController : NetworkBehaviour
             smr.enabled = true;
         }
 
-
-        stateMachine.IsDead = false;
+        player.IsDead = false;
 
         player.FirstPersonRoot.SetActive(true);
         player.ThirdPersonRoot.SetActive(false);
 
-        // 관전모드 초기화
-        ResetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-
         Debug.Log("1");
 
         player.statHandler.SetHealth(200);
+
+        if (alivePlayerCameras.Count > 0)
+            ResetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+
         stateMachine.ChangeState(stateMachine.IdleState);
     }
 
@@ -261,7 +257,6 @@ public class PlayerController : NetworkBehaviour
             targetPlayer.ThirdPersonRoot.SetActive(false);
         }
     }
-
     public void ResetSpectatorTarget(CinemachineVirtualCamera targetCam)
     {
         if (targetCam == null) return;

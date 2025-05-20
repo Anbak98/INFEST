@@ -26,12 +26,6 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
     [Networked, OnChangedRender(nameof(OnIsScreamChanged))]
     public NetworkBool IsScream { get; set; } = false;
-    [Networked, OnChangedRender(nameof(OnIsScreamChanged))]
-    public NetworkBool IsCooltimeCharged { get; set; } = true;
-    [Networked, OnChangedRender(nameof(OnScreamCount))]
-    public int ScreamCount { get; set; } = 0;
-
-
     [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
     public NetworkBool IsWonderPhase { get; set; } = false;
 
@@ -43,12 +37,8 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
     private void OnIsWonderPhase() { if (IsWonderPhase) animator.Play("Wonder.Idle"); }
     private void OnIsChasePhase() { if (IsChasePhase) animator.Play("Chase.Grita_Run"); }
+    private void OnIsScreamChanged() { if (IsScream) animator.Play("Scream.Grita_Scream"); }
     private void OnIsPunch() => animator.SetBool("IsPunch", IsPunch);
-
-    private void OnIsChasePhaseChanged() => animator.Play("Chase.Grita_Run");
-    private void OnIsScreamChanged() => animator.Play("Scream.Grita_Scream");
-    private void OnIsCooltimeCharged() => animator.SetBool("IsCooltimeCharged", IsCooltimeCharged);
-    private void OnScreamCount() => animator.SetInteger("ScreamCount", ScreamCount);
     #endregion
 
     public override void Spawned()
@@ -61,13 +51,6 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     {
         // Animation 관련
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
-
-        // 쿨타임 상태 자동 체크
-        if (screemCooldownTickTimer.Expired(Runner))
-        {
-            IsCooltimeCharged = true;
-            //playerDetector.isTriggered = false;
-        }
     }
 
     // 소리는 Host가 모든 Player로 쏴 주는 RPC 
@@ -83,7 +66,6 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
 
         // 쿨타임 시작(두번째 부터는 쿨타임 50초)
         screemCooldownTickTimer = TickTimer.CreateFromSeconds(Runner, ScreamCooldownSeconds);
-        IsCooltimeCharged = false;
     }
 
     protected override void OnWave()

@@ -14,5 +14,11 @@ public class WarZ_Phase_Wander : MonsterPhase<Monster_WarZ>
     public override void MachineExecute()
     {
         base.MachineExecute();
+
+
+        if (monster.IsFindPlayer() && !monster.IsDead)
+        {
+            monster.FSM.ChangePhase<WarZ_Phase_Chase>();
+        }
     }
 }

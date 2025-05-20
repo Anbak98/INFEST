@@ -381,7 +381,6 @@ public class Weapon : NetworkBehaviour
             int id = curMagazineBullet == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
             //animator.SetTrigger(id);
         }
-        Debug.Log("���� ����");
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, reloadTime);
 
     }

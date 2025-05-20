@@ -700,8 +700,8 @@ GameObject:
   - component: {fileID: 4307818795931990799}
   - component: {fileID: 6355075416464191621}
   - component: {fileID: 2000814728846212250}
-  - component: {fileID: 5174010814704754610}
   - component: {fileID: 4037491669542359682}
+  - component: {fileID: 4978419206996282432}
   m_Layer: 0
   m_Name: Monster_RageFang
   m_TagString: Untagged
@@ -805,7 +805,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 1000
+  m_AngularSpeed: 3000
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -855,8 +855,8 @@ MonoBehaviour:
   animator: {fileID: 6355075416464191621}
   hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
     type: 3}
-  hitSound: {fileID: 5174010814704754610}
-  hitSoundClip: {fileID: 8300000, guid: 7e3a17a9da333524293e1ef9942fbefa, type: 3}
+  hitSound: {fileID: 4978419206996282432}
+  hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1
@@ -897,7 +897,24 @@ MonoBehaviour:
     _value: 0
   _IsRoaring:
     _value: 0
---- !u!82 &5174010814704754610
+--- !u!114 &4037491669542359682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2879086576519543235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1039544458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Config: 3
+  BroadRadius: 0
+  Offset: {x: 0, y: 0, z: 0}
+  GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  Hitboxes: []
+--- !u!82 &4978419206996282432
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -908,9 +925,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 0.519
-  m_Pitch: 0.16
+  m_PlayOnAwake: 1
+  m_Volume: 0.505
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -919,7 +936,7 @@ AudioSource:
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
-  Pan2D: -0.25
+  Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
@@ -953,7 +970,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.607
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -983,7 +1000,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.417
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -993,23 +1010,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4037491669542359682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2879086576519543235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1039544458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Config: 3
-  BroadRadius: 0
-  Offset: {x: 0, y: 0, z: 0}
-  GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  Hitboxes: []
 --- !u!1 &2891936834319429014
 GameObject:
   m_ObjectHideFlags: 0

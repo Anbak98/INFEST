@@ -40,6 +40,7 @@ public class PlayerStatHandler : NetworkBehaviour
         if (NetworkGameManager.Instance.gamePlayers.IsValid(owner))
         {
             CurGold += info.data.StartGold;
+            CurGold += 9000;
         }
     }
 
@@ -124,7 +125,7 @@ public class PlayerStatHandler : NetworkBehaviour
     //}
     public void Heal(int amount)
     {
-        CurHealth = Mathf.Min(CurHealth + amount, CurHealth);
+        CurHealth = Mathf.Min(CurHealth + amount, info.data.Health);
         OnHealthChanged?.Invoke(amount);
     }
     // »ç¸Á
