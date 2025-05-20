@@ -139,29 +139,20 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsShopPopupClose(int closeReason, int usetime)
-    {
-        var customEvent = new CustomEvent("Shop_Popup_Close"); //event
-        customEvent["UI_CLOSE_REASON"] = closeReason; //parameter
-        customEvent["TIME_OF_USE"] = usetime; //parameter
-
-        AnalyticsService.Instance.RecordEvent(customEvent); //custom event
-    }
-
-    public static void analyticsPurchase(int weapon, int consumeItem)
+    public static void analyticsPurchase(int weapon)
     {
         var customEvent = new CustomEvent("Purchase_Item"); //event
         customEvent["WEAPON_NUMBER"] = weapon; //parameter
-        customEvent["CONSUMEITEM_NUMBER"] = consumeItem; //parameter
+        
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsSell(int weapon, int consumeItem)
+    public static void analyticsSell(int weapon)
     {
         var customEvent = new CustomEvent("Sell_Item"); //event
         customEvent["WEAPON_SELL_NUMBER"] = weapon; //parameter
-        customEvent["CONSUMEITEM_SELL_NUMBER"] = consumeItem; //parameter
+        
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
