@@ -40,8 +40,8 @@ public class PlayerController : NetworkBehaviour
     [Networked] protected TickTimer delay { get; set; }
 
     // 리스폰
-    [Networked] private TickTimer respawnTimer { get; set; }
-    float respawnTime = 10f;
+    //[Networked] private TickTimer respawnTimer { get; set; }
+    //float respawnTime = 10f;
 
     // 관전모드
     List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
@@ -118,11 +118,12 @@ public class PlayerController : NetworkBehaviour
         // 죽은 경우에 시점 전환
         if (player.IsDead)
         {
-            float remaining = respawnTimer.RemainingTime(Runner) ?? 0f;
+            //float remaining = respawnTimer.RemainingTime(Runner) ?? 0f;
             // 정수 단위로 바뀔 때만 로그 출력
-            int currentTime = Mathf.FloorToInt(remaining);
-            if (currentTime != previousTime)
-                previousTime = currentTime;
+            //int currentTime = Mathf.FloorToInt(remaining);
+            //if (currentTime != previousTime)
+            //    previousTime = currentTime;
+
             // 키 입력시 
             if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q
             {
@@ -146,12 +147,12 @@ public class PlayerController : NetworkBehaviour
                 }
             }
         }
-        // 타이머 만료되면 리스폰 처리
-        if (respawnTimer.Expired(player.Runner))
-        {
-            respawnTimer = TickTimer.None; // 재호출 방지
-            OnRespawn();
-        }
+        //// 타이머 만료되면 리스폰 처리
+        //if (respawnTimer.Expired(player.Runner))
+        //{
+        //    respawnTimer = TickTimer.None; // 재호출 방지
+        //    OnRespawn();
+        //}
     }
 
     #region 부활,관전모드
@@ -160,7 +161,7 @@ public class PlayerController : NetworkBehaviour
         if (alivePlayerCameras.Count > 0)
             FindAlivePlayers(); // 리스트 갱신
 
-        respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
+        //respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
 
         player.ThirdPersonRoot.SetActive(true);
         stateMachine.ChangeState(stateMachine.DeadState);
