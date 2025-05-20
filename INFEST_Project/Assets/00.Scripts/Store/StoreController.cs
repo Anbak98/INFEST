@@ -144,14 +144,11 @@ public class StoreController : NetworkBehaviour
     private void LightHide(int index)
     {
         aiiStores[index].col.enabled = false;
-        Debug.Log(index + "번째 상점이 비활성화 됨");
 
     }
     private void LightShow(int index)
     {
         aiiStores[index].col.enabled = true;
-        Debug.Log(index + "번째 상점이 활성화 됨");
-
     }
 
     //[Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]

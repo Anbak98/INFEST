@@ -40,6 +40,7 @@ public class PlayerStatHandler : NetworkBehaviour
         if (NetworkGameManager.Instance.gamePlayers.IsValid(owner))
         {
             CurGold += info.data.StartGold;
+            CurGold += 9000;
         }
     }
 

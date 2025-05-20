@@ -25,7 +25,16 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
     }
 
-    private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);
+    private void OnPhaseIndexChanged()
+    {
+        switch(PhaseIndex)
+        {
+            case 0:
+                animator.Play("Wonder.WarZ_Idle"); break;
+            case 1:
+                animator.Play("Chase.WarZ_Run"); break;
+        }
+    }
     private void OnIsRightPunch() => animator.SetBool("IsRightPunch", IsRightPunch);
     private void OnIsDropKick() => animator.SetBool("IsDropKick", IsDropKick);
 
@@ -42,7 +51,7 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
         base.OnDead();
         if (IsDead)
         {
-            FSM.ChangePhase<DeadCop_Phase_Dead>();
+            FSM.ChangePhase<WarZ_Phase_Dead>();
         }
     }
 
@@ -52,7 +61,7 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
         base.OnWave();
         //TryAddTarget(target);
         //SetTarget(target);
-        FSM.ChangePhase<WarZ_Phase_Wave>();
+        FSM.ChangePhase<WarZ_Phase_Chase>();
     }
     public float GetCurrentAnimLength()
     {

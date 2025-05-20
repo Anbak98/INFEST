@@ -51,7 +51,7 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
         base.OnWave();
         //TryAddTarget(target);
         //SetTarget(target);
-        FSM.ChangePhase<DeadCop_Phase_Wave>();
+        FSM.ChangePhase<DeadCop_Phase_Chase>();
     }
 
     public float GetCurrentAnimLength()

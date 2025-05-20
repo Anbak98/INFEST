@@ -2099,6 +2099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f03139863d2fdd54b9b7ed1db1248321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obj: {fileID: 1478963113393865172}
 --- !u!1 &4819982610239578549
 GameObject:
   m_ObjectHideFlags: 0
@@ -2680,9 +2681,6 @@ MonoBehaviour:
   spawner: {fileID: 0}
   _IsScream:
     _value: 0
-  _IsCooltimeCharged:
-    _value: 1
-  _ScreamCount: 0
   _IsWonderPhase:
     _value: 0
   _IsChasePhase:
@@ -3469,7 +3467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4241035904287333853}
   - component: {fileID: 5878815837335569649}
-  m_Layer: 12
+  m_Layer: 14
   m_Name: mixamorig:Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
