@@ -24,13 +24,13 @@ namespace INFEST.Game
 
         public void VictoryGame()
         {
-            GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
-            gev.Victory();
+            //GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            //gev.Victory();
         }
         public void DefeatGame()
         {
-            GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
-            gev.Defeat();
+            //GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            //gev.Defeat();
         }
     }
 }

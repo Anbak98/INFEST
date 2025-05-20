@@ -9,8 +9,8 @@ public class PlayerStatHandler : NetworkBehaviour
 {
     public CharacterInfoInstance info;
 
-    [Networked] public PlayerRef owner {get; set;}
- 
+    [Networked] public PlayerRef owner { get; set; }
+
     [Networked] public bool IsDead { get; set; }
 
     [Networked] public int CurSpeedMove { get; set; }
@@ -18,10 +18,10 @@ public class PlayerStatHandler : NetworkBehaviour
     [Networked] public int CurDefGear { get; set; }                         // 방어구 체력
     [Networked] public int CurDef { get; set; }
     // 방어구 체력
-    public int CurGold 
+    public int CurGold
     {
-        get => NetworkGameManager.Instance.gamePlayers.GetGoldCount(owner); 
-        set => NetworkGameManager.Instance.gamePlayers.SetGoldCount(owner, value); 
+        get => NetworkGameManager.Instance.gamePlayers.GetGoldCount(owner);
+        set => NetworkGameManager.Instance.gamePlayers.SetGoldCount(owner, value);
     }
     // 시작 골드
     [Networked] public int CurTeamCoin { get; set; }                        // 시작 팀코인
@@ -37,7 +37,10 @@ public class PlayerStatHandler : NetworkBehaviour
     {
         info = new(1);
         owner = player;
-        CurGold += info.data.StartGold;
+        if (NetworkGameManager.Instance.gamePlayers.IsValid(owner))
+        {
+            CurGold += info.data.StartGold;
+        }
     }
 
     public override void Spawned()
@@ -54,7 +57,7 @@ public class PlayerStatHandler : NetworkBehaviour
     }
 
     // 피격
-    public void TakeDamage(int amount)
+    public void TakeDamage(MonsterNetworkBehaviour attacker, int amount)
     {
         int damage = amount - CurDef;
 
@@ -74,10 +77,14 @@ public class PlayerStatHandler : NetworkBehaviour
 
             CurHealth -= damage;
             RPC_Effect(-1);
-            if (CurHealth <= 0)
+            if (CurHealth <= 0 && !IsDead)
             {
                 CurHealth = 0;
+
                 HandleDeath();
+                if (attacker != null)
+                    AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
+
             }
         }
 
@@ -109,7 +116,12 @@ public class PlayerStatHandler : NetworkBehaviour
         effect.CalledWhenPlayerAttacked(-1);
     }
 
-    // 회복
+    // 회복eathCount = 0;
+
+    //foreach (var p in NetworkGameManager.Instance.gamePlayers.GetPlayerRefs())
+    //{
+    //    NetworkGameManager.Instance.gamePlayers.GetPlayerObj(p);
+    //}
     public void Heal(int amount)
     {
         CurHealth = Mathf.Min(CurHealth + amount, CurHealth);
@@ -122,12 +134,24 @@ public class PlayerStatHandler : NetworkBehaviour
         IsDead = true;
 
         OnDeath?.Invoke();
-        NetworkGameManager.Instance.playerCount--;
+        //NetworkGameManager.Instance.playerCount--;
 
-        if (NetworkGameManager.Instance.playerCount <= 0)
+        int deathCount = 0;
+
+        foreach (var player in NetworkGameManager.Instance.gamePlayers.GetPlayerRefs())
+        {
+            if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(player).IsDead)
+            {
+                deathCount++;
+            }
+        }
+
+        if (deathCount >= Runner.SessionInfo.PlayerCount)
         {
             NetworkGameManager.Instance.DefeatGame();
         }
+
+        //int d
     }
     // 리스폰
     public void HandleRespawn()

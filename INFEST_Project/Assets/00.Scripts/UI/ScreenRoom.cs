@@ -117,17 +117,19 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedJoinSession()
     {
+        AnalyticsManager.analyticsMatching(2);
         _matchManager.JoinSession(_joinSessionCode.text);
     }
 
     public void OnPressedQuickMatch()
     {
+        AnalyticsManager.analyticsMatching(1);
         _matchManager.QuickMatch();
     }
 
     public void OnPressedPlaySoloGame()
     {
-        AnalyticsManager.analyticsBeforeInGame(10, 0);
+        AnalyticsManager.analyticsBeforeInGame(10, 1);
         _matchManager.PlayerSoloGame();
     }
 

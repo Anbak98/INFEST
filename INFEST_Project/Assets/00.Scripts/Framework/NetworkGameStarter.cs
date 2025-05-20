@@ -7,12 +7,14 @@ public class NetworkGameStarter : MonoBehaviour
 {
     private NetworkRunner _runner;
 
-    //private void Start()
-    //{
-    //    GameMode mode = (GameMode)PlayerPrefs.GetInt("GameMode");
+    private void Start()
+    {
+//#if !UNITY_EDITOR
+//        GameMode mode = (GameMode)PlayerPrefs.GetInt("GameMode");
 
-    //    TryStartGame(mode);
-    //}
+//        TryStartGame(mode, PlayerPrefs.GetString("RoomCode"));
+//#endif
+    }
 
     private void OnGUI()
     {
@@ -20,33 +22,33 @@ public class NetworkGameStarter : MonoBehaviour
         {
             if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
             {
-                TryStartGame(GameMode.Host);
+                TryStartGame(GameMode.Host, "DEBUG");
             }
             else if (GUI.Button(new Rect(0, 40, 200, 40), "Client"))
             {
-                TryStartGame(GameMode.Client);
+                TryStartGame(GameMode.Client, "DEBUG");
             }
             else if (GUI.Button(new Rect(0, 80, 200, 40), "Single"))
             {
-                TryStartGame(GameMode.Single);
+                TryStartGame(GameMode.Single, "DEBUG");
             }
         }
-        if (_runner != null)
-        {
-            if (_runner.IsServer)
-            {
-                if (GUI.Button(new Rect(0, 40, 200, 40), "CreateNew"))
-                    TryStartGame(GameMode.Host);
-            }
-            if (_runner.IsClient)
-            {
-                if (GUI.Button(new Rect(0, 40, 200, 40), "Reconnect"))
-                    TryStartGame(GameMode.Client);
-            }
-        }
+        //if (_runner != null)
+        //{
+        //    if (_runner.IsServer)
+        //    {
+        //        if (GUI.Button(new Rect(0, 40, 200, 40), "CreateNew"))
+        //            TryStartGame(GameMode.Host, "DEBUG";
+        //    }
+        //    if (_runner.IsClient)
+        //    {
+        //        if (GUI.Button(new Rect(0, 40, 200, 40), "Reconnect"))
+        //            TryStartGame(GameMode.Client, "DEBUG");
+        //    }
+        //}
     }
 
-    private async void TryStartGame(GameMode mode)
+    private async void TryStartGame(GameMode mode, string sessionName)
     {
         INetworkRunnerCallbacks _callbacks = GetComponent<INetworkRunnerCallbacks>();
         StartGameResult result;
@@ -78,7 +80,7 @@ public class NetworkGameStarter : MonoBehaviour
             result = await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = mode,
-                SessionName = "TestRoom",
+                SessionName = sessionName,
                 Scene = scene,
                 //ObjectProvider = gameObject.AddComponent<PoolObjectProvider>(),
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()

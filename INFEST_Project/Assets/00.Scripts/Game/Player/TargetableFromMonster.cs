@@ -1,4 +1,5 @@
 using Fusion;
+using INFEST.Game;
 using UnityEngine;
 
 public class TargetableFromMonster : NetworkBehaviour
@@ -9,7 +10,7 @@ public class TargetableFromMonster : NetworkBehaviour
 
     public virtual void ApplyDamage(MonsterNetworkBehaviour attacker, int damage)
     {
-        playerStatHandler.TakeDamage(damage);
+        playerStatHandler.TakeDamage(attacker, damage);
         CurHealth = playerStatHandler.CurHealth;
     }
 }

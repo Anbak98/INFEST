@@ -3,9 +3,7 @@ using Fusion;
 using UnityEngine;
 
 public class SirenController : NetworkBehaviour
-{
-    [SerializeField] private Siren siren;
-
+{    
     [SerializeField] private AudioSource sirenSound;
     [SerializeField] private AudioClip sirenSoundClip;    
 

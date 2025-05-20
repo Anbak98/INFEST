@@ -97,7 +97,7 @@ public class Rocket : NetworkBehaviour
         foreach (UnityEngine.Collider other in colliders)
         {
             Player _otherplayer = other.GetComponentInParent<Player>();
-            _otherplayer.statHandler.TakeDamage(_damage/2);
+            _otherplayer.statHandler.TakeDamage(null, _damage/2);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();

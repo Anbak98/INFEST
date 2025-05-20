@@ -44,6 +44,11 @@ namespace INFEST.Game
 
         private void OnValueChangedInvoke() => OnValueChanged?.Invoke();
 
+        public bool IsValid(PlayerRef player)
+        {
+            return PlayerObjs.ContainsKey(player);
+        }
+
         public void AddPlayerObj(PlayerRef player, NetworkId playerObjId)
         {
             PlayerObjs.Add(player, playerObjId);
@@ -68,6 +73,7 @@ namespace INFEST.Game
             PlayerGameGoldCounts.Set(player, amount);
         }
 
+        public int GetPlayerCount() => PlayerObjs.Count;
         public Player GetPlayerObj(PlayerRef player) => Runner.FindObject(PlayerObjs.Get(player)).GetComponent<Player>();
         public PlayerGameProfile GetProfile(PlayerRef player) => PlayerGameProfiles.Get(player);
         public int GetKillCount(PlayerRef player) => PlayerGameKillCounts.Get(player);
@@ -79,7 +85,7 @@ namespace INFEST.Game
             List<PlayerRef> refs = new();
             foreach (var playerObj in PlayerObjs)
             {
-                refs.Add(playerObj.Key);
+                refs.Add(playerObj.Key);                
             }
             return refs;
         }
@@ -114,7 +120,10 @@ namespace INFEST.Game
                     job = job
                 });
 
-                GetPlayerObj(player).GetComponent<PlayerStatHandler>().Init(player);
+                if(IsValid(player))
+                {
+                    GetPlayerObj(player).GetComponent<PlayerStatHandler>().Init(player);
+                }
             }
         }
     }

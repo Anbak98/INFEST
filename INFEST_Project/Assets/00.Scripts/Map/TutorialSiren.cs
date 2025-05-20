@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using INFEST.Game;
 
-public class Siren : MonoBehaviour
+public class TutorialSiren : MonoBehaviour
 {
     public static bool isTrigger = false;
 
@@ -19,9 +19,8 @@ public class Siren : MonoBehaviour
         {
             _player = player;
             isTrigger = true;
-
-            float delay = Random.Range(5f, 30f);
-            StartCoroutine(DelayedSiren(delay, _player));
+                        
+            StartCoroutine(DelayedSiren(0.1f, _player));
         }
     }
 

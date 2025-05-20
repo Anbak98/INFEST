@@ -90,7 +90,8 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         base.Despawned(runner, hasState);
 
-        NetworkGameManager.Instance.monsterSpawner.SpawnedNum--;
+        if (NetworkGameManager.Instance != null)
+            NetworkGameManager.Instance.monsterSpawner.SpawnedNum--;
     }
 
     public bool IsLookPlayer()
@@ -110,7 +111,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     }
     public bool IsFindPlayer()
     {
-        if(targets.Count > 0)
+        if (targets.Count > 0)
         {
             SetTargetRandomly();
             return true;
@@ -120,7 +121,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     }
     public bool IsTargetDead()
     {
-        if(target != null)
+        if (target != null)
         {
             if (targetBridges.TryGetValue(target, out var bridge))
             {
@@ -259,5 +260,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     protected virtual void OnDead()
     {
+        AnalyticsManager.analyticsZombieKill(key);
     }
 }
