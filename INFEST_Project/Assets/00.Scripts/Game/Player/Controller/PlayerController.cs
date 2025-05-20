@@ -163,7 +163,9 @@ public class PlayerController : NetworkBehaviour
     #region 부활,관전모드
     private void OnDeath()
     {
-        FindAlivePlayers(); // 리스트 갱신
+        if(alivePlayerCameras.Count > 0)
+            FindAlivePlayers(); // 리스트 갱신
+
         respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
 
         player.ThirdPersonRoot.SetActive(true);
@@ -209,12 +211,13 @@ public class PlayerController : NetworkBehaviour
         player.FirstPersonRoot.SetActive(true);
         player.ThirdPersonRoot.SetActive(false);
 
-        // 관전모드 초기화
-        ResetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-
         Debug.Log("1");
 
         player.statHandler.SetHealth(200);
+
+        if(alivePlayerCameras.Count > 0)
+            ResetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+
         stateMachine.ChangeState(stateMachine.IdleState);
     }
 
