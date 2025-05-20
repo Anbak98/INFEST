@@ -102,7 +102,7 @@ public class PlayerController : NetworkBehaviour
                 player.Weapons.OnThrowGrenade();
             }
 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL) && player.statHandler.CurHealth != player.statHandler.info.data.Health)
             {
                 player.Consumes.Heal();
             }
