@@ -9,11 +9,11 @@ public class NetworkGameStarter : MonoBehaviour
 
     private void Start()
     {
-#if !UNITY_EDITOR
-        GameMode mode = (GameMode)PlayerPrefs.GetInt("GameMode");
+//#if !UNITY_EDITOR
+//        GameMode mode = (GameMode)PlayerPrefs.GetInt("GameMode");
 
-        TryStartGame(mode, PlayerPrefs.GetString("RoomCode"));
-#endif
+//        TryStartGame(mode, PlayerPrefs.GetString("RoomCode"));
+//#endif
     }
 
     private void OnGUI()
