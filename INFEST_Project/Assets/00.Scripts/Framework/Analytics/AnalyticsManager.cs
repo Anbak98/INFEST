@@ -51,10 +51,9 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
 
     //==========================커스텀 이벤트=============================
 
-    public static void analyticsMatching(bool success, int matchingType = 0)
+    public static void analyticsMatching(int matchingType = 0)
     {
         var customEvent = new CustomEvent("Matching_Info"); //event
-        customEvent["SUCCESS_MATCH"] = success; //parameter
         if (matchingType != 0) customEvent["MATCHING_APPROACH_TYPE"] = matchingType; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
@@ -89,13 +88,11 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
-    public static void analyticsWave(int wavereason, int waveTime, int zombieSpawn, int firstTime = 0)
+    public static void analyticsWave(int wavereason, int waveTime)
     {
         var customEvent = new CustomEvent("Wave_Event"); //event
         customEvent["WAVE_EVENT"] = wavereason; //parameter
-        customEvent["FIRST_WAVE_TIME"] = firstTime; //parameter
         customEvent["WAVE_TIME"] = waveTime; //parameter
-        customEvent["WAVE_ZOMBIE_SPAWN"] = zombieSpawn; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
@@ -109,13 +106,13 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsGameEnd(int endReason, int ingameToLobby, int ingameTime, int lastWeapon)
+    public static void analyticsGameEnd(int endReason, int ingameToLobby, int ingameTime, int lastWeapon1, int lastWeapon2)
     {
         var customEvent = new CustomEvent("Game_End"); //event
         customEvent["END_REASON"] = endReason; //parameter
-        customEvent["INGAME_TO_LOBBY"] = ingameToLobby; //parameter
         customEvent["INGAME_TIME"] = ingameTime; //parameter
-        customEvent["LAST_WEAPON"] = lastWeapon; //parameter
+        customEvent["LAST_WEAPON"] = lastWeapon1; //parameter
+        customEvent["LAST_WEAPON2"] = lastWeapon2; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
