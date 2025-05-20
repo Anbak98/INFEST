@@ -259,6 +259,7 @@ public class Weapon : NetworkBehaviour
         //Vector3 direction = fireDirection;
         //firePositionForGizmo = firePosition;
         //fireDirectionForGizmo = fireDirection;
+        Vector3 characterPos = this.transform.position;
 
         var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
 
@@ -274,7 +275,7 @@ public class Weapon : NetworkBehaviour
             }
             else
             {
-                if (Runner.LagCompensation.Raycast(firePosition, fireDirection, instance.data.WeaponRange,
+                if (Runner.LagCompensation.Raycast(characterPos, fireDirection, instance.data.WeaponRange,
                         Object.InputAuthority, out var hit, HitMask, hitOptions))
                 {
                     projectileData.hitPosition = hit.Point;
@@ -291,7 +292,7 @@ public class Weapon : NetworkBehaviour
                 }
                 else
                 {
-                    projectileData.hitPosition = firePosition + fireDirection * instance.data.WeaponRange;
+                    projectileData.hitPosition = characterPos + fireDirection * instance.data.WeaponRange;
                     projectileData.hitNormal = -fireDirection;
                     projectileData.showHitEffect = false; // �浹 �� ������ ��Ʈ����Ʈ ����
                 }
