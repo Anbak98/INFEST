@@ -6,6 +6,7 @@ public class Monster_RageFang_AttackTwo_Roaring : MonsterStateNetworkBehaviour<M
     public override void Enter()
     {
         base.Enter();
+        
         monster.CurMovementSpeed = 0;
         monster.IsReadyForChangingState = false;
 

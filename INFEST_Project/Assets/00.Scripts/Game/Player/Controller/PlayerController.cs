@@ -3,6 +3,8 @@ using Fusion;
 using Cinemachine;
 using System.Collections.Generic;
 using INFEST.Game;
+using Fusion.Addons.SimpleKCC;
+using UnityEngine.Windows;
 
 /// <summary>
 /// 캐릭터 동작 처리를 한다
@@ -29,7 +31,8 @@ public class PlayerController : NetworkBehaviour
     public Player player;
     public PlayerStateMachine stateMachine;
     public PlayerCameraHandler cameraHandler;
-    public NetworkCharacterController networkCharacterController;
+    [SerializeField] private SimpleKCC _simpleKCC;
+    public Transform CameraHandle;
 
     protected float verticalVelocity;
     //protected float gravity = -9.81f; // player.networkCharacterController.gravity를 사용해야한다
@@ -49,7 +52,7 @@ public class PlayerController : NetworkBehaviour
     List<PlayerRef> playerRefs = new List<PlayerRef>();
     private int previousTime = -1;
 
-    public override void Spawned()
+    public void Init()
     {
         stateMachine = new PlayerStateMachine(player, this);
 
@@ -57,10 +60,10 @@ public class PlayerController : NetworkBehaviour
         player.statHandler.OnDeath += OnDeath;
         player.statHandler.OnRespawn += OnRespawn;
 
-        networkCharacterController.maxSpeed = player.statHandler.CurSpeedMove;
-
         // 관전모드를 위해 임시
         alivePlayerCameras.Add(player.cameraHandler.virtualCamera);
+        // Set custom gravity.
+        _simpleKCC.SetGravity(Physics.gravity.magnitude * -4.0f);
     }
 
     public override void FixedUpdateNetwork()
@@ -75,7 +78,6 @@ public class PlayerController : NetworkBehaviour
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
                 {
-
                     if (!player.isInteraction)
                         player.store.RPC_RequestInteraction(Object.InputAuthority);
                     else
@@ -280,46 +282,59 @@ public class PlayerController : NetworkBehaviour
 
     #region 이동, 점프
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
-    private void HandleMovement(NetworkInputData data)
+    private void HandleMovement(NetworkInputData input)
     {
         if (LockState == PlayerLockState.MoveLock)
         {
-            networkCharacterController.Move(
+            _simpleKCC.Move(
                 Vector3.zero
             );
         }
         else
         {
-            Vector3 input = data.direction;
-            player.Weapons.OnMoveAnimation(input);
+            //Vector3 input = data.direction;
+            player.Weapons.OnMoveAnimation(input.direction);
 
-            // 카메라 기준 방향 가져오기
+            //// 카메라 기준 방향 가져오기
             Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
             Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
-            Vector3 moveDir = (camRight * input.x + camForward * input.z).normalized;
-
+            Vector3 moveDir = (camRight * input.direction.x + camForward * input.direction.z).normalized;
+            
             moveDir.y = 0f; // 수직 방향 제거
 
-            networkCharacterController.Move(
-                moveDir
-            );
+            Vector3 moveVelocity = moveDir * 10f;
+            Vector3 jumpImpulse = Vector3.zero;
 
-            // 회전 강제 고정: 카메라가 지정한 forward로
-            player.transform.forward = camForward;
+            if (input.isJumping == true && _simpleKCC.IsGrounded == true)
+            {
+                // Set world space jump vector.
+                jumpImpulse = Vector3.up * 10.0f;
+            }
+
+            _simpleKCC.Move(moveVelocity, jumpImpulse.magnitude);
+            //networkCharacterController.Move(
+            //    moveDir
+            //);
+
+            // Update camera pivot and transfer properties from camera handle to Main Camera.
+            // LateUpdate() is called after all Render() calls - the character is already interpolated.
+            //// 회전 강제 고정: 카메라가 지정한 forward로
+            //player.transform.forward = camForward;
         }
     }
+
     public void ApplyGravity()
     {
-        if (IsGrounded())
-        {
-            verticalVelocity = 0f;
-        }
-        else
-        {
-            verticalVelocity += networkCharacterController.gravity * Time.deltaTime;
-        }
+        //if (IsGrounded())
+        //{
+        //    verticalVelocity = 0f;
+        //}
+        //else
+        //{
+        //    verticalVelocity += networkCharacterController.gravity * Time.deltaTime;
+        //}
 
-        networkCharacterController.Jump(false, verticalVelocity);
+        //networkCharacterController.Jump(false, verticalVelocity);
     }
     /// <summary>
     /// 점프 시작 시 수직 속도 계산
@@ -329,11 +344,11 @@ public class PlayerController : NetworkBehaviour
         //verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * gravity);
 
         //verticalVelocity = Mathf.Sqrt(player.statHandler.JumpPower * -2f * player.networkCharacterController.gravity);
-        verticalVelocity = Mathf.Sqrt(networkCharacterController.jumpImpulse * -1f * networkCharacterController.gravity);
-        // 땅에서 떨어졌으므로 Grounded를 false로 강제변경
-        //SetGrounded(false);
+        //verticalVelocity = Mathf.Sqrt(networkCharacterController.jumpImpulse * -1f * networkCharacterController.gravity);
+        //// 땅에서 떨어졌으므로 Grounded를 false로 강제변경
+        ////SetGrounded(false);
 
-        networkCharacterController.Jump(false, verticalVelocity);
+        //networkCharacterController.Jump(false, verticalVelocity);
     }
 
     // 앉는다
@@ -388,7 +403,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     // 플레이어가 땅 위에 있는지?
-    public bool IsGrounded() => networkCharacterController.Grounded;
+    public bool IsGrounded() => _simpleKCC.IsGrounded;
     public float GetVerticalVelocity() => verticalVelocity;
     #endregion
     private void OnGUI()

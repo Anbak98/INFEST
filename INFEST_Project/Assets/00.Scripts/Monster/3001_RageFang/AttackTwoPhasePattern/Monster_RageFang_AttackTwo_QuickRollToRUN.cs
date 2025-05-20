@@ -7,7 +7,7 @@ public class Monster_RageFang_AttackTwo_QuickRollToRUN : MonsterStateNetworkBeha
     public override void Enter()
     {
         base.Enter();
-        monster.CurMovementSpeed = 20;
+        monster.CurMovementSpeed = 8;
         monster.IsQuickRollToRun = true;
         phase.skillCoolDown[8] = TickTimer.CreateFromSeconds(Runner, monster.skills[8].CoolDown);
         monster.IsReadyForChangingState = false;
