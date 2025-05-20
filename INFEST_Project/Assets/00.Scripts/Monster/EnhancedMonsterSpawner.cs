@@ -1,6 +1,7 @@
 using Fusion;
 using INFEST.Game;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
 
@@ -78,19 +79,56 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
         {
             waveMonsterSpawnQueue = new();
 
-            foreach (var mst in monsterSpawnTables)
+            int totalSpawnNum;
+
+            if (NetworkGameManager.Instance.gameState == GameState.Wave)
             {
-                int spawnNum = mst.Value.StartByWave + mst.Value.WavePer5Min * (int)(Runner.SimulationTime / 300);
+                totalSpawnNum = Random.Range(7, 11);
 
-                if(NetworkGameManager.Instance.gameState != GameState.Wave)
+                for (int i = 0; i < totalSpawnNum; ++i)
                 {
-                    spawnNum *= 5;
+                    int proba = 0;
+                    int rand = Random.Range(0, 100);
+
+                    foreach(var mst in monsterSpawnTables)
+                    {
+                        proba += (int)(mst.Value.StartByScream + mst.Value.ScreamPer5Min);
+
+                        if(proba >= rand)
+                        {
+                            waveMonsterSpawnQueue.Enqueue(mst.Key);
+                        }
+                    }
                 }
+            }
+            else
+            {
+                if (Runner.SimulationTime < 300)
+                    totalSpawnNum = 30;
+                else if (Runner.SimulationTime < 600)
+                    totalSpawnNum = 35;
+                else if (Runner.SimulationTime < 900)
+                    totalSpawnNum = 40;
+                else if (Runner.SimulationTime < 1200)
+                    totalSpawnNum = 45;
+                else
+                    totalSpawnNum = 50;
 
-                for (int i = 0; i < spawnNum; i++)
+                while (totalSpawnNum > 0)
                 {
-                    SpawnWaitingNum++;
-                    waveMonsterSpawnQueue.Enqueue(mst.Key);
+                    foreach (var mst in monsterSpawnTables)
+                    {
+                        if (totalSpawnNum <= 0)
+                            break;
+                        int spawnNum = mst.Value.StartByWave + mst.Value.WavePer5Min * (int)(Runner.SimulationTime / 300);
+
+                        for (int i = 0; i < spawnNum; i++)
+                        {
+                            totalSpawnNum--;
+                            SpawnWaitingNum++;
+                            waveMonsterSpawnQueue.Enqueue(mst.Key);
+                        }
+                    }
                 }
             }
 
@@ -113,7 +151,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
     {
         waveCaller = from;
 
-        if (monsterKey == -1) 
+        if (monsterKey == -1)
             monsterKey = justSpawnMonsterKey;
 
         int distance = 15;

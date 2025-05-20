@@ -19,18 +19,12 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
         base.Enter();
         // Scream
         monster.IsScream = true;
-        monster.IsCooltimeCharged = false;  // 기술 썼으니
-        monster.ScreamCount++;
-
-        Debug.Log("Scream Wave Enter");
 
         monster.Rpc_Scream();
     }
 
     public override void Execute()
     {
-        // 코루틴 돌때 여기 실행되는지 확인
-        Debug.Log("Execute 실행");
         base.Execute();
     }
 
@@ -38,7 +32,6 @@ public class Grita_ScreamWave : MonsterStateNetworkBehaviour<Monster_Grita, Grit
     {
         base.Exit();
         monster.IsScream = false;
-        Debug.Log("Scream Wave Exit");
     }
 }
 

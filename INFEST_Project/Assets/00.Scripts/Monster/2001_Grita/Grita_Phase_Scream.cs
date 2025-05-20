@@ -10,6 +10,7 @@ public class Grita_Phase_Scream : MonsterPhase<Monster_Grita>
     public override void MachineEnter()
     {
         base.MachineEnter();
+        monster.CurMovementSpeed = 0;
         monster.IsReadyForChangingState = false;
     }
 

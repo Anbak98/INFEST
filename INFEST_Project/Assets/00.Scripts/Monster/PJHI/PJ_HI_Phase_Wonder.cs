@@ -10,7 +10,7 @@ public class PJ_HI_Phase_Wonder : MonsterPhase<Monster_PJ_HI>
     {
         base.MachineExecute();
 
-        if (monster.IsLookPlayer() && !monster.IsDead)
+        if (monster.IsFindPlayer() && !monster.IsDead)
         {
             monster.FSM.ChangePhase<PJ_HI_Phase_Chase>();
         }

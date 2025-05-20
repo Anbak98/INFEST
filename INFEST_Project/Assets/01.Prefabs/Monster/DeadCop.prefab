@@ -1016,6 +1016,9 @@ MonoBehaviour:
   - {fileID: 8671781353545198924}
   - {fileID: 8033678546370394945}
   - {fileID: 7670947728528580424}
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &3026869264742900600
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1636,6 +1639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c04db7b02234f4bb5ea14dde843281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obj: {fileID: 453003009988073947}
 --- !u!1 &3146777270162752667
 GameObject:
   m_ObjectHideFlags: 0
