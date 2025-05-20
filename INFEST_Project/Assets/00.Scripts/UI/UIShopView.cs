@@ -297,13 +297,13 @@ public class UIShopView : UIScreen
 
     public void OnClickBuyBtn(int index)
     {
-        AnalyticsManager.analyticsPurchase(index, 0);
+        AnalyticsManager.analyticsPurchase(index);
         _store.RPC_TryBuy(localPlayer, index);
     }
 
     public void OnClickSaleBtn(int index)
     {
-        AnalyticsManager.analyticsSell(index, 0);
+        AnalyticsManager.analyticsSell(index);
         _store.RPC_TrySale(localPlayer, index);
 
     }
