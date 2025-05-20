@@ -53,6 +53,7 @@ public class Inventory : MonoBehaviour
 
     public void RemoveWeaponItem(Weapon item, int index)
     {
+        Debug.Log(item.name + " " + index);
         if (item.instance.data.key % 10000 < 200)
             auxiliaryWeapon[index] = null; 
         else

@@ -20,7 +20,14 @@ namespace INFEST.Game
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
 
-        public int playerCount = 0;
+
+        protected override void Awake()
+        {
+            base.Awake();
+#if UNITY_WEBGL
+            Application.targetFrameRate = 60;
+#endif
+        }
 
         public void VictoryGame()
         {

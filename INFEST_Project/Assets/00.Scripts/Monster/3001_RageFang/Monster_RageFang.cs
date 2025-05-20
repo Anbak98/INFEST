@@ -67,7 +67,11 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     public override bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
     {
         target = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(instigator).transform;
-        FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
+        if(FSM.currentPhase is Monster_RageFang_Phase_Wonder)
+        {
+            FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
+        }
+
         return base.ApplyDamage(instigator, damage, position, direction, weaponType, isCritical);
     }
 

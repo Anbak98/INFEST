@@ -128,7 +128,7 @@ public class Weapon : NetworkBehaviour
         }
     }
 
-    public override void Spawned()
+    public void Init()
     {
 
         instance = new(key);

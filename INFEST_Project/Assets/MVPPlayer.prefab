@@ -1948,7 +1948,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7721353801691121081}
   - component: {fileID: 3268070573558879607}
-  - component: {fileID: 9222881174541471598}
   m_Layer: 6
   m_Name: CameraHandle
   m_TagString: Untagged
@@ -1992,23 +1991,7 @@ MonoBehaviour:
   isMenu: 0
   statHandler: {fileID: 3147526191137004029}
   virtualCamera: {fileID: 241464025491880770}
---- !u!114 &9222881174541471598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3697546439029722335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  _simpleKCC: {fileID: 8802749177907789785}
 --- !u!1 &3819623328929040217
 GameObject:
   m_ObjectHideFlags: 0
@@ -3974,8 +3957,7 @@ GameObject:
   - component: {fileID: 3834324505224384244}
   - component: {fileID: 3297568450549869079}
   - component: {fileID: 1036566270813735001}
-  - component: {fileID: 7081860901902442314}
-  - component: {fileID: 2204635897523245189}
+  - component: {fileID: 8802749177907789785}
   - component: {fileID: 3147526191137004029}
   - component: {fileID: 3724504915549296076}
   - component: {fileID: 3072078453906701333}
@@ -4024,13 +4006,12 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 2204635897523245189}
+  - {fileID: 8802749177907789785}
   - {fileID: 3147526191137004029}
   - {fileID: 3724504915549296076}
   - {fileID: 3072078453906701333}
   - {fileID: 686141162492240600}
   - {fileID: 3268070573558879607}
-  - {fileID: 9222881174541471598}
   - {fileID: 7032259557335484116}
   - {fileID: 749016921998632051}
   - {fileID: 4359307007718460345}
@@ -4101,33 +4082,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!143 &7081860901902442314
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812586951838351475}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &2204635897523245189
+--- !u!114 &8802749177907789785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4136,16 +4091,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 7812586951838351475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
+  m_Script: {fileID: -1869825851, guid: 977dbcf975465374990f471e1497f563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
-  gravity: -20
-  jumpImpulse: 2
-  acceleration: 10
-  braking: 0
-  maxSpeed: 20
-  rotationSpeed: 0
+  _settings:
+    Shape: 1
+    IsTrigger: 0
+    Radius: 0.35
+    Height: 1.8
+    Extent: 0.035
+    ColliderLayer: 7
+    CollisionLayerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    ProxyInterpolationMode: 0
+    MaxPenetrationSteps: 8
+    CCDRadiusMultiplier: 0.75
+    AntiJitterDistance: {x: 0.025, y: 0.01}
+    CompressNetworkPosition: 0
+    ForcePredictedLookRotation: 0
+    StepHeight: 0.5
+    StepDepth: 0.2
+    StepSpeed: 1
+    StepMinPushBack: 0.5
+    StepGroundCheckRadiusScale: 0.5
+    StepRequireGroundTarget: 0
+    SnapDistance: 0.25
+    SnapSpeed: 4
 --- !u!114 &3147526191137004029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4181,7 +4154,8 @@ MonoBehaviour:
   LockState: 0
   player: {fileID: 3072078453906701333}
   cameraHandler: {fileID: 3268070573558879607}
-  networkCharacterController: {fileID: 2204635897523245189}
+  _simpleKCC: {fileID: 8802749177907789785}
+  CameraHandle: {fileID: 7721353801691121081}
   playerId: 
   currentPlayerIndex: 0
 --- !u!114 &3072078453906701333
@@ -4200,11 +4174,8 @@ MonoBehaviour:
   inStoreZoon: 0
   isInteraction: 0
   animationController: {fileID: 686141162492240600}
-  data:
-    key: 0
-    Playeridx: 
-    NickName: 
   statHandler: {fileID: 3147526191137004029}
+  controller: {fileID: 3724504915549296076}
   attackedEffectController: {fileID: 8335810917877115477}
   cameraHandler: {fileID: 3268070573558879607}
   store: {fileID: 0}
