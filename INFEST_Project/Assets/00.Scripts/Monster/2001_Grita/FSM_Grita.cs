@@ -16,7 +16,6 @@ public class FSM_Grita : MonsterFSM<Monster_Grita>
     {
         if (other.gameObject.layer == 7)
         {
-            Debug.Log("¹ºµ¥");
             monster.TryAddTarget(other.transform);
             monster.SetTarget(other.transform);
             monster.SetTargetRandomly();

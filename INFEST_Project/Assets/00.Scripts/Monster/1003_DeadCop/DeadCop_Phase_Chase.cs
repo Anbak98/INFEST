@@ -60,13 +60,13 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
     public void CaculateAttackType(float distance)
     {
         // 너무 멀거나 Wander로 돌아가야한다       
-        if (distance > 10f)
-        {
-            /// Wander -> Idle
-            monster.TryRemoveTarget(monster.target);    // Wander에서 이동할때는 target이 아니라 randomPosition으로 이동하니까 null문제 발생하지 않는다
-            nextPatternIndex = 3;
-            return;
-        }
+        //if (distance > 10f)
+        //{
+        //    /// Wander -> Idle
+        //    monster.TryRemoveTarget(monster.target);    // Wander에서 이동할때는 target이 아니라 randomPosition으로 이동하니까 null문제 발생하지 않는다
+        //    nextPatternIndex = 3;
+        //    return;
+        //}
 
         // 가까울 때 DropKick, 멀면 Punch 하면 된다
         if (distance <= 0.5)

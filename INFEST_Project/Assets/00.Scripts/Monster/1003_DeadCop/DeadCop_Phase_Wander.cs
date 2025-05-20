@@ -9,11 +9,17 @@ public class DeadCop_Phase_Wander : MonsterPhase<Monster_DeadCop>
         base.MachineEnter();
         monster.PhaseIndex = 0;
         monster.animator.Play("Wander.DeadCop_Idle");
-        Debug.Log(currentState);
     }
+
+
 
     public override void MachineExecute()
     {
         base.MachineExecute();
+
+        if (monster.IsFindPlayer() && !monster.IsDead)
+        {
+            monster.FSM.ChangePhase<DeadCop_Phase_Chase>();
+        }
     }
 }

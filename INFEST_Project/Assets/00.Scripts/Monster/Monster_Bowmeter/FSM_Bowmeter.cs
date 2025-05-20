@@ -7,7 +7,6 @@ public class FSM_Bowmeter : MonsterFSM<Monster_Bowmeter>
             monster.TryAddTarget(other.transform);
             monster.SetTargetRandomly();
             monster.SetTarget(other.transform);
-            monster.FSM.ChangePhase<Bowmeter_Phase_Chase>();
         }
     }
 }
