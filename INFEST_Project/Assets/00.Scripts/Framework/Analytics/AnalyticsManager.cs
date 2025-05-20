@@ -88,13 +88,11 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
-    public static void analyticsWave(int wavereason, int waveTime, int zombieSpawn, int firstTime = 0)
+    public static void analyticsWave(int wavereason, int waveTime)
     {
         var customEvent = new CustomEvent("Wave_Event"); //event
         customEvent["WAVE_EVENT"] = wavereason; //parameter
-        customEvent["FIRST_WAVE_TIME"] = firstTime; //parameter
         customEvent["WAVE_TIME"] = waveTime; //parameter
-        customEvent["WAVE_ZOMBIE_SPAWN"] = zombieSpawn; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
@@ -108,13 +106,13 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsGameEnd(int endReason, int ingameToLobby, int ingameTime, int lastWeapon)
+    public static void analyticsGameEnd(int endReason, int ingameToLobby, int ingameTime, int lastWeapon1, int lastWeapon2)
     {
         var customEvent = new CustomEvent("Game_End"); //event
         customEvent["END_REASON"] = endReason; //parameter
-        customEvent["INGAME_TO_LOBBY"] = ingameToLobby; //parameter
         customEvent["INGAME_TIME"] = ingameTime; //parameter
-        customEvent["LAST_WEAPON"] = lastWeapon; //parameter
+        customEvent["LAST_WEAPON"] = lastWeapon1; //parameter
+        customEvent["LAST_WEAPON2"] = lastWeapon2; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
@@ -138,29 +136,20 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsShopPopupClose(int closeReason, int usetime)
-    {
-        var customEvent = new CustomEvent("Shop_Popup_Close"); //event
-        customEvent["UI_CLOSE_REASON"] = closeReason; //parameter
-        customEvent["TIME_OF_USE"] = usetime; //parameter
-
-        AnalyticsService.Instance.RecordEvent(customEvent); //custom event
-    }
-
-    public static void analyticsPurchase(int weapon, int consumeItem)
+    public static void analyticsPurchase(int weapon)
     {
         var customEvent = new CustomEvent("Purchase_Item"); //event
         customEvent["WEAPON_NUMBER"] = weapon; //parameter
-        customEvent["CONSUMEITEM_NUMBER"] = consumeItem; //parameter
+        
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsSell(int weapon, int consumeItem)
+    public static void analyticsSell(int weapon)
     {
         var customEvent = new CustomEvent("Sell_Item"); //event
         customEvent["WEAPON_SELL_NUMBER"] = weapon; //parameter
-        customEvent["CONSUMEITEM_SELL_NUMBER"] = consumeItem; //parameter
+        
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
