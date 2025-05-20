@@ -68,7 +68,7 @@ public class PlayerController : NetworkBehaviour
         if (GetInput(out NetworkInputData data))
         {
             DEBUG_DATA = data;
-            if (!stateMachine.IsDead)   // 죽지 않았을때만 가능한 동작
+            if (!player.IsDead)   // 죽지 않았을때만 가능한 동작
             {
                 HandleMovement(data);
                 stateMachine.OnUpdate(data);
@@ -116,7 +116,7 @@ public class PlayerController : NetworkBehaviour
             }
         }
         // 죽은 경우에 시점 전환
-        if (stateMachine.IsDead)
+        if (player.IsDead)
         {
             float remaining = respawnTimer.RemainingTime(Runner) ?? 0f;
             // 정수 단위로 바뀔 때만 로그 출력
@@ -199,8 +199,7 @@ public class PlayerController : NetworkBehaviour
             smr.enabled = true;
         }
 
-
-        stateMachine.IsDead = false;
+        player.IsDead = false;
 
         player.FirstPersonRoot.SetActive(true);
         player.ThirdPersonRoot.SetActive(false);
@@ -258,7 +257,6 @@ public class PlayerController : NetworkBehaviour
             targetPlayer.ThirdPersonRoot.SetActive(false);
         }
     }
-
     public void ResetSpectatorTarget(CinemachineVirtualCamera targetCam)
     {
         if (targetCam == null) return;

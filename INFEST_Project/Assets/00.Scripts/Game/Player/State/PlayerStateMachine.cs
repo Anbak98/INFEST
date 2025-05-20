@@ -11,8 +11,6 @@ public class PlayerStateMachine
 
     // player의 입력정보를 가져오기만 한다
 
-    // 상태들이 받아갈 수 있는 값들을 관리
-    public PlayerStatHandler StatHandler { get; set; }
     // Ground
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -44,33 +42,33 @@ public class PlayerStateMachine
     // PlayerStateMachine에 PlayerController를 바로 선언할 수도 있지만 이때는 확장성이 줄어든다는 단점이 있다
     protected PlayerController controller;
 
-    public bool IsDead = false;
+    //public bool IsDead = false;
 
     // 현재의 상태를 종료하고 새로운 상태를 실행
     public void ChangeState(IState newState)
     {
-        if (IsDead)
+        if (Player.IsDead)
             return;
         if (currentState?.GetType() == newState?.GetType()) return;
 
         /// 가장 처음으로 들어가는 State는 IdleState
         currentState?.Exit();
         currentState = newState;
-        currentState?.Enter();
+        currentState?.Enter();        
     }
 
 
     // 생명주기함수 아니다
     public void OnUpdate(NetworkInputData data)
     {
-        if (IsDead)
+        if (Player.IsDead)
             return;
         currentState?.OnUpdate(data);
     }
 
     public void PhysicsUpdate(NetworkInputData data)
     {
-        if (IsDead)
+        if (Player.IsDead)
             return;
         currentState?.PhysicsUpdate(data);
     }
@@ -80,8 +78,6 @@ public class PlayerStateMachine
     {
         this.Player = player;
         this.controller = controller;
-
-        StatHandler = player.statHandler;
 
         // 수정사항
         IdleState = new PlayerIdleState(controller, this);
