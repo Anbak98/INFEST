@@ -25,7 +25,7 @@ public class FSM_Grita : MonsterFSM<Monster_Grita>
             /// 다음 패턴의 인덱스를 구분하여 단순히 Chase할 것인지
             /// Scream을 할 것인지 결정한다
 
-            if (screamDealy.ExpiredOrNotRunning(Runner))
+            if (!monster.IsDead && screamDealy.ExpiredOrNotRunning(Runner))
             {
                 screamDealy = TickTimer.CreateFromSeconds(Runner, 50f);
                 monster.FSM.ChangePhase<Grita_Phase_Scream>();

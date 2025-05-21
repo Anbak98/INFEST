@@ -55,12 +55,12 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
         }
     }
 
-
     protected override void OnWave()
     {
         base.OnWave();
         //TryAddTarget(target);
         //SetTarget(target);
+        animator.Play("Wander.WarZ_Run");
         FSM.ChangePhase<WarZ_Phase_Chase>();
     }
     public float GetCurrentAnimLength()

@@ -51,6 +51,7 @@ public class Monster_DeadCop : BaseMonster<Monster_DeadCop>
         base.OnWave();
         //TryAddTarget(target);
         //SetTarget(target);
+        animator.Play("Wander.DeadCop_Run");
         FSM.ChangePhase<DeadCop_Phase_Chase>();
     }
 

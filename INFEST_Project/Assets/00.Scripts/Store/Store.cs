@@ -193,8 +193,9 @@ public class Store : NetworkBehaviour // 상점의 로직(무기 지급, UI띄어주기 등) �
     /// <param name="_playerRef"></param>
     /// <param name="index"></param>
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_TrySale(Player _player, int index)
+    public void RPC_TrySale(PlayerRef _playerRef, int index)
     {
+        Player _player = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(_playerRef);
 
         if (_player == null) return;
 

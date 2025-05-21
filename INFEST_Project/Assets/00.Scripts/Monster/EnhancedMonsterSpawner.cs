@@ -92,11 +92,16 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
                     foreach(var mst in monsterSpawnTables)
                     {
-                        proba += (int)(mst.Value.StartByScream + mst.Value.ScreamPer5Min);
+                        proba += (int)(mst.Value.StartByScream + mst.Value.ScreamPer5Min * (Runner.SimulationTime / 300) );
 
                         if(proba >= rand)
                         {
                             waveMonsterSpawnQueue.Enqueue(mst.Key);
+                            if(mst.Key == 2001)
+                            {
+                                Debug.Log("GritA?!");
+                            }
+                            break;
                         }
                     }
                 }
@@ -121,7 +126,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
                         if (totalSpawnNum <= 0)
                             break;
                         int spawnNum = mst.Value.StartByWave + mst.Value.WavePer5Min * (int)(Runner.SimulationTime / 300);
-
+                        
                         for (int i = 0; i < spawnNum; i++)
                         {
                             totalSpawnNum--;

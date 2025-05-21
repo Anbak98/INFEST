@@ -79,35 +79,6 @@ public class UIShopView : UIScreen
     [Networked]
     public Profile Info { get; set; }
 
-    Player localPlayer;
-
-
-    public override void Awake()
-    {
-        localPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
-        //_characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
-        //_subWeaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10102);
-        //_mainWeaponInfo = DataManager.Instance.GetByKey<WeaponInfo>(10201);
-        //_mainWeaponInfo2 = DataManager.Instance.GetByKey<WeaponInfo>(10303);
-        //_itemInfo = DataManager.Instance.GetByKey<ConsumeItem>(10701);
-
-        //subCurBullet = _subWeaponInfo.MagazineBullet;
-        //main1CurBullet = _mainWeaponInfo.MagazineBullet;
-        //main2CurBullet = _mainWeaponInfo2.MagazineBullet;
-        //consumeItem = _itemInfo.MaxNum;
-
-        //ChoiceJob();
-        //SetJobIcon();
-        //DefSet();
-        //UpdateJobIcon();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        //bg.gameObject.SetActive(false);
-        //profile.gameObject.SetActive(false);
-    }
 
     public override void Show()
     {
@@ -168,16 +139,17 @@ public class UIShopView : UIScreen
 
     public void DefSet()
     {
-        defText.text = $"{localPlayer.statHandler.CurDefGear}/200"; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
+        defText.text = $"{NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurDefGear}/200"; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
     }
 
     private void GoldSet()
     {
-        goldText.text = $"{localPlayer.statHandler.CurGold}";
+        goldText.text = $"{NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold}";
     }
 
     public void WeaponSet(int index)
     {
+        Player localPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
         Weapon[] weaponInv = { localPlayer.inventory.auxiliaryWeapon[0], localPlayer.inventory.weapon[0], localPlayer.inventory.weapon[1] };
         if (weaponInv[index] == null)
         {
@@ -204,6 +176,7 @@ public class UIShopView : UIScreen
 
     public void ItemSet(int index)
     {
+        Player localPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
         Consume[] ItemInv = { localPlayer.inventory.consume[0], localPlayer.inventory.consume[1], localPlayer.inventory.consume[2] };
 
         if (ItemInv[index] == null)
@@ -226,7 +199,7 @@ public class UIShopView : UIScreen
 
     private void AllSupplementSet()
     {
-        var inv = localPlayer.inventory;
+        var inv = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory;
         int subPrice = 0;
         int main1Price = 0;
         int main2Price = 0;
@@ -247,7 +220,7 @@ public class UIShopView : UIScreen
         if (inv.consume[2] != null)
             item3Price = (inv.consume[2].instance.data.MaxNum - inv.consume[2].curNum) * inv.consume[2].instance.data.Price;
 
-        if (localPlayer.statHandler.CurDefGear >= 200)
+        if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurDefGear >= 200)
         {
             allSupplement.text = $"모두 보충\n({subPrice + main1Price + main2Price + item1Price + item2Price + item3Price}G)";
         }
@@ -276,37 +249,37 @@ public class UIShopView : UIScreen
 
     public void OnClickAllBtn()
     {
-        _store.RPC_TryAllSupplement(localPlayer, localPlayer.Runner.LocalPlayer);
+        _store.RPC_TryAllSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).Runner.LocalPlayer);
     }
 
     public void OnClickDefBtn()
     {
 
-        _store.RPC_TryDefSupplement(localPlayer);
+        _store.RPC_TryDefSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer));
     }
 
     public void OnClickBulletSupplementBtn(int index)
     {
-        _store.RPC_TryBulletSupplement(localPlayer, index);
+        _store.RPC_TryBulletSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
     }
 
     public void OnClickItmeSupplementBtn(int index)
     {
-        _store.RPC_TryItmeSupplement(localPlayer,index);
+        _store.RPC_TryItmeSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
     }
 
     public void OnClickBuyBtn(int index)
     {
-        if (localPlayer.inventory.equippedWeapon.IsReloading) return;
+        if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
         AnalyticsManager.analyticsPurchase(index);
-        _store.RPC_TryBuy(localPlayer, index);
+        _store.RPC_TryBuy(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
     }
 
     public void OnClickSaleBtn(int index)
     {
-        if (localPlayer.inventory.equippedWeapon.IsReloading) return;
+        if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
         AnalyticsManager.analyticsSell(index);
-        _store.RPC_TrySale(localPlayer, index);
+        _store.RPC_TrySale(NetworkGameManager.Instance.Runner.LocalPlayer, index);
 
     }
 
@@ -332,12 +305,12 @@ public class UIShopView : UIScreen
     {
         int count = 0;
 
-        foreach (var weapon in localPlayer.inventory.weapon)
+        foreach (var weapon in NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.weapon)
         {
             if (weapon != null) count++;
         }
 
-        foreach (var weapon in localPlayer.inventory.auxiliaryWeapon)
+        foreach (var weapon in NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon)
         {
             if (weapon != null) count++;
         }
@@ -359,11 +332,11 @@ public class UIShopView : UIScreen
     /// </summary>
     public void UpdateButtonState()
     {
-        var _inv = localPlayer.inventory;
+        var _inv = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory;
         for (int i = 0; i < buyButton.Count; i++)
         {
 
-            if (localPlayer == null || localPlayer.inventory == null || _store == null || i >= _store.idList.Count)
+            if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer) == null || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory == null || _store == null || i >= _store.idList.Count)
                 return;
 
             int weaponPrice = DataManager.Instance.GetByKey<WeaponInfo>(_store.idList[i])?.Price ?? 0;
@@ -399,25 +372,25 @@ public class UIShopView : UIScreen
             itmeNameBG[i].color = color;
 
 
-            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (localPlayer.statHandler.CurGold < weaponPrice))
+            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < weaponPrice))
                 buyButton[i].interactable = false;
 
-            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || localPlayer.statHandler.CurGold < weaponPrice || weaponDuplication)
+            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < weaponPrice || weaponDuplication)
                 buyButton[i].interactable = false;
 
             else if ((throwingWeapon && _inv.consume[0] != null))
             {
-                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum || localPlayer.statHandler.CurGold < consumePrice)
+                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice)
                     buyButton[i].interactable = false;
             }
 
-            else if ((recoveryItem && _inv.consume[1] != null) || localPlayer.statHandler.CurGold < consumePrice)
+            else if ((recoveryItem && _inv.consume[1] != null) || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice)
             {
                 if (_inv.consume[1]?.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
             }
 
-            else if ((shieldItme && _inv.consume[2] != null) || localPlayer.statHandler.CurGold < consumePrice)
+            else if ((shieldItme && _inv.consume[2] != null) || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice)
             {
                 if (_inv.consume[2]?.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.instance.data.MaxNum)
                     buyButton[i].interactable = false;
@@ -448,6 +421,7 @@ public class UIShopView : UIScreen
     }
     public void SaleSet(int index)
     {
+        Player localPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
         Weapon[] weaponInv = { localPlayer.inventory.auxiliaryWeapon[0], localPlayer.inventory.weapon[0], localPlayer.inventory.weapon[1] };
         Consume[] ItemInv = { localPlayer.inventory.consume[0], localPlayer.inventory.consume[1], localPlayer.inventory.consume[2] };
 
@@ -556,9 +530,9 @@ public class UIShopView : UIScreen
 
     public void IconSet()
     {
-        if(localPlayer.inventory.auxiliaryWeapon[0] != null)
+        if(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0] != null)
         {
-            iconImage[0].sprite = localPlayer.inventory.auxiliaryWeapon[0].icon;
+            iconImage[0].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0].icon;
             iconImage[0].color = Color.white;
 
         }
@@ -567,9 +541,9 @@ public class UIShopView : UIScreen
             iconImage[0].color = Color.black;
         }
 
-        if (localPlayer.inventory.weapon[0] != null)
+        if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.weapon[0] != null)
         {
-            iconImage[1].sprite = localPlayer.inventory.weapon[0].icon;
+            iconImage[1].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.weapon[0].icon;
             iconImage[1].color = Color.white;
 
         }
@@ -578,9 +552,9 @@ public class UIShopView : UIScreen
             iconImage[1].color = Color.black;
         }
 
-        if (localPlayer.inventory.weapon[1] != null)
+        if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.weapon[1] != null)
         {
-            iconImage[2].sprite = localPlayer.inventory.weapon[1].icon;
+            iconImage[2].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.weapon[1].icon;
             iconImage[2].color = Color.white;
 
         }
