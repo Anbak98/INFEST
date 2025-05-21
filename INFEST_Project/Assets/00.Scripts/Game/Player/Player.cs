@@ -19,7 +19,7 @@ public class Player : NetworkBehaviour
     public PlayerCameraHandler cameraHandler;
     public Store store;
     public Inventory inventory;
-    public GameObject FirstPersonCamera;    // CinemachineVirtualCamera를 가지고 있는 오브젝트
+    //public GameObject FirstPersonCamera;    // CinemachineVirtualCamera를 가지고 있는 오브젝트
     private Vector3 _forward = Vector3.forward;
     public WeaponSpawner Weapons;// SY
     public ConsumeSpawner Consumes;// SY
@@ -50,7 +50,7 @@ public class Player : NetworkBehaviour
         if (HasInputAuthority == false)
         {
             // 다른 플레이어의 CinemachineVirtualCamera는 우선순위 낮춘다
-            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+            cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
         }
 
         /// 기존의 데이터
@@ -100,10 +100,7 @@ public class Player : NetworkBehaviour
 
         if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
         {
-            // FirstPersonCamera
-            //FirstPersonCamera.SetActive(true);
-
-            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높이면
+            cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높인다
 
             inventory.consume[0] = Consumes.Consumes[0];
             inventory.consume[1] = Consumes.Consumes[3];

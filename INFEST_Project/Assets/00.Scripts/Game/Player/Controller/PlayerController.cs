@@ -47,6 +47,9 @@ public class PlayerController : NetworkBehaviour
     //float respawnTime = 10f;
 
     // 관전모드
+    /// <summary>
+    /// virtual camera를 저장은 하는데, transform만 사용한다
+    /// </summary>
     List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
     public int currentPlayerIndex = 0;
     List<PlayerRef> playerRefs = new List<PlayerRef>();
@@ -61,7 +64,8 @@ public class PlayerController : NetworkBehaviour
         player.statHandler.OnRespawn += OnRespawn;
 
         // 관전모드를 위해 임시
-        alivePlayerCameras.Add(player.cameraHandler.virtualCamera);
+        /// 자신의 virtual camera를 관전 대상자의 firstPersonCamera으로 이동시킨다
+        alivePlayerCameras.Add(player.cameraHandler.firstPersonCamera);
         // Set custom gravity.
         _simpleKCC.SetGravity(Physics.gravity.magnitude * -4.0f);
     }
@@ -135,6 +139,7 @@ public class PlayerController : NetworkBehaviour
                 {
                     currentPlayerIndex = (alivePlayerCameras.Count + currentPlayerIndex - 1) % alivePlayerCameras.Count;
                     SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+                    Debug.Log(alivePlayerCameras[currentPlayerIndex] + "관전 중");
                 }
 
             }
@@ -146,6 +151,7 @@ public class PlayerController : NetworkBehaviour
                 {
                     currentPlayerIndex = (currentPlayerIndex + 1) % alivePlayerCameras.Count;
                     SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+                    Debug.Log(alivePlayerCameras[currentPlayerIndex] + "관전 중");
                 }
             }
         }
@@ -165,7 +171,9 @@ public class PlayerController : NetworkBehaviour
 
         //respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
 
-        player.ThirdPersonRoot.SetActive(true);
+        //player.ThirdPersonRoot.SetActive(true);
+
+
         stateMachine.ChangeState(stateMachine.DeadState);
 
         // MeshRenderer 컴포넌트 비활성화
@@ -204,8 +212,9 @@ public class PlayerController : NetworkBehaviour
 
         player.IsDead = false;
 
-        player.FirstPersonRoot.SetActive(true);
-        player.ThirdPersonRoot.SetActive(false);
+        // 팔다리만 끄면 안된다. 다른 플레이어가 볼 떄도 맞아야한다
+        //player.FirstPersonRoot.SetActive(true);
+        //player.ThirdPersonRoot.SetActive(false);
 
         Debug.Log("1");
 
@@ -229,17 +238,17 @@ public class PlayerController : NetworkBehaviour
         }
         alivePlayerCameras.Clear();
 
-        // playerRefs에 있는 플레이어들의 virtualCamera들 저장
+        // playerRefs에 있는 플레이어들의 virtualCamera들의 위치를 저장
         foreach (var playerRef in playerRefs)
         {
             // NetworkObject 가져오기
-
             // Player 컴포넌트 접근
             Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
             if (otherPlayer != null && otherPlayer.statHandler.CurHealth > 0)
             {
                 PlayerCameraHandler otherCamHandler = otherPlayer.GetComponentInChildren<PlayerCameraHandler>();
-                alivePlayerCameras.Add(otherCamHandler.virtualCamera);
+
+                alivePlayerCameras.Add(otherCamHandler.firstPersonCamera);
             }
         }
     }
@@ -247,35 +256,32 @@ public class PlayerController : NetworkBehaviour
     {
         if (targetCam == null) return;
         // 자신의 virtualcamera의 priority를 0으로 
-        player.FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+        player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
 
-        // 타겟의 우선순위를 높이면 자동으로 Live
-        targetCam.Priority = 100;
+        var spectatorCam = player.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>();
+        /// 관전 카메라의 우선순위를 높인다
+        spectatorCam.Priority = 100;
 
-        // targetCam을 가진 오브젝트의 3인칭 프리팹 비활성화, 1인칭 프리팹 활성화
         var targetPlayer = targetCam.GetComponentInParent<Player>();
         if (targetPlayer != null)
         {
-            targetPlayer.FirstPersonRoot.SetActive(true);
-            targetPlayer.ThirdPersonRoot.SetActive(false);
+            /// 자신의 virtual camera를 관전 대상의 virtual camera의 transform, follow 설정 해야겠지
+            spectatorCam.Follow = targetCam.Follow;
+            spectatorCam.LookAt = targetCam.LookAt;
+            spectatorCam.transform.position = targetCam.transform.position;
+            spectatorCam.transform.rotation = targetCam.transform.rotation;
         }
     }
     public void ResetSpectatorTarget(CinemachineVirtualCamera targetCam)
     {
         if (targetCam == null) return;
-        // 우선순위를 낮추면 자동으로 Standby
-        targetCam.Priority = 0;
+        // 관전 카메라의 우선순위를 낮추면 자동으로 Standby
+        var spectatorCam = player.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>();
+        spectatorCam.Priority = 0;
+        targetCam = null;           
 
         // 자신의 우선순위 100으로 
-        player.FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
-
-        // targetCam을 가진 오브젝트의 3인칭 프리팹 활성화, 1인칭 프리팹 비활성화
-        var targetPlayer = targetCam.GetComponentInParent<Player>();
-        if (targetPlayer != null)
-        {
-            targetPlayer.FirstPersonRoot.SetActive(false);
-            targetPlayer.ThirdPersonRoot.SetActive(true);
-        }
+        player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
     }
     #endregion
 
@@ -300,7 +306,7 @@ public class PlayerController : NetworkBehaviour
             Vector3 camForward = player.cameraHandler.GetCameraForwardOnXZ();
             Vector3 camRight = player.cameraHandler.GetCameraRightOnXZ();
             Vector3 moveDir = (camRight * input.direction.x + camForward * input.direction.z).normalized;
-            
+
             moveDir.y = 0f; // 수직 방향 제거
 
             Vector3 moveVelocity = moveDir * 10f;

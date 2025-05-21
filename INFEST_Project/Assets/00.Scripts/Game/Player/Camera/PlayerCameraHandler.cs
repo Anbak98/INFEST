@@ -27,8 +27,10 @@ public class PlayerCameraHandler : NetworkBehaviour
     public bool isMenu;
     public PlayerStatHandler statHandler;
 
-    // 관전모드 카메라 검색을 줄이기 위해
-    public CinemachineVirtualCamera virtualCamera;
+    // 관전모드
+    public CinemachineVirtualCamera firstPersonCamera;      // 자신의 인플레이 카메라
+    public CinemachineVirtualCamera spectatorCamera;    // 관전모드로 사용할 카메라
+
 
     private void Awake()
     {
