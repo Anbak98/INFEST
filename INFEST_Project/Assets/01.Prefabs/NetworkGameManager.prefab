@@ -48,6 +48,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 131072
   MonsterMap: {fileID: 11400000, guid: 51a0e1bdd60a09c4eb1aae585ad1fdd7, type: 2}
+  WaveNum: 0
   SpawnedNum: 0
   SpawnedLimit: 50
   SpawnWaitingNum: 0
@@ -126,7 +127,6 @@ MonoBehaviour:
   _gameState: 0
   monsterSpawner: {fileID: 76838703195281468}
   gamePlayers: {fileID: 8707455988181621235}
-  playerCount: 0
 --- !u!1 &4347539007379241518
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3384ff3bb61710543869114c27939e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerPrefab:
+    RawGuidValue: feb8080809dd2094d932f598b24ca219
   PlayerSpawnPoints:
   - {fileID: 6864670198050664421}
   - {fileID: 1656192858052116049}
@@ -352,8 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b102c63d9bdbc2439543890018c5933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab:
-    RawGuidValue: feb8080809dd2094d932f598b24ca219
   _playerInputActionHandler: {fileID: 4425206984985416159}
   _InputManager: {fileID: 3446190366440798093}
 --- !u!1001 &1005220954278703506
