@@ -14,6 +14,7 @@ public class Monster_RageFang_Phase_AttackTwo : MonsterPhase<Monster_RageFang>
     public override void MachineEnter()
     {
         base.MachineEnter();
+        monster.PhaseIndex = 2;
         monster.IsReadyForChangingState = false;
     }
 
@@ -54,6 +55,13 @@ public class Monster_RageFang_Phase_AttackTwo : MonsterPhase<Monster_RageFang>
                 }
             }
         }
+    }
+
+    public override void MachineExit()
+    {
+        base.MachineExit();
+
+        monster.IsPhaseAttackTwo = false;
     }
 
 

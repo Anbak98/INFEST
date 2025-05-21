@@ -129,6 +129,7 @@ public class MatchManager : SingletonBehaviour<MatchManager>
             });
         } while (Runner.SessionInfo.PlayerCount > 1);
 
+        PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);
         await Runner.LoadScene("RuinedCity");
     }
 

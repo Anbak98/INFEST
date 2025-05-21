@@ -127,27 +127,27 @@ public class PlayerController : NetworkBehaviour
             //    previousTime = currentTime;
 
             // 키 입력시 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q
-            {
-                FindAlivePlayers(); // 생존자 갱신
-                // 이전 인덱스의 카메라를 가져온다
-                if (alivePlayerCameras.Count > 0)
-                {
-                    currentPlayerIndex = (alivePlayerCameras.Count + currentPlayerIndex - 1) % alivePlayerCameras.Count;
-                    SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-                }
+            //if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q
+            //{
+            //    FindAlivePlayers(); // 생존자 갱신
+            //    // 이전 인덱스의 카메라를 가져온다
+            //    if (alivePlayerCameras.Count > 0)
+            //    {
+            //        currentPlayerIndex = (alivePlayerCameras.Count + currentPlayerIndex - 1) % alivePlayerCameras.Count;
+            //        SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+            //    }
 
-            }
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))    // E
-            {
-                FindAlivePlayers(); // 생존자 갱신
-                // 다음 인덱스의 카메라를 가져온다
-                if (alivePlayerCameras.Count > 0)
-                {
-                    currentPlayerIndex = (currentPlayerIndex + 1) % alivePlayerCameras.Count;
-                    SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-                }
-            }
+            //}
+            //if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))    // E
+            //{
+            //    FindAlivePlayers(); // 생존자 갱신
+            //    // 다음 인덱스의 카메라를 가져온다
+            //    if (alivePlayerCameras.Count > 0)
+            //    {
+            //        currentPlayerIndex = (currentPlayerIndex + 1) % alivePlayerCameras.Count;
+            //        SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+            //    }
+            //}
         }
         //// 타이머 만료되면 리스폰 처리
         //if (respawnTimer.Expired(player.Runner))
@@ -160,8 +160,8 @@ public class PlayerController : NetworkBehaviour
     #region 부활,관전모드
     private void OnDeath()
     {
-        if (alivePlayerCameras.Count > 0)
-            FindAlivePlayers(); // 리스트 갱신
+        //if (alivePlayerCameras.Count > 0)
+        //    FindAlivePlayers(); // 리스트 갱신
 
         //respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
 
@@ -180,8 +180,6 @@ public class PlayerController : NetworkBehaviour
         {
             smr.enabled = false;
         }
-
-        Debug.Log($"Disabled {meshRenderers.Length} MeshRenderer(s) and {skinnedRenderers.Length} SkinnedMeshRenderer(s).");
     }
     private void OnRespawn()
     {
@@ -303,7 +301,7 @@ public class PlayerController : NetworkBehaviour
             
             moveDir.y = 0f; // 수직 방향 제거
 
-            Vector3 moveVelocity = moveDir * 10f;
+            Vector3 moveVelocity = moveDir * 7f;
             Vector3 jumpImpulse = Vector3.zero;
 
             if (input.isJumping == true && _simpleKCC.IsGrounded == true)

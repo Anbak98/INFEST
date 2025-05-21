@@ -8,8 +8,15 @@ public class UISetProfile : UIScreen
     [SerializeField] private GameObject _uiTutorialAnswer;
     [SerializeField] private ScreenRoom _ui;
 
+    protected override void Start()
+    {
+        base.Start();
+        AnalyticsManager.SendFunnelStep(1);
+    }
+
     public void OnPressedSetNickname()
     {
+        AnalyticsManager.SendFunnelStep(2);
         PlayerPrefs.SetString("Nickname", _nickNameText.text);
         _ui.UpdateUI(null);
         _setNicknameUI.SetActive(false);
