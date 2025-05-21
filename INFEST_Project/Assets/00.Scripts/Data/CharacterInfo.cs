@@ -66,6 +66,21 @@ public class CharacterInfo : IKeyedItem
     /// </summary>
     public int StartConsumeItem1;
 
+    /// <summary>
+    /// 소비아이템1 개수
+    /// </summary>
+    public int Item1_Count;
+
+    /// <summary>
+    /// 소비아이템2 ID
+    /// </summary>
+    public int StartConsumeItem2;
+
+    /// <summary>
+    /// 소비아이템1 개수
+    /// </summary>
+    public int Item2_Count;
+    
     public int Key => key;
 
 
