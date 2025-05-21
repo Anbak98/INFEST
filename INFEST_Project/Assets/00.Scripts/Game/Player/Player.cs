@@ -105,10 +105,10 @@ public class Player : NetworkBehaviour
 
             FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높이면
 
-            inventory.consume[0] = Consumes.Consumes[0];
-            inventory.consume[1] = Consumes.Consumes[3];
-            inventory.AddConsumeItme(inventory.consume[0]);
-            inventory.AddConsumeItme(inventory.consume[1]);
+            //inventory.consume[0] = Consumes.Consumes[0];
+            //inventory.consume[1] = Consumes.Consumes[3];
+            //inventory.AddConsumeItme(inventory.consume[0]);
+            //inventory.AddConsumeItme(inventory.consume[1]);
 
             Global.Instance.UIManager.Show<UIStateView>();
             Global.Instance.UIManager.Show<UIBrightView>();
