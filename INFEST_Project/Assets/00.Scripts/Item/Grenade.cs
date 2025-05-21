@@ -15,7 +15,7 @@ public class Grenade : Consume
 
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
     
-        //_player.inventory.RemoveConsumeItem(0);
+        _player.inventory.RemoveConsumeItem(0);
 
         GrenadeCreate();
 
