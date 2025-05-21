@@ -23,6 +23,79 @@ public class WeaponSpawner : NetworkBehaviour
     public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
     private TickTimer _switchTimer { get; set; }
 
+
+    public void Init()
+    {
+        _animator = GetComponent<Animator>();
+        _recoilAnimation = GetComponent<RecoilAnimation>();
+        _playerSound = GetComponent<FPSPlayerSound>();
+
+        _triggerDisciplineLayerIndex = _animator.GetLayerIndex("TriggerDiscipline");
+        _rightHandLayerIndex = _animator.GetLayerIndex("RightHand");
+        _tacSprintLayerIndex = _animator.GetLayerIndex("TacSprint");
+
+        KTransform root = new KTransform(transform.root);
+        var localCamera = root.GetRelativeTransform(new KTransform(cameraPoint), false);
+
+        for (int i = 0; i < Weapons.Count; i++)
+        {
+            if (Weapons[i].key == _player.statHandler.info.data.StartAuxiliaryWeapon)
+            {
+                _player.inventory.auxiliaryWeapon[0] = Weapons[i];
+                _player.inventory.auxiliaryWeapon[0].IsCollected = true;
+            }
+
+            if (Weapons[i].key == _player.statHandler.info.data.StartWeapon1)
+            {
+                _player.inventory.weapon[0] = Weapons[i];
+                _player.inventory.weapon[0].IsCollected = true;
+            }
+
+            if (_player.inventory.auxiliaryWeapon[0] != null && _player.inventory.weapon[0] != null)
+                break;
+        }
+
+        _player.inventory.equippedWeapon = _player.inventory.auxiliaryWeapon[0];
+
+        foreach (var prefab in Weapons)
+        {
+            var prefabComponent = prefab;
+            if (prefabComponent == null) continue;
+
+            prefabComponent.Init();
+            _prefabComponents.Add(prefabComponent);
+
+
+            var weaponComponent = prefab;
+            var component = prefab.FPSWeapon;
+            component.Initialize(gameObject);
+
+            KTransform weaponT = new KTransform(weaponBone);
+            component.rightHandPose = new KTransform(rightHand.tip).GetRelativeTransform(weaponT, false);
+
+            var localWeapon = root.GetRelativeTransform(weaponT, false);
+
+            localWeapon.rotation *= ANIMATED_OFFSET;
+
+            component.adsPose.position = localCamera.position - localWeapon.position;
+            component.adsPose.rotation = Quaternion.Inverse(localWeapon.rotation);
+
+            if (prefabComponent.IsCollected)
+                _weapons.Add(weaponComponent);
+
+            prefab.gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < _weapons.Count; i++)
+        {
+            if (_weapons[i].key == _player.statHandler.info.data.StartAuxiliaryWeapon)
+                _activeWeaponIndex = i;
+        }
+
+        GetActiveWeapon().gameObject.SetActive(true);
+
+        GetActiveWeapon().OnEquipped();
+    }
     public void OnMoveAnimation(Vector3 direction)
     {
         _moveInput = direction;
@@ -54,7 +127,7 @@ public class WeaponSpawner : NetworkBehaviour
         _switchTimer = TickTimer.CreateFromSeconds(Runner, delay);
         _saleChk = Sale;
 
-        if(HasStateAuthority)
+        if (HasStateAuthority)
             RPC_OnChangeWeapon(delay);
 
         //SetWeaponVisible();
@@ -85,7 +158,7 @@ public class WeaponSpawner : NetworkBehaviour
             _weapons[_removeIndex].IsCollected = false;
             _weapons.Remove(_weapons[_removeIndex]);
         }
-            
+
 
         if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
         if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
@@ -239,7 +312,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void Update()
     {
-        
+
         _adsWeight = Mathf.Clamp01(_adsWeight + playerSettings.aimSpeed * Time.deltaTime * (_isAiming ? 1f : -1f));
 
         _smoothGait = Mathf.Lerp(_smoothGait, GetDesiredGait(),
@@ -249,8 +322,8 @@ public class WeaponSpawner : NetworkBehaviour
         _animator.SetLayerWeight(_tacSprintLayerIndex, Mathf.Clamp01(_smoothGait - 2f));
 
         bool triggerAllowed = GetActiveWeapon().weaponSettings.useSprintTriggerDiscipline;
-        
-            
+
+
 
         _animator.SetLayerWeight(_triggerDisciplineLayerIndex,
         triggerAllowed ? _animator.GetFloat(TAC_SPRINT_WEIGHT) : 0f);
@@ -393,57 +466,6 @@ public class WeaponSpawner : NetworkBehaviour
         var root = new KTransform(transform.root);
         weaponT.position = KAnimationMath.MoveInSpace(root, weaponT, _ikMotion.position, 1f);
         weaponT.rotation = KAnimationMath.RotateInSpace(root, weaponT, _ikMotion.rotation, 1f);
-    }
-
-    private void Start()
-    {
-        _animator = GetComponent<Animator>();
-        _recoilAnimation = GetComponent<RecoilAnimation>();
-        _playerSound = GetComponent<FPSPlayerSound>();
-
-        _triggerDisciplineLayerIndex = _animator.GetLayerIndex("TriggerDiscipline");
-        _rightHandLayerIndex = _animator.GetLayerIndex("RightHand");
-        _tacSprintLayerIndex = _animator.GetLayerIndex("TacSprint");
-
-        KTransform root = new KTransform(transform.root);
-        var localCamera = root.GetRelativeTransform(new KTransform(cameraPoint), false);
-
-        foreach (var prefab in Weapons)
-        {
-            var prefabComponent = prefab;
-            if (prefabComponent == null) continue;
-
-            _prefabComponents.Add(prefabComponent);
-
-
-            var weaponComponent = prefab;
-            var component = prefab.FPSWeapon;
-            component.Initialize(gameObject);
-
-            KTransform weaponT = new KTransform(weaponBone);
-            component.rightHandPose = new KTransform(rightHand.tip).GetRelativeTransform(weaponT, false);
-
-            var localWeapon = root.GetRelativeTransform(weaponT, false);
-
-            localWeapon.rotation *= ANIMATED_OFFSET;
-
-            component.adsPose.position = localCamera.position - localWeapon.position;
-            component.adsPose.rotation = Quaternion.Inverse(localWeapon.rotation);
-
-            if(prefabComponent.IsCollected)
-                _weapons.Add(weaponComponent);
-
-            prefab.gameObject.SetActive(false);
-        }
-
-        for(int i = 0; i< _weapons.Count; i++)
-        {
-            if (_weapons[i].key == _player.statHandler.info.data.StartAuxiliaryWeapon)
-                _activeWeaponIndex = i;
-        }
-        GetActiveWeapon().gameObject.SetActive(true);
-        
-        GetActiveWeapon().OnEquipped();
     }
 
     private void LateUpdate()

@@ -8,12 +8,30 @@ namespace INFEST.Game
 {
     public class NetworkRunnerCallbacks : MonoBehaviour, INetworkRunnerCallbacks
     {
-        [Header("Prefab For Runner.Spawn()")]
-        [SerializeField] private NetworkPrefabRef _playerPrefab;
-
         [Header("Input Related")]
         [SerializeField] private PlayerInputActionHandler _playerInputActionHandler;
         [SerializeField] private InputManager _InputManager;
+
+        public void Start()
+        {
+            //Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        public void Update()
+        {
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    Cursor.lockState = CursorLockMode.Locked;
+            //}
+            //if (Input.GetKeyDown(KeyCode.Escape))
+            //{
+            //    Cursor.lockState = CursorLockMode.None;
+            //}
+            //if (Input.GetKeyDown(KeyCode.F))
+            //{
+            //    Screen.fullScreen = true;
+            //}
+        }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
@@ -25,9 +43,6 @@ namespace INFEST.Game
 
             if (runner.IsServer)
             {
-                NetworkObject netObj = runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[0].position, inputAuthority: player);
-                NetworkGameManager.Instance.gamePlayers.AddPlayerObj(player, netObj.Id);
-                netObj.GetComponent<PlayerStatHandler>().Init(player);
             }
         }
 

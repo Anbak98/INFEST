@@ -1,5 +1,6 @@
 using Cinemachine;
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -15,7 +16,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private Camera _scopeCam;          // scope 전용 카메라
     [SerializeField] private Transform _cameraHolder;    // 카메라 부모 (X축 회전만 담당)
-    public float _sensitivity = 5f;   // 이동에 적용할 민감도
+    public float _sensitivity = 1f;   // 이동에 적용할 민감도
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
@@ -47,6 +48,8 @@ public class PlayerCameraHandler : NetworkBehaviour
         Cursor.visible = false;
     }
 
+    [SerializeField] private SimpleKCC _simpleKCC;
+
     public override void FixedUpdateNetwork()
     {
 
@@ -56,25 +59,25 @@ public class PlayerCameraHandler : NetworkBehaviour
 
         if (statHandler.CurHealth <= 0) return;
 
-        if(HasStateAuthority)
+        if (Runner.TryGetInputForPlayer(Object.InputAuthority, out NetworkInputData input) == true)
         {
-            if (GetInput(out NetworkInputData data))
-            {
-                Vector2 mouseDelta = data.lookDelta;
+            _simpleKCC.AddLookRotation(new Vector3(-input.lookDelta.y * _sensitivity * Runner.DeltaTime, input.lookDelta.x * _sensitivity * Runner.DeltaTime, 0));
 
-                yRotation = mouseDelta.x * _sensitivity * Time.deltaTime;
-                xRotation -= mouseDelta.y * _sensitivity * Time.deltaTime;
-                xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-
-                _parentTransform.Rotate(yRotation * Vector3.up);
-                _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
-            }
+            Vector2 pitchRotation = _simpleKCC.GetLookRotation(true, false);
+            _cameraHolder.localRotation = Quaternion.Euler(pitchRotation);
         }
     }
-
-    public override void Render()
+    public void LateUpdate()
     {
-        base.Render();
+        // Only InputAuthority needs to update camera.
+        if (Object == null || Object.HasInputAuthority == false)
+            return;
+
+        // Update camera pivot and transfer properties from camera handle to Main Camera.
+        // LateUpdate() is called after all Render() calls - the character is already interpolated.
+
+        Vector2 pitchRotation = _simpleKCC.GetLookRotation(true, false);
+        _cameraHolder.localRotation = Quaternion.Euler(pitchRotation);
     }
 
     public Vector3 GetCameraForwardOnXZ()
@@ -91,22 +94,4 @@ public class PlayerCameraHandler : NetworkBehaviour
         camRight.y = 0f;
         return camRight.normalized;
     }
-
-    public void LockCamera(bool active)
-    {
-        isMenu = active;
-
-        if (active)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
-    }
-
 }

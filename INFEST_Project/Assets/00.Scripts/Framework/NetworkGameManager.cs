@@ -20,14 +20,28 @@ namespace INFEST.Game
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
 
-        public int playerCount = 0;
+
+        protected override void Awake()
+        {
+            base.Awake();
+#if UNITY_WEBGL
+            Application.targetFrameRate = 60;
+#endif
+        }
 
         public void VictoryGame()
         {
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
             gev.Victory();
         }
+
         public void DefeatGame()
+        {
+            RPC_BroadcastDefeatGame();
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RPC_BroadcastDefeatGame()
         {
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
             gev.Defeat();

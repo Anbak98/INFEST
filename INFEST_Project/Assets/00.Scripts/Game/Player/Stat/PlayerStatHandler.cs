@@ -9,8 +9,6 @@ public class PlayerStatHandler : NetworkBehaviour
 {
     public CharacterInfoInstance info;
 
-    [Networked] public PlayerRef owner { get; set; }
-
     [Networked] public bool IsDead { get; set; }
 
     [Networked] public int CurSpeedMove { get; set; }
@@ -20,8 +18,8 @@ public class PlayerStatHandler : NetworkBehaviour
     // 방어구 체력
     public int CurGold
     {
-        get => NetworkGameManager.Instance.gamePlayers.GetGoldCount(owner);
-        set => NetworkGameManager.Instance.gamePlayers.SetGoldCount(owner, value);
+        get => NetworkGameManager.Instance.gamePlayers.GetGoldCount(Object.InputAuthority);
+        set => NetworkGameManager.Instance.gamePlayers.SetGoldCount(Object.InputAuthority, value);
     }
     // 시작 골드
     [Networked] public int CurTeamCoin { get; set; }                        // 시작 팀코인
@@ -33,22 +31,16 @@ public class PlayerStatHandler : NetworkBehaviour
 
     public PlayerAttackedEffectController effect;
 
-    public void Init(PlayerRef player)
+    public void Init()
     {
         info = new(1);
-        owner = player;
-        if (NetworkGameManager.Instance.gamePlayers.IsValid(owner))
+
+        if (HasStateAuthority)
         {
             CurGold += info.data.StartGold;
             CurGold += 9000;
         }
-    }
 
-    public override void Spawned()
-    {
-        base.Spawned();
-
-        info = new(1);
         CurHealth = info.data.Health;
         CurDefGear = info.data.DefGear;
         CurDef = info.data.Def;
@@ -78,14 +70,16 @@ public class PlayerStatHandler : NetworkBehaviour
 
             CurHealth -= damage;
             RPC_Effect(-1);
-            if (CurHealth <= 0 && !IsDead)
+            if (CurHealth <= 0)
             {
                 CurHealth = 0;
 
-                HandleDeath();
-                if (attacker != null)
-                    AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
-
+                if (!IsDead)
+                {
+                    HandleDeath();
+                    if (attacker != null)
+                        AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
+                }
             }
         }
 
@@ -150,10 +144,29 @@ public class PlayerStatHandler : NetworkBehaviour
         if (deathCount >= Runner.SessionInfo.PlayerCount)
         {
             NetworkGameManager.Instance.DefeatGame();
+            RPC_HideDeathScreen();
+        }
+        else
+        {
+            RPC_ShowDeathScreen();
         }
 
         //int d
     }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    public void RPC_ShowDeathScreen()
+    {
+        Global.Instance.UIManager.Show<UIDeathScreen>();
+        Global.Instance.UIManager.Hide<UIStateView>();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    public void RPC_HideDeathScreen()
+    {
+        Global.Instance.UIManager.Hide<UIDeathScreen>();
+    }
+
     // 리스폰
     public void HandleRespawn()
     {

@@ -6,7 +6,6 @@ public class Monster_RageFang_FSM : MonsterFSM<Monster_RageFang>
         {
             monster.TryAddTarget(other.transform);
             monster.SetTargetRandomly();
-            monster.FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
         }
     }
 }

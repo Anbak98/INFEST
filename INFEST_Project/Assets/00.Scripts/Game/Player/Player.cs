@@ -1,13 +1,8 @@
 using Cinemachine;
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
+using INFEST.Game;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms;
-
 
 /// <summary>
 /// 플레이어의 기본적인 사항들
@@ -18,8 +13,8 @@ public class Player : NetworkBehaviour
     public bool inStoreZoon = false;
     public bool isInteraction = false;
     public PlayerAnimationController animationController;
-    [HideInInspector] public PlayerData data; 
     public PlayerStatHandler statHandler;
+    public PlayerController controller;
     public PlayerAttackedEffectController attackedEffectController;
     public PlayerCameraHandler cameraHandler;
     public Store store;
@@ -42,12 +37,58 @@ public class Player : NetworkBehaviour
 
     public override void Spawned()
     {
-        /// 기존의 데이터
+        NetworkGameManager.Instance.gamePlayers.AddPlayerObj(Object.InputAuthority, Object.Id);
+
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
+
         /// Player에 붙은 PlayerColor 스크립트의 MeshRenderer에 접근하여 material을 가져온다
         _material = GetComponentInChildren<MeshRenderer>().material;
         inventory = GetComponent<Inventory>();
+
+        // CinemachineVirtualCamera가 포함된 게임오브젝트를 비활성화한 상태로 시작하므로 
+        if (HasInputAuthority == false)
+        {
+            // 다른 플레이어의 CinemachineVirtualCamera는 우선순위 낮춘다
+            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+        }
+
+        /// 기존의 데이터
+        statHandler.Init();
+        Weapons.Init();
+        controller.Init();
+
+        for (int i = 0; i < Consumes.Consumes.Count; i++)
+        {
+            if (Consumes.Consumes[i].key == statHandler.info.data.StartConsumeItem1)
+            {
+                int itemChk = statHandler.info.data.StartConsumeItem1 % 10000;
+                bool throwingWeapon = itemChk < 800 && itemChk > 700;
+                bool recoveryItem = itemChk < 900 && itemChk > 800;
+                bool shieldItme = itemChk < 1000 && itemChk > 900;
+
+                if (throwingWeapon)
+                {
+                    inventory.consume[0] = Consumes.Consumes[i];
+                    inventory.AddConsumeItme(inventory.consume[0]);
+                }
+
+                if (recoveryItem)
+                {
+                    inventory.consume[1] = Consumes.Consumes[i];
+                    inventory.AddConsumeItme(inventory.consume[1]);
+                }
+
+                if (shieldItme)
+                {
+                    inventory.consume[2] = Consumes.Consumes[i];
+                    inventory.AddConsumeItme(inventory.consume[2]);
+
+                }
+                break;
+
+            }
+        }
 
         // 튜토리얼에 있던 부분, 삭제하니까 오류가 많이 나서 일단 남겨두었다
         _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
@@ -57,13 +98,6 @@ public class Player : NetworkBehaviour
         // Enable first person visual for local player, third person visual for proxies.
         SetFirstPersonVisuals(HasInputAuthority);
 
-        // CinemachineVirtualCamera가 포함된 게임오브젝트를 비활성화한 상태로 시작하므로 
-        if (HasInputAuthority == false)
-        {
-            // 다른 플레이어의 CinemachineVirtualCamera는 우선순위 낮춘다
-            FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-        }
-
         if (Object.HasInputAuthority) // 로컬 플레이어 본인일 때
         {
             // FirstPersonCamera
@@ -71,72 +105,15 @@ public class Player : NetworkBehaviour
 
             FirstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높이면
 
-            Debug.Log("Local Player 설정 완료");
-        }
-
-        if (statHandler != null)
-        {
-
-            for (int i = 0; i < Weapons.Weapons.Count; i++)
-            {
-                if (Weapons.Weapons[i].key == statHandler.info.data.StartAuxiliaryWeapon)
-                {
-                    inventory.auxiliaryWeapon[0] = Weapons.Weapons[i];
-                    inventory.auxiliaryWeapon[0].IsCollected = true;
-                }
-
-                if (Weapons.Weapons[i].key == statHandler.info.data.StartWeapon1)
-                {
-                    inventory.weapon[0] = Weapons.Weapons[i];
-                    inventory.weapon[0].IsCollected = true;
-                }
-
-                if (inventory.auxiliaryWeapon[0] != null && inventory.weapon[0] != null)
-                    break;
-            }
-
-            for (int i = 0; i < Consumes.Consumes.Count; i++)
-            {
-                if (Consumes.Consumes[i].key == statHandler.info.data.StartConsumeItem1)
-                {
-                    int itemChk = statHandler.info.data.StartConsumeItem1 % 10000;
-                    bool throwingWeapon = itemChk < 800 && itemChk > 700;
-                    bool recoveryItem = itemChk < 900 && itemChk > 800;
-                    bool shieldItme = itemChk < 1000 && itemChk > 900;
-
-                    if (throwingWeapon)
-                    {
-                        inventory.consume[0] = Consumes.Consumes[i];
-                        inventory.AddConsumeItme(inventory.consume[0]);
-
-                    }
-
-                    if (recoveryItem)
-                    {
-                        inventory.consume[1] = Consumes.Consumes[i];
-                        inventory.AddConsumeItme(inventory.consume[1]);
-
-                    }
-
-                    if (shieldItme)
-                    {
-                        inventory.consume[2] = Consumes.Consumes[i];
-                        inventory.AddConsumeItme(inventory.consume[2]);
-
-                    }
-                    break;
-
-                }
-
-            }
-            inventory.equippedWeapon = inventory.auxiliaryWeapon[0];
             inventory.consume[0] = Consumes.Consumes[0];
             inventory.consume[1] = Consumes.Consumes[3];
             inventory.AddConsumeItme(inventory.consume[0]);
             inventory.AddConsumeItme(inventory.consume[1]);
+
+            Global.Instance.UIManager.Show<UIStateView>();
+            Global.Instance.UIManager.Show<UIBrightView>();
         }
     }
-
 
     /// <summary>
     /// 마지막으로 ChangeDetector를 호출한 이후 네트워크화된 속성에 발생한 모든 변경 사항을 반복

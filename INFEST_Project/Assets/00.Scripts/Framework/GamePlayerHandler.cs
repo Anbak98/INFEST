@@ -13,6 +13,9 @@ namespace INFEST.Game
 
     public class GamePlayerHandler : NetworkBehaviour
     {
+        [Header("Prefab For Runner.Spawn()")]
+        [SerializeField] private NetworkPrefabRef _playerPrefab;
+
         public Action OnValueChanged;
 
         public List<Transform> PlayerSpawnPoints;
@@ -32,14 +35,14 @@ namespace INFEST.Game
         [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameGoldCounts => default;
 
+
         public override void Spawned()
         {
             base.Spawned();
-
             string nickname = PlayerPrefs.GetString("Nickname");
             JOB job = (JOB)PlayerPrefs.GetInt("Job");
 
-            RPC_AddPlayer(Runner.LocalPlayer, nickname, job);
+            RPC_RequestSpawnPlayer(Runner.LocalPlayer, nickname, job);
         }
 
         private void OnValueChangedInvoke() => OnValueChanged?.Invoke();
@@ -105,26 +108,19 @@ namespace INFEST.Game
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        private void RPC_AddPlayer(PlayerRef player, string nickname, JOB job)
+        private void RPC_RequestSpawnPlayer(PlayerRef player, string nickname, JOB job)
         {
-            if (Runner.IsServer)
+            PlayerGameProfiles.Add(player, new PlayerGameProfile());
+            PlayerGameKillCounts.Add(player, 0);
+            PlayerGameDeathCounts.Add(player, 0);
+            PlayerGameGoldCounts.Add(player, 0);
+            PlayerGameProfiles.Set(player, new PlayerGameProfile()
             {
-                Debug.Log("Accept");
-                PlayerGameProfiles.Add(player, new PlayerGameProfile());
-                PlayerGameKillCounts.Add(player, 0);
-                PlayerGameDeathCounts.Add(player, 0);
-                PlayerGameGoldCounts.Add(player, 0);
-                PlayerGameProfiles.Set(player, new PlayerGameProfile()
-                {
-                    nickname = nickname,
-                    job = job
-                });
+                nickname = nickname,
+                job = job
+            });
 
-                if(IsValid(player))
-                {
-                    GetPlayerObj(player).GetComponent<PlayerStatHandler>().Init(player);
-                }
-            }
+            Runner.Spawn(_playerPrefab, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[0].position, inputAuthority: player);
         }
     }
 }

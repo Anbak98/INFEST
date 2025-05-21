@@ -14,14 +14,17 @@ public class Siren : MonoBehaviour
     {
         if (isTrigger) return;
 
-        Player player = other.GetComponentInParent<Player>();
-        if (other.gameObject.layer == _playerLayer && player)
+        if(NetworkGameManager.Instance.gameState != GameState.Wave)
         {
-            _player = player;
-            isTrigger = true;
+            Player player = other.GetComponentInParent<Player>();
+            if (other.gameObject.layer == _playerLayer && player)
+            {
+                _player = player;
+                isTrigger = true;
 
-            float delay = Random.Range(5f, 30f);
-            StartCoroutine(DelayedSiren(delay, _player));
+                float delay = Random.Range(5f, 30f);
+                StartCoroutine(DelayedSiren(delay, _player));
+            }
         }
     }
 
