@@ -40,12 +40,11 @@ public class TutorialController : MonoBehaviour
                 shopArrow[0].gameObject.SetActive(true);
                 shopArrow[1].gameObject.SetActive(true);
                 player.statHandler.CurGold += 1500;
-                
                 break;
             case 3:
+                WallDeactivate(2);
                 shopArrow[0].gameObject.SetActive(false);
                 shopArrow[1].gameObject.SetActive(false);
-               
                 break;
             case 4:
                 arrow.gameObject.SetActive(false);

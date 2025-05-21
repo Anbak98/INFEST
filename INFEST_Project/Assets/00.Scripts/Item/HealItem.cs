@@ -11,7 +11,7 @@ public class HealItem : Consume
     public override void Heal()
     {
         if (!_healTimer.ExpiredOrNotRunning(Runner)) return;
-        if (!HasInputAuthority) return;
+        if (!HasStateAuthority) return;
 
         _player.inventory.RemoveConsumeItem(1);
 
