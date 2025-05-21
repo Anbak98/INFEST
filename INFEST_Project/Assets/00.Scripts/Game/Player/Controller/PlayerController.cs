@@ -101,17 +101,17 @@ public class PlayerController : NetworkBehaviour
                     player.Weapons.Aiming(false);
                 }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD) && player.inventory.consume[0] != null)
                 {
                     player.Weapons.OnThrowGrenade();
                 }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL) && player.inventory.consume[1] != null && player.statHandler.CurHealth == player.statHandler.info.data.Health)
                 {
                     player.Consumes.Heal();
                 }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD) && player.inventory.consume[2] != null)
                 {
                     player.Consumes.Mounting();
                 }
