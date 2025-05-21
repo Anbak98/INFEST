@@ -24,7 +24,6 @@ public class Grenade : Consume
     private void GrenadeCreate()
     {
         Vector3 camForward = throwPoint.forward.normalized;
-        float upCurve = 0.3f; // 항상 위로 뜨게 하는 힘 (0.3~0.5 정도 튜닝 추천)
         float camY = camForward.y;
 
         // 위를 보고 있을수록 위 성분 강화

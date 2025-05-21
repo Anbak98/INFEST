@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
 
 public class HealItem : Consume
 {
@@ -11,8 +8,7 @@ public class HealItem : Consume
     public override void Heal()
     {
         if (!_healTimer.ExpiredOrNotRunning(Runner)) return;
-        if (!HasStateAuthority) return;
-
+        
         _player.inventory.RemoveConsumeItem(1);
 
         _player.statHandler.Heal(instance.data.Effect);
