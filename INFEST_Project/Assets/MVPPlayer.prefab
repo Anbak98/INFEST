@@ -1991,7 +1991,7 @@ MonoBehaviour:
   _parentTransform: {fileID: 3834324505224384244}
   isMenu: 0
   statHandler: {fileID: 3147526191137004029}
-  virtualCamera: {fileID: 241464025491880770}
+  firstPersonCamera: {fileID: 241464025491880770}
   spectatorCamera: {fileID: 510900682511835160}
   _simpleKCC: {fileID: 8802749177907789785}
 --- !u!1 &3819623328929040217
@@ -4253,7 +4253,6 @@ MonoBehaviour:
   cameraHandler: {fileID: 3268070573558879607}
   store: {fileID: 0}
   inventory: {fileID: 0}
-  FirstPersonCamera: {fileID: 6996409761476354241}
   Weapons: {fileID: 7032259557335484116}
   Consumes: {fileID: 3479017057160561563}
   CameraHandle: {fileID: 7721353801691121081}

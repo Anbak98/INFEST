@@ -12,10 +12,10 @@ public class PlayerIdleState : PlayerGroundState
     // 가장 먼저 시작
     public override void Enter()
     {
-
         base.Enter();   // Ground 진입
-        //Debug.Log("Idle상태 진입");
 
+        player.animationController.Die = false;
+        //Debug.Log("Idle상태 진입");
         // Ground && Idle
         //StartAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
