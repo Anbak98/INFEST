@@ -34,9 +34,8 @@ public class GrenadeExplosion : NetworkBehaviour
 
         foreach (UnityEngine.Collider other in colliders)
         {
-            Debug.Log(other.gameObject.name);
-                Player _otherplayer = other.GetComponentInParent<Player>();
-                _otherplayer.statHandler.TakeDamage(null, _damage/4);
+            Player _otherplayer = other.GetComponentInParent<Player>();
+            _otherplayer.statHandler.TakeDamage(null, _damage/2);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
