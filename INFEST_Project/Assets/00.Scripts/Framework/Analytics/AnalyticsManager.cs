@@ -41,7 +41,7 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
 
     //=============================퍼널=================================
     //[1]퍼널
-    public static void SendFunnelStep(string stepNumber)//das
+    public static void SendFunnelStep(int stepNumber)//das
     {
         var funnelEvent = new CustomEvent("Funnel_Step"); //event
         funnelEvent["Funnel_Step_Number"] = stepNumber; //parameter
@@ -106,13 +106,13 @@ public class AnalyticsManager : SingletonBehaviour<AnalyticsManager>
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
 
-    public static void analyticsGameEnd(int endReason, int ingameToLobby, int ingameTime, int lastWeapon1, int lastWeapon2)
+    public static void analyticsGameEnd(int endReason, int ingameTime, int lastWeapon1, int lastWeapon2)
     {
         var customEvent = new CustomEvent("Game_End"); //event
         customEvent["END_REASON"] = endReason; //parameter
         customEvent["INGAME_TIME"] = ingameTime; //parameter
-        customEvent["LAST_WEAPON"] = lastWeapon1; //parameter
-        customEvent["LAST_WEAPON2"] = lastWeapon2; //parameter
+        customEvent["LAST_WEAPON_1"] = lastWeapon1; //parameter
+        customEvent["LAST_WEAPON_2"] = lastWeapon2; //parameter
 
         AnalyticsService.Instance.RecordEvent(customEvent); //custom event
     }
