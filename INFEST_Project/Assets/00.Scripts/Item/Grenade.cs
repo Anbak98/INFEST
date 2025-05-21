@@ -24,7 +24,7 @@ public class Grenade : Consume
     private void GrenadeCreate()
     {
         Vector3 direction = _player.transform.forward;
-        Vector3 velocity = direction * 10f + Vector3.up * 5f;
+        Vector3 velocity = direction * 10f + Vector3.up * 10f;
 
         if (Object.HasStateAuthority)
         {
@@ -38,7 +38,7 @@ public class Grenade : Consume
             _grenade.Init(velocity, throwPoint.position);
             RPC_Init(_grenade, velocity);
         }
-        _throwTimer = TickTimer.CreateFromSeconds(Runner, 3f);
+        _throwTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
     }
 
     [Rpc(RpcSources.StateAuthority,RpcTargets.All)]

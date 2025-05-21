@@ -8,7 +8,7 @@ public class Rocket : NetworkBehaviour
     public GameObject explosion;
     public GameObject render;
     TickTimer _explosionTime;
-    [SerializeField] private int _playerLayer = 6;
+    [SerializeField] private int _playerLayer = 7;
     [SerializeField] private int _monsterLayer = 14;
     [SerializeField] private LayerMask _layerMask = 1 << 12 | 1<< 16 | 1<< 10;
 
@@ -97,7 +97,7 @@ public class Rocket : NetworkBehaviour
         foreach (UnityEngine.Collider other in colliders)
         {
             Player _otherplayer = other.GetComponentInParent<Player>();
-            _otherplayer.statHandler.TakeDamage(null, _damage/2);
+            _otherplayer.statHandler.TakeDamage(null, _damage/4);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();

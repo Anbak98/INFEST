@@ -154,12 +154,12 @@ public class GrenadeProjectile : NetworkBehaviour
         GrenadeExplosion.gameObject.SetActive(true);
         GrenadeExplosion.Explosion();
         SetAnimation(true);
-        _activeTimer = TickTimer.CreateFromSeconds(Runner,0.5f);
+        _activeTimer = TickTimer.CreateFromSeconds(Runner,0.8f);
     }
 
     public void Init(Vector3 initialVelocity, Vector3 startPosition)
     {
-        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
+        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 3f);
         _velocity = initialVelocity;
         _time = 0f;
     }
@@ -172,7 +172,7 @@ public class GrenadeProjectile : NetworkBehaviour
         SetAnimation(false);
         _activeTimer = TickTimer.None;
         _isStopped = false;
-        if (HasInputAuthority)
+        if (HasStateAuthority)
             Runner.Despawn(Object);
 
     }

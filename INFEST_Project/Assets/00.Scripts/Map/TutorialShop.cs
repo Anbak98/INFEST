@@ -11,7 +11,7 @@ public class TutorialShop : MonoBehaviour
         {
             tutorialController.TextChanged();
             tutorialController.tutorial.ShowImage();
-            Destroy(gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }

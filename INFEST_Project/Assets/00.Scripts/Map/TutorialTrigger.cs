@@ -13,7 +13,7 @@ public class TutorialTrigger : MonoBehaviour
         {
             tutorialController.TextChanged();
             tutorialController.player = other.gameObject.GetComponentInParent<Player>();
-            Destroy(gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }
