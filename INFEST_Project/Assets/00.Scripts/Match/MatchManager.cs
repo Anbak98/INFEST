@@ -33,6 +33,11 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         Underground
     }
 
+    public void Start()
+    {
+        Global.Instance.UIManager.Show<UISetProfile>();
+    }
+
     public async void QuickMatch()
     {
         if (Runner != null)
