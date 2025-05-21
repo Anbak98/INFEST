@@ -102,7 +102,7 @@ public class Player : NetworkBehaviour
         {
             if (Consumes.Consumes[i].key == statHandler.info.data.StartConsumeItem2)
             {
-                int itemChk = statHandler.info.data.StartConsumeItem1 % 10000;
+                int itemChk = statHandler.info.data.StartConsumeItem2 % 10000;
                 bool throwingWeapon = itemChk < 800 && itemChk > 700;
                 bool recoveryItem = itemChk < 900 && itemChk > 800;
                 bool shieldItme = itemChk < 1000 && itemChk > 900;
