@@ -34,7 +34,14 @@ namespace INFEST.Game
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
             gev.Victory();
         }
+
         public void DefeatGame()
+        {
+            RPC_BroadcastDefeatGame();
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RPC_BroadcastDefeatGame()
         {
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
             gev.Defeat();

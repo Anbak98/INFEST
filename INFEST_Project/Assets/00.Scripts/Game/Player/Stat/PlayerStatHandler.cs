@@ -70,14 +70,16 @@ public class PlayerStatHandler : NetworkBehaviour
 
             CurHealth -= damage;
             RPC_Effect(-1);
-            if (CurHealth <= 0 && !IsDead)
+            if (CurHealth <= 0)
             {
                 CurHealth = 0;
 
-                HandleDeath();
-                if (attacker != null)
-                    AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
-
+                if (!IsDead)
+                {
+                    HandleDeath();
+                    if (attacker != null)
+                        AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
+                }
             }
         }
 
@@ -142,10 +144,29 @@ public class PlayerStatHandler : NetworkBehaviour
         if (deathCount >= Runner.SessionInfo.PlayerCount)
         {
             NetworkGameManager.Instance.DefeatGame();
+            RPC_HideDeathScreen();
+        }
+        else
+        {
+            RPC_ShowDeathScreen();
         }
 
         //int d
     }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    public void RPC_ShowDeathScreen()
+    {
+        Global.Instance.UIManager.Show<UIDeathScreen>();
+        Global.Instance.UIManager.Hide<UIStateView>();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    public void RPC_HideDeathScreen()
+    {
+        Global.Instance.UIManager.Hide<UIDeathScreen>();
+    }
+
     // ¸®½ºÆù
     public void HandleRespawn()
     {

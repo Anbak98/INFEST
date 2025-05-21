@@ -16,7 +16,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private Camera _scopeCam;          // scope 전용 카메라
     [SerializeField] private Transform _cameraHolder;    // 카메라 부모 (X축 회전만 담당)
-    public float _sensitivity = 0.3f;   // 이동에 적용할 민감도
+    public float _sensitivity = 1f;   // 이동에 적용할 민감도
     [SerializeField] private Transform _parentTransform;
 
     // 마우스의 회전값
@@ -61,20 +61,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 
         if (Runner.TryGetInputForPlayer(Object.InputAuthority, out NetworkInputData input) == true)
         {
-            // Apply look rotation delta. This propagates to Transform component immediately.
-        //    if (HasStateAuthority)
-        //{
-        //    if (GetInput(out NetworkInputData data))
-        ////    {
-        //    Vector2 mouseDelta = input.lookDelta;
-
-        //    yRotation = mouseDelta.x * _sensitivity * Time.deltaTime;
-        //    xRotation -= mouseDelta.y * _sensitivity * Time.deltaTime;
-        //    xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-
-        //    _parentTransform.Rotate(yRotation * Vector3.up);
-        //    _cameraHolder.localEulerAngles = new Vector3(xRotation, 0f, 0f); // X축 회전만 적용
-            _simpleKCC.AddLookRotation(new Vector3(-input.lookDelta.y * 0.2f, input.lookDelta.x * 0.2f, 0));
+            _simpleKCC.AddLookRotation(new Vector3(-input.lookDelta.y * _sensitivity * Runner.DeltaTime, input.lookDelta.x * _sensitivity * Runner.DeltaTime, 0));
 
             Vector2 pitchRotation = _simpleKCC.GetLookRotation(true, false);
             _cameraHolder.localRotation = Quaternion.Euler(pitchRotation);

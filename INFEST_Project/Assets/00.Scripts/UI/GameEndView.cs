@@ -18,7 +18,7 @@ public class GameEndView : UIScreen
     {
         VictoryHeader.SetActive(false);
         DefeatHeader.SetActive(true);
-        Tooltip.text = "Boss is so strong";
+        Tooltip.text = "Don't give up!!!";
     }
 
     public void OnPressedExitButton()

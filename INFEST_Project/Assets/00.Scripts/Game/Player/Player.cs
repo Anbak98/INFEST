@@ -113,9 +113,7 @@ public class Player : NetworkBehaviour
             Global.Instance.UIManager.Show<UIStateView>();
             Global.Instance.UIManager.Show<UIBrightView>();
         }
-
     }
-
 
     /// <summary>
     /// 마지막으로 ChangeDetector를 호출한 이후 네트워크화된 속성에 발생한 모든 변경 사항을 반복

@@ -71,6 +71,7 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     protected override void OnWave()
     {
         base.OnWave();
+        OnIsChasePhase();
         FSM.ChangePhase<Grita_Phase_Chase>();
     }
 

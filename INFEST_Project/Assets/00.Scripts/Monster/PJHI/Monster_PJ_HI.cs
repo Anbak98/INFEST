@@ -31,6 +31,7 @@ public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
     {
         base.OnWave();
         IsChasePhase = true;
+        OnIsChasePhase();
         FSM.ChangePhase<PJ_HI_Phase_Chase>();
     }
 
