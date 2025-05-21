@@ -117,7 +117,7 @@ public class GrenadeProjectile : NetworkBehaviour
         int hitLayer = hit.collider.gameObject.layer;
 
         // 폭발 체크
-        if (hitLayer == 6)
+        if (hitLayer == 7)
         {
             transform.position = hit.transform.root.position + new Vector3(0, 0.01f, 0); ;
             RPC_Explode(transform.position);
@@ -125,12 +125,12 @@ public class GrenadeProjectile : NetworkBehaviour
             return true;
         }
 
-        if (hitLayer == 11 || hitLayer == 16)
+        if (hitLayer == 11)
         {
             _isStopped = true;
             transform.position = hit.point + hit.normal * 0.01f;  // 지면 위에 위치 이동
         }
-        else if (hitLayer == 10)
+        else if (hitLayer == 10 && hitLayer == 16)
         {
             //transform.position = hit.point;  // 벽에 부딪히지 않고, 계속 이동
         }

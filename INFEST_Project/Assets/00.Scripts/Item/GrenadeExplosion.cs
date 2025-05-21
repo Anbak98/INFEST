@@ -6,8 +6,8 @@ public class GrenadeExplosion : NetworkBehaviour
 {
     public GrenadeProjectile grenadeProjectile;
 
-    [SerializeField] private int _playerLayer = 6;
-    [SerializeField] private int _monsterLayer = 14;
+    private int _playerLayer = 7;
+    private int _monsterLayer = 14;
 
 
     private int _damage;
