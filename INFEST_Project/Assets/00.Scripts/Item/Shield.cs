@@ -15,7 +15,7 @@ public class Shield : Consume
 
         if (!_shieldTimer.ExpiredOrNotRunning(Runner)) return;
 
-        //_player.inventory.RemoveConsumeItem(2);
+        _player.inventory.RemoveConsumeItem(2);
 
         ShieldCreate();
     }
