@@ -6,7 +6,7 @@ public class DummyProjectile : MonoBehaviour
     //[SerializeField] private float _maxDistance = 100f; // 최대 비행 거리
     [SerializeField] private GameObject _hitEffect; // 히트이펙트
     [SerializeField] private float _lifeTimeAfterHit = 2f; // 오브젝트 삭제 대기시간
-    [SerializeField] private GameObject _visualRoot; // 총알 외형 오브젝트
+    //[SerializeField] private GameObject _visualRoot; // 총알 외형 오브젝트
 
     private Vector3 _startPosition; // 총알 출발 위치
     private Vector3 _targetPosition; // 총알 목표 위치
@@ -55,10 +55,10 @@ public class DummyProjectile : MonoBehaviour
         enabled = false;
         _hitEffect.SetActive(true);
 
-        if (_visualRoot != null)
-        {
-            _visualRoot.SetActive(false);
-        }
+        //if (_visualRoot != null)
+        //{
+        //    _visualRoot.SetActive(false);
+        //}
 
         Invoke(nameof(ReturnToPool), _lifeTimeAfterHit);
     }
@@ -67,7 +67,7 @@ public class DummyProjectile : MonoBehaviour
     private void ReturnToPool()
     {
         _hitEffect.SetActive(false);
-        _visualRoot.SetActive(true);
+        //_visualRoot.SetActive(true);
 
         transform.position = Vector3.zero;
 
@@ -79,7 +79,7 @@ public class DummyProjectile : MonoBehaviour
     {
         _showHitEffect = false;
         _hitEffect.SetActive(false);
-        _visualRoot.SetActive(true);                
+        //_visualRoot.SetActive(true);                
 
         enabled = true;
     }
