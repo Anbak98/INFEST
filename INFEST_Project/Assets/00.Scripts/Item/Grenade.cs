@@ -15,7 +15,7 @@ public class Grenade : Consume
 
         if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
     
-        //_player.inventory.RemoveConsumeItem(0);
+        _player.inventory.RemoveConsumeItem(0);
 
         GrenadeCreate();
 
@@ -23,8 +23,18 @@ public class Grenade : Consume
 
     private void GrenadeCreate()
     {
-        Vector3 direction = _player.transform.forward;
-        Vector3 velocity = direction * 10f + Vector3.up * 5f;
+        Vector3 camForward = throwPoint.forward.normalized;
+        float camY = camForward.y;
+
+        // 위를 보고 있을수록 위 성분 강화
+        float angleFactor = Mathf.InverseLerp(-0.2f, 0.8f, camY);
+        float upwardBoost = Mathf.Lerp(0.3f, 0.9f, angleFactor); // 위를 보면 0.9까지 증가
+
+        // 최종 던지는 방향
+        Vector3 throwDir = (camForward + Vector3.up * upwardBoost).normalized;
+        Vector3 velocity = throwDir * 12f; 
+
+
 
         if (Object.HasStateAuthority)
         {
@@ -38,7 +48,7 @@ public class Grenade : Consume
             _grenade.Init(velocity, throwPoint.position);
             RPC_Init(_grenade, velocity);
         }
-        _throwTimer = TickTimer.CreateFromSeconds(Runner, 3f);
+        _throwTimer = TickTimer.CreateFromSeconds(Runner, 2.5f);
     }
 
     [Rpc(RpcSources.StateAuthority,RpcTargets.All)]

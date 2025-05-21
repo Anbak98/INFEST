@@ -83,6 +83,7 @@ public class UIShopView : UIScreen
     public override void Show()
     {
         base.Show();
+        AnalyticsManager.analyticsShopPopupOpen(0, NetworkGameManager.Instance.gamePlayers.GetGoldCount(NetworkGameManager.Instance.Runner.LocalPlayer));
     }
 
     public override void Hide()
@@ -271,14 +272,12 @@ public class UIShopView : UIScreen
     public void OnClickBuyBtn(int index)
     {
         if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
-        AnalyticsManager.analyticsPurchase(index);
         _store.RPC_TryBuy(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
     }
 
     public void OnClickSaleBtn(int index)
     {
         if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
-        AnalyticsManager.analyticsSell(index);
         _store.RPC_TrySale(NetworkGameManager.Instance.Runner.LocalPlayer, index);
 
     }

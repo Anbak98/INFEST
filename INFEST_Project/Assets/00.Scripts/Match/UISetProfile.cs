@@ -1,18 +1,23 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UISetProfile : UIScreen
 {
     [SerializeField] private TMP_InputField _nickNameText;
-    [SerializeField] private GameObject _setNicknameUI;
-    [SerializeField] private GameObject _uiTutorialAnswer;
-    [SerializeField] private ScreenRoom _ui;
+
+    protected override void Start()
+    {
+        base.Start();
+        AnalyticsManager.SendFunnelStep(1);
+    }
 
     public void OnPressedSetNickname()
     {
+        AnalyticsManager.SendFunnelStep(2);
         PlayerPrefs.SetString("Nickname", _nickNameText.text);
-        _ui.UpdateUI(null);
-        _setNicknameUI.SetActive(false);
-        _uiTutorialAnswer.SetActive(true);
+        FindAnyObjectByType<ScreenRoom>().UpdateUI(null);
+        Global.Instance.UIManager.Show<UITutorialAnswer>();
+        Global.Instance.UIManager.Hide<UISetProfile>();
     }
 }

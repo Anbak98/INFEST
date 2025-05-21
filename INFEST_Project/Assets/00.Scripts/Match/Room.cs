@@ -136,9 +136,9 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
         Lock = true;
 
         if (Runner.LocalPlayer == HostPlayer)
-            PlayerPrefs.SetInt("Host", 1);
+            PlayerPrefs.SetInt("GameMode", (int)GameMode.Host);
         else
-            PlayerPrefs.SetInt("Host", 0);
+            PlayerPrefs.SetInt("GameMode", (int)GameMode.Client);
 
         if (Runner.IsSharedModeMasterClient)
         {

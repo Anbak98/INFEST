@@ -33,6 +33,11 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         Underground
     }
 
+    public void Start()
+    {
+        Global.Instance.UIManager.Show<UISetProfile>();
+    }
+
     public async void QuickMatch()
     {
         if (Runner != null)
@@ -129,6 +134,7 @@ public class MatchManager : SingletonBehaviour<MatchManager>
             });
         } while (Runner.SessionInfo.PlayerCount > 1);
 
+        PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);
         await Runner.LoadScene("RuinedCity");
     }
 

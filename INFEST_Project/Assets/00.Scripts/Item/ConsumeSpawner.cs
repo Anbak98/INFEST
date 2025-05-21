@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Fusion;
+using INFEST.Game;
 using UnityEngine;
 
 public class ConsumeSpawner : NetworkBehaviour
@@ -23,7 +24,10 @@ public class ConsumeSpawner : NetworkBehaviour
         for (int i = 3; i < 4; ++i)
         {
             if (Consumes[i].key == _player.inventory.consume[1]?.key)
+            {
+                AnalyticsManager.analyticsUseItem(1, Consumes[i].key, (int)NetworkGameManager.Instance.gameState);
                 Consumes[i].CollHeal();
+            }
         }
     }
 
@@ -32,7 +36,10 @@ public class ConsumeSpawner : NetworkBehaviour
         for (int i = 4; i < 5; ++i)
         {
             if (Consumes[i].key == _player.inventory.consume[2]?.key)
+            {
+                AnalyticsManager.analyticsUseItem(3, Consumes[i].key, (int)NetworkGameManager.Instance.gameState);
                 Consumes[i].CollMounting();
+            }
         }
     }
 
@@ -42,7 +49,10 @@ public class ConsumeSpawner : NetworkBehaviour
         for (int i = 0; i < 3; i++)
         {
             if (Consumes[i].key == _player.inventory.consume[0]?.key)
+            {
                 visibleGrenade[i].SetActive(true);
+                AnalyticsManager.analyticsUseItem(2, Consumes[i].key, (int)NetworkGameManager.Instance.gameState);
+            }
         }
     }
 

@@ -15,4 +15,11 @@ public class Monster_RageFang_AttackTwo_Roaring : MonsterStateNetworkBehaviour<M
         monster.CurDamage += monster.CurDamage / 20;
         monster.CurDef += monster.CurDef / 20;
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        monster.IsPhaseAttackTwo = true;
+    }
 }

@@ -27,7 +27,7 @@ public class FSM_Grita : MonsterFSM<Monster_Grita>
 
             if (!monster.IsDead && screamDealy.ExpiredOrNotRunning(Runner))
             {
-                screamDealy = TickTimer.CreateFromSeconds(Runner, 50f);
+                screamDealy = TickTimer.CreateFromSeconds(Runner, 300f);
                 monster.FSM.ChangePhase<Grita_Phase_Scream>();
             }
         }

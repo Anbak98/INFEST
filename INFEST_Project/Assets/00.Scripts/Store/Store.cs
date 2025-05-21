@@ -137,6 +137,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                     break;
                 }
             }
+            AnalyticsManager.analyticsPurchase(_buyWeapon.instance.data.key);
             _player.statHandler.CurGold -= _buyWeapon.instance.data.Price;
             _player.inventory.AddWeponItme(_buyWeapon);
             _buyWeapon.IsCollected = true;
@@ -218,6 +219,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
                 _player.inventory.RemoveWeaponItem(_player.inventory.auxiliaryWeapon[0], 0);
 
+                AnalyticsManager.analyticsPurchase(_player.inventory.auxiliaryWeapon[0].instance.data.key);
                 _storeController.uIShopView.WeaponSet(0);
                 break;
             case 1: // ÁÖ¹«±â 1
@@ -236,6 +238,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 }
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[0], 0);
 
+                AnalyticsManager.analyticsPurchase(_player.inventory.weapon[0].instance.data.key);
                 _storeController.uIShopView.WeaponSet(1);
                 break;
             case 2: // ÁÖ¹«±â 2
@@ -253,29 +256,34 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 }
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[1], 1);
 
+                AnalyticsManager.analyticsPurchase(_player.inventory.weapon[1].instance.data.key);
                 _storeController.uIShopView.WeaponSet(2);
                 break;
             case 3: // ¾ÆÀÌÅÛ 1
                 if (_player.inventory.consume[0] == null) return;
                 _player.statHandler.CurGold += _player.inventory.consume[0].instance.data.Price / 2;
                 _player.inventory.RemoveConsumeItem(0);
+                AnalyticsManager.analyticsPurchase(_player.inventory.consume[0].instance.data.key);
                 _storeController.uIShopView.ItemSet(0);
                 break;
             case 4: // ¾ÆÀÌÅÛ 2
                 if (_player.inventory.consume[1] == null) return;
                 _player.statHandler.CurGold += _player.inventory.consume[1].instance.data.Price / 2;
                 _player.inventory.RemoveConsumeItem(1);
+                AnalyticsManager.analyticsPurchase(_player.inventory.consume[1].instance.data.key);
                 _storeController.uIShopView.ItemSet(1);
                 break;
             case 5: // ¾ÆÀÌÅÛ 3
                 if (_player.inventory.consume[2] == null) return;
                 _player.statHandler.CurGold += _player.inventory.consume[2].instance.data.Price / 2;
                 _player.inventory.RemoveConsumeItem(2);
+                AnalyticsManager.analyticsPurchase(_player.inventory.consume[2].instance.data.key);
                 _storeController.uIShopView.ItemSet(2);
                 break;
         }
 
         Debug.Log("ÆÇ¸Å ÈÄ :" + _player.statHandler.CurGold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
+
 
         _storeController.uIShopView.UpdateButtonState();
         _storeController.uIShopView.UpdateSaleButtonState();

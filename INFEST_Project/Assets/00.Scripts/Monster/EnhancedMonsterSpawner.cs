@@ -33,7 +33,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (SpawnWaitingNum <= 0)
+        if (SpawnWaitingNum <= 0 && SpawnedNum <= 0)
         {
             NetworkGameManager.Instance.gameState = GameState.None;
         }
@@ -83,6 +83,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
             if (NetworkGameManager.Instance.gameState == GameState.Wave)
             {
+                Debug.Log("WaveScream;");
                 totalSpawnNum = Random.Range(7, 11);
 
                 for (int i = 0; i < totalSpawnNum; ++i)
@@ -97,7 +98,8 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
                         if(proba >= rand)
                         {
                             waveMonsterSpawnQueue.Enqueue(mst.Key);
-                            if(mst.Key == 2001)
+                            SpawnWaitingNum++;
+                            if (mst.Key == 2001)
                             {
                                 Debug.Log("GritA?!");
                             }
@@ -108,6 +110,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             }
             else
             {
+                Debug.Log("Just Wave");
                 if (Runner.SimulationTime < 300)
                     totalSpawnNum = 30;
                 else if (Runner.SimulationTime < 600)

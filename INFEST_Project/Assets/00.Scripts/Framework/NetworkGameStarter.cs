@@ -9,50 +9,64 @@ public class NetworkGameStarter : MonoBehaviour
 
     private void Start()
     {
-        //GameMode mode = (GameMode)PlayerPrefs.GetInt("GameMode");
+        GameMode mode = (GameMode)PlayerPrefs.GetInt("GameMode");
 
-        //TryStartGame(mode, PlayerPrefs.GetString("RoomCode"));
+        TryStartGame(mode, PlayerPrefs.GetString("RoomCode"));
     }
 
-    private void OnGUI()
-    {
-        if (_runner == null)
-        {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            {
-                TryStartGame(GameMode.Host, "DEBUG");
-            }
-            else if (GUI.Button(new Rect(0, 40, 200, 40), "Client"))
-            {
-                TryStartGame(GameMode.Client, "DEBUG");
-            }
-            else if (GUI.Button(new Rect(0, 80, 200, 40), "Single"))
-            {
-                TryStartGame(GameMode.Single, "DEBUG");
-            }
-        }
-        //if (_runner != null)
-        //{
-        //    if (_runner.IsServer)
-        //    {
-        //        if (GUI.Button(new Rect(0, 40, 200, 40), "CreateNew"))
-        //            TryStartGame(GameMode.Host, "DEBUG";
-        //    }
-        //    if (_runner.IsClient)
-        //    {
-        //        if (GUI.Button(new Rect(0, 40, 200, 40), "Reconnect"))
-        //            TryStartGame(GameMode.Client, "DEBUG");
-        //    }
-        //}
-    }
+    //private void OnGUI()
+    //{
+    //    if (_runner == null)
+    //    {
+    //        if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
+    //        {
+    //            TryStartGame(GameMode.Host, "DEBUG");
+    //        }
+    //        else if (GUI.Button(new Rect(0, 40, 200, 40), "Client"))
+    //        {
+    //            TryStartGame(GameMode.Client, "DEBUG");
+    //        }
+    //        else if (GUI.Button(new Rect(0, 80, 200, 40), "Single"))
+    //        {
+    //            TryStartGame(GameMode.Single, "DEBUG");
+    //        }
+    //    }
+    //    //if (_runner != null)
+    //    //{
+    //    //    if (_runner.IsServer)
+    //    //    {
+    //    //        if (GUI.Button(new Rect(0, 40, 200, 40), "CreateNew"))
+    //    //            TryStartGame(GameMode.Host, "DEBUG";
+    //    //    }
+    //    //    if (_runner.IsClient)
+    //    //    {
+    //    //        if (GUI.Button(new Rect(0, 40, 200, 40), "Reconnect"))
+    //    //            TryStartGame(GameMode.Client, "DEBUG");
+    //    //    }
+    //    //}
+    //}
 
     private async void TryStartGame(GameMode mode, string sessionName)
     {
+        UILoading ui = Global.Instance.UIManager.Show<UILoading>();
         INetworkRunnerCallbacks _callbacks = GetComponent<INetworkRunnerCallbacks>();
         StartGameResult result;
         int retryCount = 0;
 
         _runner = FindAnyObjectByType<NetworkRunner>();
+
+        if (mode == GameMode.Single)
+        {
+            ui.loadingText.text = $"싱글 게임을 준비 중입니다... ";
+        }
+        else if (mode == GameMode.Host)
+        {
+            ui.loadingText.text = $"게임을 생성 중입니다... [{sessionName}] \n\n\n ";
+        }
+        else if (mode == GameMode.Client)
+        {
+            ui.loadingText.text = $"호스트가 게임을 생성 중입니다... [{sessionName}] \n\n\n ";
+        }
 
         do
         {
@@ -84,6 +98,20 @@ public class NetworkGameStarter : MonoBehaviour
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
             _runner.AddCallbacks(_callbacks);
+
+
+            if (mode == GameMode.Single)
+            {
+                ui.loadingText.text = $"싱글 게임을 준비 중입니다... {retryCount} \n\n\n {result}";
+            }
+            else if (mode == GameMode.Host)
+            {
+                ui.loadingText.text = $"게임을 생성 중입니다... {retryCount} [{sessionName}] \n\n\n {result}";
+            }
+            else if (mode == GameMode.Client)
+            {
+                ui.loadingText.text = $"호스트가 게임을 생성 중입니다... {retryCount}  [{sessionName}] \n\n\n {result}";
+            }
 
             ++retryCount;
         } while (!result.Ok && retryCount < 15);

@@ -35,6 +35,8 @@ namespace INFEST.Game
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            Global.Instance.UIManager.Hide<UILoading>();
+
             if (runner.LocalPlayer == player)
             {
                 _InputManager.Init();
