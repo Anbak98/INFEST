@@ -120,7 +120,8 @@ public class PlayerStatHandler : NetworkBehaviour
     public void Heal(int amount)
     {
         CurHealth = Mathf.Min(CurHealth + amount, info.data.Health);
-        OnHealthChanged?.Invoke(amount);
+        if (HasInputAuthority)
+            OnHealthChanged?.Invoke(amount);
     }
     // »ç¸Á
     public void HandleDeath()

@@ -12004,11 +12004,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorial: {fileID: 0}
   page: 0
+  trigger:
+  - {fileID: 2140684403}
+  - {fileID: 1404517722}
+  - {fileID: 1423825426}
+  - {fileID: 1540487426}
+  - {fileID: 943800639}
   wall:
   - {fileID: 2146060200}
   - {fileID: 6013866381409181742}
+  - {fileID: 858901692}
   _monsterSpawner: {fileID: 317378740}
-  siren: {fileID: 0}
   arrow: {fileID: 1141803192}
   shopArrow:
   - {fileID: 828644779}
@@ -12036,6 +12042,7 @@ Transform:
   - {fileID: 2140684404}
   - {fileID: 1404517723}
   - {fileID: 1423825427}
+  - {fileID: 1540487427}
   - {fileID: 943800640}
   - {fileID: 6013866381409181741}
   - {fileID: 858901693}
@@ -12043,11 +12050,11 @@ Transform:
   - {fileID: 674570989}
   - {fileID: 2146060201}
   - {fileID: 315937266}
+  - {fileID: 1141803193}
   - {fileID: 900114900}
   - {fileID: 828644780}
   - {fileID: 783542472}
   - {fileID: 899391525}
-  - {fileID: 1141803193}
   - {fileID: 370102296}
   - {fileID: 1441211929}
   - {fileID: 1760695378}
@@ -28829,9 +28836,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
-  far clip plane: 30
-  field of view: 60.000004
+  near clip plane: 0.05
+  far clip plane: 1000
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -36000,6 +36007,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1539272617}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1540487426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1540487427}
+  - component: {fileID: 1540487428}
+  m_Layer: 0
+  m_Name: ShopTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1540487427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540487426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 537305354}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1540487428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540487426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e41307a730215fb48b6c8049bd770a82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialController: {fileID: 537305353}
 --- !u!1001 &1546531253
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -694,7 +694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1281682348791822168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -790,9 +790,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6b265cc2b49f34ca19edee842d7897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  _isModal: 0
+  _plugins: []
   _nickNameText: {fileID: 1200061505830370566}
-  _setNicknameUI: {fileID: 5336488407296506519}
-  _ui: {fileID: 0}
 --- !u!1 &5462234946529896561
 GameObject:
   m_ObjectHideFlags: 0

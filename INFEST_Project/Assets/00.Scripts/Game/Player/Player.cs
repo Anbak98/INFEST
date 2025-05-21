@@ -70,20 +70,68 @@ public class Player : NetworkBehaviour
                 if (throwingWeapon)
                 {
                     inventory.consume[0] = Consumes.Consumes[i];
-                    inventory.AddConsumeItme(inventory.consume[0]);
+                    for(int j = 0; j < statHandler.info.data.Item1_Count; j++)
+                    {
+                        inventory.AddConsumeItme(inventory.consume[0]);
+                    }
                 }
 
                 if (recoveryItem)
                 {
                     inventory.consume[1] = Consumes.Consumes[i];
-                    inventory.AddConsumeItme(inventory.consume[1]);
+                    for (int j = 0; j < statHandler.info.data.Item1_Count; j++)
+                    {
+                        inventory.AddConsumeItme(inventory.consume[1]);
+                    }
                 }
 
                 if (shieldItme)
                 {
                     inventory.consume[2] = Consumes.Consumes[i];
-                    inventory.AddConsumeItme(inventory.consume[2]);
+                    for (int j = 0; j < statHandler.info.data.Item1_Count; j++)
+                    {
+                        inventory.AddConsumeItme(inventory.consume[2]);
+                    }
+                }
+                break;
 
+            }
+        }
+
+        for (int i = 0; i < Consumes.Consumes.Count; i++)
+        {
+            if (Consumes.Consumes[i].key == statHandler.info.data.StartConsumeItem2)
+            {
+                int itemChk = statHandler.info.data.StartConsumeItem2 % 10000;
+                bool throwingWeapon = itemChk < 800 && itemChk > 700;
+                bool recoveryItem = itemChk < 900 && itemChk > 800;
+                bool shieldItme = itemChk < 1000 && itemChk > 900;
+
+                if (throwingWeapon)
+                {
+                    inventory.consume[0] = Consumes.Consumes[i];
+                    for (int j = 0; j < statHandler.info.data.Item2_Count; j++)
+                    {
+                        inventory.AddConsumeItme(inventory.consume[0]);
+                    }
+                }
+
+                if (recoveryItem)
+                {
+                    inventory.consume[1] = Consumes.Consumes[i];
+                    for (int j = 0; j < statHandler.info.data.Item2_Count; j++)
+                    {
+                        inventory.AddConsumeItme(inventory.consume[1]);
+                    }
+                }
+
+                if (shieldItme)
+                {
+                    inventory.consume[2] = Consumes.Consumes[i];
+                    for (int j = 0; j < statHandler.info.data.Item2_Count; j++)
+                    {
+                        inventory.AddConsumeItme(inventory.consume[2]);
+                    }
                 }
                 break;
 
@@ -102,10 +150,10 @@ public class Player : NetworkBehaviour
         {
             cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;  // 우선순위를 높인다
 
-            inventory.consume[0] = Consumes.Consumes[0];
-            inventory.consume[1] = Consumes.Consumes[3];
-            inventory.AddConsumeItme(inventory.consume[0]);
-            inventory.AddConsumeItme(inventory.consume[1]);
+            //inventory.consume[0] = Consumes.Consumes[0];
+            //inventory.consume[1] = Consumes.Consumes[3];
+            //inventory.AddConsumeItme(inventory.consume[0]);
+            //inventory.AddConsumeItme(inventory.consume[1]);
 
             Global.Instance.UIManager.Show<UIStateView>();
             Global.Instance.UIManager.Show<UIBrightView>();

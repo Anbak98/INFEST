@@ -21,8 +21,6 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
     public override void MachineEnter()
     {
         base.MachineEnter();
-        Debug.Log("HI");
-        monster.animator.Play("AttackOnePhase.Monster_RageFang_Run");
         monster.PhaseIndex = 1;
 
         for (int i = 0; i < skillCoolDown.Length; i++)
@@ -30,6 +28,7 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
             skillCoolDown[i] = TickTimer.CreateFromSeconds(Runner, 0);
         }
         patternTickTimer = TickTimer.CreateFromSeconds(Runner, 0);
+        monster.IsPhaseAttackOne = true;
     }
 
     public override void MachineExecute()
@@ -37,7 +36,7 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
         base.MachineExecute();
         monster.AIPathing.SetDestination(monster.target.position);
 
-        if(monster.CurHealth < monster.info.MinHealth / 2)
+        if(monster.CurHealth < monster.BaseHealth / 2)
         {
             monster.FSM.ChangePhase<Monster_RageFang_Phase_AttackTwo>();    
         }
@@ -86,6 +85,12 @@ public class Monster_RageFang_Phase_AttackOne : MonsterPhase<Monster_RageFang>
                 }
             }
         }
+    }
+
+    public override void MachineExit()
+    {
+        base.MachineExit();
+        monster.IsPhaseAttackOne = false;
     }
 
     public void CaculateAttackType(float distance)

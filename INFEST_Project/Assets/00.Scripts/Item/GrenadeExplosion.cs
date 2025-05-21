@@ -6,8 +6,8 @@ public class GrenadeExplosion : NetworkBehaviour
 {
     public GrenadeProjectile grenadeProjectile;
 
-    [SerializeField] private int _playerLayer = 6;
-    [SerializeField] private int _monsterLayer = 14;
+    private int _playerLayer = 7;
+    private int _monsterLayer = 14;
 
 
     private int _damage;
@@ -34,8 +34,8 @@ public class GrenadeExplosion : NetworkBehaviour
 
         foreach (UnityEngine.Collider other in colliders)
         {
-                Player _otherplayer = other.GetComponentInParent<Player>();
-                _otherplayer.statHandler.TakeDamage(null, _damage/2);
+            Player _otherplayer = other.GetComponentInParent<Player>();
+            _otherplayer.statHandler.TakeDamage(null, _damage/2);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();

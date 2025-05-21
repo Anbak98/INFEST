@@ -79,7 +79,7 @@ public class DummyProjectile : MonoBehaviour
     {
         _showHitEffect = false;
         _hitEffect.SetActive(false);
-        _visualRoot.SetActive(true);                
+        _visualRoot.SetActive(true);
 
         enabled = true;
     }

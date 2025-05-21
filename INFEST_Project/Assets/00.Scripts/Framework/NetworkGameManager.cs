@@ -31,7 +31,24 @@ namespace INFEST.Game
 
         public void VictoryGame()
         {
+            Global.Instance.UIManager.Hide<UIStateView>();
+            Global.Instance.UIManager.Hide<UIDeathScreen>();
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+
+            int weaponOneKey = 0;
+
+            if(gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0] != null)
+            {
+                weaponOneKey = gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0].instance.data.Key;
+            }
+            int weaponTwoKey = 0;
+
+            if (gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[1] != null)
+            {
+                weaponTwoKey = gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[1].instance.data.Key;
+            }
+
+            AnalyticsManager.analyticsGameEnd(1, (int)Runner.SimulationTime, weaponOneKey, weaponTwoKey);
             gev.Victory();
         }
 
@@ -43,7 +60,23 @@ namespace INFEST.Game
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RPC_BroadcastDefeatGame()
         {
+            Global.Instance.UIManager.Hide<UIStateView>();
+            Global.Instance.UIManager.Hide<UIDeathScreen>();
             GameEndView gev = Global.Instance.UIManager.Show<GameEndView>();
+            int weaponOneKey = 0;
+
+            if (gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0] != null)
+            {
+                weaponOneKey = gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0].instance.data.Key;
+            }
+            int weaponTwoKey = 0;
+
+            if (gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[1] != null)
+            {
+                weaponTwoKey = gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[1].instance.data.Key;
+            }
+
+            AnalyticsManager.analyticsGameEnd(2, (int)Runner.SimulationTime, weaponOneKey, weaponTwoKey);
             gev.Defeat();
         }
     }

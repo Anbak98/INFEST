@@ -8,9 +8,9 @@ public class Rocket : NetworkBehaviour
     public GameObject explosion;
     public GameObject render;
     TickTimer _explosionTime;
-    [SerializeField] private int _playerLayer = 6;
-    [SerializeField] private int _monsterLayer = 14;
-    [SerializeField] private LayerMask _layerMask = 1 << 12 | 1<< 16 | 1<< 10;
+    private int _playerLayer = 7;
+    private int _monsterLayer = 14;
+    private LayerMask _layerMask = 1 << 12 | 1<< 16 | 1<< 10;
 
     private float _castRadius = 0.2f;
     private int _damage;
@@ -29,6 +29,7 @@ public class Rocket : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if (!HasStateAuthority) return;
+        if (explosion.activeSelf) return;
 
         if (_explosionTime.Expired(Runner))
         {
@@ -92,12 +93,13 @@ public class Rocket : NetworkBehaviour
 
         Invoke(nameof(Despawn), 0.8f);
 
-        UnityEngine.Collider[] colliders = Physics.OverlapSphere(transform.position, weapon.instance.data.Splash, 1 << _playerLayer);
+
+        UnityEngine.Collider[] colliders = Physics.OverlapSphere(transform.position, weapon.instance.data.Splash/2, 1 <<_playerLayer);
 
         foreach (UnityEngine.Collider other in colliders)
         {
             Player _otherplayer = other.GetComponentInParent<Player>();
-            _otherplayer.statHandler.TakeDamage(null, _damage/2);
+            _otherplayer.statHandler.TakeDamage(null, _damage/4);
         }
 
         List<LagCompensatedHit> hits = new List<LagCompensatedHit>();

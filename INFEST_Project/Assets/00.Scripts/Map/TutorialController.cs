@@ -4,9 +4,9 @@ public class TutorialController : MonoBehaviour
 {
     public UITutorial tutorial;
     public int page = 0;
+    public GameObject[] trigger;
     public GameObject[] wall;
     public EnhancedMonsterSpawner _monsterSpawner;
-    public Siren siren;
     public GameObject arrow;
     public GameObject[] shopArrow;
     public Transform[] arrowPosition; 
@@ -27,12 +27,10 @@ public class TutorialController : MonoBehaviour
         {
             case 0:
                 WallDeactivate(0);
-                
                 break;
             case 1:
                 WallAtivate(0);
                 _monsterSpawner.SpawnOnPos(_spwaPosition.transform,1001);
-                
                 break;
             case 2:
                 WallDeactivate(1);
@@ -60,9 +58,11 @@ public class TutorialController : MonoBehaviour
     public void ResetTutorial()
     {
         page = 0;
-        TextChanged();
+        WallDeactivate(0);
+        WallAtivate(1);
+        WallAtivate(2);
     }
-
+     
     public void WallAtivate(int index)
     {
         wall[index].gameObject.SetActive(true);

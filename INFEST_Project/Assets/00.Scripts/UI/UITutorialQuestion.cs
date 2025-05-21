@@ -5,7 +5,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class UITutorialAnswer : UIScreen
-{    
+{
+    protected override void Start()
+    {
+        base.Start();
+
+        AnalyticsManager.SendFunnelStep(3);
+    }
+
     public void OnPressedYesButton()
     {
         PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);

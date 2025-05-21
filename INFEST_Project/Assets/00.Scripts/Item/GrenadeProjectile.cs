@@ -10,16 +10,12 @@ public class GrenadeProjectile : NetworkBehaviour
     private float _time;
     private Vector3 _gravity = new Vector3(0, -9.81f, 0);
     public Transform throwPoint;
-    private Vector3 _startPosition;
     private Vector3 _velocity;
     public Grenade obj;
 
     private float _castRadius = 0.2f;
 
-    private float _radius = 1f;
-
     private bool _isStopped = false;
-    private bool _oneBound = false;
     [SerializeField] private LayerMask _layerMask = 1 << 12;
 
 
@@ -117,7 +113,7 @@ public class GrenadeProjectile : NetworkBehaviour
         int hitLayer = hit.collider.gameObject.layer;
 
         // 폭발 체크
-        if (hitLayer == 6)
+        if (hitLayer == 7)
         {
             transform.position = hit.transform.root.position + new Vector3(0, 0.01f, 0); ;
             RPC_Explode(transform.position);
@@ -125,12 +121,12 @@ public class GrenadeProjectile : NetworkBehaviour
             return true;
         }
 
-        if (hitLayer == 11 || hitLayer == 16)
+        if (hitLayer == 11)
         {
             _isStopped = true;
             transform.position = hit.point + hit.normal * 0.01f;  // 지면 위에 위치 이동
         }
-        else if (hitLayer == 10)
+        else if (hitLayer == 10 && hitLayer == 16)
         {
             //transform.position = hit.point;  // 벽에 부딪히지 않고, 계속 이동
         }
@@ -154,12 +150,12 @@ public class GrenadeProjectile : NetworkBehaviour
         GrenadeExplosion.gameObject.SetActive(true);
         GrenadeExplosion.Explosion();
         SetAnimation(true);
-        _activeTimer = TickTimer.CreateFromSeconds(Runner,0.5f);
+        _activeTimer = TickTimer.CreateFromSeconds(Runner,0.8f);
     }
 
     public void Init(Vector3 initialVelocity, Vector3 startPosition)
     {
-        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 2f);
+        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 5f);
         _velocity = initialVelocity;
         _time = 0f;
     }
@@ -172,7 +168,7 @@ public class GrenadeProjectile : NetworkBehaviour
         SetAnimation(false);
         _activeTimer = TickTimer.None;
         _isStopped = false;
-        if (HasInputAuthority)
+        if (HasStateAuthority)
             Runner.Despawn(Object);
 
     }

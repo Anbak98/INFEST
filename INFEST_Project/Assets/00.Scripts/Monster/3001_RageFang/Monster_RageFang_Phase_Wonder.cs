@@ -5,6 +5,7 @@ public class Monster_RageFang_Phase_Wonder : MonsterPhase<Monster_RageFang>
     {
         base.MachineEnter();
         monster.PhaseIndex = 0;
+        monster.IsPhaseWonder = true;
     }
 
     public override void MachineExecute()
@@ -15,5 +16,12 @@ public class Monster_RageFang_Phase_Wonder : MonsterPhase<Monster_RageFang>
         {
             monster.FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
         }
+    }
+
+    public override void MachineExit()
+    {
+        base.MachineExit();
+
+        monster.IsPhaseWonder = false;
     }
 }
