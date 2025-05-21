@@ -10,16 +10,12 @@ public class GrenadeProjectile : NetworkBehaviour
     private float _time;
     private Vector3 _gravity = new Vector3(0, -9.81f, 0);
     public Transform throwPoint;
-    private Vector3 _startPosition;
     private Vector3 _velocity;
     public Grenade obj;
 
     private float _castRadius = 0.2f;
 
-    private float _radius = 1f;
-
     private bool _isStopped = false;
-    private bool _oneBound = false;
     [SerializeField] private LayerMask _layerMask = 1 << 12;
 
 
@@ -159,7 +155,7 @@ public class GrenadeProjectile : NetworkBehaviour
 
     public void Init(Vector3 initialVelocity, Vector3 startPosition)
     {
-        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 3f);
+        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 5f);
         _velocity = initialVelocity;
         _time = 0f;
     }

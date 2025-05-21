@@ -33,7 +33,7 @@ public class Grenade : Consume
 
         // 최종 던지는 방향
         Vector3 throwDir = (camForward + Vector3.up * upwardBoost).normalized;
-        Vector3 velocity = throwDir * 17f; // 던지는 힘 (필요에 따라 튜닝)
+        Vector3 velocity = throwDir * 12f; 
 
 
 
