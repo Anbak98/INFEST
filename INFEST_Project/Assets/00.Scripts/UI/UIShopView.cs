@@ -80,15 +80,15 @@ public class UIShopView : UIScreen
     public Profile Info { get; set; }
 
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
         AnalyticsManager.analyticsShopPopupOpen(0, NetworkGameManager.Instance.gamePlayers.GetGoldCount(NetworkGameManager.Instance.Runner.LocalPlayer));
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();
+        base.OnHide();
     }
 
     private void SetJobIcon()

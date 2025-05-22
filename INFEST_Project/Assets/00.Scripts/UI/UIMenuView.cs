@@ -1,34 +1,33 @@
-using UnityEngine.UI;
+using UnityEngine;
 
 public class UIMenuView : UIScreen
 {
-    public Button setBtn;
-    public Button backBtn;
-
     public override void Awake()
     {
         base.Awake();
-        Hide();        
     }
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();        
+        base.OnShow();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();        
+        base.OnHide();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void OnClickSetBtn()
     {
-        //Controller.Get<UISetView>()?.Show();
         Global.Instance.UIManager.Show<UISetView>();
     }
 
     public void OnClickBackBtn()
     {
-        Hide();                
+        Global.Instance.UIManager.Hide<UIMenuView>();        
     }
 }
