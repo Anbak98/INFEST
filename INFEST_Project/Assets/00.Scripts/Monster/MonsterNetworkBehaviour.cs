@@ -2,6 +2,7 @@ using Fusion;
 using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -200,7 +201,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         if (CurHealth <= 0f)
             return false;
 
-        CurHealth -= (int)damage;
+        int dmg = (int)damage - CurDef;
+
+        if (dmg <= 0)
+            dmg = 1;
+
+        CurHealth -= dmg;
 
         if (CurHealth <= 0f)
         {
