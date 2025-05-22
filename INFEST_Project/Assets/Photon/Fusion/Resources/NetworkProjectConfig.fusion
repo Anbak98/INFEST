@@ -5,7 +5,7 @@
     "LagCompensation": {
         "Enabled": true,
         "HitboxBufferLengthInMs": 200,
-        "HitboxDefaultCapacity": 10244,
+        "HitboxDefaultCapacity": 1024,
         "CachedStaticCollidersSize": 64
     },
     "EnqueueIncompleteSynchronousSpawns": true,
@@ -19,7 +19,7 @@
         "ReplicationFeatures": 1,
         "InputTransferMode": 0,
         "SimulationUpdateTimeMode": 0,
-        "PlayerCount": 10,
+        "PlayerCount": 4,
         "TickRateSelection": {
             "Client": 64,
             "ServerIndex": 0,
