@@ -47,7 +47,7 @@ public class UIStateView : UIScreen
 
         UpdateJobIcon();
         UpdateWeaponIcon();
-        Show();
+        OnShow();
     }
 
     private void Update()
@@ -59,14 +59,14 @@ public class UIStateView : UIScreen
 
     }
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();
+        base.OnHide();
     }
 
     public void SetWeaponIcon()

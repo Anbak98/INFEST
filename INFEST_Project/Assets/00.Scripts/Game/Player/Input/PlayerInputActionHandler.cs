@@ -376,18 +376,14 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         if (!_isMenuPopup)
         {
-            Global.Instance.UIManager.Show<UIMenuView>();
+            Global.Instance.UIManager.Show<UIMenuView>();            
             _inputManager.SetActive(false);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
             _isMenuPopup = true;
         }
         else
         {
             Global.Instance.UIManager.Hide<UIMenuView>();
             _inputManager.SetActive(true);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
             _isMenuPopup = false;
         }
     }

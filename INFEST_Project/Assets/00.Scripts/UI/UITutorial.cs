@@ -12,14 +12,14 @@ public class UITutorial : UIScreen
         base.Start();
     }
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();
+        base.OnHide();
     }
 
     public void ShowImage()
