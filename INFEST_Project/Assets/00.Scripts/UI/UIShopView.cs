@@ -531,7 +531,7 @@ public class UIShopView : UIScreen
     {
         if(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0] != null)
         {
-            iconImage[0].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0].icon;
+            //iconImage[0].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0].icon;
             iconImage[0].color = Color.white;
 
         }
@@ -561,6 +561,37 @@ public class UIShopView : UIScreen
         {
             iconImage[2].color = Color.black;
         }
+
+        //if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.consume[0] != null)
+        //{
+        //    iconImage[3].color = Color.white;
+
+        //} 
+        //else
+        //{
+        //    iconImage[3].color = Color.black;
+        //}
+
+        //if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.consume[1] != null)
+        //{
+        //    iconImage[4].color = Color.white;
+
+        //}
+        //else
+        //{
+        //    iconImage[4].color = Color.black;
+        //}
+
+        //if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.consume[2] != null)
+        //{
+        //    iconImage[5].color = Color.white;
+
+        //}
+        //else
+        //{
+        //    iconImage[5].color = Color.black;
+        //}
+
 
 
 

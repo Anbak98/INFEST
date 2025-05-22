@@ -155,7 +155,7 @@ public class GrenadeProjectile : NetworkBehaviour
 
     public void Init(Vector3 initialVelocity, Vector3 startPosition)
     {
-        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+        _lifeTimer = TickTimer.CreateFromSeconds(Runner, 3f);
         _velocity = initialVelocity;
         _time = 0f;
     }
