@@ -104,7 +104,7 @@ RectTransform:
   m_GameObject: {fileID: 229795575493782723}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.8580059, z: 1}
+  m_LocalScale: {x: 0.85, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8665071663951644028}
@@ -112,11 +112,11 @@ RectTransform:
   - {fileID: 6233159158481517045}
   m_Father: {fileID: 2470346341868917430}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 147}
-  m_SizeDelta: {x: 188.4, y: 107.5}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -15, y: 150}
+  m_SizeDelta: {x: 190, y: 107.5}
+  m_Pivot: {x: 1, y: 0}
 --- !u!222 &6539906874408181832
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -215,7 +215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -129.3, y: 0.39999962}
+  m_AnchoredPosition: {x: -129.3, y: 0.40000153}
   m_SizeDelta: {x: 40, y: 30}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1627475015364961210
@@ -1303,6 +1303,10 @@ MonoBehaviour:
   defText: {fileID: 6222019457447444691}
   goldText: {fileID: 7567217973081828361}
   bulletText: {fileID: 8384121305801329433}
+  itemText:
+  - {fileID: 3371333605445205805}
+  - {fileID: 1614914256861855741}
+  - {fileID: 3471860441446622946}
   comender: {fileID: 297825023041700509}
   medic: {fileID: 6735923334139990338}
   demol: {fileID: 527532444800100002}
@@ -1872,6 +1876,43 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5532725187546213115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 5436738754761018696, guid: c92199d18fb447d4bb5940730e377c75,
+    type: 3}
+  m_PrefabInstance: {fileID: 2728584205837888295}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3547443012402850141}
+  m_Layer: 0
+  m_Name: 'Crosshair (Missing Prefab with guid: c92199d18fb447d4bb5940730e377c75)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3547443012402850141
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1506151155867304570, guid: c92199d18fb447d4bb5940730e377c75,
+    type: 3}
+  m_PrefabInstance: {fileID: 2728584205837888295}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5532725187546213115}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2470346341868917430}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 30, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5556013614653859009
 GameObject:
   m_ObjectHideFlags: 0
@@ -2895,11 +2936,11 @@ RectTransform:
   - {fileID: 5782876522355098899}
   m_Father: {fileID: 2470346341868917430}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 155}
   m_SizeDelta: {x: 210, y: 50}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &4736404300681219131
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3210,9 +3251,3 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92199d18fb447d4bb5940730e377c75, type: 3}
---- !u!224 &3547443012402850141 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1506151155867304570, guid: c92199d18fb447d4bb5940730e377c75,
-    type: 3}
-  m_PrefabInstance: {fileID: 2728584205837888295}
-  m_PrefabAsset: {fileID: 0}
