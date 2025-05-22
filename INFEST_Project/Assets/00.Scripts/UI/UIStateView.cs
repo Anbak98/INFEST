@@ -12,6 +12,7 @@ public class UIStateView : UIScreen
     public TextMeshProUGUI defText;
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI bulletText;
+    public TextMeshProUGUI[] itemText;
 
     [Header("Job Icon")]
     public Image comender;
@@ -47,7 +48,7 @@ public class UIStateView : UIScreen
 
         UpdateJobIcon();
         UpdateWeaponIcon();
-        Show();
+        OnShow();
     }
 
     private void Update()
@@ -59,14 +60,14 @@ public class UIStateView : UIScreen
 
     }
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();
+        base.OnHide();
     }
 
     public void SetWeaponIcon()
@@ -133,6 +134,19 @@ public class UIStateView : UIScreen
             else if(localPlayer.inventory.equippedWeapon.key == localPlayer.inventory.weapon[1]?.key)
                 bulletText.text = $"{localPlayer.inventory.weapon[1].curMagazineBullet}/{localPlayer.inventory.weapon[1].curBullet}";
         }
+
+        for (int i = 0; i < itemText.Length; i++)
+        {
+            if (localPlayer.inventory.consume[i] == null)
+            {
+                itemText[i].text = "-";
+            }
+            else
+            {
+                itemText[i].text = $"{localPlayer.inventory.consume[i].curNum} / {localPlayer.inventory.consume[i].instance.data.MaxNum}";
+            }
+        }
+
         //else
         //{
         //    for (int i = 0; i < 3; i++)
