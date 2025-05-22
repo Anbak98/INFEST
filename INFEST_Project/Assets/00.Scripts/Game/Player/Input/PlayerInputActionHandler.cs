@@ -90,7 +90,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.MoveGetInput(EPlayerInput.reload).started += StartReloadState;
         _inputManager.MoveGetInput(EPlayerInput.reload).canceled += CancelReloadState;
 
-        _inputManager.GetInput(EPlayerInput.interaction).started += StartInteraction;
+        _inputManager.MoveGetInput(EPlayerInput.interaction).started += StartInteraction;
         //_inputManager.GetInput(EPlayerInput.interaction).canceled += CancelInteraction;
 
         _inputManager.MoveGetInput(EPlayerInput.grenade).started += StartGrenade;
@@ -108,8 +108,8 @@ public class PlayerInputActionHandler : MonoBehaviour
         _inputManager.MoveGetInput(EPlayerInput.sit).started += StartSitState;
         _inputManager.MoveGetInput(EPlayerInput.sit).canceled += CancelSitState;
 
-        _inputManager.GetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
-        _inputManager.GetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
+        _inputManager.MoveGetInput(EPlayerInput.scoreboard).started += OpenScoreboard;
+        _inputManager.MoveGetInput(EPlayerInput.scoreboard).canceled += CloseScoreboard;
 
         _inputManager.GetInput(EPlayerInput.menu).started += OpenMenu;
         //_inputManager.GetInput(EPlayerInput.menu).canceled += CloseMenu;
