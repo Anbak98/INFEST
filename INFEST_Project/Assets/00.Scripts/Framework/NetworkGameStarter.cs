@@ -7,25 +7,62 @@ public class NetworkGameStarter : MonoBehaviour
 {
     private NetworkRunner _runner;
 
+    public bool IsDebug = false;
+
     private void Start()
     {
-        _runner = FindAnyObjectByType<NetworkRunner>();
-
-        if(_runner != null )
+        if (!IsDebug)
         {
-            if (_runner.IsSharedModeMasterClient)
+            _runner = FindAnyObjectByType<NetworkRunner>();
+
+            if (_runner != null)
             {
-                TryStartGame(GameMode.Host, PlayerPrefs.GetString("RoomCode"));
-            }
-            else if (_runner.IsClient)
-            {
-                TryStartGame(GameMode.Client, PlayerPrefs.GetString("RoomCode"));
-            }
-            else if (_runner.IsSinglePlayer)
-            {
-                TryStartGame(GameMode.Single, PlayerPrefs.GetString("RoomCode"));
+                if (_runner.IsSharedModeMasterClient)
+                {
+                    TryStartGame(GameMode.Host, PlayerPrefs.GetString("RoomCode"));
+                }
+                else if (_runner.IsClient)
+                {
+                    TryStartGame(GameMode.Client, PlayerPrefs.GetString("RoomCode"));
+                }
+                else if (_runner.IsSinglePlayer)
+                {
+                    TryStartGame(GameMode.Single, PlayerPrefs.GetString("RoomCode"));
+                }
             }
         }
+    }
+
+    private void OnGUI()
+    {
+        if (_runner == null)
+        {
+            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
+            {
+                TryStartGame(GameMode.Host, "DEBUG");
+            }
+            else if (GUI.Button(new Rect(0, 40, 200, 40), "Client"))
+            {
+                TryStartGame(GameMode.Client, "DEBUG");
+            }
+            else if (GUI.Button(new Rect(0, 80, 200, 40), "Single"))
+            {
+                TryStartGame(GameMode.Single, "DEBUG");
+            }
+        }
+        //if (_runner != null)
+        //{
+        //    if (_runner.IsServer)
+        //    {
+        //        if (GUI.Button(new Rect(0, 40, 200, 40), "CreateNew"))
+        //            TryStartGame(GameMode.Host, "DEBUG";
+        //    }
+        //    if (_runner.IsClient)
+        //    {
+        //        if (GUI.Button(new Rect(0, 40, 200, 40), "Reconnect"))
+        //            TryStartGame(GameMode.Client, "DEBUG");
+        //    }
+        //}
     }
 
     private async void TryStartGame(GameMode mode, string sessionName)
