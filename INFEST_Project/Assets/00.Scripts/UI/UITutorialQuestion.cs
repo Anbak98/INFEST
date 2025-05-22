@@ -22,6 +22,6 @@ public class UITutorialAnswer : UIScreen
 
     public void OnPressedNoButton() 
     {
-        Hide();
+        OnHide();
     }
 }
