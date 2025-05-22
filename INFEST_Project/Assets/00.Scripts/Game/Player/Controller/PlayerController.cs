@@ -301,7 +301,7 @@ public class PlayerController : NetworkBehaviour
             
             moveDir.y = 0f; // 수직 방향 제거
 
-            Vector3 moveVelocity = moveDir * 7f;
+            Vector3 moveVelocity = moveDir * 4.3f;
             Vector3 jumpImpulse = Vector3.zero;
 
             if (input.isJumping == true && _simpleKCC.IsGrounded == true)

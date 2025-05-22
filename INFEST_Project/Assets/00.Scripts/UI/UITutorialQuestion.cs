@@ -17,7 +17,7 @@ public class UITutorialAnswer : UIScreen
     {
         PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);
         PlayerPrefs.SetString("RoomCode", "Tutorial");
-        SceneManager.LoadScene("Tutorial");
+        FindAnyObjectByType<MatchManager>().PlayerTutorial();
     }
 
     public void OnPressedNoButton() 
