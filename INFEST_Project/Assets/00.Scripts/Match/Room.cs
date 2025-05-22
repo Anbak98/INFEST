@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 
 public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 {
-    [Networked] public PlayerRef HostPlayer { get; set; }
     [SerializeField] private NetworkPrefabRef _profilePrefab;
 
     public PlayerProfile MyProfile;
@@ -27,62 +26,20 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
         Runner.AddCallbacks(this);
 
-        if (HostPlayer == PlayerRef.None)
-        {
-            // 첫 번째 플레이어를 방장으로 설정
-            HostPlayer = Runner.LocalPlayer;
-            Debug.Log($"[Room] Host assigned to {Runner.LocalPlayer}");
-        }
-
         Runner.Spawn(_profilePrefab, inputAuthority: Runner.LocalPlayer).GetComponent<PlayerProfile>();
         PlayerPrefs.SetString("RoomCode", Runner.SessionInfo.Name);
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        if(!Lock)
-        {
-            // 방장이 없고, 현재 내가 StateAuthority면 새로 지정
-            if (HostPlayer == PlayerRef.None)
-            {
-                HostPlayer = player;
-                Debug.Log($"[Room] Host reassigned to {player}");
-            }
-
-            MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
-        }
+        MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(runner.IsSharedModeMasterClient);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        if (!Lock)
-        {
-            if (player == HostPlayer)
-            {
-                // 방장이 나갔으면 다른 사람 중에서 새로 지정
-                foreach (var otherPlayer in runner.ActivePlayers)
-                {
-                    if (otherPlayer != player)
-                    {
-                        HostPlayer = otherPlayer;
-                        Debug.Log($"[Room] Host transferred to {otherPlayer}");
-
-                        break;
-                    }
-                }
-
-                // 아무도 없다면 초기화
-                if (runner.ActivePlayers.Count() == 0)
-                {
-                    HostPlayer = PlayerRef.None;
-                    Debug.Log($"[Room] No players left, host cleared.");
-                }
-            }
-
-            if (MatchManager.Instance != null)
-                MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(HostPlayer == Runner.LocalPlayer);
-        }
+        MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(runner.IsSharedModeMasterClient);
     }
+
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_BroadcastUpdatePlayerProfile()
@@ -97,7 +54,7 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendProfileToAll(PlayerProfile playerProfile)
     {
-        if(!Lock)
+        if (!Lock)
         {
             if (MyProfile != playerProfile && !_teamProfiles.Contains(playerProfile))
                 _teamProfiles.Add(playerProfile);
@@ -110,39 +67,13 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RemoveProfileToAll(PlayerProfile playerProfile)
     {
-        if(!Lock)
+        if (!Lock)
         {
             if (_teamProfiles.Contains(playerProfile))
                 _teamProfiles.Remove(playerProfile);
 
             if (MatchManager.Instance != null && MatchManager.Instance.RoomUI != null)
                 MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
-        }
-    }
-
-    public void HostPlayGame()
-    {
-        Lock = true;
-        if (Runner.LocalPlayer == HostPlayer)
-        {
-            RPC_BrodcastPlayGame();
-            AnalyticsManager.analyticsBeforeInGame(Runner.SessionInfo.PlayerCount * 10 + 0, 1);
-        }
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_BrodcastPlayGame()
-    {
-        Lock = true;
-
-        if (Runner.LocalPlayer == HostPlayer)
-            PlayerPrefs.SetInt("GameMode", (int)GameMode.Host);
-        else
-            PlayerPrefs.SetInt("GameMode", (int)GameMode.Client);
-
-        if (Runner.IsSharedModeMasterClient)
-        {
-            Runner.LoadScene("RuinedCity");
         }
     }
 

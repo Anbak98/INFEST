@@ -38,7 +38,6 @@ public class PlayerStatHandler : NetworkBehaviour
         if (HasStateAuthority)
         {
             CurGold += info.data.StartGold;
-            CurGold += 9000;
         }
 
         CurHealth = info.data.Health;
@@ -65,20 +64,25 @@ public class PlayerStatHandler : NetworkBehaviour
         }
         else if (CurDefGear >= 0)
         {
-            damage -= CurDefGear;
-            CurDefGear = 0;
-
-            CurHealth -= damage;
-            RPC_Effect(-1);
-            if (CurHealth <= 0)
+            if (!IsDead)
             {
-                CurHealth = 0;
+                damage -= CurDefGear;
+                CurDefGear = 0;
 
-                if (!IsDead)
+                CurHealth -= damage;
+
+                RPC_Effect(-1);
+
+                if (CurHealth <= 0)
                 {
-                    HandleDeath();
-                    if (attacker != null)
-                        AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
+                    CurHealth = 0;
+
+                    if (!IsDead)
+                    {
+                        HandleDeath();
+                        if (attacker != null)
+                            AnalyticsManager.analyticsPlayerDie(attacker.key, (int)Runner.SimulationTime, NetworkGameManager.Instance.monsterSpawner.WaveNum, $"{transform.position}");
+                    }
                 }
             }
         }
