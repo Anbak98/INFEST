@@ -87,6 +87,18 @@ public class PlayerController : NetworkBehaviour
 
                 }
 
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU))
+                {
+                    Debug.Log("테스트 호출");
+                    if (player.isInteraction)
+                    {
+                        Debug.Log("테스트 호출222222222");
+
+                        player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+                        player.isInteraction = !player.isInteraction;
+                    }
+                }
+
                 if (data.scrollValue.y != 0)
                 {
                     player.Weapons.Swap(data.scrollValue.y);
