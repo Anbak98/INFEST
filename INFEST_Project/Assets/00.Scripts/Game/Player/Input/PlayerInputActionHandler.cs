@@ -376,9 +376,10 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Menu
     private void OpenMenu(InputAction.CallbackContext context)
     {
-        if(Global.Instance.UIManager.UIList.ContainsKey("UIShopView"))
-            if (Global.Instance.UIManager.UIList["UIShopView"].gameObject.activeSelf) return;
         _isUsingShop = true;
+
+        if (Global.Instance.UIManager.UIList.ContainsKey("UIShopView"))
+            if (Global.Instance.UIManager.UIList["UIShopView"].gameObject.activeSelf) return;
 
         if (!_isMenuPopup)
         {
