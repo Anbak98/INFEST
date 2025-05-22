@@ -56,7 +56,6 @@ public class PlayerInputActionHandler : MonoBehaviour
     private bool _isOnZoom;
     private bool _isUsingShop;
 
-
     [SerializeField]
     private InputManager _inputManager;
 
@@ -383,18 +382,26 @@ public class PlayerInputActionHandler : MonoBehaviour
 
         if (!_isMenuPopup)
         {
-            Global.Instance.UIManager.Show<UIMenuView>();            
+            Global.Instance.UIManager.Show<UIMenuView>();
             _inputManager.SetActive(false);
             _isMenuPopup = true;
         }
         else
         {
-            Global.Instance.UIManager.Hide<UIMenuView>();
-            _inputManager.SetActive(true);
-            _isMenuPopup = false;
+            if (Global.Instance.UIManager.UIList.ContainsKey("UISetView") &&
+                Global.Instance.UIManager.UIList["UISetView"].gameObject.activeSelf)
+            {                
+                Global.Instance.UIManager.Hide<UISetView>();
+            }
+            else
+            {
+                Global.Instance.UIManager.Hide<UIMenuView>();
+                _inputManager.SetActive(true);
+                _isMenuPopup = false;
+            }
         }
     }
-    
+
     public bool GetIsMenuPopup() => _isMenuPopup;
 
     #endregion
@@ -469,7 +476,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isUsingShield) data.buttons.Set(NetworkInputData.BUTTON_USESHIELD, true);
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
-        if (_isUsingShop) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);
+        if (_isUsingShop) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);        
         if (_isChangingCamera) data.buttons.Set(NetworkInputData.BUTTON_CHANGECAMERA, true);
         _isUsingGrenad = false;
         _isUsingHeal = false;
