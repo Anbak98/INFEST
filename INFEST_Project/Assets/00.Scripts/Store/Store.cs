@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Fusion;
 using INFEST.Game;
 using UnityEngine;
 
-public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼öÇàÇØÁØ´Ù.
+public class Store : NetworkBehaviour 
 {
     public StoreController _storeController;
     public List<int> idList;
@@ -212,6 +211,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 else
                 {
                     _player.inventory.auxiliaryWeapon[0].curBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
+                    _player.inventory.auxiliaryWeapon[0].FPSWeapon.activeAmmo = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].curMagazineBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
@@ -229,6 +229,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 else
                 {
                     _player.inventory.weapon[0].curBullet = _player.inventory.weapon[0].instance.data.MaxBullet;
+                    _player.inventory.weapon[0].FPSWeapon.activeAmmo = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.weapon[0]);
@@ -247,6 +248,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 else
                 {
                     _player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
+                    _player.inventory.weapon[1].FPSWeapon.activeAmmo = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.weapon[1]);

@@ -156,12 +156,19 @@ public class WeaponSpawner : NetworkBehaviour
             _weapons[_removeIndex].curBullet = _weapons[_removeIndex].instance.data.MaxBullet;
             _weapons[_removeIndex].curMagazineBullet = _weapons[_removeIndex].instance.data.MagazineBullet;
             _weapons[_removeIndex].IsCollected = false;
-            _weapons.Remove(_weapons[_removeIndex]);
+            //_weapons.Remove(_weapons[_removeIndex]);
+            _weapons.RemoveAt(_removeIndex);
+
+
+            if (_value > 0f)
+                _activeWeaponIndex = _removeIndex % _weapons.Count;
+            else
+                _activeWeaponIndex = (_removeIndex - 1 + _weapons.Count) % _weapons.Count;
         }
 
 
-        if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1; // 음수가되면 마지막 카운터 무기로 가는거
-        if (_activeWeaponIndex > _weapons.Count - 1) _activeWeaponIndex = 0; // 끝숫자면 처음으로 가는거
+        if (_activeWeaponIndex < 0) _activeWeaponIndex = _weapons.Count - 1;
+        if (_activeWeaponIndex >= _weapons.Count) _activeWeaponIndex = 0;
 
         GetActiveWeapon().OnEquipped();
 
