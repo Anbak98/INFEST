@@ -87,6 +87,12 @@ public class PlayerController : NetworkBehaviour
 
                 }
 
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction)
+                {
+                        player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+                        player.isInteraction = !player.isInteraction;
+                }
+
                 if (data.scrollValue.y != 0)
                 {
                     player.Weapons.Swap(data.scrollValue.y);

@@ -33,7 +33,7 @@ public class UITutorial : UIScreen
         {
             case 0:
                 tutorialText.text = "공원으로 이동하세요!";
-                toolTipText.text = "W,S,A,D - 이동\r\nSpace Bar - 점프\r\nShift - 달리기";
+                toolTipText.text = "W,S,A,D - 이동\r\nSpace Bar - 점프";
                 break;
             case 1:
                 tutorialText.text = "공원에 있는 좀비를 잡으세요!";
