@@ -1876,43 +1876,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &5532725187546213115
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 5436738754761018696, guid: c92199d18fb447d4bb5940730e377c75,
-    type: 3}
-  m_PrefabInstance: {fileID: 2728584205837888295}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3547443012402850141}
-  m_Layer: 0
-  m_Name: 'Crosshair (Missing Prefab with guid: c92199d18fb447d4bb5940730e377c75)'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3547443012402850141
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1506151155867304570, guid: c92199d18fb447d4bb5940730e377c75,
-    type: 3}
-  m_PrefabInstance: {fileID: 2728584205837888295}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5532725187546213115}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2470346341868917430}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5556013614653859009
 GameObject:
   m_ObjectHideFlags: 0
@@ -3251,3 +3214,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c92199d18fb447d4bb5940730e377c75, type: 3}
+--- !u!224 &3547443012402850141 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1506151155867304570, guid: c92199d18fb447d4bb5940730e377c75,
+    type: 3}
+  m_PrefabInstance: {fileID: 2728584205837888295}
+  m_PrefabAsset: {fileID: 0}
