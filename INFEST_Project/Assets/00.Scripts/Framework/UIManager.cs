@@ -16,7 +16,7 @@ public class UIManager
             return existingUI as T;
         }
 
-        var ui = Resources.Load<UIBase>($"UI/{typeof(T).Name}") as T;
+        var ui = Resources.Load<UIBase>($"UI/{uiName}") as T;
 
         T instantiated = Object.Instantiate(ui);
         instantiated.OnShow();
@@ -58,8 +58,8 @@ public class UIManager
 
         if (UIList.TryGetValue(uiName, out var ui))
         {
-            ui.gameObject.SetActive(false);            
             ui.OnHide();
+            ui.gameObject.SetActive(false);            
         }
     }
 
