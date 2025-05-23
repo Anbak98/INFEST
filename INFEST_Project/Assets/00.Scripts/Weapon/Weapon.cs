@@ -23,28 +23,9 @@ public class Weapon : NetworkBehaviour
     public NetworkPrefabRef rocket;
 
     [Header("Firing")]
-    //public bool isAutomatic = false; // ���� or �ܹ�
-    //public float damage; // ���ݷ�
-    //public float fireRate = 100f; // ���� �ӵ�
-    //public float maxHitDistance = 100f; // ��Ÿ�
-    //public float dispersion = 0; // ��ź��
-    //public float recoilForce;
-    //public float recoilReturnTime = 0.5f;
-    //public float splash;
     public LayerMask HitMask;
     public float reloadTime = 2.0f; // ���� �ӵ�
 
-    //[Header("Ammo")]
-    //public int startClip = 30; // ���� źâ�� ź��
-    //public int curClip = 30; // ���� źâ�� ź��
-    //public int possessionAmmo = 0; // ���� ź��
-
-    //public int maxAmmo = 360; // �ִ� ź��
-    //[Range(1, 20)] public int ProjectilesPerShot = 1; // �߻�ü �� �Ѿ˼�
-
-    //[Header("Shop")]
-    //public int weaponPrice; // �� ����
-    //public int ammoPrice; // ź�� ����
     [Networked] public int curMagazineBullet { get; set; } // ���� źâ�� ź��
     [Networked] public int curBullet { get; set; } // ���� ź��
     [Networked] public NetworkBool IsCollected { get; set; } = false; // �������ΰ�?
@@ -58,23 +39,15 @@ public class Weapon : NetworkBehaviour
 
     private int _fireTicks; // ���� �ð�
     private float _basicDispersion;
-    //private Vector3 _startPosition = new Vector3(0.15f, 0.5f, 1f);
-    //private Vector3 _targetPosition = new Vector3(0, 0.6f, 0.5f);
 
     public Transform firstPersonMuzzleTransform;
     public Transform thirdPersonMuzzleTransform;
     public DummyProjectile dummyProjectilePrefab; // �Ѿ� ������
     private DummyProjectile dummyProjectile; // �Ѿ� �ν��Ͻ�
     private bool _reloadingVisible; // ���̴� ���ε� ����
-    //[SerializeField] private Transform _fireTransform; // �ѱ� ��ġ
-    //[SerializeField] private NetworkPrefabRef _realProjectilePrefab;
 
     public override void FixedUpdateNetwork()
     {
-        //if (HasInputAuthority)
-        //{
-        //    instance.Fire(curClip);
-        //}
         if (!IsCollected) return;
 
         if (curMagazineBullet == 0)
@@ -83,47 +56,12 @@ public class Weapon : NetworkBehaviour
             Reload();
         }
 
-        //if (IsAiming)
-        //{
-        //    _cam.m_Lens.FieldOfView = Mathf.Lerp(_cam.m_Lens.FieldOfView, 20, Time.deltaTime * 10);
-
-        //    if (_cam.m_Lens.FieldOfView <= 21)
-        //    {
-        //        Dispersion = _basicDispersion - 0.3f;
-        //        _cam.m_Lens.FieldOfView = 20;
-        //    }
-        //}
-        //else if (!IsAiming && _cam != null)
-        //{
-        //    _cam.m_Lens.FieldOfView = Mathf.Lerp(_cam.m_Lens.FieldOfView, 40, Time.deltaTime * 10);
-
-        //    if (_cam.m_Lens.FieldOfView >= 39)
-        //    {
-        //        Dispersion = _basicDispersion + 0.3f;
-        //        _cam.m_Lens.FieldOfView = 40;
-        //        _cam = null;
-        //    }
-        //}
-
-        //if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner) && Type == EWeaponType.Shotgun)
-        //{
-        //    IsReloading = false;
-        //    curBullet--;
-        //    curMagazineBullet++;
-        //    //if (HasInputAuthority)
-        //    //    instance.ReloadShotgun(possessionAmmo, curClip);
-        //    if (curMagazineBullet < instance.data.MagazineBullet)
-        //        Reload();
-        //}
-        //else
         if (IsReloading && _fireCooldown.ExpiredOrNotRunning(Runner))
         {
             IsReloading = false;
             curBullet += curMagazineBullet;
             curMagazineBullet = Mathf.Min(curBullet, instance.data.MagazineBullet);
             curBullet -= Mathf.Min(curBullet, instance.data.MagazineBullet);
-            //if (HasInputAuthority)
-            //    instance.Reload(possessionAmmo, curClip);
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         }
     }
@@ -149,9 +87,6 @@ public class Weapon : NetworkBehaviour
 
         float fireTime = 60f / (instance.data.FireRate * 100);
         _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime); // �ݿø�
-
-        //dummyProjectile = Instantiate(dummyProjectilePrefab, HasInputAuthority ? firstPersonMuzzleTransform : thirdPersonMuzzleTransform);
-        //dummyProjectile.FinishProjectile();
     }
 
     public override void Render()
@@ -175,10 +110,7 @@ public class Weapon : NetworkBehaviour
 
     private void PlayFireEffect()
     {
-        int id = Animator.StringToHash("Fire");        
-        //animator.SetTrigger(id);
-        //camRecoil.ApplyCamRecoil(IsAiming ? 0.5f : 1f);
-        //gunRecoil.ApplyGunRecoil(Dispersion);
+        int id = Animator.StringToHash("Fire");
     }
 
 
@@ -204,11 +136,7 @@ public class Weapon : NetworkBehaviour
                 var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * instance.data.Concentration);
                 projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward; // ź����
             }
-
-            //int id = Animator.StringToHash("Fire");
-            //animator.SetTrigger(id);
-            //camRecoil.ApplyCamRecoil(IsAiming ? 0.5f : 1f);
-            //gunRecoil.ApplyGunRecoil(Dispersion);            
+        
             FireProjectile(firstPersonMuzzleTransform.position, projectileDirection);
         }
 
@@ -216,49 +144,9 @@ public class Weapon : NetworkBehaviour
         curMagazineBullet--;
     }
 
-    //private Vector3 firePositionForGizmo;
-    //private Vector3 fireDirectionForGizmo;
-    //private void OnDrawGizmos()
-    //{
-    //    if (!Application.isPlaying) return;
-
-    //    // Ray ����
-    //    Vector3 rayOrigin = firePositionForGizmo;
-    //    Vector3 rayDir = fireDirectionForGizmo.normalized;
-
-    //    // Raycast �ð�ȭ
-    //    if (Runner != null && Runner.LagCompensation.Raycast(rayOrigin, rayDir, instance.data.WeaponRange,
-    //        Object.InputAuthority, out var hit, HitMask, HitOptions.None))
-    //    {
-    //        // Ray
-    //        Gizmos.color = Color.green;
-    //        Gizmos.DrawLine(rayOrigin, hit.Point);
-
-    //        // Hit point
-    //        Gizmos.color = Color.red;
-    //        Gizmos.DrawSphere(hit.Point, 0.1f);
-
-    //        // Normal
-    //        Gizmos.color = Color.yellow;
-    //        Gizmos.DrawRay(hit.Point, hit.Normal * 0.5f);
-    //    }
-    //    else
-    //    {
-    //        // Missed ray
-    //        Gizmos.color = Color.gray;
-    //        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDir * instance.data.WeaponRange);
-    //    }
-    //}
-
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
         var projectileData = new ProjectileData();
-        //Vector3 origin = _fireTransform.position;
-        //Vector3 direction = _fireTransform.forward;
-        //Vector3 origin = firePosition;
-        //Vector3 direction = fireDirection;
-        //firePositionForGizmo = firePosition;
-        //fireDirectionForGizmo = fireDirection;
         Vector3 characterPos = this.transform.position;
 
         var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
@@ -301,33 +189,7 @@ public class Weapon : NetworkBehaviour
                 _fireCount++;
             }
         }
-
-
-       
-
-        //if (HasStateAuthority)
-        //{
-        //    Runner.Spawn(_realProjectilePrefab, origin, Quaternion.LookRotation(direction),
-        //        Object.InputAuthority,
-        //        (runner, obj) =>
-        //        {
-        //            obj.GetComponent<RealProjectile>().Init(direction);
-        //        });
-        //}
-
-        
-        //Runner.Spawn(bullet,
-        //transform.position,
-        //Quaternion.LookRotation(dir),
-        //Object.InputAuthority,
-        //(runner, o) =>
-        //  {
-        //      o.GetComponent<Bullet>().Init(pos, maxHitDistance);
-        //  });
-
     }
-
-
 
     private void ApplyDamage(Hitbox enemyHitbox, Vector3 pos, Vector3 dir)
     {
@@ -341,18 +203,9 @@ public class Weapon : NetworkBehaviour
         bool isCriticalHit = damageMultiplier > 1f;
 
         float hitdamage = instance.data.Atk * damageMultiplier;
-        //if (_sceneObjects.Gameplay.DoubleDamageActive)
-        //{
-        //    damage *= 2f;
-        //}
 
         if (enemyHealth.ApplyDamage(Object.InputAuthority, hitdamage, pos, dir, Type, isCriticalHit) == false)
             return;
-
-        //if (HasInputAuthority && Runner.IsForward)
-        //{
-        //    _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
-        //}
     }
 
     /// <summary>
