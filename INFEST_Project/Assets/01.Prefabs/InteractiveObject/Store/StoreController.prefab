@@ -48,8 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storeController: {fileID: 4794176077292064070}
-  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a22800000529000069290000cd290000ce290000cf290000312a0000952a0000
-  inputManager: {fileID: 0}
+  idList: 75270000762700007727000078270000d9270000da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a2280000cd290000ce290000cf290000312a0000952a0000
+  activatelighting: {fileID: 0}
+  col: {fileID: 0}
 --- !u!114 &2110317807926065959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,12 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uIShopView: {fileID: 1940705064571777947, guid: ce9f34b8e9fa30a429e53df4c8b7a4d5,
     type: 3}
-  _activeTime:
-    _value: 0
   aiiStores:
   - {fileID: 8427605602746010791}
-  newStoreTime: 10
-  activateTime: 120
 --- !u!114 &5427930470031718088
 MonoBehaviour:
   m_ObjectHideFlags: 0

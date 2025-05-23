@@ -7,55 +7,55 @@ using UnityEngine;
 public class StoreController : NetworkBehaviour
 {
     public UIShopView uIShopView;
-
-    [Networked] public NetworkBool activeTime { get; set; }
-    [Networked] public TickTimer storeTimer { get; set; }
-    [Networked] private int _randomIndex { get; set; }
-
-    private int[] _activeIndex = new int[3] { 0, 0, 0 };
-
     public List<Store> aiiStores;
 
-    public float newStoreTime = 10f;
-    public float activateTime = 5f;
+    //[Networked] public NetworkBool activeTime { get; set; }
+    //[Networked] public TickTimer storeTimer { get; set; }
+    //[Networked] private int _randomIndex { get; set; }
 
-    public override void Spawned()
-    {
-        if (HasStateAuthority)
-        {
-            activeTime = true;
-            Activate();
-        }
-    }
+    //private int[] _activeIndex = new int[3] { 0, 0, 0 };
 
-    public override void FixedUpdateNetwork()
-    {
-        if (HasStateAuthority)
-        {
-            if (storeTimer.ExpiredOrNotRunning(Runner))
-            {
-                activeTime = true;
-                if (aiiStores.Count < 4)
-                {
-                    RPC_Hide(_randomIndex);
-                    LightHide(_randomIndex);
-                }
-                else
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        _randomIndex = _activeIndex[i];
-                        RPC_Hide(_randomIndex);
-                        LightHide(_randomIndex);
-                        _activeIndex[i] = -1;
-                    }
-                }
 
-                RPC_EndTImer();
-                Activate();
-            }
-        }
-    }
+    //public float newStoreTime = 10f;
+    //public float activateTime = 5f;
+
+    //public override void Spawned()
+    //{
+    //    if (HasStateAuthority)
+    //    {
+    //        activeTime = true;
+    //        Activate();
+    //    }
+    //}
+
+    //public override void FixedUpdateNetwork()
+    //{
+    //    if (HasStateAuthority)
+    //    {
+    //        if (storeTimer.ExpiredOrNotRunning(Runner))
+    //        {
+    //            activeTime = true;
+    //            if (aiiStores.Count < 4)
+    //            {
+    //                RPC_Hide(_randomIndex);
+    //                LightHide(_randomIndex);
+    //            }
+    //            else
+    //            {
+    //                for (int i = 0; i < 3; i++)
+    //                {
+    //                    _randomIndex = _activeIndex[i];
+    //                    RPC_Hide(_randomIndex);
+    //                    LightHide(_randomIndex);
+    //                    _activeIndex[i] = -1;
+    //                }
+    //            }
+
+    //            RPC_EndTImer();
+    //            Activate();
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// 상점 생성시 타이머 활성화
@@ -64,92 +64,112 @@ public class StoreController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            if (aiiStores.Count < 4)
-            {
-                _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
-                RPC_Show(_randomIndex);
-                LightShow(_randomIndex);
+            //if (aiiStores.Count < 4)
+            //{
+                //_randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
+                RPC_Show(/*_randomIndex*/);
+                //LightShow(_randomIndex);
 
-            }
-            else
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
-                    while (i != 0 && (_activeIndex[0] == _randomIndex || _activeIndex[1] == _randomIndex))
-                    {
-                        _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
-                    }
-                    _activeIndex[i] = _randomIndex;
-                    RPC_Show(_randomIndex);
-                    LightShow(_randomIndex);
-                }
-            }
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < 3; i++)
+            //    {
+            //        _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
+            //        while (i != 0 && (_activeIndex[0] == _randomIndex || _activeIndex[1] == _randomIndex))
+            //        {
+            //            _randomIndex = UnityEngine.Random.Range(0, aiiStores.Count);
+            //        }
+            //        _activeIndex[i] = _randomIndex;
+            //        RPC_Show(_randomIndex);
+            //        //LightShow(_randomIndex);
+            //    }
+            //}
 
 
-            storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
+            //storeTimer = TickTimer.CreateFromSeconds(Runner, newStoreTime);
         }
+    }
 
+    public void Deactivate()
+    {
+        if (HasStateAuthority)
+        {
+            RPC_Show();
+        }
     }
     /// <summary>
     /// 상점 상호작용시 타이머 시간 연장
     /// </summary>
-    public void AddTimer()
-    {
-        if (HasStateAuthority)
-        {
-            float _remainingTime = storeTimer.RemainingTime(Runner) ?? 0f;
-            storeTimer = TickTimer.CreateFromSeconds(Runner, activateTime + _remainingTime);
-            activeTime = false;
-            Debug.Log("상호작용 후 \n 현재 남은 시간 : " + storeTimer.RemainingTime(Runner));
-        }
-    }
+    //public void AddTimer()
+    //{
+    //    if (HasStateAuthority)
+    //    {
+    //        float _remainingTime = storeTimer.RemainingTime(Runner) ?? 0f;
+    //        storeTimer = TickTimer.CreateFromSeconds(Runner, activateTime + _remainingTime);
+    //        activeTime = false;
+    //        Debug.Log("상호작용 후 \n 현재 남은 시간 : " + storeTimer.RemainingTime(Runner));
+    //    }
+    //}
 
     /// <summary>
     /// 상점 시간이 지나면 꺼지는 메소드.
     /// </summary>
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_EndTImer()
-    {
-        if (!NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon) return; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    //public void RPC_EndTImer()
+    //{
+    //    if (!NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon) return; // 각각의 플레이어 정보를 넘겨주지않으면 불가능.
+    //    Cursor.visible = false;
+    //    Cursor.lockState = CursorLockMode.Locked;
 
-        NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon = false;
-        //uIShopView.interactionText.gameObject.SetActive(false);
-        //uIShopView.bg.gameObject.SetActive(false);
-        Global.Instance.UIManager.Hide<UIInteractiveView>();
-        Global.Instance.UIManager.Hide<UIShopView>();
-    }
+    //    NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon = false;
+    //    //uIShopView.interactionText.gameObject.SetActive(false);
+    //    //uIShopView.bg.gameObject.SetActive(false);
+    //    Global.Instance.UIManager.Hide<UIInteractiveView>();
+    //    Global.Instance.UIManager.Hide<UIShopView>();
+    //}
 
 
     /// <summary>
     /// 상점 비활성화
     /// </summary>
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_Hide(int index)
+    public void RPC_Hide(/*int index*/) // 끄는거는 라이트랑 콜라이더 + player 상점영역에있으면 다른 UI들 꺼주는
     {
-        aiiStores[index].activatelighting.SetActive(false);
+        for (int i = 0; i < aiiStores.Count; i++)
+        {
+            aiiStores[i].activatelighting.SetActive(false);
+            aiiStores[i].col.enabled = false;
+        }
+
+        if (!NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon) return;
+        NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inStoreZoon = false;
+        Global.Instance.UIManager.Hide<UIInteractiveView>();
+        Global.Instance.UIManager.Hide<UIShopView>();
     }
 
     /// <summary>
     /// 상점 활성화
     /// </summary>
     [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
-    public void RPC_Show(int index)
+    public void RPC_Show(/*int index*/) // 키는거 라이트랑 콜라이더
     {
-        aiiStores[index].activatelighting.SetActive(true);
+        for (int i = 0; i < aiiStores.Count; i++)
+        {
+            aiiStores[i].activatelighting.SetActive(true);
+            aiiStores[i].col.enabled = true;
+        }
     }
 
-    private void LightHide(int index)
-    {
-        aiiStores[index].col.enabled = false;
+    //private void LightHide(int index)
+    //{
+    //    aiiStores[index].col.enabled = false;
 
-    }
-    private void LightShow(int index)
-    {
-        aiiStores[index].col.enabled = true;
-    }
+    //}
+    //private void LightShow(int index)
+    //{
+    //    aiiStores[index].col.enabled = true;
+    //}
 
     //[Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
     //private void RPC_SetStoreKeyList()
