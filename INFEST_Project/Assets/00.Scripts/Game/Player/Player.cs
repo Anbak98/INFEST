@@ -8,8 +8,7 @@ using UnityEngine;
 /// 플레이어의 기본적인 사항들
 /// </summary>
 public class Player : NetworkBehaviour
-{
-    public bool IsDead = false;
+{  
     public bool inStoreZoon = false;
     public bool isInteraction = false;
     public PlayerAnimationController animationController;

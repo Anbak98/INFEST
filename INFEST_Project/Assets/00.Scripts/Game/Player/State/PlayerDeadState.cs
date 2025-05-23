@@ -14,8 +14,7 @@ public class PlayerDeadState : PlayerBaseState
     public override void Enter()
     {
         player.animationController.Die = true;
-        player.IsDead = true;
-        
+        //player.statHandler.IsDead = true;
         Debug.Log("DeadState");
     }
 

@@ -48,11 +48,15 @@ public class PlayerController : NetworkBehaviour
     float respawnTime = 10f;
 
     // 관전모드
+    // 죽은 것만으로는 관전상태가 되지 않으므로 구분해준다
+    public bool isSpectating = false;
+
     [SerializeField] private List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
     public int currentPlayerIndex = 0;  // 플레이어마다 다른 값을 가진다(확인했다)
     List<PlayerRef> playerRefs = new List<PlayerRef>();
     private int previousTime = -1;
-    public CinemachineVirtualCamera spectatorCam;
+    public CinemachineVirtualCamera curSpectatorCam;   // 현재 관전중인 대상
+    private bool shouldChangeTarget = false;    // Q, E 입력여부(별도의 키 입력 없이 이번 프레임의 Render에서 호출)
 
     public void Init()
     {
@@ -63,8 +67,7 @@ public class PlayerController : NetworkBehaviour
         player.statHandler.OnRespawn += OnRespawn;
 
         // 관전모드를 위해 임시
-        /// 자신의 virtual camera를 관전 대상자의 firstPersonCamera으로 이동시킨다
-        alivePlayerCameras.Add(player.cameraHandler.firstPersonCamera);
+        alivePlayerCameras.Add(player.cameraHandler.spectatorCamera);
         // Set custom gravity.
         _simpleKCC.SetGravity(Physics.gravity.magnitude * -4.0f);
     }
@@ -74,7 +77,7 @@ public class PlayerController : NetworkBehaviour
         if (GetInput(out NetworkInputData data))
         {
             DEBUG_DATA = data;
-            if (!player.IsDead)   // 죽지 않았을때만 가능한 동작
+            if (!player.statHandler.IsDead)   // 죽지 않았을때만 가능한 동작
             {
                 HandleMovement(data);
                 stateMachine.OnUpdate(data);
@@ -120,42 +123,46 @@ public class PlayerController : NetworkBehaviour
                 }
             }
         }
-        // 죽은 경우에 시점 전환
-        if (player.IsDead)
+        // 죽은 경우에 시점 전환(로컬 처리)
+        if (player.statHandler.IsDead)
         {
-            //float remaining = respawnTimer.RemainingTime(Runner) ?? 0f;
-            // 정수 단위로 바뀔 때만 로그 출력
-            //int currentTime = Mathf.FloorToInt(remaining);
-            //if (currentTime != previousTime)
-            //    previousTime = currentTime;
-
-            // 관전카메라의 시선을 따라 이동
-            // 키 입력이 없는 상태였다면 자신을 바라보고 있다
-
-
             // 키 입력시 
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA))   // Q
+            if (data.buttons.IsSet(NetworkInputData.BUTTON_CHANGECAMERA) ||
+                data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
             {
-                FindAlivePlayers(); // 생존자 갱신
-                // 이전 인덱스의 카메라를 가져온다
-                if (alivePlayerCameras.Count > 0)
+                shouldChangeTarget = true;
+                FindAlivePlayers(); // 생존자 목록 갱신
+                int count = alivePlayerCameras.Count;
+                if (count == 0) // 생존자 없음
                 {
-                    currentPlayerIndex = (alivePlayerCameras.Count + currentPlayerIndex - 1) % alivePlayerCameras.Count;
-                    SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-                    Debug.Log(alivePlayerCameras[currentPlayerIndex] + "관전 중");
+                    Debug.Log("생존자 없음");
+                    return;
+                }
+                // 방향 계산: Q → -1, E → +1
+                int direction = data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL) ? 1 : -1;
+
+                if (curSpectatorCam == null)
+                {
+                    // 최초 관전 진입: 현재 타겟이 없으므로 바로 선택
+                    currentPlayerIndex = (count + currentPlayerIndex + direction) % count;
+                }
+                else
+                {
+                    // spectatorCam이 이미 존재하는 경우: 중복 방지
+                    int attempts = 0;
+                    do
+                    {
+                        currentPlayerIndex = (count + currentPlayerIndex + direction) % count;
+                        attempts++;
+                    }
+                    while (alivePlayerCameras[currentPlayerIndex] == curSpectatorCam && attempts < count);
                 }
 
-            }
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))    // E
-            {
-                FindAlivePlayers(); // 생존자 갱신
-                // 다음 인덱스의 카메라를 가져온다
-                if (alivePlayerCameras.Count > 0)
-                {
-                    currentPlayerIndex = (currentPlayerIndex + 1) % alivePlayerCameras.Count;
-                    SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-                    Debug.Log(alivePlayerCameras[currentPlayerIndex] + "관전 중");
-                }
+                player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+                SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
+                // 여길 통과했다면 spectatorCam는 null이 아니다
+
+                Debug.Log($"{alivePlayerCameras[currentPlayerIndex]} 관전 중");
             }
         }
         // 타이머 만료되면 리스폰 처리
@@ -163,11 +170,131 @@ public class PlayerController : NetworkBehaviour
         {
             respawnTimer = TickTimer.None; // 재호출 방지
             OnRespawn();
-
             stateMachine.ChangeState(stateMachine.IdleState);
-
         }
     }
+    /// <summary>
+    /// FixedUpdateNetwork 다음에 호출된다
+    /// 각각의 플레이어 local에서 render
+    /// </summary>
+    public override void Render()
+    {
+        if (player.statHandler.IsDead)
+        {
+            if (!isSpectating)  // 죽었지만 아직 관전모드 아님
+            {
+                // 관전 타겟: 1인칭 ON, 3인칭 OFF
+                // 나머지는 1인칭 off, 3인칭 on
+                foreach (var playerRef in playerRefs)
+                {
+                    Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
+                    // 자신: 1인칭 ON, 3인칭 OFF
+                    if (otherPlayer.HasInputAuthority)
+                    {
+                        ShowFirstPersonModel(otherPlayer.FirstPersonRoot);
+                        HideThirdPersonModel(otherPlayer.ThirdPersonRoot);
+                    }
+                    // 다른 플레이어: 1인칭 OFF, 3인칭 ON
+                    else
+                    {
+                        HideFirstPersonModel(otherPlayer.FirstPersonRoot);
+                        ShowThirdPersonModel(otherPlayer.ThirdPersonRoot);
+                    }
+                }
+            }
+            else if (isSpectating) // 관전모드
+            {
+                if (curSpectatorCam == null) return;
+
+                // 관전 타겟 플레이어 얻기
+                Player targetPlayer = curSpectatorCam.GetComponentInParent<Player>();
+                if (targetPlayer == null) return;
+
+                // 관전 타겟: 1인칭 ON, 3인칭 OFF
+                // 나머지는 1인칭 off, 3인칭 on
+                foreach (var playerRef in playerRefs)
+                {
+                    Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
+                    // 관전 타겟: 1인칭 ON, 3인칭 OFF
+                    if (otherPlayer == targetPlayer)
+                    {
+                        ShowFirstPersonModel(otherPlayer.FirstPersonRoot);
+                        HideThirdPersonModel(otherPlayer.ThirdPersonRoot);
+                    }
+                    // 관전 타겟이 아닌 모든 플레이어(자신 포함): 1인칭 OFF, 3인칭 ON
+                    else
+                    {
+                        HideFirstPersonModel(otherPlayer.FirstPersonRoot);
+                        ShowThirdPersonModel(otherPlayer.ThirdPersonRoot);
+                    }
+                }
+                // 타겟이 바뀌는 것은 별도의 입력 처리에서만 shouldChangeTarget을 갱신
+                shouldChangeTarget = false;
+            }
+        }
+        else // 안죽었다
+        {
+            // 안죽었을때는 관전모드 아니니까 따로 검사하지 않아도 된다
+            // 입력 권한이 있는 자신의 렌더러 처리
+            if (HasInputAuthority)
+            {
+                // 자신의 1인칭 렌더러 활성화, 3인칭 렌더러 비활성화
+                ShowFirstPersonModel(player.FirstPersonRoot);
+                HideThirdPersonModel(player.ThirdPersonRoot);
+            }
+            else // 입력 권한 없는 대상(다른 플레이어)
+            {
+                /// 다른 대상의 경우
+                foreach (var playerRef in playerRefs)
+                {
+                    // NetworkObject 가져온 다음 Player 컴포넌트에 접근
+                    Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
+                    if (otherPlayer == player) continue; // 본인 제외
+
+                    // 남의 오브젝트: 1인칭 OFF, 3인칭 ON
+                    HideFirstPersonModel(otherPlayer.FirstPersonRoot);
+                    ShowThirdPersonModel(otherPlayer.ThirdPersonRoot);
+                }
+
+            }
+        }
+    }
+    void HideFirstPersonModel(GameObject firstPersonRoot)
+    {
+        // 1인칭 렌더러 비활성화
+        MeshRenderer[] meshRenderers = firstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
+        foreach (var mr in meshRenderers)
+            mr.enabled = false;
+
+        SkinnedMeshRenderer[] skinnedRenderers = firstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+        foreach (var smr in skinnedRenderers)
+            smr.enabled = false;
+
+    }
+    void ShowFirstPersonModel(GameObject firstPersonRoot)
+    {
+        // 리스폰 시 다시 활성화 (OnRespawn() 대신 여기서 처리)
+        MeshRenderer[] meshRenderers = firstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
+
+        foreach (var mr in meshRenderers)
+            mr.enabled = true;
+
+        SkinnedMeshRenderer[] skinnedRenderers = firstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+        foreach (var smr in skinnedRenderers)
+            smr.enabled = true;
+    }
+
+    void HideThirdPersonModel(GameObject thirdPersonRoot)
+    {
+        foreach (var renderer in thirdPersonRoot.GetComponentsInChildren<Renderer>())
+            renderer.enabled = false;
+    }
+    void ShowThirdPersonModel(GameObject thirdPersonRoot)
+    {
+        foreach (var renderer in thirdPersonRoot.GetComponentsInChildren<Renderer>())
+            renderer.enabled = true;
+    }
+
 
     #region 부활,관전모드
     private void OnDeath()
@@ -175,84 +302,23 @@ public class PlayerController : NetworkBehaviour
         if (alivePlayerCameras.Count > 0)
             FindAlivePlayers(); // 리스트 갱신
 
-        //respawnTimer = TickTimer.CreateFromSeconds(player.Runner, respawnTime);    // 5초 타이머 시작
-
-        //stateMachine.ChangeState(stateMachine.DeadState);
-
-        //// MeshRenderer 컴포넌트 비활성화
-        ///// 다른 오브젝트인 경우에는 false라서 아래의 경우를 통과하지 못한다...
-        //MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
-        //foreach (var mr in meshRenderers)
-        //{
-        //    mr.enabled = false;
-        //}
-        //// SkinnedMeshRenderer 컴포넌트 비활성화 (캐릭터 등 스킨드 메시 처리)
-        //SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-        //foreach (var smr in skinnedRenderers)
-        //{
-        //    smr.enabled = false;
-        //}
-        //Debug.Log($"Disabled {meshRenderers.Length} MeshRenderer(s) and {skinnedRenderers.Length} SkinnedMeshRenderer(s).");
-
-
-        /// 자신의 first를 render 하지 않는 것은 로컬에서만 실행되어야한다
-        //if (player.Runner.LocalPlayer == NetworkGameManager.Instance.gamePlayers.Runner.LocalPlayer)    // 로컬에서 호출되지 않는다
-        if (player.Object.InputAuthority == Runner.LocalPlayer)    // 로컬에서 호출되지 않는다
-        {
-            MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(true);
-            foreach (var mr in meshRenderers)
-                mr.enabled = false;
-
-            SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-            foreach (var smr in skinnedRenderers)
-                smr.enabled = false;
-
-            Debug.Log("렌더러 꺼짐 - 로컬 플레이어");
-        }
-
         // 서버 권한 로직은 여전히 이 아래에서 실행됨
-        if (HasStateAuthority)
-        {
-            respawnTimer = TickTimer.CreateFromSeconds(Runner, respawnTime);
-            stateMachine.ChangeState(stateMachine.DeadState);
-        }
+        respawnTimer = TickTimer.CreateFromSeconds(Runner, respawnTime);
 
+        stateMachine.ChangeState(stateMachine.DeadState);
     }
+
     private void OnRespawn()
     {
-        /// 로컬에서만 실행되어야한다
-        //if (player.Runner.LocalPlayer == NetworkGameManager.Instance.gamePlayers.Runner.LocalPlayer)
-        if (player.Object.InputAuthority == Runner.LocalPlayer)    // 로컬에서 호출되지 않는다
-        {
-            Debug.Log("리스폰");
-            /// 생성된 위치로 들고온다
-            int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
-            player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
+        /// 생성된 위치로 들고온다
+        int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
+        player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
 
-            // 클라이언트는 firstPersonRoot가 비활성화되지 않는 문제
+        //player.statHandler.IsDead = false;
 
-            /// 자신의 first를 render 하지 않는 것은 로컬에서만 실행되어야한다
-            // MeshRenderer 컴포넌트 활성화
-            MeshRenderer[] meshRenderers = player.FirstPersonRoot.GetComponentsInChildren<MeshRenderer>(false);
-            foreach (var mr in meshRenderers)
-            {
-                mr.enabled = true;
-            }
-            // SkinnedMeshRenderer 컴포넌트 활성화 (캐릭터 등 스킨드 메시 처리)
-            SkinnedMeshRenderer[] skinnedRenderers = player.FirstPersonRoot.GetComponentsInChildren<SkinnedMeshRenderer>(false);
-            foreach (var smr in skinnedRenderers)
-            {
-                smr.enabled = true;
-            }
-            player.IsDead = false;
-
-            player.statHandler.SetHealth(200);
-            if (alivePlayerCameras.Count > 0)
-                ResetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
-        }
-        //player.FirstPersonRoot.SetActive(true);
-        //player.ThirdPersonRoot.SetActive(false);
-
+        player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
+        if (alivePlayerCameras.Count > 0)
+            ResetSpectatorTarget();
     }
 
     public void FindAlivePlayers()
@@ -260,11 +326,7 @@ public class PlayerController : NetworkBehaviour
         // 현재 접속중인 플레이어 정보들 저장
         playerRefs = NetworkGameManager.Instance.gamePlayers.GetPlayerRefs();
 
-        // CinemachineVirtualCamera의 priority를 0초기화
-        foreach (var virtualCamera in alivePlayerCameras)
-        {
-            virtualCamera.Priority = 0;
-        }
+        // 이전 생존자 리스트 제거
         alivePlayerCameras.Clear();
 
         // playerRefs에 있는 플레이어들의 virtualCamera들의 위치를 저장
@@ -272,10 +334,12 @@ public class PlayerController : NetworkBehaviour
         {
             // NetworkObject 가져온 다음 Player 컴포넌트에 접근
             Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
+            if (otherPlayer == player) continue; // 본인 제외
+
             if (otherPlayer != null && otherPlayer.statHandler.CurHealth > 0)
             {
                 PlayerCameraHandler otherCamHandler = otherPlayer.GetComponentInChildren<PlayerCameraHandler>();
-                //alivePlayerCameras.Add(otherCamHandler.firstPersonCamera);
+                otherCamHandler.spectatorCamera.Priority = 0;
                 alivePlayerCameras.Add(otherCamHandler.spectatorCamera);
             }
         }
@@ -283,120 +347,30 @@ public class PlayerController : NetworkBehaviour
     public void SetSpectatorTarget(CinemachineVirtualCamera targetCam)
     {
         if (targetCam == null) return;
+        if (curSpectatorCam != null)
+            curSpectatorCam.Priority = 0;    // 지금 관전하고 있는 대상의 우선순위 낮춘다
 
-        //// 관전 대상 플레이어 추출
-        //var targetPlayer = targetCam.GetComponentInParent<Player>();
-        //if (targetPlayer != null)
-        //{
-        //    // 해당 플레이어의 ThirdPerson 모델만 감추기
-        //    HideThirdPersonModel(targetPlayer.ThirdPersonRoot);
-        //}
 
-        //// 자신의 virtualcamera의 priority를 0으로 
-        //player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-
-        //var spectatorCam = player.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>();
-        ///// 관전 카메라의 우선순위를 높인다
-        //spectatorCam.Priority = 100;
-
-        //if (targetPlayer != null)
-        //{
-        //    /// 자신의 virtual camera를 관전 대상의 virtual camera의 transform, follow 설정 해야겠지
-        //    spectatorCam.Follow = targetCam.Follow;
-        //    spectatorCam.LookAt = targetCam.LookAt;
-        //    spectatorCam.transform.position = targetCam.transform.position;
-        //    spectatorCam.transform.rotation = targetCam.transform.rotation;
-        //}
-
-        spectatorCam = targetCam;
-
-        /// 관전 대상의 third를 render 하지 않는 것은 모두에게 동기화해야한다
-        // 관전 대상이었던 플레이어의 third person 보이지 않게 
-        var targetPlayer = targetCam.GetComponentInParent<Player>();
-        if (targetPlayer != null)
-        {
-            HideThirdPersonModel(targetPlayer.ThirdPersonRoot);
-            Debug.Log(player + "가 " + targetCam.transform.parent.parent.parent + "를 관전");
-            // 사망한 플레이어는 자신일 경우에만 spectatorCamera의 priority=100
-            if (player.HasInputAuthority)
-            {
-                player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-
-                //targetPlayer.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
-                spectatorCam.Priority = 100;
-            }
-            //else
-            //{
-            //    // 입력 권한이 없다면 다른 플레이어
-            //    player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-
-            //    spectatorCam.Priority = 0;
-            //}
-        }
+        /// 타겟을 바꾸는 중에 타겟이 죽는 경우에도 타겟이 alivePlayerCameras에 있으면 이동해야한다
+        curSpectatorCam = targetCam;
+        curSpectatorCam.Priority = 100;    // 새로운 관전 대상의 우선순위 높인다
+        isSpectating = true;
     }
-
-    /// 관전 대상의 third를 render 하지 않는 것은 모두에게 동기화해야한다
-    // 관전 대상의 third는 숨긴다
-    void HideThirdPersonModel(GameObject thirdPersonRoot)
+    public void ResetSpectatorTarget()
     {
-        foreach (var renderer in thirdPersonRoot.GetComponentsInChildren<Renderer>())
-        {
-            renderer.enabled = false;
-        }
-    }
-    /// 관전 대상의 third를 render 하는 것은 모두에게 동기화해야한다
-    // 관전 대상이 아니게 된 플레이어의 third는 보여준다
-    void ShowThirdPersonModel(GameObject thirdPersonRoot)
-    {
-        foreach (var renderer in thirdPersonRoot.GetComponentsInChildren<Renderer>())
-        {
-            renderer.enabled = true;
-        }
-    }
+        // 현재 관전중인 대상 우선순위를 낮춘다
+        if (curSpectatorCam != null)
+            curSpectatorCam.Priority = 0;
 
-    public void ResetSpectatorTarget(CinemachineVirtualCamera targetCam)
-    {
-        if (targetCam == null) return;
-        //// 관전 카메라의 우선순위를 낮추면 자동으로 Standby
-        //var spectatorCam = player.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>();
-        //spectatorCam.Priority = 0;
-        //targetCam = null;
+        // 자신의 플레이어인 경우
+        if (HasInputAuthority)
+            player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
 
-        //// 자신의 우선순위 100으로 
-        //player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
-
-        spectatorCam = targetCam;
-
-
-        var targetPlayer = targetCam.GetComponentInParent<Player>();
-        if (targetPlayer != null)
-        {
-            // 관전 대상이었던 플레이어의 third person 다시 보이게
-            ShowThirdPersonModel(targetPlayer.ThirdPersonRoot);
-            Debug.Log("리셋한 플레이어: " + player);
-
-            // 부활하는 플레이어는 자신일 경우에만 firstPersonCamera의 priority=100
-            if (player.HasInputAuthority)
-            {
-                player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
-
-                //targetPlayer.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-                spectatorCam.Priority = 0;
-            }
-            //else
-            //{
-            //    // 입력 권한이 없다면 다른 플레이어
-            //    player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-
-            //    //targetPlayer.cameraHandler.spectatorCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-            //    spectatorCam.Priority = 0;
-            //}
-        }
-        targetCam = null;
+        // 관전대상 없음
+        curSpectatorCam = null;
+        isSpectating = false;
     }
     #endregion
-
-
 
     #region 이동, 점프
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
@@ -496,7 +470,6 @@ public class PlayerController : NetworkBehaviour
             // 마우스 좌클릭(공격)
             if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
-
                 //data.isShotgunOnFiring = true;
                 player.Weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
 

@@ -42,12 +42,11 @@ public class PlayerStateMachine
     // PlayerStateMachine에 PlayerController를 바로 선언할 수도 있지만 이때는 확장성이 줄어든다는 단점이 있다
     protected PlayerController controller;
 
-    //public bool IsDead = false;
 
     // 현재의 상태를 종료하고 새로운 상태를 실행
     public void ChangeState(IState newState)
     {
-        if (Player.IsDead)
+        if (Player.statHandler.IsDead)
             return;
         if (currentState?.GetType() == newState?.GetType()) return;
 
@@ -61,14 +60,14 @@ public class PlayerStateMachine
     // 생명주기함수 아니다
     public void OnUpdate(NetworkInputData data)
     {
-        if (Player.IsDead)
+        if (Player.statHandler.IsDead)
             return;
         currentState?.OnUpdate(data);
     }
 
     public void PhysicsUpdate(NetworkInputData data)
     {
-        if (Player.IsDead)
+        if (Player.statHandler.IsDead)
             return;
         currentState?.PhysicsUpdate(data);
     }
