@@ -11,6 +11,8 @@ public class Player : NetworkBehaviour
 {
     public bool IsDead = false;
     public bool inStoreZoon = false;
+    public bool inMysteryBoxZoon = false;
+
     public bool isInteraction = false;
     public PlayerAnimationController animationController;
     public PlayerStatHandler statHandler;
@@ -18,6 +20,7 @@ public class Player : NetworkBehaviour
     public PlayerAttackedEffectController attackedEffectController;
     public PlayerCameraHandler cameraHandler;
     public Store store;
+    public MysteryBox mysteryBox;
     public Inventory inventory;
     public GameObject FirstPersonCamera;    // CinemachineVirtualCamera를 가지고 있는 오브젝트
     private Vector3 _forward = Vector3.forward;

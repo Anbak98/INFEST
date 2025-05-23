@@ -87,10 +87,27 @@ public class PlayerController : NetworkBehaviour
 
                 }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction)
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inStoreZoon)
                 {
                         player.store.RPC_RequestStopInteraction(Object.InputAuthority);
                         player.isInteraction = !player.isInteraction;
+                }
+
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inMysteryBoxZoon)
+                {
+                    if (!player.isInteraction)
+                        player.mysteryBox.RPC_RequestInteraction(Object.InputAuthority);
+                    else
+                        player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
+
+                    player.isInteraction = !player.isInteraction;
+
+                }
+
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inMysteryBoxZoon)
+                {
+                    player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
+                    player.isInteraction = !player.isInteraction;
                 }
 
                 if (data.scrollValue.y != 0)

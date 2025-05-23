@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UIBoxopenView : UIScreen
 {
+    [HideInInspector] public MysteryBox mysteryBox;
+
     public override void OnHide()
     {
         base.OnHide();
@@ -16,7 +18,8 @@ public class UIBoxopenView : UIScreen
 
     public void OkBtn()
     {
-
+        if (mysteryBox.player.Weapons.IsSwitching) return;
+        mysteryBox.OpenBox();
     }
 
     public void CancleBtn()
