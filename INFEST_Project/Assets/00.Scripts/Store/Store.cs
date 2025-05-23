@@ -24,10 +24,10 @@ public class Store : NetworkBehaviour
     {
         RPC_Interaction(_playerRef);
 
-        if (_storeController.activeTime)
-        {
-            _storeController.AddTimer();
-        }
+        //if (_storeController.activeTime)
+        //{
+        //    _storeController.AddTimer();
+        //}
     }
 
     /// <summary>
@@ -279,10 +279,6 @@ public class Store : NetworkBehaviour
                 _storeController.uIShopView.ItemSet(2);
                 break;
         }
-
-        Debug.Log("판매 후 :" + _player.statHandler.CurGold + "\n주무기 : " + _player.inventory.auxiliaryWeapon + "\n보조무기 : " + _player.inventory.weapon + "\n아이템 : " + _player.inventory.consume);
-
-
         _storeController.uIShopView.UpdateButtonState();
         _storeController.uIShopView.UpdateSaleButtonState();
 
@@ -400,6 +396,12 @@ public class Store : NetworkBehaviour
 
         if (weaponInv[index] == null) return;
         if (weaponInv[index].curBullet >= weaponInv[index].instance.data.MaxBullet) return;
+
+        int differenceBullet = 0;
+        if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
+            differenceBullet = weaponInv[index].curBullet % weaponInv[index].instance.data.MagazineBullet;
+
+        if (_player.statHandler.CurGold < (weaponInv[index].instance.data.MagazineBullet - differenceBullet) * weaponInv[index].instance.data.BulletPrice) return;
 
         if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
             _player.statHandler.CurGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MaxBullet - weaponInv[index].curBullet);
