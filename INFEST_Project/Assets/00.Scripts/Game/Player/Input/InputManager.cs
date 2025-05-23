@@ -88,10 +88,8 @@ public class InputManager : MonoBehaviour
     public InputAction GetInput(EPlayerInput input)
     {
         return input switch
-        {           
-            EPlayerInput.interaction => PlayerAction.Player.Interaction,
-            //EPlayerInput.useItem => PlayerAction.Player.UseItem,           
-            EPlayerInput.scoreboard => PlayerAction.Player.ScoreBoard,            
+        {
+            //EPlayerInput.useItem => PlayerAction.Player.UseItem,
             EPlayerInput.menu => PlayerAction.Player.Menu,
             _ => null
         };
@@ -111,9 +109,11 @@ public class InputManager : MonoBehaviour
             EPlayerInput.sit => PlayerMoveAction.Player.Sit,
             EPlayerInput.swap => PlayerMoveAction.Player.Swap,
             EPlayerInput.changeCamera => PlayerMoveAction.Player.ChangeCamera,
-            EPlayerInput.grenade => PlayerAction.Player.Grenade,           
-            EPlayerInput.heal => PlayerAction.Player.Heal,     
-            EPlayerInput.shield => PlayerAction.Player.Shield,           
+            EPlayerInput.grenade => PlayerMoveAction.Player.Grenade,
+            EPlayerInput.heal => PlayerMoveAction.Player.Heal,
+            EPlayerInput.shield => PlayerMoveAction.Player.Shield,
+            EPlayerInput.interaction => PlayerMoveAction.Player.Interaction,
+            EPlayerInput.scoreboard => PlayerMoveAction.Player.ScoreBoard,
 
             _ => null
         };

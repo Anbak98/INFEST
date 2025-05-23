@@ -5,15 +5,13 @@ public class UIBase : MonoBehaviour
     [HideInInspector]
     public Canvas canvas;
 
-    // Start is called before the first frame update
-    void Start()
+    public virtual void OnShow()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void OnHide()
     {
-        
+
     }
 }

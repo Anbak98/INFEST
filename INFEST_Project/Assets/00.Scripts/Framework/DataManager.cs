@@ -18,6 +18,7 @@ public class DataManager : SingletonBehaviour<DataManager>
             {typeof(MonsterState), new DataLoader<MonsterState>("JSON/MonsterState") },
             {typeof(WeaponInfo), new DataLoader<WeaponInfo>("JSON/WeaponInfo") },
             {typeof(SpawnTable), new DataLoader<SpawnTable>("JSON/SpawnTable") },
+            {typeof(BossRunPoint), new DataLoader<BossRunPoint>("JSON/BossRunPoint") },
             {typeof(PlayerData), new DataLoader<PlayerData>("JSON/PlayerData") },
             //==========Common Monster==========
             {typeof(CommonSkillTable), new DataLoader<CommonSkillTable>("JSON/CommonSkillTable") },

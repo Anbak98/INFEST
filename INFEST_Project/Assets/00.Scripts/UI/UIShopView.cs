@@ -80,15 +80,15 @@ public class UIShopView : UIScreen
     public Profile Info { get; set; }
 
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
         AnalyticsManager.analyticsShopPopupOpen(0, NetworkGameManager.Instance.gamePlayers.GetGoldCount(NetworkGameManager.Instance.Runner.LocalPlayer));
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();
+        base.OnHide();
     }
 
     private void SetJobIcon()
@@ -235,7 +235,7 @@ public class UIShopView : UIScreen
     {
         for (int i = 0; i < weaponNames.Length; i++)
         {
-            if (i < 17)
+            if (i < 15)
             {
                 weaponNames[i].text = DataManager.Instance.GetByKey<WeaponInfo>(stpre.idList[i]).Name;
                 ItmePrice[i].text = $"{DataManager.Instance.GetByKey<WeaponInfo>(stpre.idList[i]).Price}G";
@@ -255,7 +255,6 @@ public class UIShopView : UIScreen
 
     public void OnClickDefBtn()
     {
-
         _store.RPC_TryDefSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer));
     }
 
@@ -370,29 +369,37 @@ public class UIShopView : UIScreen
             }
             itmeNameBG[i].color = color;
 
+            bool weaponBuy = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < weaponPrice;
+            bool itemBuy = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice;
 
-            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < weaponPrice))
+            if ((auxiliaryWeaponChk && _inv.auxiliaryWeapon[0] != null) || weaponBuy)
                 buyButton[i].interactable = false;
 
-            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < weaponPrice || weaponDuplication)
+            else if ((weaponChk && _inv.weapon[0] != null && _inv.weapon[1] != null) || weaponBuy || weaponDuplication)
                 buyButton[i].interactable = false;
 
-            else if ((throwingWeapon && _inv.consume[0] != null))
+            else if ((throwingWeapon && _inv.consume[0] != null) || itemBuy)
             {
-                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice)
+                if (_inv.consume[0]?.key != _store.idList[i] || _inv.consume[0]?.curNum == _inv.consume[0]?.instance.data.MaxNum || itemBuy)
                     buyButton[i].interactable = false;
+                else
+                    buyButton[i].interactable = true;
             }
 
-            else if ((recoveryItem && _inv.consume[1] != null) || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice)
+            else if ((recoveryItem && _inv.consume[1] != null) || itemBuy)
             {
-                if (_inv.consume[1]?.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.instance.data.MaxNum)
+                if (_inv.consume[1]?.key != _store.idList[i] || _inv.consume[1]?.curNum == _inv.consume[1]?.instance.data.MaxNum || itemBuy)
                     buyButton[i].interactable = false;
+                else
+                    buyButton[i].interactable = true;
             }
 
-            else if ((shieldItme && _inv.consume[2] != null) || NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).statHandler.CurGold < consumePrice)
+            else if ((shieldItme && _inv.consume[2] != null) || itemBuy )
             {
-                if (_inv.consume[2]?.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.instance.data.MaxNum)
+                if (_inv.consume[2]?.key != _store.idList[i] || _inv.consume[2]?.curNum == _inv.consume[2]?.instance.data.MaxNum || itemBuy)
                     buyButton[i].interactable = false;
+                else
+                    buyButton[i].interactable = true;
             }
 
             else
@@ -531,7 +538,7 @@ public class UIShopView : UIScreen
     {
         if(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0] != null)
         {
-            iconImage[0].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0].icon;
+            //iconImage[0].sprite = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.auxiliaryWeapon[0].icon;
             iconImage[0].color = Color.white;
 
         }
@@ -561,6 +568,37 @@ public class UIShopView : UIScreen
         {
             iconImage[2].color = Color.black;
         }
+
+        //if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.consume[0] != null)
+        //{
+        //    iconImage[3].color = Color.white;
+
+        //} 
+        //else
+        //{
+        //    iconImage[3].color = Color.black;
+        //}
+
+        //if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.consume[1] != null)
+        //{
+        //    iconImage[4].color = Color.white;
+
+        //}
+        //else
+        //{
+        //    iconImage[4].color = Color.black;
+        //}
+
+        //if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.consume[2] != null)
+        //{
+        //    iconImage[5].color = Color.white;
+
+        //}
+        //else
+        //{
+        //    iconImage[5].color = Color.black;
+        //}
+
 
 
 

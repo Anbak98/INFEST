@@ -14,7 +14,7 @@ public class DummyProjectilePool : MonoBehaviour
     {
         Instance = this;
 
-        for(int i = 0; i < _initialCount; i++)
+        for (int i = 0; i < _initialCount; i++)
         {
             var proj = Instantiate(_projectilePrefab);
             proj.gameObject.SetActive(false);
@@ -27,13 +27,10 @@ public class DummyProjectilePool : MonoBehaviour
         DummyProjectile proj;
 
         if (_pool.Count > 0)
-        {
             proj = _pool.Dequeue();
-        }
         else
-        {
             proj = Instantiate(_projectilePrefab);
-        }
+
 
         proj.ResetProjectile();
         proj.gameObject.SetActive(true);

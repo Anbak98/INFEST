@@ -12,14 +12,14 @@ public class UITutorial : UIScreen
         base.Start();
     }
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();
+        base.OnHide();
     }
 
     public void ShowImage()
@@ -33,14 +33,14 @@ public class UITutorial : UIScreen
         {
             case 0:
                 tutorialText.text = "공원으로 이동하세요!";
-                toolTipText.text = "W,S,A,D - 이동\r\nSpace Bar - 점프\r\nShift - 달리기";
+                toolTipText.text = "W,S,A,D - 이동\r\nSpace Bar - 점프";
                 break;
             case 1:
                 tutorialText.text = "공원에 있는 좀비를 잡으세요!";
                 toolTipText.text = "Left Mouse - 사격\r\nRight Mouse - 조준\r\nMouse Wheel- 무기 변경";
                 break;
             case 2:
-                tutorialText.text = "상점을 이용해서 정비하세요!\r\n(상점은 랜덤으로 활성화됩니다.)";
+                tutorialText.text = "상점을 이용해서 정비하세요!";
                 toolTipText.text = "F - 상호작용";
                 break;
             case 3:

@@ -19,7 +19,6 @@ public class Siren : MonoBehaviour
             Player player = other.GetComponentInParent<Player>();
             if (other.gameObject.layer == _playerLayer && player)
             {
-                Debug.Log("Siren");
                 _player = player;
                 isTrigger = true;
 

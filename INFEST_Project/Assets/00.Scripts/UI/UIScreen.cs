@@ -27,7 +27,7 @@ public abstract class UIScreen : UIBase
 
     public virtual void Init() { }
 
-    public virtual void Hide()
+    public override void OnHide()
     {
         if (_animator)
         {
@@ -46,11 +46,11 @@ public abstract class UIScreen : UIBase
         {
             p.Hide(this);
         }
-
+               
         gameObject.SetActive(false);
     }
 
-    public virtual void Show()
+    public override void OnShow()
     {
         if (_hideCoroutine != null)
         {

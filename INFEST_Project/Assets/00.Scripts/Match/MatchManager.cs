@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MatchManager : SingletonBehaviour<MatchManager>
 {
@@ -40,6 +41,11 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     public async void QuickMatch()
     {
+        foreach (var runner in FindObjectsOfType<NetworkRunner>())
+        {
+            await runner.Shutdown();
+        }
+
         if (Runner != null)
             await Runner.Shutdown();
 
@@ -71,6 +77,11 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     public async void CreateNewSession(bool IsPublic, string code = "")
     {
+        foreach (var runner in FindObjectsOfType<NetworkRunner>())
+        {
+            await runner.Shutdown();
+        }
+
         do {
             if (Runner != null)
                 await Runner.Shutdown();
@@ -105,15 +116,57 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         }
     }
 
-    public async void PlayerSoloGame()
+    public async void PlayerTutorial()
     {
+        foreach (var runner in FindObjectsOfType<NetworkRunner>())
+        {
+            await runner.Shutdown();
+        }
+
         do
         {
             if (Runner != null)
                 await Runner.Shutdown();
 
             // 货肺款 Runner 积己
-            var runnerGO = new GameObject("Runner (Shared)");
+            var runnerGO = new GameObject("Runner (Single)");
+            Runner = runnerGO.AddComponent<NetworkRunner>();
+            runnerGO.AddComponent<PlayGameListener>();
+
+
+            var customProps = new Dictionary<string, SessionProperty>();
+
+            customProps["map"] = (int)SelectedGameMap;
+            customProps["type"] = (int)SelectedGameType;
+
+            await Runner.StartGame(new StartGameArgs()
+            {
+                GameMode = GameMode.Single,
+                SessionName = GenerateSessionCode(),
+                IsVisible = false,
+                IsOpen = false,
+                SessionProperties = customProps,
+                SceneManager = gameObject.AddGetComponent<NetworkSceneManagerDefault>()
+            });
+        } while (Runner.SessionInfo.PlayerCount > 1);
+
+        PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);
+        await Runner.LoadScene("Tutorial");
+    }
+
+    public async void PlayerSoloGame()
+    {
+        foreach (var runner in FindObjectsOfType<NetworkRunner>())
+        {
+            await runner.Shutdown();
+        }
+        do
+        {
+            if (Runner != null)
+                await Runner.Shutdown();
+
+            // 货肺款 Runner 积己
+            var runnerGO = new GameObject("Runner (Single)");
             Runner = runnerGO.AddComponent<NetworkRunner>();
             runnerGO.AddComponent<PlayGameListener>();
 
@@ -140,8 +193,11 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     public void PlayPartyGame()
     {
-        if (Room != null)
-            Room.HostPlayGame();
+        if (Runner.IsSharedModeMasterClient)
+        {
+            Runner.LoadScene("RuinedCity");
+            AnalyticsManager.analyticsBeforeInGame(Runner.SessionInfo.PlayerCount * 10 + 0, 1);
+        }
     }
 
     public bool JoinSession(string code)

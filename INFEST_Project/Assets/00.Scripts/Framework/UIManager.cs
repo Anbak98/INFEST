@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager
 {
@@ -13,12 +12,14 @@ public class UIManager
         if (UIList.TryGetValue(uiName, out var existingUI))
         {
             existingUI.gameObject.SetActive(true);
+            existingUI.OnShow();
             return existingUI as T;
         }
 
-        var ui = Resources.Load<UIBase>($"UI/{typeof(T).Name}") as T;
+        var ui = Resources.Load<UIBase>($"UI/{uiName}") as T;
 
-        var instantiated = Object.Instantiate(ui);
+        T instantiated = Object.Instantiate(ui);
+        instantiated.OnShow();
         UIList.Add(uiName, instantiated);
         return instantiated;
     }
@@ -47,17 +48,18 @@ public class UIManager
 
     //    var result = obj.GetComponent<T>();
     //    result.canvas.sortingOrder = UIList.Count;
-                
+
     //    return result;
     //}
 
     public void Hide<T>() where T : UIBase
     {
         string uiName = typeof(T).Name;
-        
-        if(UIList.TryGetValue(uiName, out var ui))
+
+        if (UIList.TryGetValue(uiName, out var ui))
         {
-            ui.gameObject.SetActive(false);
+            ui.OnHide();
+            ui.gameObject.SetActive(false);            
         }
     }
 

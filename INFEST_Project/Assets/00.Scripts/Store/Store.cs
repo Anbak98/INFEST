@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Fusion;
 using INFEST.Game;
 using UnityEngine;
 
-public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼öÇàÇØÁØ´Ù.
+public class Store : NetworkBehaviour 
 {
     public StoreController _storeController;
     public List<int> idList;
@@ -25,10 +24,10 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
     {
         RPC_Interaction(_playerRef);
 
-        if (_storeController.activeTime)
-        {
-            _storeController.AddTimer();
-        }
+        //if (_storeController.activeTime)
+        //{
+        //    _storeController.AddTimer();
+        //}
     }
 
     /// <summary>
@@ -212,6 +211,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 else
                 {
                     _player.inventory.auxiliaryWeapon[0].curBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
+                    _player.inventory.auxiliaryWeapon[0].FPSWeapon.activeAmmo = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].curMagazineBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
@@ -229,6 +229,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 else
                 {
                     _player.inventory.weapon[0].curBullet = _player.inventory.weapon[0].instance.data.MaxBullet;
+                    _player.inventory.weapon[0].FPSWeapon.activeAmmo = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.weapon[0]);
@@ -247,6 +248,7 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 else
                 {
                     _player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
+                    _player.inventory.weapon[1].FPSWeapon.activeAmmo = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.weapon[1]);
@@ -277,10 +279,6 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
                 _storeController.uIShopView.ItemSet(2);
                 break;
         }
-
-        Debug.Log("ÆÇ¸Å ÈÄ :" + _player.statHandler.CurGold + "\nÁÖ¹«±â : " + _player.inventory.auxiliaryWeapon + "\nº¸Á¶¹«±â : " + _player.inventory.weapon + "\n¾ÆÀÌÅÛ : " + _player.inventory.consume);
-
-
         _storeController.uIShopView.UpdateButtonState();
         _storeController.uIShopView.UpdateSaleButtonState();
 
@@ -398,6 +396,12 @@ public class Store : NetworkBehaviour // »óÁ¡ÀÇ ·ÎÁ÷(¹«±â Áö±Þ, UI¶ç¾îÁÖ±â µî) ¼
 
         if (weaponInv[index] == null) return;
         if (weaponInv[index].curBullet >= weaponInv[index].instance.data.MaxBullet) return;
+
+        int differenceBullet = 0;
+        if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
+            differenceBullet = weaponInv[index].curBullet % weaponInv[index].instance.data.MagazineBullet;
+
+        if (_player.statHandler.CurGold < (weaponInv[index].instance.data.MagazineBullet - differenceBullet) * weaponInv[index].instance.data.BulletPrice) return;
 
         if (weaponInv[index].curBullet + weaponInv[index].instance.data.MagazineBullet >= weaponInv[index].instance.data.MaxBullet)
             _player.statHandler.CurGold -= weaponInv[index].instance.data.BulletPrice * (weaponInv[index].instance.data.MaxBullet - weaponInv[index].curBullet);

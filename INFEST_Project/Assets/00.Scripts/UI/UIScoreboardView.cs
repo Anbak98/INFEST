@@ -17,7 +17,7 @@ public class UIScoreboardView : UIScreen
     {
         base.Awake();
         Init();
-        Hide();
+        OnHide();
     }
 
     public override void Init()
@@ -29,17 +29,17 @@ public class UIScoreboardView : UIScreen
         UpdateScoreboard();
         gamePlayerHandler.OnValueChanged += UpdateScoreboard;
 
-        Hide();
+        OnHide();
     }
 
-    public override void Show()
+    public override void OnShow()
     {
-        base.Show();
+        base.OnShow();
     }
 
-    public override void Hide()
+    public override void OnHide()
     {
-        base.Hide();        
+        base.OnHide();        
     }
 
     public void UpdateScoreboard()

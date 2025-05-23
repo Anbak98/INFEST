@@ -54,7 +54,7 @@ public class UIController : MonoBehaviour
     {
         if (_screens != null && _screens.Length > 0)
         {
-            _screens[0].Show();
+            _screens[0].OnShow();
             _activeScreen = _screens[0];
         }
     }
@@ -65,11 +65,11 @@ public class UIController : MonoBehaviour
         {
             if (result.IsModal == false && _activeScreen != result && _activeScreen)
             {
-                _activeScreen.Hide();
+                _activeScreen.OnHide();
             }
             if (_activeScreen != result)
             {
-                result.Show();
+                result.OnShow();
             }
             if (result.IsModal == false)
             {
@@ -86,7 +86,7 @@ public class UIController : MonoBehaviour
     {
         if (_activeScreen != null)
         {
-            _activeScreen.Hide();
+            _activeScreen.OnHide();
             _activeScreen = null;
         }
     }

@@ -23,8 +23,8 @@ public class SirenController : NetworkBehaviour
             monster.PlayerDetectorCollider.radius = monster.info.DetectAreaWave;
         }
 
-        StartCoroutine(MonsterDetectTime(30f, allMonsters));
-        StartCoroutine(ResetTriggerAfterDelay(300f));
+        StartCoroutine(MonsterDetectTime(30f, allMonsters));        
+        //StartCoroutine(ResetTriggerAfterDelay(300f));
     }
 
     private IEnumerator StopSirenSoundAfterSeconds(float seconds)
@@ -43,9 +43,9 @@ public class SirenController : NetworkBehaviour
         }
     }
 
-    private IEnumerator ResetTriggerAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Siren.isTrigger = false;
-    }
+    //private IEnumerator ResetTriggerAfterDelay(float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    Siren.isTrigger = false;
+    //}
 }

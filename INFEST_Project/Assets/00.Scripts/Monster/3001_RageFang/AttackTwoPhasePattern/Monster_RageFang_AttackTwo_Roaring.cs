@@ -6,14 +6,18 @@ public class Monster_RageFang_AttackTwo_Roaring : MonsterStateNetworkBehaviour<M
     public override void Enter()
     {
         base.Enter();
+
+        int curDef = monster.CurDef;
         
+        monster.CurDef = 9999;
         monster.CurMovementSpeed = 0;
         monster.IsReadyForChangingState = false;
 
         monster.IsRoaring = true;
 
         monster.CurDamage += monster.CurDamage / 20;
-        monster.CurDef += monster.CurDef / 20;
+        curDef += curDef / 20;
+        monster.CurDef = curDef;
     }
 
     public override void Exit()

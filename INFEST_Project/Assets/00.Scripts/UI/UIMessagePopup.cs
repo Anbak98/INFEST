@@ -16,7 +16,7 @@ public class UIMessagePopup : UIScreen, IPopup
         _header.text = tooltipData.header;
         _text.text = tooltipData.msg;
 
-        Show();
+        OnShow();
     }
 
 }

@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class DummyProjectile : MonoBehaviour
 {
+    [Header("Projectile Settings")]
     [SerializeField] private float _speed = 160f; // 총알 속도
-    //[SerializeField] private float _maxDistance = 100f; // 최대 비행 거리
-    [SerializeField] private GameObject _hitEffect; // 히트이펙트
     [SerializeField] private float _lifeTimeAfterHit = 2f; // 오브젝트 삭제 대기시간
+
+    [Header("Visuals")]
+    [SerializeField] private GameObject _hitEffect; // 히트이펙트
     [SerializeField] private GameObject _visualRoot; // 총알 외형 오브젝트
 
     private Vector3 _startPosition; // 총알 출발 위치
@@ -13,7 +15,6 @@ public class DummyProjectile : MonoBehaviour
     private Vector3 _hitNormal;
 
     private bool _showHitEffect; // 목표 지점 도달 시 이펙트 여부
-
     private float _startTime; // 총알이 생성된 시간
     private float _duration; // 총알 목표까지의 시간
 
@@ -53,12 +54,9 @@ public class DummyProjectile : MonoBehaviour
         }
 
         enabled = false;
-        _hitEffect.SetActive(true);
 
-        if (_visualRoot != null)
-        {
-            _visualRoot.SetActive(false);
-        }
+        _hitEffect.SetActive(true);
+        _visualRoot.SetActive(false);
 
         Invoke(nameof(ReturnToPool), _lifeTimeAfterHit);
     }
