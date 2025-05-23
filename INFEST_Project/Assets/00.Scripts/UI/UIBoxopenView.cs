@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIBoxopenView : UIScreen
@@ -18,12 +16,17 @@ public class UIBoxopenView : UIScreen
 
     public void OkBtn()
     {
-        if (mysteryBox.player.Weapons.IsSwitching) return;
+#if UNITY_EDITOR
+        mysteryBox.player.statHandler.CurGold += 2000;
+#endif
+
+        if (mysteryBox.player.statHandler.CurGold < 2000) return;
         mysteryBox.OpenBox();
     }
 
     public void CancleBtn()
     {
         Global.Instance.UIManager.Hide<UIBoxopenView>();
+        Global.Instance.UIManager.Show<UIInteractiveView>();
     }
 }

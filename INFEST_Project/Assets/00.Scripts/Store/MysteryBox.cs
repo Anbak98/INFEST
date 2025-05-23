@@ -25,7 +25,7 @@ public class MysteryBox : NetworkBehaviour
     [SerializeField] private List<int> _idList = new List<int>();
     private Dictionary<int, List<int>> _probabilityList = new Dictionary<int, List<int>>();
     private int[] modeSum = new int[4] { 0, 0, 0, 0 };
-
+    public SphereCollider col;
     public Player player;
 
     #region 상호작용시
@@ -127,13 +127,18 @@ public class MysteryBox : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_EndMysteryBoxZone()
     {
+        col.enabled = false;
+
+#if UNITY_EDITOR
+        col.enabled = true;
+#endif 
         if (player == null) return;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
+        player.inMysteryBoxZoon = false;
         player.isInteraction = false;
-        Global.Instance.UIManager.Show<UIInteractiveView>();
+        Global.Instance.UIManager.Hide<UIInteractiveView>();
         Global.Instance.UIManager.Hide<UIBoxopenView>();
 
     }

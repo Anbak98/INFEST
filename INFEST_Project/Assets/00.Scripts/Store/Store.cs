@@ -211,6 +211,7 @@ public class Store : NetworkBehaviour
                 else
                 {
                     _player.inventory.auxiliaryWeapon[0].curBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
+                    _player.inventory.auxiliaryWeapon[0].FPSWeapon.activeAmmo = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].curMagazineBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
@@ -228,6 +229,7 @@ public class Store : NetworkBehaviour
                 else
                 {
                     _player.inventory.weapon[0].curBullet = _player.inventory.weapon[0].instance.data.MaxBullet;
+                    _player.inventory.weapon[0].FPSWeapon.activeAmmo = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.weapon[0]);
@@ -246,6 +248,7 @@ public class Store : NetworkBehaviour
                 else
                 {
                     _player.inventory.weapon[1].curBullet = _player.inventory.weapon[1].instance.data.MaxBullet;
+                    _player.inventory.weapon[1].FPSWeapon.activeAmmo = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].IsCollected = false;
                     _player.Weapons._weapons.Remove(_player.inventory.weapon[1]);
