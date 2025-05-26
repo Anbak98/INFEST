@@ -39,8 +39,8 @@ namespace INFEST.Game
         public override void Spawned()
         {
             base.Spawned();
-            string nickname = PlayerPrefs.GetString("Nickname");
-            JOB job = (JOB)PlayerPrefs.GetInt("Job");
+            string nickname = PlayerPrefsManager.GetNickname();
+            JOB job = PlayerPrefsManager.GetJob();
 
             RPC_RequestSpawnPlayer(Runner.LocalPlayer, nickname, job);
         }

@@ -7,9 +7,10 @@ public class UIPlayerProfile : MonoBehaviour
 {
     public Image JobIcon;
     public TMPro.TMP_Text Nickname;
-    public Sprite MedicIcon;
+    public Sprite NoIcon;
+    public Sprite BattleMedicIcon;
     public Sprite DefenderIcon;
-    public Sprite SWATIcon;
+    public Sprite CommanderIcon;
     public Sprite DemolatorIcon;
 
     public void Set(string NickName, JOB job)
@@ -17,18 +18,21 @@ public class UIPlayerProfile : MonoBehaviour
         this.Nickname.text = NickName;
         switch (job)
         {
+            case JOB.Commander:
+                JobIcon.sprite = CommanderIcon;
+                break;
             case JOB.BattleMedic:
-                JobIcon.sprite = MedicIcon;
+                JobIcon.sprite = BattleMedicIcon;
                 break;
             case JOB.Defender:
                 JobIcon.sprite = DefenderIcon;
                 break;
-            case JOB.Commander:
-                JobIcon.sprite = SWATIcon;
-                break;
             case JOB.Demolator:
                 JobIcon.sprite = DemolatorIcon;
                 break;
+            default:
+                JobIcon.sprite = NoIcon;
+                break ;
         }
     }
 
@@ -38,13 +42,13 @@ public class UIPlayerProfile : MonoBehaviour
         switch (profile.Job)
         {
             case JOB.BattleMedic:
-                JobIcon.sprite = MedicIcon;
+                JobIcon.sprite = BattleMedicIcon;
                 break;
             case JOB.Defender:
                 JobIcon.sprite = DefenderIcon;
                 break;
             case JOB.Commander:
-                JobIcon.sprite = SWATIcon;
+                JobIcon.sprite = CommanderIcon;
                 break;
             case JOB.Demolator:
                 JobIcon.sprite = DemolatorIcon;

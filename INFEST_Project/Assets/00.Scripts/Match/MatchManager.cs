@@ -1,6 +1,7 @@
 using Fusion;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,13 +35,11 @@ public class MatchManager : SingletonBehaviour<MatchManager>
         Underground
     }
 
-    public void Start()
-    {
-        Global.Instance.UIManager.Show<UISetProfile>();
-    }
-
     public async void QuickMatch()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
+
+        await Task.Delay(1000);
         foreach (var runner in FindObjectsOfType<NetworkRunner>())
         {
             await runner.Shutdown();
@@ -77,6 +76,9 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     public async void CreateNewSession(bool IsPublic, string code = "")
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
+
+        await Task.Delay(1000);
         foreach (var runner in FindObjectsOfType<NetworkRunner>())
         {
             await runner.Shutdown();
@@ -118,6 +120,8 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     public async void PlayerTutorial()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
+
         foreach (var runner in FindObjectsOfType<NetworkRunner>())
         {
             await runner.Shutdown();
@@ -152,10 +156,14 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
         PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);
         await Runner.LoadScene("Tutorial");
+
     }
 
     public async void PlayerSoloGame()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
+
+        await Task.Delay(1000);
         foreach (var runner in FindObjectsOfType<NetworkRunner>())
         {
             await runner.Shutdown();
@@ -195,7 +203,7 @@ public class MatchManager : SingletonBehaviour<MatchManager>
     {
         if (Runner.IsSharedModeMasterClient)
         {
-            Runner.LoadScene("RuinedCity");
+            StartCoroutine(Room.BroadcastPlayGame());
             AnalyticsManager.analyticsBeforeInGame(Runner.SessionInfo.PlayerCount * 10 + 0, 1);
         }
     }

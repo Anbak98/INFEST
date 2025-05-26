@@ -131,12 +131,12 @@ public class NetworkGameStarter : MonoBehaviour
                 ui.loadingText.text = $"호스트가 게임을 생성 중입니다... {retryCount}  [{sessionName}] \n\n\n {result}";
             }
 
-            if(result.ShutdownReason == ShutdownReason.GameIdAlreadyExists)
+            if(result.ShutdownReason == ShutdownReason.ServerInRoom)
             {
                 mode = GameMode.Client;
             }
 
             ++retryCount;
-        } while (!result.Ok && retryCount < 15);
+        } while (!result.Ok && retryCount < 50);
     }
 }
