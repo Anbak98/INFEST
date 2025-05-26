@@ -26,6 +26,7 @@ public class DeadCop_Wave_HeadButt : MonsterStateNetworkBehaviour<Monster_DeadCo
     public override void Attack()
     {
         base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
         monster.TryAttackTarget((int)(monster.CurDamage /** monster.skills[1].DamageCoefficient*/));
     }
 

@@ -14,9 +14,14 @@ public enum Sfxs
     Fire,
     Hit,
     Damage,
-    ZombieSpawn,
+    Siren,
+    ZombieSpawn,    
+    BowmeterAttack1,
+    BowmeterAttack2,
     ZombieAttack,
-    Siren
+    GritaScream,
+    RageFang_Roaring,
+    RageFang_Rush
 }
 
 [Serializable]

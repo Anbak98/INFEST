@@ -28,6 +28,7 @@ public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker, Stac
     public override void Attack()
     {
         base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
         monster.TryAttackTarget(monster.CurDamage);
     }
 }
