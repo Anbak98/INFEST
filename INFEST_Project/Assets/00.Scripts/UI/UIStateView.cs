@@ -31,9 +31,6 @@ public class UIStateView : UIScreen
     private WeaponInfo _weaponInfo;
     private CharacterInfo _characterInfo;
 
-    [Networked]
-    public Profile Info { get; set; }
-
     public override void Awake()
     {
         base.Awake();
@@ -90,19 +87,19 @@ public class UIStateView : UIScreen
 
     private void ChoiceJob()
     {
-        if (Info.Job == JOB.Commander)
+        if (PlayerPrefsManager.GetJob() == JOB.Commander)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(1);
         }
-        else if (Info.Job == JOB.BattleMedic)
+        else if (PlayerPrefsManager.GetJob() == JOB.BattleMedic)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(2);
         }
-        else if (Info.Job == JOB.Demolator)
+        else if (PlayerPrefsManager.GetJob() == JOB.Demolator)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(3);
         }
-        else if (Info.Job == JOB.Defender)
+        else if (PlayerPrefsManager.GetJob() == JOB.Defender)
         {
             _characterInfo = DataManager.Instance.GetByKey<CharacterInfo>(4);
         }
