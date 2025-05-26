@@ -1893,7 +1893,7 @@ GameObject:
   - component: {fileID: 2371753348841125519}
   - component: {fileID: 5052248017230947469}
   - component: {fileID: 8227249028229613044}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: DetectPlayerByMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3620,6 +3620,9 @@ MonoBehaviour:
   PlayerDetectorCollider: {fileID: 8227249028229613044}
   target: {fileID: 0}
   targets: []
+  animator: {fileID: 6900176941767614314}
+  hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
+    type: 3}
   ragdollRigidbodys:
   - {fileID: 8079678200545214703}
   - {fileID: 4238522599311203861}
@@ -3632,12 +3635,12 @@ MonoBehaviour:
   - {fileID: 801769007866112411}
   - {fileID: 8348667583283611052}
   - {fileID: 8520985534355599057}
-  ragdollSphereColliders:
-  - {fileID: 1525848346275725847}
-  ragdollBoxColliders:
+  ragdollBoxCollider:
   - {fileID: 6317836492302472267}
   - {fileID: 6708974686494678204}
-  ragdollCapsuleColliders:
+  ragdollSphereCollider:
+  - {fileID: 1525848346275725847}
+  ragdollCapsuleCollider:
   - {fileID: 5679315787416927235}
   - {fileID: 6499493944070251115}
   - {fileID: 5982433963903308562}
@@ -3646,11 +3649,6 @@ MonoBehaviour:
   - {fileID: 8613219058773909703}
   - {fileID: 5280973004872706676}
   - {fileID: 4242625964773652995}
-  animator: {fileID: 6900176941767614314}
-  hitEffectPrefab: {fileID: 3886077773195258213, guid: 8d61043558bc54c7186df551c6a6104f,
-    type: 3}
-  hitSound: {fileID: 6573686536218448580}
-  hitSoundClip: {fileID: 8300000, guid: 0dcaed69dcfa45a4fb2926d1898e2dd2, type: 3}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
   _CurHealth: -1

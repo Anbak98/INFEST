@@ -37,6 +37,8 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Tooltip("Reference to the NavMeshAgent used to determine where the enemy should move to.")]
     public NavMeshAgent AIPathing;
     public SphereCollider PlayerDetectorCollider;
+
+    [Header("Monster Target Helper")]
     [ReadOnly] public Transform target;
     [ReadOnly, SerializeField] private List<Transform> targets = new();
     private Dictionary<Transform, TargetableFromMonster> targetBridges = new();
@@ -44,6 +46,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Header("Monster Render Helper")]
     public Animator animator;
     public GameObject hitEffectPrefab;
+
+    [Header("Monster Ragdoll Helper")]
+    [SerializeField] private Rigidbody[] ragdollRigidbodys;
+    [SerializeField] private BoxCollider[] ragdollBoxCollider;
+    [SerializeField] private SphereCollider[] ragdollSphereCollider;
+    [SerializeField] private CapsuleCollider[] ragdollCapsuleCollider;
 
     [field: Header("Monster Status")]
     [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
@@ -80,8 +88,14 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         CurDetectorRadius = info.DetectAreaNormal;
 
+
         AIPathing.enabled = true;
         AIPathing.speed = info.SpeedMove;
+        ActivateRagdoll(false);
+    }
+
+    public void OnEnable()
+    {
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
@@ -210,7 +224,16 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             CurHealth = 0;
             NetworkGameManager.Instance.gamePlayers.AddKillCount(instigator, 1);
             NetworkGameManager.Instance.gamePlayers.AddGoldCount(instigator, info.DropGold);
+
+
             IsDead = true;
+
+            if (weaponType == EWeaponType.Launcher)
+            {                
+                RPC_RagdollEffect(position);
+            }
+
+
         }
 
         Vector3 dir = (transform.position - position).normalized;
@@ -229,6 +252,18 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         CurMovementSpeed = slowedMovementSpeed;
         yield return new WaitForSeconds(duration);
         CurMovementSpeed = previous;
+    }
+
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_RagdollEffect(Vector3 position)
+    { 
+        ActivateRagdoll(true);
+
+        foreach (var rb in ragdollRigidbodys)
+        {
+            rb.AddExplosionForce(35f, position, 10f, 5f, ForceMode.Impulse);
+        }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -260,6 +295,34 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     protected virtual void OnDead()
     {
+        ActivateRagdoll(true);
+        GetComponent<NetworkTransform>().enabled = false;
         AnalyticsManager.analyticsZombieKill(key);
+    }
+
+    private void ActivateRagdoll(bool active)
+    {
+
+        animator.enabled = !active;
+
+        foreach (Rigidbody rb in ragdollRigidbodys)
+        {
+            rb.isKinematic = !active;
+        }
+
+        foreach (BoxCollider col in ragdollBoxCollider)
+        {
+            col.enabled = active;
+        }
+
+        foreach (CapsuleCollider col in ragdollCapsuleCollider)
+        {
+            col.enabled = active;
+        }
+
+        foreach (SphereCollider col in ragdollSphereCollider)
+        {
+            col.enabled = active;
+        }
     }
 }

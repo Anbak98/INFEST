@@ -164,7 +164,7 @@ public class Weapon : NetworkBehaviour
             else
             {
                 if (Runner.LagCompensation.Raycast(characterPos, fireDirection, instance.data.WeaponRange,
-                        Object.InputAuthority, out var hit, HitMask, hitOptions))
+                        Object.InputAuthority, out var hit, HitMask, hitOptions, QueryTriggerInteraction.Ignore))
                 {
                     Debug.Log($"{HitMask}");
                     projectileData.hitPosition = hit.Point;
