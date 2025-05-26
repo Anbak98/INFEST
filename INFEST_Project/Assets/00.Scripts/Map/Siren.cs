@@ -4,7 +4,7 @@ using INFEST.Game;
 
 public class Siren : MonoBehaviour
 {
-    public static bool isTrigger = false;
+    public bool isTrigger = false;
 
     private int _playerLayer = 7;
     private Player _player;
