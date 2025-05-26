@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GrenadeProjectile : NetworkBehaviour
 {
+
     TickTimer _activeTimer;
     TickTimer _lifeTimer;
     public GrenadeExplosion GrenadeExplosion;
@@ -18,7 +19,6 @@ public class GrenadeProjectile : NetworkBehaviour
     private bool _isStopped = false;
     [SerializeField] private LayerMask _layerMask = 1 << 12;
 
-
     private RaycastHit[] _hitBuffer = new RaycastHit[5];
 
     Vector3 displacement;
@@ -29,16 +29,27 @@ public class GrenadeProjectile : NetworkBehaviour
 
     private int _isStopHash = Animator.StringToHash("IsStop");
 
+    private float _safeTime = 0.1f;
+    private float _spawnTime;
+
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+    }
+
+    void Start()
+    {
+        _spawnTime = Time.time;
     }
 
     public override void FixedUpdateNetwork()
     {
         if (!HasStateAuthority) return;
 
-        if(_activeTimer.Expired(Runner))
+
+
+        if (_activeTimer.Expired(Runner))
         {
             RPC_Despawn();
             return;
@@ -64,7 +75,7 @@ public class GrenadeProjectile : NetworkBehaviour
             if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 0.2f,
                     Object.InputAuthority, out var hits))
             {
-                transform.position = hits.GameObject.transform.root.position + new Vector3(0,0.01f,0);
+                transform.position = hits.Point + Vector3.up * 0.01f;
 
                 RPC_Explode(transform.position);
                 _lifeTimer = TickTimer.None;
@@ -88,7 +99,7 @@ public class GrenadeProjectile : NetworkBehaviour
             float distance = displacement.magnitude;
 
             int layerMask = ~_layerMask;
-            int hitCount = Physics.SphereCastNonAlloc(currentPosition, _castRadius, direction, _hitBuffer, distance, layerMask, QueryTriggerInteraction.Ignore);
+            int hitCount = Physics.SphereCastNonAlloc(currentPosition, _castRadius, direction, _hitBuffer, distance, layerMask, QueryTriggerInteraction.Collide);
 
             //if (Physics.SphereCast(transform.position, _castRadius, displacement.normalized, out RaycastHit hit, displacement.magnitude, layerMask))
             if (hitCount > 0)
@@ -112,10 +123,14 @@ public class GrenadeProjectile : NetworkBehaviour
     {
         int hitLayer = hit.collider.gameObject.layer;
 
+        Debug.Log("닿은 오브젝트 : " + hit.collider.gameObject.name);
         // 폭발 체크
-        if (hitLayer == 7)
+        if (hitLayer == 6)
         {
-            transform.position = hit.transform.root.position + new Vector3(0, 0.01f, 0); ;
+            if (Time.time - _spawnTime < _safeTime)
+                return false;
+
+            transform.position = hit.transform.root.position + new Vector3(0, 0.01f, 0);
             RPC_Explode(transform.position);
             _lifeTimer = TickTimer.None;
             return true;
@@ -124,9 +139,9 @@ public class GrenadeProjectile : NetworkBehaviour
         if (hitLayer == 11)
         {
             _isStopped = true;
-            transform.position = hit.point + hit.normal * 0.01f;  // 지면 위에 위치 이동
+            transform.position = hit.point + Vector3.up * 0.01f;
         }
-        else if (hitLayer == 10 && hitLayer == 16)
+        else if (hitLayer == 10 || hitLayer == 16 || hitLayer == 7 || hitLayer == 17)
         {
             //transform.position = hit.point;  // 벽에 부딪히지 않고, 계속 이동
         }
@@ -135,7 +150,7 @@ public class GrenadeProjectile : NetworkBehaviour
             // 반사 벡터 계산
             _velocity = Vector3.Reflect(_velocity, hit.normal) * 0.6f;
             // 충돌 지점으로 위치 이동 (약간 띄워서 튕기기)
-            transform.position = hit.point + hit.normal * 0.01f;
+            transform.position = hit.point + Vector3.up * 0.01f;
             newPosition = hit.point + hit.normal * 0.01f + _velocity;
         }
 

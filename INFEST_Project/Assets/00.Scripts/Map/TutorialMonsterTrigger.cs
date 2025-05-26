@@ -6,14 +6,15 @@ using UnityEngine;
 
 public class TutorialMonsterTrigger : NetworkBehaviour
 {
-    public TutorialController tutorialController;
+    [SerializeField] private StoreController _storeController;
+    [SerializeField] private TutorialController _tutorialController;
     private int _monsterLayer = 14;
     [SerializeField] private MonsterNetworkBehaviour _monster;
 
 
     private void Update()
     {
-        if (_monster == null && tutorialController.page == 2)
+        if (_monster == null && _tutorialController.page == 2)
         {
             List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
 
@@ -38,7 +39,8 @@ public class TutorialMonsterTrigger : NetworkBehaviour
 
         if (_monster.IsDead)
         {
-            tutorialController.TextChanged();
+            _tutorialController.TextChanged();
+            _storeController.Activate();
             Runner.Despawn(Object);
         }
     }
