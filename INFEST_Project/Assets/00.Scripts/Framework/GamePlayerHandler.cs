@@ -20,19 +20,19 @@ namespace INFEST.Game
 
         public List<Transform> PlayerSpawnPoints;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, NetworkId> PlayerObjs => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, PlayerGameProfile> PlayerGameProfiles => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameKillCounts => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameDeathCounts => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameGoldCounts => default;
 
 

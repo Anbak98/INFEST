@@ -134,7 +134,7 @@ public class Rocket : NetworkBehaviour
 
         if (_monster.CurHealth == 0 || _monster.IsDead == true) return;
 
-        if (_monster.ApplyDamage(Runner.LocalPlayer, _damage, Vector3.zero, Vector3.zero, 0, false) == false)
+        if (_monster.ApplyDamage(Runner.LocalPlayer, _damage, transform.position, transform.forward, EWeaponType.Launcher, false) == false)
             return;
 
     }
@@ -154,6 +154,4 @@ public class Rocket : NetworkBehaviour
         render.SetActive(false);
         Explosion();
     }
-
-
 }

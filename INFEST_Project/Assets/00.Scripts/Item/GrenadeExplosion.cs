@@ -75,7 +75,7 @@ public class GrenadeExplosion : NetworkBehaviour
 
         if (_monster.CurHealth == 0 || _monster.IsDead == true) return;
 
-        if (_monster.ApplyDamage(_player.Runner.LocalPlayer, _damage, Vector3.zero, Vector3.zero, 0, false) == false)
+        if (_monster.ApplyDamage(_player.Runner.LocalPlayer, _damage, Vector3.zero, Vector3.zero, EWeaponType.Launcher, false) == false)
             return;
 
     }

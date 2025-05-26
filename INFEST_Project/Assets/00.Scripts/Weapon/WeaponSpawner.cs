@@ -212,6 +212,9 @@ public class WeaponSpawner : NetworkBehaviour
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (throwChk) return;
+        if (_player.inventory.consume[0]?.curNum <= 0) return;
+        if (_player.inventory.consume[0] == null) return;
+
         throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
         Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);

@@ -6,7 +6,7 @@ public class MysteryBoxCollider : MonoBehaviour
     private List<Player> _inAreaPlayer = new List<Player>();
     
     public MysteryBox mysteryBox;
-    
+
     private int _playerLayer = 7;
 
 

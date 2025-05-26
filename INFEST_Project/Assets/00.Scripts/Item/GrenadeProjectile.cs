@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ public class GrenadeProjectile : NetworkBehaviour
     private Animator animator;
 
     private int _isStopHash = Animator.StringToHash("IsStop");
+    private List<LagCompensatedHit> hits = new();
 
     private float _safeTime = 0.1f;
     private float _spawnTime;
@@ -72,14 +74,15 @@ public class GrenadeProjectile : NetworkBehaviour
 
         if (displacement.sqrMagnitude > 0.0001f)
         {
-            if (Runner.LagCompensation.Raycast(transform.position, displacement.normalized, 0.2f,
-                    Object.InputAuthority, out var hits))
+            Runner.LagCompensation.OverlapSphere(transform.position, _castRadius, Object.InputAuthority, hits);
+
+            foreach (var hit in hits)
             {
-                transform.position = hits.Point + Vector3.up * 0.01f;
+                transform.position = hit.Point + Vector3.up * 0.01f;
 
                 RPC_Explode(transform.position);
                 _lifeTimer = TickTimer.None;
-                return;
+                return; 
             }
         }
 
@@ -98,7 +101,7 @@ public class GrenadeProjectile : NetworkBehaviour
             Vector3 direction = displacement.normalized;
             float distance = displacement.magnitude;
 
-            int layerMask = ~_layerMask;
+            int layerMask = ~_layerMask & ~1<< 0;
             int hitCount = Physics.SphereCastNonAlloc(currentPosition, _castRadius, direction, _hitBuffer, distance, layerMask, QueryTriggerInteraction.Collide);
 
             //if (Physics.SphereCast(transform.position, _castRadius, displacement.normalized, out RaycastHit hit, displacement.magnitude, layerMask))
@@ -123,9 +126,8 @@ public class GrenadeProjectile : NetworkBehaviour
     {
         int hitLayer = hit.collider.gameObject.layer;
 
-        Debug.Log("´êÀº ¿ÀºêÁ§Æ® : " + hit.collider.gameObject.name);
         // Æø¹ß Ã¼Å©
-        if (hitLayer == 6)
+        if (hitLayer == 6 && hitLayer == 13 && hitLayer == 14)
         {
             if (Time.time - _spawnTime < _safeTime)
                 return false;
@@ -136,7 +138,7 @@ public class GrenadeProjectile : NetworkBehaviour
             return true;
         }
 
-        if (hitLayer == 11)
+        else if (hitLayer == 11)
         {
             _isStopped = true;
             transform.position = hit.point + Vector3.up * 0.01f;

@@ -16,12 +16,12 @@ public class UIBoxopenView : UIScreen
 
     public void OkBtn()
     {
-#if UNITY_EDITOR
-        mysteryBox.player.statHandler.CurGold += 2000;
-#endif
+//#if UNITY_EDITOR
+//        mysteryBox.player.statHandler.CurGold += 2000;
+//#endif
 
-        if (mysteryBox.player.statHandler.CurGold < 2000) return;
-        mysteryBox.player.statHandler.CurGold -= 2000;
+//        if (mysteryBox.player.statHandler.CurGold < 2000) return;
+//        mysteryBox.player.statHandler.CurGold -= 2000;
 
         mysteryBox.OpenBox();
     }
