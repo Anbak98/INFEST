@@ -71,7 +71,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public override void Spawned()
     {
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
-
+        AudioManager.instance.PlaySfx(Sfxs.ZombieSpawn);
         BaseHealth = (int)(info.MinHealth * (1 + info.HPCoef * (Runner.SessionInfo.PlayerCount - 1)));
         BaseDamage = (int)(info.MinAtk * (1 + info.AtkCoef * (Runner.SessionInfo.PlayerCount - 1)));
         BaseDef = (int)(info.MinDef * (1 + info.DefCoef * (Runner.SessionInfo.PlayerCount - 1)));

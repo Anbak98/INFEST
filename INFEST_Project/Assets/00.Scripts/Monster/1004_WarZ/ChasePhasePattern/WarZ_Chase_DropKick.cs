@@ -30,6 +30,7 @@ public class WarZ_Chase_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, Wa
     public override void Attack()
     {
         base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
         monster.TryAttackTarget((int)(monster.CurDamage /** monster.skills[1].DamageCoefficient*/));
     }
 

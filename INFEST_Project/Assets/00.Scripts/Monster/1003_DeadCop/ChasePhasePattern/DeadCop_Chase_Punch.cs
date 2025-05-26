@@ -24,6 +24,7 @@ public class DeadCop_Chase_Punch : MonsterStateNetworkBehaviour<Monster_DeadCop,
     public override void Attack()
     {
         base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
         monster.TryAttackTarget((int)(monster.CurDamage /** monster.skills[1].DamageCoefficient*/));
     }
 }
