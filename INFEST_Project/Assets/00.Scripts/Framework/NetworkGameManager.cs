@@ -19,7 +19,37 @@ namespace INFEST.Game
 
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
+        public StoreController storeController;
 
+        public event Action OnChangeGameState;
+
+        private void OnEnable()
+        {
+            OnChangeGameState += ChangeStore;
+        }
+
+        private void OnDisable()
+        {
+            OnChangeGameState -= ChangeStore;
+        }
+
+        public void ChangeState(GameState state)
+        {
+            gameState = state;
+            OnChangeGameState?.Invoke(); 
+        }
+
+        public void ChangeStore()
+        {
+            if (gameState == GameState.None)
+            {
+                storeController.Activate();
+            }
+            else
+            {
+                storeController.Deactivate();
+            }
+        }
 
         protected override void Awake()
         {
