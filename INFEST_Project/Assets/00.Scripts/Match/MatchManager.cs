@@ -161,6 +161,7 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     public async void PlayerSoloGame()
     {
+        AudioManager.instance.StopBgm();
         Global.Instance.UIManager.Show<UILoadingPopup>();
 
         await Task.Delay(1000);

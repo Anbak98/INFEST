@@ -14,7 +14,8 @@ public enum Sfxs
     Fire,
     Hit,
     Damage,
-    Zombie,
+    ZombieSpawn,
+    ZombieAttack,
     Siren
 }
 
@@ -29,12 +30,12 @@ public class BgmClip
 public class SfxClip
 {
     public Sfxs type;
-    public AudioClip clip;
+    public List<AudioClip> clips;
 }
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;  
+    public static AudioManager instance;
 
     private void Awake()
     {
@@ -47,7 +48,7 @@ public class AudioManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
+        }        
     }
 
     [SerializeField] private List<BgmClip> bgmClips;
@@ -80,9 +81,10 @@ public class AudioManager : MonoBehaviour
     {
         foreach (var sfxClip in sfxClips)
         {
-            if (sfxClip.type == sfx)
+            if (sfxClip.type == sfx && sfxClip.clips.Count > 0)
             {
-                audioSfx.PlayOneShot(sfxClip.clip);
+                int index = UnityEngine.Random.Range(0, sfxClip.clips.Count);
+                audioSfx.PlayOneShot(sfxClip.clips[index]);
                 return;
             }
         }

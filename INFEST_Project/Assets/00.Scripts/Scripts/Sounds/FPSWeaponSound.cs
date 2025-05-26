@@ -10,7 +10,7 @@ namespace KINEMATION.FPSAnimationPack.Scripts.Sounds
         private FPSWeaponSettings _settings;
         private AudioSource _audioSource;
         public ParticleSystem particle;
-        
+
         private void Awake()
         {
             _settings = transform.parent.GetComponent<FPSWeapon>().weaponSettings;

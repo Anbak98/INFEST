@@ -3804,7 +3804,8 @@ AudioSource:
   m_GameObject: {fileID: 7691360088755567024}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1632703728732432733, guid: 6d0e7d70a1df7a94f9a87a07a3e0b59b,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -3851,7 +3852,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -4230,7 +4231,10 @@ MonoBehaviour:
   _simpleKCC: {fileID: 8802749177907789785}
   CameraHandle: {fileID: 7721353801691121081}
   playerId: 
+  isSpectating: 0
+  alivePlayerCameras: []
   currentPlayerIndex: 0
+  curSpectatorCam: {fileID: 0}
 --- !u!114 &3072078453906701333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4243,8 +4247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDead: 0
   inStoreZoon: 0
+  inMysteryBoxZoon: 0
   isInteraction: 0
   animationController: {fileID: 686141162492240600}
   statHandler: {fileID: 3147526191137004029}
@@ -4252,6 +4256,7 @@ MonoBehaviour:
   attackedEffectController: {fileID: 8335810917877115477}
   cameraHandler: {fileID: 3268070573558879607}
   store: {fileID: 0}
+  mysteryBox: {fileID: 0}
   inventory: {fileID: 0}
   Weapons: {fileID: 7032259557335484116}
   Consumes: {fileID: 3479017057160561563}
@@ -8797,7 +8802,7 @@ PrefabInstance:
     - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 983039
+      value: 982335
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8861,7 +8866,7 @@ PrefabInstance:
     - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
       propertyPath: HitMask.m_Bits
-      value: 983039
+      value: 982335
       objectReference: {fileID: 0}
     - target: {fileID: 4407176668547430636, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
