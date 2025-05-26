@@ -20,6 +20,7 @@ public class MysteryBox : NetworkBehaviour
     Dictionary<int, MysteryInstance> _instances = new();
     UIBoxopenView _uIBoxopenView;
     List<int> LevelList;
+    public TutorialSiren tutorialSiren;
 
     [SerializeField] private List<int> _idList = new List<int>();
     private Dictionary<int, List<int>> _probabilityList = new Dictionary<int, List<int>>();
@@ -140,6 +141,7 @@ public class MysteryBox : NetworkBehaviour
         Global.Instance.UIManager.Hide<UIInteractiveView>();
         Global.Instance.UIManager.Hide<UIBoxopenView>();
 
+        tutorialSiren.gameObject.SetActive(true);
     }
 
     public void SetWeapon(int appearedKey, int index)
@@ -301,10 +303,11 @@ public class MysteryBox : NetworkBehaviour
                 }
             }
         }
+
     }
 
 
-    public void init()
+public void init()
     {
         _probabilityList.Clear();
         modeSum[0] = 0;
