@@ -44,8 +44,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [Header("Monster Render Helper")]
     public Animator animator;
     public GameObject hitEffectPrefab;
-    public AudioSource hitSound;
-    public AudioClip hitSoundClip;
 
     [field: Header("Monster Status")]
     [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
@@ -245,10 +243,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             Destroy(effect, 2.0f);
         }
 
-        if (hitSound != null && hitSoundClip != null)
-        {
-            hitSound.PlayOneShot(hitSoundClip);
-        }
+        AudioManager.instance.PlaySfx(Sfxs.Hit);
     }
 
     /// <summary>
