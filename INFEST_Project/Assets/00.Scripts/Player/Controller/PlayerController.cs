@@ -204,50 +204,69 @@ public class PlayerController : NetworkBehaviour
     /// </summary>
     public override void Render()
     {
-        // 자신의 오브젝트만 처리(InputAuthority로 구분한다)
+        /// 1. 내가 InputAuthority를 가진 로컬 플레이어고, 관전 중이 아님: 내 1인칭만 보임
         if (HasInputAuthority && !isSpectating)
         {
             ShowFirstPersonModel(player.FirstPersonRoot);
             HideThirdPersonModel(player.ThirdPersonRoot);
         }
-        else if (!HasInputAuthority && !isSpectating)   // 2. input authority가 없는 각 플레이어가 다시! 원래대로 third를 호출하는 것이 문제
+        /// 2. 내가 InputAuthority가 없고, 관전 중이 아님: 3인칭만 보임
+        else if (!HasInputAuthority && !isSpectating)   
         {
-            /// 관전 카메라 대상인 경우, 상태를 건드리지 않는다
-            if (curSpectatorCam != null)
-            {
-                Player targetPlayer = currentSpectateTarget;
-                if (targetPlayer == player)
-                    return; // 내가 관전 대상이라면 내 모델 상태를 변경하지 않음
-            }
+            ///// 관전 카메라 대상인 경우, 상태를 건드리지 않는다
+            //if (curSpectatorCam != null)
+            //{
+            //    Player targetPlayer = currentSpectateTarget;
+            //    if (targetPlayer == player)
+            //        return; // 내가 관전 대상이라면 내 모델 상태를 변경하지 않음
+            //}
+
+
+            /// 내가 누군가의 관전 대상이면 내 모델 상태를 건드리지 않음
+            if (PlayerController.currentSpectateTarget == player)
+                return;
 
             HideFirstPersonModel(player.FirstPersonRoot);
             ShowThirdPersonModel(player.ThirdPersonRoot);
         }
 
-        // 관전 모드(관전 대상으로 구분한다)
-        else if (HasInputAuthority && isSpectating)  // 1. input authority를 가진 각 플레이어가 통과해서 정상적으로 바꾼다
+        /// 3. 내가 관전 중인 플레이어라면, 관전 대상의 모델만 1인칭으로 보이게 함
+        else if (HasInputAuthority && isSpectating)  
         {
-            if (curSpectatorCam == null) return;
-            //Player targetPlayer = curSpectatorCam.GetComponentInParent<Player>();
-            Player targetPlayer = currentSpectateTarget;
-            if (targetPlayer == null) return;
-
-            // 동기화 되면 안된다
-            // 관전 중인 클라이언트에서만 모든 플레이어를 순회하며 처리
-            foreach (var playerRef in playerRefs)
+            /// 관전 대상(currentSpectateTarget)만 1인칭
+            if (PlayerController.currentSpectateTarget == player)
             {
-                Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
-                if (otherPlayer == targetPlayer)
-                {
-                    ShowFirstPersonModel(targetPlayer.FirstPersonRoot);
-                    HideThirdPersonModel(targetPlayer.ThirdPersonRoot);
-                }
-                else
-                {
-                    HideFirstPersonModel(otherPlayer.FirstPersonRoot);
-                    ShowThirdPersonModel(otherPlayer.ThirdPersonRoot);
-                }
+                ShowFirstPersonModel(player.FirstPersonRoot);
+                HideThirdPersonModel(player.ThirdPersonRoot);
             }
+            /// 나머지(여기엔 자기 자신(죽은 플레이어)도 포함) 모두 3인칭
+            else
+            {
+                HideFirstPersonModel(player.FirstPersonRoot);
+                ShowThirdPersonModel(player.ThirdPersonRoot);
+            }
+
+            //if (curSpectatorCam == null) return;
+            ////Player targetPlayer = curSpectatorCam.GetComponentInParent<Player>();
+            //Player targetPlayer = currentSpectateTarget;
+            //if (targetPlayer == null) return;
+
+            //// 동기화 되면 안된다
+            //// 관전 중인 클라이언트에서만 모든 플레이어를 순회하며 처리
+            //foreach (var playerRef in playerRefs)
+            //{
+            //    Player otherPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(playerRef);
+            //    if (otherPlayer == targetPlayer)
+            //    {
+            //        ShowFirstPersonModel(targetPlayer.FirstPersonRoot);
+            //        HideThirdPersonModel(targetPlayer.ThirdPersonRoot);
+            //    }
+            //    else
+            //    {
+            //        HideFirstPersonModel(otherPlayer.FirstPersonRoot);
+            //        ShowThirdPersonModel(otherPlayer.ThirdPersonRoot);
+            //    }
+            //}
         }
     }
     void HideFirstPersonModel(GameObject firstPersonRoot)
