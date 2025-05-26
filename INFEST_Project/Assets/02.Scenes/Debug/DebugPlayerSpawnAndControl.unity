@@ -737,6 +737,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkGameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5968973178278424143, guid: af0d6a3d5ade20a4594440605aedd24b,
+        type: 3}
+      propertyPath: storeController
+      value: 
+      objectReference: {fileID: 1345898398}
     - target: {fileID: 7851311580529667776, guid: af0d6a3d5ade20a4594440605aedd24b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1443,6 +1448,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7dbc74f399ea2843ac9cd339ef528b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1345898398 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6347159837367742888, guid: 60ca203d2baf8fb4e9d055ccf6396428,
+    type: 3}
+  m_PrefabInstance: {fileID: 1345898394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3cb51a95ddbc224d8a1e19726b9e6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1361093061
