@@ -422,6 +422,7 @@ public class Store : NetworkBehaviour
 
         if (itemInv[index] == null) return;
         if (itemInv[index].curNum >= itemInv[index].instance.data.MaxNum) return;
+        if (_player.statHandler.CurGold < itemInv[index].instance.data.Price) return;
 
         _player.statHandler.CurGold -= itemInv[index].instance.data.Price;
         itemInv[index].AddNum();

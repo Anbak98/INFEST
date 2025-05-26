@@ -1,12 +1,9 @@
 using Fusion;
 using Fusion.Sockets;
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 {
@@ -33,6 +30,8 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         MatchManager.Instance.RoomUI.SetVisualablePlayPartyButtonOnHost(runner.IsSharedModeMasterClient);
+
+        Global.Instance.UIManager.Hide<UILoadingPopup>();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -75,6 +74,50 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
             if (MatchManager.Instance != null && MatchManager.Instance.RoomUI != null)
                 MatchManager.Instance.RoomUI.UpdateUI(_teamProfiles);
         }
+    }
+
+    [Networked]
+    private int IsReadyCount { get; set; } = 0;
+
+    public IEnumerator BroadcastPlayGame()
+    {
+        RPC_RequestReady();
+
+        yield return new WaitForSeconds(0.2F);
+
+        while (IsReadyCount < Runner.SessionInfo.PlayerCount)
+            yield return null;
+
+        var load = Runner.LoadScene("RuinedCity");
+
+        while(!load.IsDone)
+            yield return null;
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_RequestReady()
+    {
+        AudioManager.instance.StopBgm();
+        Global.Instance.UIManager.Show<UILoadingPopup>();
+        Debug.Log($"{IsReadyCount}/{Runner.SessionInfo.PlayerCount}");
+
+        if (Runner.IsSharedModeMasterClient)
+        {
+            PlayerPrefsManager.SetGameMode(GameMode.Host);
+        }
+        else
+        {
+            PlayerPrefsManager.SetGameMode(GameMode.Client);
+        }
+
+        RPC_AcceptReady();
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_AcceptReady()
+    {
+        IsReadyCount++;
+        Debug.Log($"{IsReadyCount}/{Runner.SessionInfo.PlayerCount}");
     }
 
     #region NOT USED

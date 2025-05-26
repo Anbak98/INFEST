@@ -35,7 +35,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
     {
         if (SpawnWaitingNum <= 0 && SpawnedNum <= 0)
         {
-            NetworkGameManager.Instance.gameState = GameState.None;
+            NetworkGameManager.Instance.ChangeState(GameState.None);
         }
 
         if (waveSpawnDelayTimer.ExpiredOrNotRunning(Runner))
@@ -140,7 +140,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
                 }
             }
 
-            NetworkGameManager.Instance.gameState = GameState.Wave;
+            NetworkGameManager.Instance.ChangeState(GameState.Wave);
 
             waveCaller = from;
             WaveNum++;
@@ -151,7 +151,8 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public void SpawnOnPos(Transform pos, int monsterKey = 1001)
     {
-        NetworkGameManager.Instance.gameState = GameState.None;
+        NetworkGameManager.Instance.ChangeState(GameState.None);
+
         NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey), pos.transform.position);
     }
 
@@ -174,7 +175,8 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             iteral--;
         } while (justSpawnPoint.Count == 0 && iteral > 0);
 
-        NetworkGameManager.Instance.gameState = GameState.None;
+        NetworkGameManager.Instance.ChangeState(GameState.None);
+
 
 
         NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey.Value), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
@@ -203,7 +205,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             iteral--;
         } while (justSpawnPoint.Count == 0 && iteral > 0);
 
-        NetworkGameManager.Instance.gameState = GameState.Wave;
+        NetworkGameManager.Instance.ChangeState(GameState.Wave);
 
 
         NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey.Value), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);

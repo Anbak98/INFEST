@@ -17,9 +17,9 @@ public class PlayerAttackedEffectController : MonoBehaviour
     [SerializeField] private float _shakeIntensity = 2.0f;
 
 
-    [Header("Camera Components")]
-    [SerializeField] AudioSource _audioSource;
-    [SerializeField] AudioClip[] _attackedSounds;
+    //[Header("Camera Components")]
+    //[SerializeField] AudioSource _audioSource;
+    //[SerializeField] AudioClip[] _attackedSounds;
 
     private CinemachineBasicMultiChannelPerlin _cameraNoise;
 
@@ -55,8 +55,9 @@ public class PlayerAttackedEffectController : MonoBehaviour
     {
         _uiAttackEffect.SetActive(true);
 
-        int rand = Random.Range(0, _attackedSounds.Length);
-        _audioSource.PlayOneShot(_attackedSounds[rand]);
+        //int rand = Random.Range(0, _attackedSounds.Length);
+        //_audioSource.PlayOneShot(_attackedSounds[rand]);
+        AudioManager.instance.PlaySfx(Sfxs.Damage);
 
         // 페이드 아웃 시작
         CanvasGroup canvasGroup = _uiAttackEffect.GetComponent<CanvasGroup>();

@@ -40,7 +40,7 @@ public class UITutorial : UIScreen
                 toolTipText.text = "Left Mouse - 사격\r\nRight Mouse - 조준\r\nMouse Wheel- 무기 변경";
                 break;
             case 2:
-                tutorialText.text = "상점을 이용해서 정비하세요!\r\n(상점은 랜덤으로 활성화됩니다.)";
+                tutorialText.text = "상점을 이용해서 정비하세요!";
                 toolTipText.text = "F - 상호작용";
                 break;
             case 3:

@@ -21,6 +21,14 @@ public class UISetView : UIScreen
     public Slider sensitivitySlider;
     public TextMeshProUGUI sensitivityText;
 
+    [Header("사운드")]
+    public Slider masterSlider;
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public TextMeshProUGUI masterText;
+    public TextMeshProUGUI bgmText;
+    public TextMeshProUGUI sfxText;
+
     [Header("저장버튼")]
     public Button saveBtn;
 
@@ -64,12 +72,27 @@ public class UISetView : UIScreen
             CheckForChanges();
         });
 
+        masterText.text = $"{(masterSlider.value * 100f).ToString("F0")}%";
+        bgmText.text = $"{(bgmSlider.value * 100f).ToString("F0")}%";
+        sfxText.text = $"{(sfxSlider.value * 100f).ToString("F0")}%";
+
+        masterSlider.value = PlayerPrefs.GetFloat("Master", 0.5f);
+        bgmSlider.value = PlayerPrefs.GetFloat("Bgm", 0.5f);
+        sfxSlider.value = PlayerPrefs.GetFloat("Sfx", 0.5f);
+
+        AudioManager.instance.SetMaster(masterSlider.value);
+        AudioManager.instance.SetBgm(bgmSlider.value);
+        AudioManager.instance.SetSfx(sfxSlider.value);
+
+        masterSlider.onValueChanged.AddListener(SetMaster);
+        bgmSlider.onValueChanged.AddListener(SetBgm);
+        sfxSlider.onValueChanged.AddListener(SetSfx);
 
         SetUpScreenRate();
         SetUpResolution();
         SetUpGraphic();
         SetUpDisplay();
-    }
+    }        
 
     public override void OnShow()
     {
@@ -79,6 +102,27 @@ public class UISetView : UIScreen
     public override void OnHide()
     {
         base.OnHide();
+    }
+
+    public void SetMaster(float volume)
+    {
+        AudioManager.instance.SetMaster(volume);
+        PlayerPrefs.SetFloat("Master", volume);
+        masterText.text = $"{(volume * 100f).ToString("F0")}%";
+    }
+
+    public void SetBgm(float volume)
+    {
+        AudioManager.instance.SetBgm(volume);
+        PlayerPrefs.SetFloat("Bgm",volume);
+        bgmText.text = $"{(volume * 100f).ToString("F0")}%";
+    }
+
+    public void SetSfx(float volume)
+    {
+        AudioManager.instance.SetSfx(volume);
+        PlayerPrefs.SetFloat("Sfx", volume);
+        sfxText.text = $"{(volume * 100f).ToString("F0")}%";
     }
 
     public void Brightness(float value)
@@ -199,6 +243,7 @@ public class UISetView : UIScreen
         _originalDisplayIndex = display.value;
         _originalSensitivity = sensitivitySlider.value;
 
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         saveBtn.gameObject.SetActive(false);
     }
 
@@ -219,11 +264,13 @@ public class UISetView : UIScreen
         _originalDisplayIndex = display.value;
         _originalSensitivity = sensitivitySlider.value;
 
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         this.gameObject.SetActive(false);
     }
 
     public void OnClickCancelBtn()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         this.gameObject.SetActive(false);
     }
 }

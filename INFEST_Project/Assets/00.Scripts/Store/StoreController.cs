@@ -95,7 +95,7 @@ public class StoreController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            RPC_Show();
+            RPC_Hide();
         }
     }
     /// <summary>

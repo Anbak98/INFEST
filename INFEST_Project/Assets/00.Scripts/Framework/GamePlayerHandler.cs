@@ -20,27 +20,27 @@ namespace INFEST.Game
 
         public List<Transform> PlayerSpawnPoints;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, NetworkId> PlayerObjs => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, PlayerGameProfile> PlayerGameProfiles => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameKillCounts => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameDeathCounts => default;
 
-        [Networked, Capacity(4), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
+        [Networked, Capacity(16), OnChangedRender(nameof(OnValueChangedInvoke)), UnitySerializeField]
         private NetworkDictionary<PlayerRef, int> PlayerGameGoldCounts => default;
 
 
         public override void Spawned()
         {
             base.Spawned();
-            string nickname = PlayerPrefs.GetString("Nickname");
-            JOB job = (JOB)PlayerPrefs.GetInt("Job");
+            string nickname = PlayerPrefsManager.GetNickname();
+            JOB job = PlayerPrefsManager.GetJob();
 
             RPC_RequestSpawnPlayer(Runner.LocalPlayer, nickname, job);
         }
