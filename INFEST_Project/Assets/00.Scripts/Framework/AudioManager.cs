@@ -19,7 +19,9 @@ public enum Sfxs
     BowmeterAttack1,
     BowmeterAttack2,
     ZombieAttack,
-    GritaScream
+    GritaScream,
+    RageFang_Roaring,
+    RageFang_Rush
 }
 
 [Serializable]

@@ -6,7 +6,7 @@ public class Monster_RageFang_AttackTwo_Roaring : MonsterStateNetworkBehaviour<M
     public override void Enter()
     {
         base.Enter();
-
+        AudioManager.instance.PlaySfx(Sfxs.RageFang_Roaring);
         int curDef = monster.CurDef;
         
         monster.CurDef = 9999;
