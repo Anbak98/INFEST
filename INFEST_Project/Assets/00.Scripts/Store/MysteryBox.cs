@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Fusion;
 using INFEST.Game;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MysteryInstance
 {
