@@ -97,8 +97,8 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_RequestReady()
     {
+        AudioManager.instance.StopBgm();
         Global.Instance.UIManager.Show<UILoadingPopup>();
-
         Debug.Log($"{IsReadyCount}/{Runner.SessionInfo.PlayerCount}");
 
         if (Runner.IsSharedModeMasterClient)

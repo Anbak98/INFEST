@@ -23,7 +23,7 @@ public class Weapon : NetworkBehaviour
     public NetworkPrefabRef rocket;
 
     [Header("Firing")]
-    public LayerMask HitMask;
+    private LayerMask HitMask = ~(1 << 0 | 1 << 6 | 1 << 7 | 1 << 9 | 1 << 16);
     public float reloadTime = 2.0f; // ���� �ӵ�
 
     [Networked] public int curMagazineBullet { get; set; } // ���� źâ�� ź��
@@ -166,6 +166,7 @@ public class Weapon : NetworkBehaviour
                 if (Runner.LagCompensation.Raycast(characterPos, fireDirection, instance.data.WeaponRange,
                         Object.InputAuthority, out var hit, HitMask, hitOptions))
                 {
+                    Debug.Log($"{HitMask}");
                     projectileData.hitPosition = hit.Point;
                     projectileData.hitNormal = hit.Normal;
 
