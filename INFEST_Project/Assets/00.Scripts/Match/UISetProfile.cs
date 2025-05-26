@@ -1,6 +1,6 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UISetProfile : UIScreen
 {
@@ -10,6 +10,13 @@ public class UISetProfile : UIScreen
     {
         base.Start();
         AnalyticsManager.SendFunnelStep(1);
+    }
+
+    public override void OnShow()
+    {
+        base.OnShow();
+
+        Debug.Log($"Call {SceneManager.GetActiveScene()}");
     }
 
     public void OnPressedSetNickname()

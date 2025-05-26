@@ -112,23 +112,27 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedCreateSession()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
         _matchManager.CreateNewSession(true);
     }
 
     public void OnPressedJoinSession()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsMatching(2);
         _matchManager.JoinSession(_joinSessionCode.text);
     }
 
     public void OnPressedQuickMatch()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsMatching(1);
         _matchManager.QuickMatch();
     }
 
     public void OnPressedPlaySoloGame()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsBeforeInGame(10, 1);
         _matchManager.PlayerSoloGame();
     }
@@ -140,11 +144,13 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedCreateRoom()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
         _matchManager.CreateNewSession(false);
     }
 
     public void OnPressedInviteFriend()
     {
+        Global.Instance.UIManager.Show<UILoadingPopup>();
         _matchManager.CreateNewSession(false);
     }
     #endregion

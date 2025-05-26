@@ -17,11 +17,6 @@ public class DownLoadLink : MonoBehaviour
 
     public void LoadTutorail()
     {
-        SceneManager.LoadScene("Tutorial");
-    }
-
-    public void LoadTUTO()
-    {
-        SceneManager.LoadScene("Tutorial");
+        MatchManager.Instance.PlayerTutorial();
     }
 }
