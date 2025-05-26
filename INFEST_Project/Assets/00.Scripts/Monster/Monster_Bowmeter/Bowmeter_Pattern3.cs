@@ -14,6 +14,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
 
         monster.IsShoot = true;
         monster.CurMovementSpeed = 0f;
+        AudioManager.instance.PlaySfx(Sfxs.BowmeterAttack1);
 
         phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10);
     }

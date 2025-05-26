@@ -166,7 +166,6 @@ public class Weapon : NetworkBehaviour
                 if (Runner.LagCompensation.Raycast(characterPos, fireDirection, instance.data.WeaponRange,
                         Object.InputAuthority, out var hit, HitMask, hitOptions))
                 {
-                    Debug.Log($"{HitMask}");
                     projectileData.hitPosition = hit.Point;
                     projectileData.hitNormal = hit.Normal;
 
