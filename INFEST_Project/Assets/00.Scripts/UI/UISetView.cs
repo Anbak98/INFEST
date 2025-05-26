@@ -243,6 +243,7 @@ public class UISetView : UIScreen
         _originalDisplayIndex = display.value;
         _originalSensitivity = sensitivitySlider.value;
 
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         saveBtn.gameObject.SetActive(false);
     }
 
@@ -263,11 +264,13 @@ public class UISetView : UIScreen
         _originalDisplayIndex = display.value;
         _originalSensitivity = sensitivitySlider.value;
 
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         this.gameObject.SetActive(false);
     }
 
     public void OnClickCancelBtn()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         this.gameObject.SetActive(false);
     }
 }

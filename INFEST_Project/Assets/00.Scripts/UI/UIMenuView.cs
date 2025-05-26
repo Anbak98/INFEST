@@ -12,6 +12,7 @@ public class UIMenuView : UIScreen
         base.OnShow();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public override void OnHide()
@@ -23,11 +24,13 @@ public class UIMenuView : UIScreen
 
     public void OnClickSetBtn()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UISetView>();
     }
 
     public void OnClickBackBtn()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Hide<UIMenuView>();        
     }
 }

@@ -90,6 +90,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void StopSfx()
+    {
+        audioSfx.Stop();
+    }
+
     public void SetMaster(float value)
     {
         audioMixer.SetFloat("Master", Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f);

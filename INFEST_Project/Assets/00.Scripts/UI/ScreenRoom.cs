@@ -78,6 +78,7 @@ public class ScreenRoom : UIScreen
     {
         PlayerPrefs.SetInt("Job", (int)JOB.BattleMedic);
         UpdateMyProfile();
+        AudioManager.instance.PlaySfx(Sfxs.Click);
 
         if (Room != null)
             Room.RPC_BroadcastUpdatePlayerProfile();
@@ -87,6 +88,7 @@ public class ScreenRoom : UIScreen
     {
         PlayerPrefs.SetInt("Job", (int)JOB.Defender);
         UpdateMyProfile();
+        AudioManager.instance.PlaySfx(Sfxs.Click);
 
         if (Room != null)
             Room.RPC_BroadcastUpdatePlayerProfile();
@@ -96,6 +98,7 @@ public class ScreenRoom : UIScreen
     {
         PlayerPrefs.SetInt("Job", (int)JOB.Commander);
         UpdateMyProfile();
+        AudioManager.instance.PlaySfx(Sfxs.Click);
 
         if (Room != null)
             Room.RPC_BroadcastUpdatePlayerProfile();
@@ -105,6 +108,7 @@ public class ScreenRoom : UIScreen
     {
         PlayerPrefs.SetInt("Job", (int)JOB.Demolator);
         UpdateMyProfile();
+        AudioManager.instance.PlaySfx(Sfxs.Click);
 
         if (Room != null)
             Room.RPC_BroadcastUpdatePlayerProfile();
@@ -118,6 +122,7 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedJoinSession()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsMatching(2);
         _matchManager.JoinSession(_joinSessionCode.text);
@@ -125,6 +130,7 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedQuickMatch()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsMatching(1);
         _matchManager.QuickMatch();
@@ -132,6 +138,7 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedPlaySoloGame()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsBeforeInGame(10, 1);
         _matchManager.PlayerSoloGame();
@@ -139,17 +146,20 @@ public class ScreenRoom : UIScreen
 
     public void OnPressedPlayPartyGame()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         _matchManager.PlayPartyGame();
     }
 
     public void OnPressedCreateRoom()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         _matchManager.CreateNewSession(false);
     }
 
     public void OnPressedInviteFriend()
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         _matchManager.CreateNewSession(false);
     }
