@@ -15,9 +15,11 @@ public enum Sfxs
     Hit,
     Damage,
     Siren,
-    ZombieSpawn,
+    ZombieSpawn,    
     BowmeterAttack1,
-    BowmeterAttack2
+    BowmeterAttack2,
+    ZombieAttack,
+    GritaScream
 }
 
 [Serializable]

@@ -23,7 +23,8 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
 
     public override void Attack()
     {
-        base.Attack();        
+        base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
         monster.TryAttackTarget(monster.CurDamage);
     }
 }

@@ -25,6 +25,7 @@ public class WarZ_Wave_Punch : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_P
     public override void Attack()
     {
         base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
         monster.TryAttackTarget((int)(monster.CurDamage /** monster.skills[1].DamageCoefficient*/));
     }
 }

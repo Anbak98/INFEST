@@ -6,10 +6,7 @@ using UnityEngine;
 // Scream상태에서 할 일
 // 소리 지르기
 public class Grita_Scream_Scream : MonsterStateNetworkBehaviour<Monster_Grita, Grita_Phase_Scream>
-{
-
-    [SerializeField] private AudioSource _audio;
-    [SerializeField] private AudioClip _screamingSound;
+{        
     public override void Enter()
     {
         base.Enter();
@@ -35,6 +32,6 @@ public class Grita_Scream_Scream : MonsterStateNetworkBehaviour<Monster_Grita, G
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_PlayerScreamingSount()
     {
-        _audio.PlayOneShot(_screamingSound);
+        AudioManager.instance.PlaySfx(Sfxs.GritaScream);
     }
 }

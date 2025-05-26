@@ -14,8 +14,7 @@ public class Bowmeter_Pattern2 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
             return;
 
         monster.IsBwack = true;
-        monster.CurMovementSpeed = 0f;
-        AudioManager.instance.PlaySfx(Sfxs.BowmeterAttack2);
+        monster.CurMovementSpeed = 0f;        
 
         phase.skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, 7f);
     }
@@ -42,9 +41,10 @@ public class Bowmeter_Pattern2 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Effect()
     {
         base.Effect();
-
+                
         if (monster.target != null)
         {
+            AudioManager.instance.PlaySfx(Sfxs.BowmeterAttack2);
             Vector3 vomitPos = phase.vomitPosition.position;
             Vector3 targetPos = monster.target.position;
 

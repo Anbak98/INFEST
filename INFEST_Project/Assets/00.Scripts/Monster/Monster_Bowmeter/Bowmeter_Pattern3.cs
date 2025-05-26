@@ -13,8 +13,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
             return;
 
         monster.IsShoot = true;
-        monster.CurMovementSpeed = 0f;
-        AudioManager.instance.PlaySfx(Sfxs.BowmeterAttack1);
+        monster.CurMovementSpeed = 0f;        
 
         phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10);
     }
@@ -43,6 +42,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
 
         if (monster.target != null)
         {
+            AudioManager.instance.PlaySfx(Sfxs.BowmeterAttack1);
             Vector3 vomitPos = phase.vomitPosition.position;
             Vector3 targetPos = monster.target.position;
 
