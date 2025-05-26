@@ -21,6 +21,8 @@ public class UIBoxopenView : UIScreen
 #endif
 
         if (mysteryBox.player.statHandler.CurGold < 2000) return;
+        mysteryBox.player.statHandler.CurGold -= 2000;
+
         mysteryBox.OpenBox();
     }
 
