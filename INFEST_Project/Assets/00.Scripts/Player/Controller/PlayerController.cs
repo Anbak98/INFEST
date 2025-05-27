@@ -252,7 +252,7 @@ public class PlayerController : NetworkBehaviour
     private void LocalInputForChangingam()
     {
         /// InputAuthority가 있는 플레이어가 죽었을 때
-        if (!player.statHandler.IsDead && !HasInputAuthority)
+        if (!player.statHandler.IsDead || !HasInputAuthority)
             return;
 
         // 현재 프레임에서 Q 또는 E 키 입력 확인

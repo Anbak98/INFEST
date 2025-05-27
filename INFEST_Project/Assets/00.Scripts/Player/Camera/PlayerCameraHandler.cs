@@ -166,6 +166,7 @@ public class PlayerCameraHandler : NetworkBehaviour
             //curFocusingCam.gameObject.GetComponentInParent<PlayerCameraHandler>().isFocusing = false;
             // curFocusingCam가 참조하고 있는 대상에 접근하려면??
 
+            /// 이걸로 안된다, 다른 자료형을 선언해서 거기에 저장해야한다
             var prevHandler = curFocusingCam.GetComponentInParent<PlayerCameraHandler>();
             if (prevHandler != null)
             {
