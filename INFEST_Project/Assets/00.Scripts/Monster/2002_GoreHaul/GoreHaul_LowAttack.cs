@@ -12,22 +12,22 @@ public class GoreHaul_LowAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul,
         monster.IsLowAttack = true;
         monster.CurMovementSpeed = 0f;
 
-        phase.skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, 5f);
+        phase.skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, 7f);
     }
 
     public override void Execute()
     {
         base.Execute();
 
-        if (monster.target == null)
-            return;
+        //if (monster.target == null)
+        //    return;
 
-        float distance = Vector3.Distance(monster.transform.position, monster.target.position);
+        //float distance = Vector3.Distance(monster.transform.position, monster.target.position);
                 
-        if (distance > monster.skills[2].UseRange)
-        {
-            phase.ChangeState<GoreHaul_Run>();
-        }
+        //if (distance > monster.skills[2].UseRange)
+        //{
+        //    phase.ChangeState<GoreHaul_Run>();
+        //}
     }
 
     public override void Exit()

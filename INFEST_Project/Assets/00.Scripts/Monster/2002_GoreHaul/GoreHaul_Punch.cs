@@ -16,15 +16,15 @@ public class GoreHaul_Punch : MonsterStateNetworkBehaviour<Monster_GoreHaul, Gor
     {
         base.Execute();
 
-        if (monster.target == null)
-            return;
+        //if (monster.target == null)
+        //    return;
 
-        float distance = Vector3.Distance(monster.transform.position, monster.target.position);
+        //float distance = Vector3.Distance(monster.transform.position, monster.target.position);
 
-        if (distance > monster.skills[1].UseRange + 1f)
-        {
-            phase.ChangeState<GoreHaul_Run>();
-        }
+        //if (distance > monster.skills[1].UseRange + 1f)
+        //{
+        //    phase.ChangeState<GoreHaul_Run>();
+        //}
     }
 
     public override void Exit()

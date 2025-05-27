@@ -1108,6 +1108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d367bb18073003b4790e14385d7e71f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1529659448040893922
 GameObject:
   m_ObjectHideFlags: 0
@@ -4147,7 +4150,6 @@ MonoBehaviour:
     _value: 0
   FSM: {fileID: 1969654682258238799}
   IsReadyForChangingState: 1
-  _PhaseIndex: 0
   _IsIdle:
     _value: 0
   _IsWalk:
