@@ -1981,6 +1981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d114a27dd5723a0479e482c0e1f0d6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 3072078453906701333}
   _scopeCam: {fileID: 0}
   _cameraHolder: {fileID: 7721353801691121081}
   _sensitivity: 5
@@ -1989,6 +1990,9 @@ MonoBehaviour:
   statHandler: {fileID: 3147526191137004029}
   firstPersonCamera: {fileID: 241464025491880770}
   spectatorCamera: {fileID: 510900682511835160}
+  alivePlayerCameras: []
+  currentPlayerIndex: 0
+  curFocusingCam: {fileID: 0}
   _simpleKCC: {fileID: 8802749177907789785}
 --- !u!1 &3819623328929040217
 GameObject:
@@ -4227,10 +4231,7 @@ MonoBehaviour:
   _simpleKCC: {fileID: 8802749177907789785}
   CameraHandle: {fileID: 7721353801691121081}
   playerId: 
-  isSpectating: 0
-  alivePlayerCameras: []
-  currentPlayerIndex: 0
-  curSpectatorCam: {fileID: 0}
+  isFocusing: 0
 --- !u!114 &3072078453906701333
 MonoBehaviour:
   m_ObjectHideFlags: 0
