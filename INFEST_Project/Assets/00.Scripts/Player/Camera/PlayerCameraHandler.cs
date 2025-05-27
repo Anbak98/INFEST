@@ -5,7 +5,6 @@ using INFEST.Game;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// 카메라의 이동 회전을 다룬다
