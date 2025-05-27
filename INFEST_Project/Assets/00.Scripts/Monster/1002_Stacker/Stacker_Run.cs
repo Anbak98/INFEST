@@ -6,19 +6,13 @@ public class Stacker_Run : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker
     {
         base.Enter();
         monster.IsRun = true;
-        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
-        monster.SetTargetRandomly();
+        monster.CurMovementSpeed = monster.info.SpeedMove;        
     }
 
     public override void Execute()
     {
         base.Execute();
-        //monster.AIPathing.SetDestination(monster.target.position);
-
-        if (!monster.AIPathing.pathPending && monster.AIPathing.remainingDistance <= 2f)
-        {
-            monster.IsReadyForChangingState = true;
-        }
+        monster.AIPathing.SetDestination(monster.target.position);
     }
 
     public override void Exit()

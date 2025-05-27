@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Fusion;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
