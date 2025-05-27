@@ -251,34 +251,39 @@ public class UIShopView : UIScreen
     public void OnClickAllBtn()
     {
         _store.RPC_TryAllSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).Runner.LocalPlayer);
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public void OnClickDefBtn()
     {
         _store.RPC_TryDefSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer));
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public void OnClickBulletSupplementBtn(int index)
     {
         _store.RPC_TryBulletSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public void OnClickItmeSupplementBtn(int index)
     {
         _store.RPC_TryItmeSupplement(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public void OnClickBuyBtn(int index)
     {
         if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
         _store.RPC_TryBuy(NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer), index);
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public void OnClickSaleBtn(int index)
     {
         if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
         _store.RPC_TrySale(NetworkGameManager.Instance.Runner.LocalPlayer, index);
-
+        AudioManager.instance.PlaySfx(Sfxs.Click);
     }
 
     public void UpdateSaleButtonState()
@@ -461,6 +466,7 @@ public class UIShopView : UIScreen
 
     public void OnClickTypeBtn(int index)
     {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
         int _itemKey;
 
         for (int i = 0; i < buyTaps.Length; i++)
