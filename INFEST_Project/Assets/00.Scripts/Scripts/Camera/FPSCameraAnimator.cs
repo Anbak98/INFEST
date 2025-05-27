@@ -1,5 +1,6 @@
 // Designed by KINEMATION, 2025.
 
+using Cinemachine;
 using KINEMATION.FPSAnimationPack.Scripts.Player;
 using KINEMATION.KAnimationCore.Runtime.Core;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace KINEMATION.FPSAnimationPack.Scripts.Camera
         private Vector3 _cameraShakeTarget;
         private float _cameraShakePlayback;
 
-        private UnityEngine.Camera _camera;
+        private CinemachineVirtualCamera _camera;
         private FPSPlayer _player;
         private float _baseFov;
         
@@ -58,15 +59,15 @@ namespace KINEMATION.FPSAnimationPack.Scripts.Camera
         {
             if (_camera == null || _player == null) return;
             
-            _camera.fieldOfView = Mathf.Lerp(_baseFov,
+            _camera.m_Lens.FieldOfView = Mathf.Lerp(_baseFov,
                 _player.GetActiveWeapon().weaponSettings.aimFov, _player.AdsWeight);
         }
 
         private void Awake()
         {
             _player = transform.root.GetComponentInChildren<FPSPlayer>();
-            _camera = GetComponent<UnityEngine.Camera>();
-            _baseFov = _camera.fieldOfView;
+            _camera = GetComponent<CinemachineVirtualCamera>();
+            _baseFov = _camera.m_Lens.FieldOfView;
         }
 
         private void Update()

@@ -1,12 +1,9 @@
 using Cinemachine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// 카메라의 이동 회전을 다룬다
@@ -15,6 +12,7 @@ using UnityEngine.InputSystem;
 public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private Camera _scopeCam;          // scope 전용 카메라
+    [SerializeField] private Image _scopeImage;
     [SerializeField] private Transform _cameraHolder;    // 카메라 부모 (X축 회전만 담당)
     public float _sensitivity = 1f;   // 이동에 적용할 민감도
     [SerializeField] private Transform _parentTransform;
@@ -25,7 +23,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     private Camera _mainCam;    // 1인칭 카메라
     public bool isMenu;
-    public PlayerStatHandler statHandler;
+    [SerializeField] private Player _player;
 
     // 관전모드
     public CinemachineVirtualCamera firstPersonCamera;      // 자신의 인플레이 카메라
@@ -59,7 +57,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 
         if (isMenu) return;
 
-        if (statHandler.CurHealth <= 0) return;
+        if (_player.statHandler.CurHealth <= 0) return;
 
         if (Runner.TryGetInputForPlayer(Object.InputAuthority, out NetworkInputData input) == true)
         {
@@ -68,6 +66,10 @@ public class PlayerCameraHandler : NetworkBehaviour
             Vector2 pitchRotation = _simpleKCC.GetLookRotation(true, false);
             _cameraHolder.localRotation = Quaternion.Euler(pitchRotation);
         }
+
+        _scopeImage.rectTransform.position = _mainCam.WorldToScreenPoint(_player.inventory.equippedWeapon.FPSWeapon.aimPoint.transform.position);
+        _scopeImage.gameObject.SetActive(_player.inventory.equippedWeapon.IsAiming);
+        _scopeCam.enabled = _player.inventory.equippedWeapon.IsAiming;
     }
     public void LateUpdate()
     {
