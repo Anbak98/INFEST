@@ -143,7 +143,7 @@ public class GrenadeProjectile : NetworkBehaviour
             _isStopped = true;
             transform.position = hit.point + Vector3.up * 0.01f;
         }
-        else if (hitLayer == 10 || hitLayer == 16 || hitLayer == 7 || hitLayer == 17)
+        else if (hitLayer == 2 || hitLayer == 10 || hitLayer == 16 || hitLayer == 7 || hitLayer == 17)
         {
             //transform.position = hit.point;  // 벽에 부딪히지 않고, 계속 이동
         }
@@ -162,6 +162,7 @@ public class GrenadeProjectile : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_Explode(Vector3 pos)
     {
+        _isStopped = true;
         transform.position = pos;
         explosionParticles.SetActive(true);
         GrenadeExplosion.gameObject.SetActive(true);

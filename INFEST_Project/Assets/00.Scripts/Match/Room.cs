@@ -25,6 +25,8 @@ public class Room : NetworkBehaviour, INetworkRunnerCallbacks
 
         Runner.Spawn(_profilePrefab, inputAuthority: Runner.LocalPlayer).GetComponent<PlayerProfile>();
         PlayerPrefs.SetString("RoomCode", Runner.SessionInfo.Name);
+
+        Global.Instance.UIManager.Hide<UILoadingPopup>();
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)

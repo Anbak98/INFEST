@@ -402,33 +402,31 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void ProcessAds(ref KTransform weaponT)
     {
-        var weaponOffset = GetActiveWeapon().weaponSettings.ikOffset;
-        var adsPose = weaponT;
+        var weapon = GetActiveWeapon();
+        var weaponOffset = weapon.weaponSettings.ikOffset;
+        var adsBlendWeight = weapon.weaponSettings.adsBlend;
 
-        KTransform aimPoint = KTransform.Identity;
+        // 1. 카메라 기준으로 무기 위치와 방향 계산
+        Vector3 targetPosition = cameraPoint.position;
+        Quaternion targetRotation = cameraPoint.rotation;
 
-        aimPoint.position = -weaponBone.InverseTransformPoint(GetActiveWeapon().aimPoint.position);
-        aimPoint.position -= GetActiveWeapon().weaponSettings.aimPointOffset;
-        aimPoint.rotation = Quaternion.Inverse(weaponBone.rotation) * GetActiveWeapon().aimPoint.rotation;
+        // 2. 무기 자체의 aimPoint 위치/회전 계산
+        var weaponAimPoint = weapon.aimPoint;
+        var aimOffsetPos = weaponAimPoint.localPosition + weapon.weaponSettings.aimPointOffset;
+        var aimOffsetRot = weaponAimPoint.localRotation;
 
-        KTransform root = new KTransform(transform.root);
-        adsPose.position = KAnimationMath.MoveInSpace(root, adsPose,
-            GetActiveWeapon().adsPose.position - weaponOffset, 1f);
-        adsPose.rotation =
-            KAnimationMath.RotateInSpace(root, adsPose,
-                GetActiveWeapon().adsPose.rotation, 1f);
+        // 3. 카메라 기준에서 무기 aimPoint가 정중앙으로 향하도록 이동 (보간 포함)
+        Vector3 adsPosition = targetPosition - (targetRotation * aimOffsetPos);
+        Quaternion adsRotation = targetRotation * Quaternion.Inverse(aimOffsetRot);
 
-        float adsBlendWeight = GetActiveWeapon().weaponSettings.adsBlend;
-        adsPose.position = Vector3.Lerp(cameraPoint.position, adsPose.position, adsBlendWeight);
-        adsPose.rotation = Quaternion.Slerp(cameraPoint.rotation, adsPose.rotation, adsBlendWeight);
+        // 4. 보간 적용 (카메라 기준 -> 무기 위치)
+        adsPosition = Vector3.Lerp(cameraPoint.position, adsPosition, adsBlendWeight);
+        adsRotation = Quaternion.Slerp(cameraPoint.rotation, adsRotation, adsBlendWeight);
 
-        adsPose.position = KAnimationMath.MoveInSpace(root, adsPose, aimPoint.rotation * aimPoint.position, 1f);
-        adsPose.rotation = KAnimationMath.RotateInSpace(root, adsPose, aimPoint.rotation, 1f);
-
+        // 5. 부드러운 최종 보간 적용
         float weight = KCurves.EaseSine(0f, 1f, _adsWeight);
-
-        weaponT.position = Vector3.Lerp(weaponT.position, adsPose.position, weight);
-        weaponT.rotation = Quaternion.Slerp(weaponT.rotation, adsPose.rotation, weight);
+        weaponT.position = Vector3.Lerp(weaponT.position, adsPosition, weight);
+        weaponT.rotation = Quaternion.Slerp(weaponT.rotation, adsRotation, weight);
     }
 
     private KTransform GetWeaponPose()
