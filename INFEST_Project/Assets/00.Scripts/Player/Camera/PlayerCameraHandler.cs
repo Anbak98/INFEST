@@ -1,6 +1,8 @@
 using Cinemachine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using INFEST.Game;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
