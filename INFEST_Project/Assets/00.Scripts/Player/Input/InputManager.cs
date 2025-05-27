@@ -80,6 +80,46 @@ public class InputManager : MonoBehaviour
         else
             PlayerMoveAction?.Disable();
     }
+
+    public void ShopSetActive(bool active)
+    {
+        if (active)
+        {
+            PlayerMoveAction.Player.Move.Enable();
+            PlayerMoveAction.Player.Look.Enable();
+            PlayerMoveAction.Player.Jump.Enable();
+            PlayerMoveAction.Player.Fire.Enable();
+            PlayerMoveAction.Player.Zoom.Enable();
+            PlayerMoveAction.Player.Reload.Enable();
+            PlayerMoveAction.Player.Run.Enable();
+            PlayerMoveAction.Player.Sit.Enable();
+            PlayerMoveAction.Player.Swap.Enable();
+            PlayerMoveAction.Player.ChangeCamera.Enable();
+            PlayerMoveAction.Player.Grenade.Enable();
+            PlayerMoveAction.Player.Heal.Enable();
+            PlayerMoveAction.Player.Shield.Enable();
+            PlayerMoveAction.Player.ScoreBoard.Enable();
+            //PlayerAction.Player.Menu.Enable();
+        }
+        else
+        {
+            PlayerMoveAction.Player.Move.Disable();
+            PlayerMoveAction.Player.Look.Disable();
+            PlayerMoveAction.Player.Jump.Disable();
+            PlayerMoveAction.Player.Fire.Disable();
+            PlayerMoveAction.Player.Zoom.Disable();
+            PlayerMoveAction.Player.Reload.Disable();
+            PlayerMoveAction.Player.Run.Disable();
+            PlayerMoveAction.Player.Sit.Disable();
+            PlayerMoveAction.Player.Swap.Disable();
+            PlayerMoveAction.Player.ChangeCamera.Disable();
+            PlayerMoveAction.Player.Grenade.Disable();
+            PlayerMoveAction.Player.Heal.Disable();
+            PlayerMoveAction.Player.Shield.Disable();
+            PlayerMoveAction.Player.ScoreBoard.Disable();
+            //PlayerAction.Player.Menu.Disable();
+        }
+    }
     /// <summary>    
     /// PlayerController에서 호출하여 해당 InputAction에 맞는 이벤트를 추가한다
     /// </summary>
@@ -95,6 +135,7 @@ public class InputManager : MonoBehaviour
         };
     }
 
+    // 메뉴 켰을 때 꺼져야 할 인풋들
     public InputAction MoveGetInput(EPlayerInput input)
     {
         return input switch
