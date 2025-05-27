@@ -1,18 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Fusion;
 
-public class GoreHaul_LowAttack : MonoBehaviour
+public class GoreHaul_LowAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul, GoreHaul_Phase_Chase>
 {
-    // Start is called before the first frame update
-    void Start()
+    private TickTimer _tickTimer;
+
+    public override void Enter()
     {
-        
+        base.Enter();
+
+        monster.IsLowAttack = true;
+        monster.CurMovementSpeed = 0f;
+
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 5f);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute()
     {
-        
+        base.Execute();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        monster.IsLowAttack = false;
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
+        monster.TryAttackTarget(monster.CurDamage);
     }
 }

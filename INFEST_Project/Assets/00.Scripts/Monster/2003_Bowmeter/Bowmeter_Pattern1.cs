@@ -2,8 +2,7 @@ using Fusion;
 using UnityEngine;
 
 public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Chase>
-{
-    public LayerMask collisionLayers;
+{    
     public Vomit vomit;
 
     public override void Enter()

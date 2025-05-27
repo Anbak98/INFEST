@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GoreHaul_Phase_Wave : MonoBehaviour
+public class GoreHaul_Phase_Wave : MonsterPhase<Monster_GoreHaul>
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void MachineEnter()
     {
-        
+        base.MachineEnter();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void MachineExecute()
     {
-        
+        base.MachineExecute();
+
+        if (monster.PlayerDetectorCollider.radius != monster.info.DetectAreaWave)
+            monster.PlayerDetectorCollider.radius = monster.info.DetectAreaWave;
+    }
+
+    public override void MachineExit()
+    {
+        monster.PlayerDetectorCollider.radius = monster.info.DetectAreaNormal;
+        base.MachineExit();
     }
 }

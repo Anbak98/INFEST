@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class FSM_GoreHaul : MonoBehaviour
+public class FSM_GoreHaul : MonsterFSM<Monster_GoreHaul>
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (other.gameObject.layer == 7)
+        {
+            monster.TryAddTarget(other.transform);
+            monster.SetTargetRandomly();
+            monster.SetTarget(other.transform);
+        }
     }
 }

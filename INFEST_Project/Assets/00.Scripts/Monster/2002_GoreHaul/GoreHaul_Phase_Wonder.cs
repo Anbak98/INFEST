@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GoreHaul_Phase_Wonder : MonoBehaviour
+public class GoreHaul_Phase_Wonder : MonsterPhase<Monster_GoreHaul>
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void MachineExecute()
     {
-        
-    }
+        base.MachineExecute();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (monster.IsFindPlayer() && !monster.IsDead)
+        {
+            monster.FSM.ChangePhase<GoreHaul_Phase_Chase>();
+        }
     }
 }

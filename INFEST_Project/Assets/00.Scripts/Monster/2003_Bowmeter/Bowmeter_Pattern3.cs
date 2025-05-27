@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Chase>
 {
-    public VomitAndArea vomitAndArea;
-    public LayerMask collisionLayers;
+    public VomitAndArea vomitAndArea;    
 
     public override void Enter()
     {

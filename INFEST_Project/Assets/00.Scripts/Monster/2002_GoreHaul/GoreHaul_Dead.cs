@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Fusion;
 
-public class GoreHaul_Dead : MonoBehaviour
+public class GoreHaul_Dead : MonsterStateNetworkBehaviour<Monster_GoreHaul, GoreHaul_Phase_Dead>
 {
-    // Start is called before the first frame update
-    void Start()
+    public TickTimer _tickTimer;
+    public NetworkObject obj;
+
+    public override void Enter()
     {
-        
+        base.Enter();
+        monster.CurMovementSpeed = 0f;
+        _tickTimer = TickTimer.CreateFromSeconds(Runner, 7);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute()
     {
-        
+        base.Execute();
+
+        if (_tickTimer.Expired(Runner))
+        {
+            if (HasStateAuthority)
+            {
+                Runner.Despawn(obj);
+            }
+        }
     }
 }

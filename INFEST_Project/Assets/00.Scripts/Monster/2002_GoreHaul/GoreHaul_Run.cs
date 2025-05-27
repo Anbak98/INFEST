@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GoreHaul_Run : MonoBehaviour
+public class GoreHaul_Run : MonsterStateNetworkBehaviour<Monster_GoreHaul, GoreHaul_Phase_Chase>
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Enter()
     {
-        
+        base.Enter();
+        monster.IsRun = true;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
+
+        monster.SetTargetRandomly();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute()
     {
-        
+        base.Execute();
+
+        if (!monster.AIPathing.pathPending && monster.AIPathing.remainingDistance <= 10f)
+        {
+            monster.IsReadyForChangingState = true;
+        }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        monster.IsRun = false;
     }
 }
