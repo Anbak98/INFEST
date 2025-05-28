@@ -20,7 +20,9 @@ using UnityEngine.UIElements;
 public enum PlayerLockState
 {
     Free,
-    MoveLock
+    MoveLock,   // 앉아있을 때 걸을 수 없다
+    SitLock,    // 걷거나 달리는 중에 앉을 수 없다
+    ZoomLock,   // 달리거나 점프 중에 조준할 수 없다
 }
 
 public class PlayerController : NetworkBehaviour
@@ -268,7 +270,7 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
-    #region 이동, 점프
+    #region 이동, 점프, 앉기, 달리기
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     private void HandleMovement(NetworkInputData input)
     {
@@ -277,6 +279,14 @@ public class PlayerController : NetworkBehaviour
             _simpleKCC.Move(
                 Vector3.zero
             );
+        }
+        else if (LockState == PlayerLockState.MoveLock)
+        {
+            // 앉아 있을 때            // 앉아 있을 때 속도
+        }
+        else if (LockState == PlayerLockState.SitLock)
+        {
+            // 달리고 있을 때
         }
         else
         {
