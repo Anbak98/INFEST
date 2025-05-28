@@ -26,36 +26,33 @@ public class PlayerMoveState : PlayerGroundState
 
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다        
         player.animationController.MoveDirection = data.direction;
-        PlayerMove(data);
+        //PlayerMove(data);
 
         if (data.isJumping)
         {
             player.animationController.isJumping = data.isJumping;
-            stateMachine.ChangeState(stateMachine.JumpState);
+            //stateMachine.ChangeState(stateMachine.JumpState);
         }
 
         if (data.direction == Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.IdleState);
+            //stateMachine.ChangeState(stateMachine.IdleState);
         }
         if (data.isRunning)
         {
             player.animationController.isRunning = data.isRunning;
-            stateMachine.ChangeState(stateMachine.RunState);
+            //stateMachine.ChangeState(stateMachine.RunState);
         }
 
         if ((stateMachine.Player.Weapons != null) && data.isFiring)
         {
             player.animationController.isFiring = data.isFiring;
-            PlayerFire(data);
-
-            stateMachine.ChangeState(stateMachine.AttackWalkState);
-            //player.animationController.isFiring = data.isFiring;
             //PlayerFire(data);
+            //stateMachine.ChangeState(stateMachine.AttackWalkState);
         }
         if (data.isZooming)
         {
-            stateMachine.ChangeState(stateMachine.AimWalkState);
+            //stateMachine.ChangeState(stateMachine.AimWalkState);
         }
 
         //if (data.isSitting)

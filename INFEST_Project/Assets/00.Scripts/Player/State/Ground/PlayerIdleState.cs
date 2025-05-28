@@ -39,12 +39,12 @@ public class PlayerIdleState : PlayerGroundState
         if ((controller.IsGrounded()) && data.isJumping)
         {
             player.animationController.isJumping = data.isJumping;
-            stateMachine.ChangeState(stateMachine.JumpState);
+            //stateMachine.ChangeState(stateMachine.JumpState);
         }
         // 정지한 상태에서 좌우회전
         if (data.direction != Vector3.zero)
         {
-            stateMachine.ChangeState(stateMachine.MoveState);
+            //stateMachine.ChangeState(stateMachine.MoveState);
         }
         // 일단 샷건(isShotgunOnFiring)은 미작성
         if (stateMachine.Player.Weapons != null && data.isFiring)
@@ -55,13 +55,13 @@ public class PlayerIdleState : PlayerGroundState
             // rifle인 경우에 다음프레임에서도 계속 발사하며
             // pistol인 경우에는 다음 프레임에 발사하지 않는다
             player.animationController.isFiring = data.isFiring;
-            PlayerFire(data);
+            //PlayerFire(data);
 
-            stateMachine.ChangeState(stateMachine.AttackState);
+            //stateMachine.ChangeState(stateMachine.AttackState);
         }
         if (controller.IsGrounded() && data.isZooming)
         {
-            stateMachine.ChangeState(stateMachine.AimState);
+            //stateMachine.ChangeState(stateMachine.AimState);
         }
 
         //if(stateMachine.Player.Weapons != null && data.isReloading)

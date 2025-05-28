@@ -10,18 +10,15 @@ public class PlayerAirState : PlayerBaseState
     {
     }
 
+    public PlayerLockState LockState = PlayerLockState.ZoomLock;
+
     public override void Enter()
     {
-        //Debug.Log("Air상태 진입");
         base.Enter();
-
-        //controller.SetGrounded(false);
-        //StartAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
     public override void Exit()
     {
         base.Exit();    // 상단의 layer로 나간다
-        //StopAnimation(stateMachine.Player.AnimationData.AimParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
