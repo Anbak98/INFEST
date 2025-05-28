@@ -189,7 +189,10 @@ public class Player : NetworkBehaviour
 
     private void SetFirstPersonVisuals(bool firstPerson)
     {
-        HandRoot.SetActive(firstPerson);
-        ThirdPersonRoot.SetActive(firstPerson == false);
+        // 무기 index 문제로, 둘 다 활성화한 뒤 렌더러의 활성화를 바꾸는 방식으로 바꿨다
+        //HandRoot.SetActive(firstPerson);
+        //ThirdPersonRoot.SetActive(firstPerson == false);
+        HandRoot.SetActive(true);
+        ThirdPersonRoot.SetActive(true);
     }
 }

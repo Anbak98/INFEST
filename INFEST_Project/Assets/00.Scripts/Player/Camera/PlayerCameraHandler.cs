@@ -32,6 +32,10 @@ public class PlayerCameraHandler : NetworkBehaviour
     // 다른 플레이어에 포커스 맞춘다(관전모드)
     public CinemachineVirtualCamera firstPersonCamera;      // 자신의 인플레이 카메라
     public CinemachineVirtualCamera spectatorCamera;    // curFocusingCam가 참조하는 대상의 카메라
+
+    // 카메라와 플레이어 핸들러 간의 매핑을 저장
+    private Dictionary<CinemachineVirtualCamera, PlayerCameraHandler> cameraToPlayerMap = new Dictionary<CinemachineVirtualCamera, PlayerCameraHandler>();
+
     public List<CinemachineVirtualCamera> alivePlayerCameras = new List<CinemachineVirtualCamera>();
     public int currentPlayerIndex = 0;
     List<PlayerRef> playerRefs = new List<PlayerRef>();
@@ -119,8 +123,9 @@ public class PlayerCameraHandler : NetworkBehaviour
     {
         // 현재 접속중인 플레이어 정보들 저장
         playerRefs = NetworkGameManager.Instance.gamePlayers.GetPlayerRefs();
-        // 이전 생존자 리스트 제거
-        alivePlayerCameras.Clear();
+        alivePlayerCameras.Clear(); // 이전 생존자 리스트 제거
+        cameraToPlayerMap.Clear(); // 매핑 초기화
+
         // playerRefs에 있는 플레이어들의 virtualCamera들의 위치를 저장
         foreach (var playerRef in playerRefs)
         {
@@ -133,6 +138,9 @@ public class PlayerCameraHandler : NetworkBehaviour
                 PlayerCameraHandler otherCamHandler = otherPlayer.GetComponentInChildren<PlayerCameraHandler>();
                 otherCamHandler.spectatorCamera.Priority = 0;
                 alivePlayerCameras.Add(otherCamHandler.spectatorCamera);
+
+                // 카메라와 플레이어 핸들러 매핑 저장
+                cameraToPlayerMap[otherCamHandler.spectatorCamera] = otherCamHandler;
             }
         }
     }
@@ -155,7 +163,6 @@ public class PlayerCameraHandler : NetworkBehaviour
         }
         while (alivePlayerCameras[currentPlayerIndex] == curFocusingCam && attempts < count);
 
-        player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 0;
         SetSpectatorTarget(alivePlayerCameras[currentPlayerIndex]);
 
         Debug.Log($"{alivePlayerCameras[currentPlayerIndex]} 관전 중");
@@ -165,24 +172,29 @@ public class PlayerCameraHandler : NetworkBehaviour
         if (targetCam == null) return;
         if (curFocusingCam != null)
         {
-            curFocusingCam.Priority = 0;    // 지금 포커싱하는 대상의 우선순위 낮춘다
-                                           
-            //curFocusingCam.gameObject.GetComponentInParent<PlayerCameraHandler>().isFocusing = false;
-            // curFocusingCam가 참조하고 있는 대상에 접근하려면??
-
-            /// 이걸로 안된다, 다른 자료형을 선언해서 거기에 저장해야한다
-            var prevHandler = curFocusingCam.GetComponentInParent<PlayerCameraHandler>();
-            if (prevHandler != null)
+            // 기존에 다른 플레이어를 포커싱하고 있을 때
+            if (cameraToPlayerMap.TryGetValue(curFocusingCam, out var prevHandler))
             {
                 prevHandler.isFocusing = false;
+                curFocusingCam.Priority = 0;
+            }
+            // 기존에 자신을 포커싱하고 있을 때
+            else if (curFocusingCam == player.cameraHandler.firstPersonCamera)
+            {
+                curFocusingCam.Priority = 0;
+                player.cameraHandler.isFocusing = false;
             }
         }
+
 
         /// 타겟을 바꾸는 중에 타겟이 죽는 경우에도 타겟이 alivePlayerCameras에 있으면 이동해야한다
         curFocusingCam = targetCam;
         curFocusingCam.Priority = 100;    // 새로운 관전 대상의 우선순위 높인다
-        //curFocusingCam.gameObject.GetComponentInParent<PlayerCameraHandler>().isFocusing = true;  // 관전을 하는 사람의 isFocusing을 true로 하게 된다
-        targetCam.gameObject.GetComponentInParent<PlayerCameraHandler>().isFocusing = true; // 타겟의 isFocusing을 true로
+
+        if (cameraToPlayerMap.TryGetValue(curFocusingCam, out var nextHandler))
+        {
+            nextHandler.isFocusing = true;
+        }
     }
     public void ResetSpectatorTarget()
     {
@@ -193,13 +205,12 @@ public class PlayerCameraHandler : NetworkBehaviour
             curFocusingCam.gameObject.GetComponentInParent<PlayerCameraHandler>().isFocusing = false;
         }
 
-        player.cameraHandler.firstPersonCamera.GetComponent<CinemachineVirtualCamera>().Priority = 100;
-
         // 포커싱 대상 초기화
         // 모든 플레이어가 OnRespawn를 통해 올 수 있으므로, 입력 권한 체크
         if (HasInputAuthority)
         {
             curFocusingCam = player.cameraHandler.firstPersonCamera;
+            curFocusingCam.Priority = 100;
             curFocusingCam.gameObject.GetComponentInParent<PlayerCameraHandler>().isFocusing = true;
         }
     }
