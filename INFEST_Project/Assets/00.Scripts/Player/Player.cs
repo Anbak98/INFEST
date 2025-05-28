@@ -159,6 +159,11 @@ public class Player : NetworkBehaviour
 
             Global.Instance.UIManager.Show<UIStateView>();
             Global.Instance.UIManager.Show<UIBrightView>();
+
+            /// 로컬에서 관전모드를 위해 초기화(각자 로컬에서 입력 권한이 없는 나머지 플레이어는 관전모드 불가능)
+            cameraHandler.curFocusingCam = cameraHandler.firstPersonCamera;
+            cameraHandler.alivePlayerCameras.Add(cameraHandler.spectatorCamera);
+            cameraHandler.isFocusing = true;
         }
     }
 
@@ -184,7 +189,10 @@ public class Player : NetworkBehaviour
 
     private void SetFirstPersonVisuals(bool firstPerson)
     {
-        HandRoot.SetActive(firstPerson);
-        ThirdPersonRoot.SetActive(firstPerson == false);
+        // 무기 index 문제로, 둘 다 활성화한 뒤 렌더러의 활성화를 바꾸는 방식으로 바꿨다
+        //HandRoot.SetActive(firstPerson);
+        //ThirdPersonRoot.SetActive(firstPerson == false);
+        HandRoot.SetActive(true);
+        ThirdPersonRoot.SetActive(true);
     }
 }

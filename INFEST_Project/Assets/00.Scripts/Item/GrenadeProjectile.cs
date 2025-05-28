@@ -14,7 +14,7 @@ public class GrenadeProjectile : NetworkBehaviour
     public Transform throwPoint;
     private Vector3 _velocity;
     public Grenade obj;
-
+    public GameObject rendering;
     private float _castRadius = 0.2f;
 
     private bool _isStopped = false;
@@ -163,6 +163,7 @@ public class GrenadeProjectile : NetworkBehaviour
     private void RPC_Explode(Vector3 pos)
     {
         _isStopped = true;
+        rendering.SetActive(false);
         transform.position = pos;
         explosionParticles.SetActive(true);
         GrenadeExplosion.gameObject.SetActive(true);

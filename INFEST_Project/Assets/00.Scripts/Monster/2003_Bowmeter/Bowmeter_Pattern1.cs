@@ -1,21 +1,17 @@
 using Fusion;
 using UnityEngine;
 
-public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Chase>
-{
-    public VomitAndArea vomitAndArea;
-    public LayerMask collisionLayers;
+public class Bowmeter_Pattern1 : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowmeter_Phase_Chase>
+{    
+    public Vomit vomit;
 
     public override void Enter()
     {
         base.Enter();
-        if (monster.IsDead || monster.target == null)
-            return;
-
-        monster.IsShoot = true;
+        monster.IsPunch = true;
         monster.CurMovementSpeed = 0f;        
 
-        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10);
+        phase.skillCoolDown[1] = TickTimer.CreateFromSeconds(Runner, 1f);
     }
 
     public override void Execute()
@@ -34,8 +30,9 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Exit()
     {
         base.Exit();
-        monster.IsShoot = false;
+        monster.IsPunch = false;
     }
+
     public override void Effect()
     {
         base.Effect();
@@ -49,11 +46,11 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
             Vector3 direction = (targetPos - vomitPos).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
 
-            var spawnedVomit = Runner.Spawn(vomitAndArea, vomitPos, lookRotation);
+            var spawnedVomit = Runner.Spawn(vomit, vomitPos, lookRotation);
 
             if (spawnedVomit != null)
             {
-                spawnedVomit.GetComponent<VomitAndArea>().ownerPattern3 = this;
+                spawnedVomit.GetComponent<Vomit>().ownerPattern1 = this;
             }
         }
     }
@@ -61,6 +58,6 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
     public override void Attack()
     {
         base.Attack();
-        monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[3].DamageCoefficient));
+        monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[1].DamageCoefficient));
     }
 }

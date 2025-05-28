@@ -13,6 +13,7 @@ public class UIStateView : UIScreen
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI bulletText;
     public TextMeshProUGUI[] itemText;
+    public RawImage crosshair;
 
     [Header("Job Icon")]
     public Image comender;
@@ -144,6 +145,8 @@ public class UIStateView : UIScreen
             }
         }
 
+        crosshair.gameObject.SetActive(!localPlayer.inventory.equippedWeapon.IsAiming);
+
         //else
         //{
         //    for (int i = 0; i < 3; i++)
@@ -154,12 +157,12 @@ public class UIStateView : UIScreen
         //}
 
 
-        //if (_characterInfo == null) return;
+            //if (_characterInfo == null) return;
 
-        //hpText.text = _characterInfo.Health.ToString();
-        //defText.text = _characterInfo.Def.ToString();
-        //goldText.text = _characterInfo.StartGold.ToString();
-        //bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";        
+            //hpText.text = _characterInfo.Health.ToString();
+            //defText.text = _characterInfo.Def.ToString();
+            //goldText.text = _characterInfo.StartGold.ToString();
+            //bulletText.text = $"{_weaponInfo.MagazineBullet}/{_weaponInfo.MaxBullet}";        
     }
 
     

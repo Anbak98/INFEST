@@ -380,6 +380,9 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (Global.Instance.UIManager.UIList.ContainsKey("UIShopView"))
             if (Global.Instance.UIManager.UIList["UIShopView"].gameObject.activeSelf) return;
 
+        if (Global.Instance.UIManager.UIList.ContainsKey("UIBoxopenView"))
+            if (Global.Instance.UIManager.UIList["UIBoxopenView"].gameObject.activeSelf) return;
+
         if (!_isMenuPopup)
         {
             Global.Instance.UIManager.Show<UIMenuView>();

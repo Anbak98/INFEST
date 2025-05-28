@@ -20,6 +20,7 @@ namespace INFEST.Game
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
         public StoreController storeController;
+        public InputManager inputManager;
 
         public event Action OnChangeGameState;
 

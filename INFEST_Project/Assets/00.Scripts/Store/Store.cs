@@ -23,7 +23,6 @@ public class Store : NetworkBehaviour
     public void RPC_RequestInteraction(PlayerRef _playerRef)
     {
         RPC_Interaction(_playerRef);
-
         //if (_storeController.activeTime)
         //{
         //    _storeController.AddTimer();
@@ -41,6 +40,7 @@ public class Store : NetworkBehaviour
         Cursor.lockState = CursorLockMode.None;
         Global.Instance.UIManager.Hide<UIInteractiveView>();
         _storeController.uIShopView = Global.Instance.UIManager.Show<UIShopView>();
+        NetworkGameManager.Instance.inputManager.ShopSetActive(false);
         _storeController.uIShopView.StoreInIt(this);
         _storeController.uIShopView.UpdateButtonState();
     }
@@ -56,7 +56,6 @@ public class Store : NetworkBehaviour
     public void RPC_RequestStopInteraction(PlayerRef _playerRef)
     {
         RPC_StopInteraction(_playerRef);
-
     }
     /// <summary>
     /// 상호작용 해제로직
@@ -70,7 +69,7 @@ public class Store : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Global.Instance.UIManager.Show<UIInteractiveView>();
         Global.Instance.UIManager.Hide<UIShopView>();
-
+        NetworkGameManager.Instance.inputManager.ShopSetActive(true);
     }
     #endregion
 
