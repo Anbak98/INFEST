@@ -6,6 +6,7 @@ public class Monster_GoreHaul : BaseMonster<Monster_GoreHaul>
 {
     public Dictionary<int, GoreHaulSkillTable> skills;
 
+
     [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
     public NetworkBool IsIdle { get; set; } = false;
     [Networked, OnChangedRender(nameof(OnIsWonderPhase))]
@@ -59,7 +60,7 @@ public class Monster_GoreHaul : BaseMonster<Monster_GoreHaul>
             FSM.ChangePhase<GoreHaul_Phase_Dead>();
         }
     }
-
+        
     private void OnIsWonderPhase() { if (IsIdle) animator.Play(_wonderParameterHash); }
     private void OnIsChasePhase() { if (IsRun) animator.Play(_chaseParameterHash); }
 

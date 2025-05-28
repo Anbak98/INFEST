@@ -46,8 +46,6 @@ public class PlayerStateMachine
     // 현재의 상태를 종료하고 새로운 상태를 실행
     public void ChangeState(IState newState)
     {
-        if (Player.statHandler.IsDead)
-            return;
         if (currentState?.GetType() == newState?.GetType()) return;
 
         /// 가장 처음으로 들어가는 State는 IdleState
@@ -60,15 +58,11 @@ public class PlayerStateMachine
     // 생명주기함수 아니다
     public void OnUpdate(NetworkInputData data)
     {
-        if (Player.statHandler.IsDead)
-            return;
         currentState?.OnUpdate(data);
     }
 
     public void PhysicsUpdate(NetworkInputData data)
     {
-        if (Player.statHandler.IsDead)
-            return;
         currentState?.PhysicsUpdate(data);
     }
 
