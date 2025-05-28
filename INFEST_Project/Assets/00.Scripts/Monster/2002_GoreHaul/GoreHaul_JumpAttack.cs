@@ -12,7 +12,6 @@ public class GoreHaul_JumpAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul
             return;
 
         monster.IsJumpAttack = true;
-        //monster.CurMovementSpeed = 0f;
 
         phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10f);
     }
@@ -26,14 +25,7 @@ public class GoreHaul_JumpAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul
 
         Vector3 direction = (monster.target.position - monster.transform.position).normalized;
 
-        monster.transform.position += direction * monster.CurMovementSpeed * Runner.DeltaTime;
-
-        //float distance = Vector3.Distance(monster.transform.position, monster.target.position);
-
-        //if (distance > monster.skills[3].UseRange - 1f)
-        //{
-        //    phase.ChangeState<GoreHaul_Run>();
-        //}
+        monster.transform.position += monster.CurMovementSpeed * Runner.DeltaTime * direction;
     }
 
     public override void Exit()
@@ -45,8 +37,7 @@ public class GoreHaul_JumpAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul
     public override void Attack()
     {
         base.Attack();
-        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
-        //monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[3].DamageCoefficient));
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);        
 
         UnityEngine.Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5, layerMask);
 
