@@ -4,6 +4,7 @@ using Fusion.Addons.SimpleKCC;
 using INFEST.Game;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 /// <summary>
@@ -82,9 +83,11 @@ public class PlayerCameraHandler : NetworkBehaviour
             _cameraHolder.localRotation = Quaternion.Euler(pitchRotation);
         }
 
-        _scopeImage.rectTransform.position = _mainCam.WorldToScreenPoint(_player.inventory.equippedWeapon.FPSWeapon.aimPoint.transform.position);
-        _scopeImage.gameObject.SetActive(_player.inventory.equippedWeapon.IsAiming);
-        _scopeCam.enabled = _player.inventory.equippedWeapon.IsAiming;
+        if (_player.inventory.equippedWeapon.scope != null)
+        {
+            _scopeImage.gameObject.SetActive(_player.inventory.equippedWeapon.IsAiming);
+            _scopeCam.enabled = _player.inventory.equippedWeapon.IsAiming;
+        }
     }
     public void LateUpdate()
     {

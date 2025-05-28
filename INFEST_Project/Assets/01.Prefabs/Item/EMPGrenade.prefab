@@ -134,8 +134,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grenadeProjectile: {fileID: 6158749292796947954}
-  _playerLayer: 6
-  _monsterLayer: 14
 --- !u!114 &1341061286920170532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +268,7 @@ MonoBehaviour:
   explosionParticles: {fileID: 8565777156233752600}
   throwPoint: {fileID: 1395285298828056411}
   obj: {fileID: 0}
+  rendering: {fileID: 3351409596363125634}
   _layerMask:
     serializedVersion: 2
     m_Bits: 4096

@@ -1,5 +1,5 @@
-using Cinemachine;
 using Fusion;
+using INFEST.Game;
 using KINEMATION.FPSAnimationPack.Scripts.Weapon;
 using UnityEngine;
 
@@ -18,33 +18,37 @@ public class Weapon : NetworkBehaviour
     public int key;
     public WeaponInstance instance;
     public FPSWeapon FPSWeapon;
-    public EWeaponType Type; // ���� ����
+    public EWeaponType Type; 
     public Sprite icon;
+    public GameObject scope;
     public NetworkPrefabRef rocket;
 
+    private Player player;
+    private Recoil recoil;
     [Header("Firing")]
     private LayerMask HitMask = ~(1 << 0 | 1 << 6 | 1 << 7 | 1 << 9 | 1 << 16);
-    public float reloadTime = 2.0f; // ���� �ӵ�
+    public float reloadTime = 2.0f;
 
-    [Networked] public int curMagazineBullet { get; set; } // ���� źâ�� ź��
-    [Networked] public int curBullet { get; set; } // ���� ź��
-    [Networked] public NetworkBool IsCollected { get; set; } = false; // �������ΰ�?
-    [Networked] public NetworkBool IsReloading { get; set; } = false; // �������ΰ�?
-    [Networked] public NetworkBool IsAiming { get; set; } = false; // �������ΰ�?
-    [Networked] private TickTimer _fireCooldown { get; set; } // �ൿ �� ��Ÿ��
+    [Networked] public int curMagazineBullet { get; set; }
+    [Networked] public int curBullet { get; set; } 
+    [Networked] public NetworkBool IsCollected { get; set; } = false;
+    [Networked] public NetworkBool IsReloading { get; set; } = false; 
+    [Networked] public NetworkBool IsAiming { get; set; } = false; 
+    [Networked] private TickTimer _fireCooldown { get; set; } 
     [Networked, Capacity(32)] private NetworkArray<ProjectileData> _projectileData { get; }
-    [Networked] private int _fireCount { get; set; } // ���� �߻� Ƚ��
+    [Networked] private int _fireCount { get; set; } 
 
-    private int _visibleFireCount; // Ŭ���̾�Ʈ�� ���������� ó���� �߻� ��
+    private int _visibleFireCount; 
 
-    private int _fireTicks; // ���� �ð�
+    private int _fireTicks; 
     private float _basicDispersion;
 
+    public WeaponSpawner weaponSpawner;
     public Transform firstPersonMuzzleTransform;
     public Transform thirdPersonMuzzleTransform;
-    public DummyProjectile dummyProjectilePrefab; // �Ѿ� ������
-    private DummyProjectile dummyProjectile; // �Ѿ� �ν��Ͻ�
-    private bool _reloadingVisible; // ���̴� ���ε� ����
+    public DummyProjectile dummyProjectilePrefab;
+    private DummyProjectile dummyProjectile; 
+    private bool _reloadingVisible;
 
     public override void FixedUpdateNetwork()
     {
@@ -70,10 +74,6 @@ public class Weapon : NetworkBehaviour
     {
 
         instance = new(key);
-        //_basicDispersion = Dispersion;
-        ////curClip = Mathf.Clamp(curClip, 0, startClip);
-        //possessionAmmo = maxAmmo;
-        //curClip = startClip;
         if (instance == null) return;
 
         Type = (EWeaponType)instance.data.WeaponType;
@@ -86,7 +86,10 @@ public class Weapon : NetworkBehaviour
         _reloadingVisible = IsReloading;
 
         float fireTime = 60f / (instance.data.FireRate * 100);
-        _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime); // �ݿø�
+        _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime);
+
+        player = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
+        recoil = player.GetComponentInChildren<Recoil>();
     }
 
     public override void Render()
@@ -114,9 +117,6 @@ public class Weapon : NetworkBehaviour
     }
 
 
-    /// <summary>
-    /// �߻�
-    /// </summary>
     public void Fire(bool holdingPressed)
     {
         if (!IsCollected) return;
@@ -125,7 +125,7 @@ public class Weapon : NetworkBehaviour
         if (curMagazineBullet == 0) return;
         if (IsReloading) return;
         FPSWeapon.RPC_OnFirePressed();
-        Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw)); // ������ ����
+        Random.InitState(Runner.Tick * unchecked((int)Object.Id.Raw));
 
         for (int i = 0; i < instance.data.ProjectilesPerShot; i++)
         {
@@ -134,11 +134,12 @@ public class Weapon : NetworkBehaviour
             if (instance.data.Concentration > 0f)
             {
                 var dispersionRotation = Quaternion.Euler(Random.insideUnitSphere * instance.data.Concentration);
-                projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward; // ź����
+                projectileDirection = dispersionRotation * firstPersonMuzzleTransform.forward;
             }
         
             FireProjectile(firstPersonMuzzleTransform.position, projectileDirection);
         }
+        recoil.ApplyCamRecoil();
 
         _fireCooldown = TickTimer.CreateFromTicks(Runner, _fireTicks);
         curMagazineBullet--;
@@ -182,7 +183,7 @@ public class Weapon : NetworkBehaviour
                 {
                     projectileData.hitPosition = characterPos + fireDirection * instance.data.WeaponRange;
                     projectileData.hitNormal = -fireDirection;
-                    projectileData.showHitEffect = false; // �浹 �� ������ ��Ʈ����Ʈ ����
+                    projectileData.showHitEffect = false;
                 }
                 Rpc_SpawnDummyProjectile(firePosition, fireDirection, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
                 _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
@@ -208,54 +209,45 @@ public class Weapon : NetworkBehaviour
             return;
     }
 
-    /// <summary>
-    /// ������
-    /// </summary>
     public void Reload()
     {
-        if (!IsCollected) return; // ���������� ������
-        if (curMagazineBullet == instance.data.MagazineBullet) return; // ���� źâ�� ź���� �ִ��
-        if (curBullet <= 0) return; // �������� ź���� ������
-        if (IsReloading) return; // �������̸�
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // �ൿ ��Ÿ�����̸�
+        if (!IsCollected) return; 
+        if (curMagazineBullet == instance.data.MagazineBullet) return; 
+        if (curBullet <= 0) return; 
+        if (IsReloading) return; 
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; 
 
         if(HasStateAuthority)
             FPSWeapon.RPC_OnReload();
+
+        if (weaponSpawner._isAiming == true)
+        {
+            weaponSpawner.Aiming(false);
+        }
 
         IsReloading = true;
 
         if (Type == EWeaponType.Shotgun)
         {
             int id = curMagazineBullet == instance.data.MagazineBullet - 1 ? Animator.StringToHash("Reload_End") : Animator.StringToHash("Reload_Start");
-            //animator.SetTrigger(id);
         }
         else
         {
             int id = curMagazineBullet == 0 ? Animator.StringToHash("Reload_Empty") : Animator.StringToHash("Reload_Tac");
-            //animator.SetTrigger(id);
         }
         _fireCooldown = TickTimer.CreateFromSeconds(Runner, reloadTime);
 
     }
 
-    /// <summary>
-    /// ����
-    /// </summary>
     public void Aiming(/*CinemachineVirtualCamera cam*/)
     {
-        if (!IsCollected) return; // ���������� ������
-        if (curMagazineBullet <= 0) return; // ���� źâ�� ź���� ������
-        if (IsAiming) return; // �������ΰ�?
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // �ൿ���ΰ�?
+        if (!IsCollected) return; 
+        if (curMagazineBullet <= 0) return; 
+        if (IsAiming) return; 
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; 
 
-
-        //gunRecoil.ChangePosition(_targetPosition);
-        _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.5f);
         IsAiming = true;
         instance.IsAiming();
-
-        //_cam = cam;
-        Debug.Log("������\n ��ź�� : " + instance.concentration);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -269,18 +261,14 @@ public class Weapon : NetworkBehaviour
 
     public void StopAiming()
     {
-        if (!IsCollected) return; // ���������� ������
-        if (!IsAiming) return; //�������� �ƴѰ�?
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; // �ൿ���ΰ�?
+        if (!IsCollected) return;
+        if (!IsAiming) return;
+        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
 
-        //gunRecoil.ChangePosition(_startPosition);
-        _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
         IsAiming = false;
         instance.StopAiming();
-
-
-        Debug.Log("���س�\n ��ź�� : " + instance.concentration);
     }
+
     private struct ProjectileData : INetworkStruct
     {
         public Vector3 hitPosition;

@@ -112,6 +112,7 @@ public class WeaponSpawner : NetworkBehaviour
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
 
         _weapons[_activeWeaponIndex].Reload();
+
     }
     private float _value = 0;
     int _removeIndex = -1;
@@ -186,6 +187,8 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void Aiming(bool _isAiming)
     {
+        if (_weapons[_activeWeaponIndex].IsReloading == true) return;
+
         RPC_OnAim(_isAiming);
     }
 
@@ -278,7 +281,7 @@ public class WeaponSpawner : NetworkBehaviour
     private int _triggerDisciplineLayerIndex;
     private int _rightHandLayerIndex;
 
-    private bool _isAiming;
+    [HideInInspector] public bool _isAiming;
 
     private Vector3 _moveInput;
     private float _smoothGait;
