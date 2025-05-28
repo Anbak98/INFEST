@@ -162,7 +162,7 @@ RectTransform:
   m_Children:
   - {fileID: 3141377779261206822}
   - {fileID: 7281540476380197862}
-  - {fileID: 3925369335306342490}
+  - {fileID: 4929887203830931061}
   m_Father: {fileID: 3834324505224384244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -191,7 +191,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &8027626964375609651
 MonoBehaviour:
@@ -1047,6 +1047,82 @@ MonoBehaviour:
   projectilePrefab:
     RawGuidValue: ab1cac65b214e0e42b4c859f550afa49
   throwPoint: {fileID: 6429843654550995173}
+--- !u!1 &1523479345146086469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4929887203830931061}
+  - component: {fileID: 8748133078256209450}
+  - component: {fileID: 8530328295151738220}
+  m_Layer: 5
+  m_Name: BG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &4929887203830931061
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523479345146086469}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3925369335306342490}
+  m_Father: {fileID: 1629500177246760146}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8748133078256209450
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523479345146086469}
+  m_CullTransparentMesh: 1
+--- !u!114 &8530328295151738220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523479345146086469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1576684326777346588
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,6 +1555,7 @@ GameObject:
   - component: {fileID: 2543342327628696971}
   - component: {fileID: 6642105663609103888}
   - component: {fileID: 3891390335030966610}
+  - component: {fileID: 8721876611823865296}
   m_Layer: 3
   m_Name: ScopeCamera
   m_TagString: Untagged
@@ -1495,7 +1572,7 @@ Transform:
   m_GameObject: {fileID: 2233175047490624745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1534,7 +1611,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 5
+  field of view: 15
   orthographic: 0
   orthographic size: 5
   m_Depth: 100
@@ -1596,6 +1673,22 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &8721876611823865296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2233175047490624745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70705ef678e2b724991994654b363ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recoilKickBack: {x: 0, y: 0, z: -0.1}
+  recoilRotation: {x: 5, y: 2, z: 2}
+  returnSpeed: 5
+  snappiness: 10
 --- !u!1 &2327027092697463612
 GameObject:
   m_ObjectHideFlags: 0
@@ -2119,8 +2212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scopeCam: {fileID: 6642105663609103888}
-  _target: {fileID: 6785490234438154161}
-  _scopeImage: {fileID: 3837806690437464491}
+  _scopeImage: {fileID: 8530328295151738220}
   _cameraHolder: {fileID: 7721353801691121081}
   _sensitivity: 5
   _parentTransform: {fileID: 3834324505224384244}
@@ -3347,18 +3439,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6474254998468925448}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8430649461639825068}
-  m_Father: {fileID: 1629500177246760146}
+  m_Father: {fileID: 4929887203830931061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 250, y: 250}
+  m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8865384778891014861
 CanvasRenderer:
@@ -4006,6 +4098,7 @@ MonoBehaviour:
     mid: {fileID: 9046081200736098680}
     root: {fileID: 4700908811004839295}
   _weapons: []
+  _isAiming: 0
 --- !u!114 &1094091920553174609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5060,6 +5153,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -5279,6 +5377,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -5405,9 +5508,19 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
         type: 3}
+      propertyPath: scope
+      value: 
+      objectReference: {fileID: 2290697037468681011}
+    - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
+        type: 3}
       propertyPath: reloadTime
       value: 5.9
       objectReference: {fileID: 0}
+    - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -5502,6 +5615,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394c50a9b9a634c4e9f5d873cee78f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2290697037468681011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1715698449084343133, guid: f6e5865b5afe01a48a79940bbad9df1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 577958800674267246}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6380244876491062778 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5804713991301324180, guid: f6e5865b5afe01a48a79940bbad9df1d,
@@ -5710,6 +5829,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -5772,6 +5896,11 @@ PrefabInstance:
       propertyPath: reloadTime
       value: 3.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -5903,6 +6032,11 @@ PrefabInstance:
       propertyPath: reloadTime
       value: 3.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -8456,6 +8590,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -8581,6 +8720,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -8643,6 +8787,11 @@ PrefabInstance:
       propertyPath: reloadTime
       value: 6.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -8773,6 +8922,11 @@ PrefabInstance:
       propertyPath: reloadTime
       value: 4.1
       objectReference: {fileID: 0}
+    - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -8956,6 +9110,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -9081,6 +9240,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 982335
       objectReference: {fileID: 0}
@@ -9148,6 +9312,11 @@ PrefabInstance:
       propertyPath: reloadTime
       value: 3.3
       objectReference: {fileID: 0}
+    - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -9376,9 +9545,19 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
+      propertyPath: scope
+      value: 
+      objectReference: {fileID: 1184817945604288602}
+    - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
+        type: 3}
       propertyPath: reloadTime
       value: 6.2
       objectReference: {fileID: 0}
+    - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -9387,7 +9566,7 @@ PrefabInstance:
     - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
       propertyPath: _IsCollected._value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3898111870586956955, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
@@ -9444,6 +9623,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 676d0ee45f3a94d4f81fd641a8b3fe95, type: 3}
+--- !u!1 &1184817945604288602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5399989767394833434, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
+    type: 3}
+  m_PrefabInstance: {fileID: 6521722097328211008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6659092626239856511 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 497672806912449343, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
@@ -9655,9 +9840,19 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
+      propertyPath: scope
+      value: 
+      objectReference: {fileID: 3974816840575799045}
+    - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
+        type: 3}
       propertyPath: reloadTime
       value: 4.35
       objectReference: {fileID: 0}
+    - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
       propertyPath: HitMask.m_Bits
@@ -9666,7 +9861,7 @@ PrefabInstance:
     - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
       propertyPath: _IsCollected._value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6863797633472174846, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
@@ -9696,6 +9891,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c149b996165a69744920ebcc1cb14805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3974816840575799045 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5785476548845200508, guid: 13fe1fef696a76649afb46771a1127ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 7449875860863560569}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6658256967167188140 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
@@ -9791,6 +9992,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
         type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
+    - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
+        type: 3}
       propertyPath: HitMask.m_Bits
       value: 983039
       objectReference: {fileID: 0}
@@ -9874,6 +10080,11 @@ PrefabInstance:
       propertyPath: reloadTime
       value: 4.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
         type: 3}
       propertyPath: HitMask.m_Bits
