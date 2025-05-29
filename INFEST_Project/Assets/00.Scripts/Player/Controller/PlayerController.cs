@@ -17,14 +17,6 @@ using UnityEngine.UIElements;
 /// 플레이어의 동작 및 상태 관리
 /// FixedUpdateNetwork()에서 Fusion으로부터 받은 입력 데이터를 기반으로 시뮬레이션 수행.
 /// </summary>
-//public enum PlayerLockState
-//{
-//    Free,
-//    MoveLock,   // 이동 자체가 되면 안되니까 
-//    RunLock,    // 
-//    SitLock,    // 
-//    ZoomLock,   // 
-//}
 
 [System.Flags]
 public enum PlayerLockState
