@@ -4083,10 +4083,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Config: 3
-  BroadRadius: 2.5834033
+  BroadRadius: 2.2111692
   Offset: {x: 0, y: 0, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  Hitboxes: []
+  Hitboxes:
+  - {fileID: 5405913234712190440}
+  - {fileID: 2768765012172957079}
+  - {fileID: 1141796347034229419}
+  - {fileID: 8219232187696359760}
+  - {fileID: 3685698337590194400}
+  - {fileID: 5759140748314368337}
+  - {fileID: 6292138938888545193}
+  - {fileID: 8232559139243001922}
+  - {fileID: 556598714418533703}
+  - {fileID: 2922851739139164996}
 --- !u!114 &5818009941707778052
 MonoBehaviour:
   m_ObjectHideFlags: 0
