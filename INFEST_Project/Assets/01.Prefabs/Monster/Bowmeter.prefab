@@ -1462,7 +1462,7 @@ MonoBehaviour:
   BoxExtents: {x: 0, y: 0, z: 0}
   CapsuleExtents: 0.3
   Offset: {x: 0, y: 0, z: 0}
-  Root: {fileID: 0}
+  Root: {fileID: 7117112006051801730}
   GizmosColor: {r: 1, g: 0.14901961, b: 0, a: 1}
   DamageMultiplier: 2
 --- !u!135 &1028677843826558702
@@ -2308,9 +2308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbc842c5c85ca34c9a1d65d539d3918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 35008
   vomit: {fileID: 2707850765340437744, guid: 4fa728777d44d9641869823cc7f30479, type: 3}
 --- !u!1 &4294422722676774160
 GameObject:
@@ -3299,9 +3296,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vomitAndArea: {fileID: 710754221587639139, guid: 8281650cea545ab4a956bfb0f094de2f,
     type: 3}
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 35008
 --- !u!1 &6751340752166368874
 GameObject:
   m_ObjectHideFlags: 0
@@ -3994,7 +3988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Config: 3
-  BroadRadius: 1.0862781
+  BroadRadius: 2.0469346
   Offset: {x: 0, y: 0, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:
@@ -4003,9 +3997,8 @@ MonoBehaviour:
   - {fileID: 5326927210389465504}
   - {fileID: 693808521954367556}
   - {fileID: 6530624587635048542}
-  - {fileID: 0}
   - {fileID: 3552568458140299304}
-  - {fileID: 0}
+  - {fileID: 4227694729069696914}
   - {fileID: 7731365276471346542}
   - {fileID: 1673882847521904845}
   - {fileID: 852237365897746176}
@@ -4642,9 +4635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebaf7573e043a6a488f944e4ba46c24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 35008
   vomitRazer: {fileID: 3668478955301033916, guid: b73c78c57498c1f468141b1eb3372120,
     type: 3}
 --- !u!1 &9099599891274095653
