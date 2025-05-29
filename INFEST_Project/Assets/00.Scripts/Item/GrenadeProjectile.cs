@@ -18,7 +18,7 @@ public class GrenadeProjectile : NetworkBehaviour
     private float _castRadius = 0.2f;
 
     private bool _isStopped = false;
-    [SerializeField] private LayerMask _layerMask = 1 << 12;
+    [SerializeField] private LayerMask _layerMask;
 
     private RaycastHit[] _hitBuffer = new RaycastHit[5];
 
@@ -38,10 +38,6 @@ public class GrenadeProjectile : NetworkBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-    }
-
-    void Start()
-    {
         _spawnTime = Time.time;
     }
 
@@ -101,8 +97,7 @@ public class GrenadeProjectile : NetworkBehaviour
             Vector3 direction = displacement.normalized;
             float distance = displacement.magnitude;
 
-            int layerMask = ~_layerMask & ~1<< 0;
-            int hitCount = Physics.SphereCastNonAlloc(currentPosition, _castRadius, direction, _hitBuffer, distance, layerMask, QueryTriggerInteraction.Collide);
+            int hitCount = Physics.SphereCastNonAlloc(currentPosition, _castRadius, direction, _hitBuffer, distance, _layerMask, QueryTriggerInteraction.Collide);
 
             //if (Physics.SphereCast(transform.position, _castRadius, displacement.normalized, out RaycastHit hit, displacement.magnitude, layerMask))
             if (hitCount > 0)
@@ -127,7 +122,7 @@ public class GrenadeProjectile : NetworkBehaviour
         int hitLayer = hit.collider.gameObject.layer;
 
         // 폭발 체크
-        if (hitLayer == 6 && hitLayer == 13 && hitLayer == 14)
+        if (hitLayer == 7)
         {
             if (Time.time - _spawnTime < _safeTime)
                 return false;
@@ -137,15 +132,10 @@ public class GrenadeProjectile : NetworkBehaviour
             _lifeTimer = TickTimer.None;
             return true;
         }
-
         else if (hitLayer == 11)
         {
             _isStopped = true;
             transform.position = hit.point + Vector3.up * 0.01f;
-        }
-        else if (hitLayer == 2 || hitLayer == 10 || hitLayer == 16 || hitLayer == 7 || hitLayer == 17)
-        {
-            //transform.position = hit.point;  // 벽에 부딪히지 않고, 계속 이동
         }
         else
         {

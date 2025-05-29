@@ -218,7 +218,8 @@ public class WeaponSpawner : NetworkBehaviour
     }
 
     bool throwChk = false;
-    public void OnThrowGrenade()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnThrowGrenade()
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (throwChk) return;
@@ -227,11 +228,12 @@ public class WeaponSpawner : NetworkBehaviour
 
         throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
-        Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);
+        Invoke(nameof(RPC_ThrowGrenade), GetActiveWeapon().UnEquipDelay);
         _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
     }
 
-    public void ThrowGrenade()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ThrowGrenade()
     {
         _player.Consumes.ActivateGrenade();
         GetActiveWeapon().gameObject.SetActive(false);
@@ -242,8 +244,8 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void Throw()
     {
-        _player.Consumes.Throw();
         _player.Consumes.DeactivateGrenade();
+        _player.Consumes.Throw();
     }
 
     private void DeactivateGrenade()
