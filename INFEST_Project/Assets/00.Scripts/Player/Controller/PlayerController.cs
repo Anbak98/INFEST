@@ -124,7 +124,7 @@ public class PlayerController : NetworkBehaviour
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
                 {
-                    player.Weapons.OnThrowGrenade();
+                    player.Weapons.RPC_OnThrowGrenade();
                 }
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
