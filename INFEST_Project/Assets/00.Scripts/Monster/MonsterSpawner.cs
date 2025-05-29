@@ -88,7 +88,7 @@ public class MonsterSpawner : NetworkBehaviour
                         var agent = mnb.GetComponent<NavMeshAgent>();
                         if (agent != null) agent.enabled = true;
 
-                        mnb.SetTarget(waveTarget);
+                        mnb.TrySetTarget(waveTarget);
 
                         if (mnb is Monster_PJ_HI pj)
                         {

@@ -6,7 +6,7 @@ public class FSM_GoreHaul : MonsterFSM<Monster_GoreHaul>
         {
             monster.TryAddTarget(other.transform);
             monster.SetTargetRandomly();
-            monster.SetTarget(other.transform);
+            monster.TrySetTarget(other.transform);
         }
     }
 }

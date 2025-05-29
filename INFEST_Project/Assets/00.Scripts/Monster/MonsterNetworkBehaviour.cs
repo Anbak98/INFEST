@@ -2,6 +2,7 @@ using Fusion;
 using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -56,13 +57,13 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     [field: Header("Monster Status")]
     [Networked, OnChangedRender(nameof(OnChangedMovementSpeed))] public float CurMovementSpeed { get; set; }
     [Networked, OnChangedRender(nameof(OnChangedDetectorRadiusSpeed))] public float CurDetectorRadius { get; set; }
-    [Networked] public int CurHealth { get; set; } = -1;
+    [field: SerializeField] public int CurHealth { get; set; } = -1;
     [field: SerializeField] public int CurDamage { get; set; }
     [field: SerializeField] public int CurDef { get; set; }
-    [Networked] public int BaseHealth { get; set; } = -1;
+    [field: SerializeField] public int BaseHealth { get; set; } = -1;
     [field: SerializeField] public int BaseDamage { get; set; }
     [field: SerializeField] public int BaseDef { get; set; }
-    [Networked] public int OffsetHealth { get; set; } = -1;
+    [field: SerializeField] public int OffsetHealth { get; set; } = -1;
     [field: SerializeField] public int OffsetDamage { get; set; }
     [field: SerializeField] public int OffsetDef { get; set; }
     [Networked] public NetworkBool IsAttack { get; set; } = false;
@@ -85,7 +86,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         CurDef = BaseDef + OffsetDef;
 
         CurMovementSpeed = info.SpeedMove;
-
         CurDetectorRadius = info.DetectAreaNormal;
 
         AIPathing.enabled = true;
@@ -96,9 +96,28 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         base.Despawned(runner, hasState);
+    }
 
-        if (NetworkGameManager.Instance != null)
-            NetworkGameManager.Instance.monsterSpawner.SpawnedNum--;
+    public void MoveToTarget()
+    {
+        if(target != null)
+        {
+            NavMeshPath path = new NavMeshPath();
+
+            if(AIPathing.CalculatePath(target.position, path))
+            {
+                if(path.status == NavMeshPathStatus.PathComplete)
+                {
+                    AIPathing.SetDestination(target.position);
+                }
+                else
+                {
+                    Mounting mount = FindAnyObjectByType<Mounting>();
+                    TryAddTarget(mount.transform);
+                    TrySetTarget(mount.transform);
+                }
+            }    
+        }
     }
 
     public bool IsLookPlayer()
@@ -116,6 +135,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         return false;
     }
+
     public bool IsFindPlayer()
     {
         if (targets.Count > 0)
@@ -126,8 +146,12 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         return false;
     }
+
     public bool IsTargetDead()
     {
+        if (target.IsDestroyed())
+            return true;
+
         if (target != null)
         {
             if (targetBridges.TryGetValue(target, out var bridge))
@@ -146,21 +170,31 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         {
             Transform newTarget;
             newTarget = targets[Random.Range(0, targets.Count)];
-            target = newTarget;
+            if (newTarget != null)
+                target = newTarget;
+            else
+            {
+                TryRemoveTarget(newTarget);
+                SetTargetRandomly();
+            }
         }
     }
 
-    public void SetTarget(Transform newTarget)
+    public void TrySetTarget(Transform newTarget)
     {
-        this.target = newTarget;
+        if(targets.Contains(newTarget))
+            this.target = newTarget;
     }
 
     public void TryAddTarget(Transform newTarget)
     {
+        Debug.Log(newTarget);
         if (!targets.Contains(newTarget))
         {
+            Debug.Log(newTarget);
             if (newTarget.TryGetComponent(out TargetableFromMonster bridge))
             {
+                Debug.Log(newTarget);
                 targets.Add(newTarget);
                 targetBridges.Add(newTarget, bridge);
             }
@@ -171,6 +205,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         if (this.target == target)
         {
+            Debug.Log("Removed");
             this.target = null;
 
             if (targets.Contains(target))
@@ -293,7 +328,9 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     protected virtual void OnDead()
     {
         ActivateRagdoll(true);
-        GetComponent<NetworkTransform>().enabled = false;
+        GetComponent<NetworkTransform>().enabled = false; 
+        if (NetworkGameManager.Instance != null)
+            NetworkGameManager.Instance.monsterSpawner.SpawnedNum--;
         AnalyticsManager.analyticsZombieKill(key);
     }
 

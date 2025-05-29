@@ -145,6 +145,41 @@ public class Weapon : NetworkBehaviour
         curMagazineBullet--;
     }
 
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying) return;
+
+        Vector3 characterPos = this.transform.position;
+        Vector3 fireDirection = transform.forward; // 혹은 적절한 방향을 사용
+
+        var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
+
+        // LagCompensation은 실행 중이어야 작동합니다.
+        if (Runner != null && Runner.IsRunning && HasStateAuthority)
+        {
+            if (Type != EWeaponType.Launcher)
+            {
+                if (Runner.LagCompensation.Raycast(characterPos, fireDirection, instance.data.WeaponRange,
+                        Object.InputAuthority, out var hit, HitMask, hitOptions, QueryTriggerInteraction.Ignore))
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(characterPos, hit.Point);
+                    Gizmos.DrawSphere(hit.Point, 0.1f);
+                }
+                else
+                {
+                    Gizmos.color = Color.red;
+                    Vector3 endPoint = characterPos + fireDirection * instance.data.WeaponRange;
+                    Gizmos.DrawLine(characterPos, endPoint);
+                    Gizmos.DrawSphere(endPoint, 0.1f);
+                }
+            }
+        }
+    }
+#endif
+
+
     private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
     {
         var projectileData = new ProjectileData();

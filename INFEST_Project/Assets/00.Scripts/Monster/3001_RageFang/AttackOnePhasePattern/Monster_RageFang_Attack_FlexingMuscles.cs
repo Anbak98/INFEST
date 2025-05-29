@@ -16,6 +16,7 @@ public class Monster_RageFang_Attack_FlexingMuscles : MonsterStateNetworkBehavio
 
     public override void Exit()
     {
+        monster.IsFlexingMuscles = false;
         base.Exit();
     }
 }

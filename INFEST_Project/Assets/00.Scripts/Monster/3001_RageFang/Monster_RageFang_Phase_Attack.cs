@@ -16,7 +16,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
     {
         base.MachineEnter();
         monster.IsValidRetreat = true;
-        monster.RetreatTimer = TickTimer.CreateFromSeconds(Runner, 10f);
+        monster.RetreatTimer = TickTimer.CreateFromSeconds(Runner, 5f);
         monster.PhaseIndex = 1;
 
         for (int i = 0; i < skillCoolDown.Length; i++)
@@ -24,14 +24,14 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
             skillCoolDown[i] = TickTimer.CreateFromSeconds(Runner, 0);
         }
         patternTickTimer = TickTimer.CreateFromSeconds(Runner, 0);
-        monster.IsPhaseAttackOne = true;
+        monster.IsPhaseAttack = true;
     }
 
     public override void MachineExecute()
     {
         base.MachineExecute();
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
 
         if (!monster.AIPathing.pathPending)
         {
@@ -69,7 +69,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
     public override void MachineExit()
     {
         base.MachineExit();
-        monster.IsPhaseAttackOne = false;
+        monster.IsPhaseAttack = false;
     }
 
     public void CaculateAttackType(float distance)

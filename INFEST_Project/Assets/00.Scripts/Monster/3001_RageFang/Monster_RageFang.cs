@@ -51,10 +51,8 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     public NetworkBool IsRoaring { get; set; } = false;
     [Networked, OnChangedRender(nameof(OnIsPhaseWonder))]
     public NetworkBool IsPhaseWonder { get; set; } = false;
-    [Networked, OnChangedRender(nameof(OnIsPhaseAttackOne))]
-    public NetworkBool IsPhaseAttackOne { get; set; } = false;
-    [Networked, OnChangedRender(nameof(OnIsPhaseAttackOne))]
-    public NetworkBool IsPhaseAttackTwo { get; set; } = false;
+    [Networked, OnChangedRender(nameof(OnIsPhaseAttack))]
+    public NetworkBool IsPhaseAttack { get; set; } = false;
 
 
 
@@ -65,8 +63,7 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
         nextRegion = DataManager.Instance.GetDictionary<BossRunPoint>();
 
         OnIsPhaseWonder();
-        OnIsPhaseAttackOne();
-        OnIsPhaseAttackTwo();
+        OnIsPhaseAttack();
     }
 
     public override void Render()
@@ -133,8 +130,7 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     private void OnIsContinousAttack() => animator.SetBool("IsContinousAttack", IsContinousAttack);
     private void OnIsQuickRollToRun() => animator.SetBool("IsQuickRollToRun", IsQuickRollToRun);
     private void OnIsTurnAttack() => animator.SetBool("IsTurnAttack", IsTurnAttack);
-    private void OnIsRoaring() { if (IsRoaring) animator.Play("AttackTwoPhase.Monster_RageFang_Roaring"); }
-    private void OnIsPhaseAttackOne() { if (IsPhaseAttackOne) animator.Play("AttackOnePhase.Monster_RageFang_Run"); }
-    private void OnIsPhaseAttackTwo() { if (IsPhaseAttackTwo) animator.Play("AttackTwoPhase.Monster_RageFang_Run"); }
+    private void OnIsRoaring() { if (IsRoaring) animator.Play("Retreat.Monster_RageFang_Roaring"); }
+    private void OnIsPhaseAttack() { if (IsPhaseAttack) animator.Play("Attack.Monster_RageFang_Run"); }
     private void OnIsPhaseWonder() { if (IsPhaseWonder) animator.Play("Wonder.Monster_RageFang_Idle"); }
 }

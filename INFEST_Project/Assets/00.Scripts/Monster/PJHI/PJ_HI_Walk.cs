@@ -29,17 +29,26 @@ public class PJ_HI_Walk : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Phas
 
     private Vector3 GetRandomPositionOnNavMesh()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * 3f; // 원하는 범위 내의 랜덤한 방향 벡터를 생성합니다.
-        randomDirection += transform.position; // 랜덤 방향 벡터를 현재 위치에 더합니다.
+        float minDistance = 5f;
+        float maxDistance = 15f;
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 3, NavMesh.AllAreas)) // 랜덤 위치가 NavMesh 위에 있는지 확인합니다.
+        for (int i = 0; i < 5; i++)
         {
-            return hit.position; // NavMesh 위의 랜덤 위치를 반환합니다.
+            Vector3 randomDirection = Random.onUnitSphere;
+            randomDirection.y = 0;
+            randomDirection *= Random.Range(minDistance, maxDistance);
+            randomDirection += transform.position;
+
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 3, NavMesh.AllAreas))
+            {
+                if (hit.distance < 15f)
+                {
+                    return hit.position;
+                }
+            }
         }
-        else
-        {
-            return transform.position; // NavMesh 위의 랜덤 위치를 찾지 못한 경우 현재 위치를 반환합니다.
-        }
+
+        // 모든 시도 실패 시 현재 위치 반환
+        return transform.position;
     }
 }

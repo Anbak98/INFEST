@@ -1,24 +1,22 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster_RageFang_Retreat_Jump : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_Retreat>
 {
-    public float moveSpeed = 5f;
-    public float jumpHeight = 10f;
-    public float jumpDistance = 10f;
-    public float obstacleDetectDistance = 2f;
-    public LayerMask obstacleLayer;
+    public float moveSpeed = 20f;
+    public float jumpHeight = 20f;
 
     private bool isJumping = false;
+
+    [SerializeField] private ParticleSystem ps;
 
     public override void Enter()
     {
         base.Enter();
         monster.AIPathing.enabled = false;
         isJumping = true;
-        Vector3 targetPoint = transform.root.position + transform.root.forward * jumpDistance;
-        StartCoroutine(JumpOverObstacle(targetPoint));
     }
 
     public override void Execute()
@@ -26,7 +24,7 @@ public class Monster_RageFang_Retreat_Jump : MonsterStateNetworkBehaviour<Monste
         base.Execute();
         if(!isJumping)
         {
-            phase.ChangeState<Monster_RageFang_Retreat_Retreat>();
+            monster.FSM.ChangePhase<Monster_RageFang_Phase_Wonder>();
         }
     }
 
@@ -34,6 +32,19 @@ public class Monster_RageFang_Retreat_Jump : MonsterStateNetworkBehaviour<Monste
     {
         base.Exit();
         monster.AIPathing.enabled = true;
+    }
+
+    public override void Effect()
+    {
+        base.Effect();
+        RPC_PlayPS();
+        StartCoroutine(JumpOverObstacle(phase.targetPosition));
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayPS()
+    {
+        ps.Play();
     }
 
 

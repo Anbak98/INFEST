@@ -25,7 +25,7 @@ public class ConsumeSpawner : NetworkBehaviour
         {
             if (Consumes[i].key == _player.inventory.consume[1]?.key)
             {
-                AnalyticsManager.analyticsUseItem(1, Consumes[i].key, (int)NetworkGameManager.Instance.gameState);
+                AnalyticsManager.analyticsUseItem(1, Consumes[i].key, (int)NetworkGameManager.Instance.GameState);
                 Consumes[i].CollHeal();
             }
         }
@@ -37,7 +37,7 @@ public class ConsumeSpawner : NetworkBehaviour
         {
             if (Consumes[i].key == _player.inventory.consume[2]?.key)
             {
-                AnalyticsManager.analyticsUseItem(3, Consumes[i].key, (int)NetworkGameManager.Instance.gameState);
+                AnalyticsManager.analyticsUseItem(3, Consumes[i].key, (int)NetworkGameManager.Instance.GameState);
                 Consumes[i].CollMounting();
             }
         }
@@ -51,7 +51,7 @@ public class ConsumeSpawner : NetworkBehaviour
             if (Consumes[i].key == _player.inventory.consume[0]?.key)
             {
                 visibleGrenade[i].SetActive(true);
-                AnalyticsManager.analyticsUseItem(2, Consumes[i].key, (int)NetworkGameManager.Instance.gameState);
+                AnalyticsManager.analyticsUseItem(2, Consumes[i].key, (int)NetworkGameManager.Instance.GameState);
             }
         }
     }

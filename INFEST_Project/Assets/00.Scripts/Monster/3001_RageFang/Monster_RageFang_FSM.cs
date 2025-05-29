@@ -4,10 +4,13 @@ public class Monster_RageFang_FSM : MonsterFSM<Monster_RageFang>
 {
     public override void FixedUpdateNetwork()
     {
-        if(monster.IsValidRetreat && monster.RetreatTimer.ExpiredOrNotRunning(Runner))
+        if(monster.regionIndex < 5)
         {
-            ChangePhase<Monster_RageFang_Phase_Retreat>();
-            monster.IsValidRetreat = false;
+            if (monster.IsValidRetreat && monster.RetreatTimer.ExpiredOrNotRunning(Runner))
+            {
+                ChangePhase<Monster_RageFang_Phase_Retreat>();
+                monster.IsValidRetreat = false;
+            }
         }
 
         base.FixedUpdateNetwork();

@@ -15,7 +15,7 @@ namespace INFEST.Game
     public class NetworkGameManager : SingletonNetworkBehaviour<NetworkGameManager>
     {
         [Networked] public TickTimer GameTimer { get; set; }
-        [Networked] public GameState gameState { get; set; } = GameState.None;
+        [Networked, OnChangedRender(nameof(OnStateChanged))] public GameState GameState { get; set; } = GameState.None;
 
         public EnhancedMonsterSpawner monsterSpawner;
         public GamePlayerHandler gamePlayers;
@@ -34,15 +34,14 @@ namespace INFEST.Game
             OnChangeGameState -= ChangeStore;
         }
 
-        public void ChangeState(GameState state)
+        private void OnStateChanged()
         {
-            gameState = state;
             OnChangeGameState?.Invoke(); 
         }
 
         public void ChangeStore()
         {
-            if (gameState == GameState.None)
+            if (GameState == GameState.None)
             {
                 storeController.Activate();
             }
