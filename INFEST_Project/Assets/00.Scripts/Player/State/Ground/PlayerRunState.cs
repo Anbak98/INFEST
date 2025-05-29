@@ -20,7 +20,9 @@ public class PlayerRunState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
+        player.animationController.MoveDirection = data.direction;
         player.animationController.isRunning = data.isRunning;
+
     }
     public override void Exit()
     {

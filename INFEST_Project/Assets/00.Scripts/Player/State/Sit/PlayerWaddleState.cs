@@ -16,6 +16,7 @@ public class PlayerWaddleState : PlayerSitState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
+        player.animationController.MoveDirection = data.direction;
         player.animationController.isSitting = data.isSitting;
     }
     public override void Exit()
