@@ -235,20 +235,20 @@ public class WeaponSpawner : NetworkBehaviour
     {
         _player.Consumes.ActivateGrenade();
         GetActiveWeapon().gameObject.SetActive(false);
-        Invoke(nameof(Throw), 2.5f);
+        Invoke(nameof(Throw), 1.5f);
         Invoke(nameof(SetWeaponVisible), 0.5f);
-        Invoke(nameof(DeactivateGrenade), 1.4f);
+        Invoke(nameof(DeactivateGrenade), 2.5f);
     }
 
     private void Throw()
     {
         _player.Consumes.Throw();
-        throwChk = false;
+        _player.Consumes.DeactivateGrenade();
     }
 
     private void DeactivateGrenade()
     {
-        _player.Consumes.DeactivateGrenade();
+        throwChk = false;
     }
 
     #region Model
