@@ -31,9 +31,11 @@ public struct NetworkInputData : INetworkInput
     public const byte BUTTON_MENU = 12;    // ESC
     public const byte BUTTON_CHANGECAMERA = 13;
 
+
     // 내부에서 사용하는 변수
     public const byte BUTTON_FIREPRESSED = 14;    // 마우스 왼쪽클릭 지속
     public const byte BUTTON_ZOOMPRESSED = 15;    // 마우스 오른쪽클릭 지속
+    public const byte BUTTON_GRENADPRESSED = 16;    // G키 지속
 
     // InputAction과 연결
     public bool isJumping;
@@ -54,6 +56,7 @@ public struct NetworkInputData : INetworkInput
     // 내부 변수(Input Action과 연결X)
     public bool isShotgunOnFiring;
     public bool isOnZoom;
+    public bool isFellGrenad;
 
 
 

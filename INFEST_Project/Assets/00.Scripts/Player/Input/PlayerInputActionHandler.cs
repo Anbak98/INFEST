@@ -55,6 +55,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     private bool _isShotgunOnFiring;
     private bool _isOnZoom;
     private bool _isUsingShop;
+    private bool _isFellGrenad;
 
     [SerializeField]
     private InputManager _inputManager;
@@ -291,6 +292,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         Debug.Log("[Input] TriggerUseItem - Use item triggered");
         _isUsingGrenad = true;
+        
         //Invoke(nameof(CancelUseItem), 0.1f);
     }
 
@@ -298,6 +300,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         Debug.Log("[Input] ResetUseItemState - Use item reset");
         _isUsingGrenad = false;
+        _isFellGrenad = true;
     }
     public bool GetIsUsingGrenade() => _isUsingGrenad;
     #endregion
@@ -464,7 +467,9 @@ public class PlayerInputActionHandler : MonoBehaviour
 
             isChangingCamera = _isChangingCamera,
 
-            scrollValue = _isSwapVelue
+            scrollValue = _isSwapVelue,
+
+            isFellGrenad = _isFellGrenad
         };
 
         // button 상태는 여기서
@@ -481,6 +486,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
         if (_isUsingShop) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);        
         if (_isChangingCamera) data.buttons.Set(NetworkInputData.BUTTON_CHANGECAMERA, true);
+
         _isUsingGrenad = false;
         _isUsingHeal = false;
         _isUsingShield = false;
@@ -499,6 +505,9 @@ public class PlayerInputActionHandler : MonoBehaviour
         // 위의 if문을 삭제하든가 수정해야하고, 그렇게 되면 _isOnZoom은 없어도 되는 변수다
         if (_isOnZoom) data.buttons.Set(NetworkInputData.BUTTON_ZOOMPRESSED, true);
         _isOnZoom = false;
+
+        if(_isFellGrenad) data.buttons.Set(NetworkInputData.BUTTON_GRENADPRESSED, true);
+        _isFellGrenad = false;
 
         return data;
     }
