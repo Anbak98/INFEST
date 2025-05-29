@@ -17,6 +17,8 @@ public class GrenadeProjectile : NetworkBehaviour
     public GameObject rendering;
     private float _castRadius = 0.2f;
 
+    private float _boundCnt = 0;
+    private bool _isBound = false;
     private bool _isStopped = false;
     [SerializeField] private LayerMask _layerMask;
 
@@ -52,8 +54,6 @@ public class GrenadeProjectile : NetworkBehaviour
             RPC_Despawn();
             return;
         }
-
-
 
         if (_lifeTimer.Expired(Runner))
         {
@@ -134,8 +134,21 @@ public class GrenadeProjectile : NetworkBehaviour
         }
         else if (hitLayer == 11)
         {
-            _isStopped = true;
-            transform.position = hit.point + Vector3.up * 0.01f;
+            if (!_isBound)
+            {
+                _boundCnt++;
+                _isBound = _boundCnt == 3? true : false;
+                // 반사 벡터 계산
+                _velocity = Vector3.Reflect(_velocity, hit.normal) * 0.6f;
+                // 충돌 지점으로 위치 이동 (약간 띄워서 튕기기)
+                transform.position = hit.point + Vector3.up * 0.01f;
+                newPosition = hit.point + hit.normal * 0.01f + _velocity/8;
+            }
+            else
+            {
+                _isStopped = true;
+                transform.position = hit.point + Vector3.up * 0.01f;
+            }
         }
         else
         {

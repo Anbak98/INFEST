@@ -12,7 +12,7 @@ public class GoreHaul_LowAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul,
         monster.IsLowAttack = true;
         monster.CurMovementSpeed = 0f;
 
-        phase.skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, 7f);
+        phase.skillCoolDown[2] = TickTimer.CreateFromSeconds(Runner, monster.skills[2].CoolDown);
     }
 
     public override void Execute()

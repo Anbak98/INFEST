@@ -14,7 +14,7 @@ public class Bowmeter_Pattern3 : MonsterStateNetworkBehaviour<Monster_Bowmeter, 
         monster.IsShoot = true;
         monster.CurMovementSpeed = 0f;        
 
-        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10);
+        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, monster.skills[3].CoolDown);
     }
 
     public override void Execute()

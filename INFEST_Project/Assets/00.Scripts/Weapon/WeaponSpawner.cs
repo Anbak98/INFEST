@@ -219,34 +219,48 @@ public class WeaponSpawner : NetworkBehaviour
     }
 
     bool throwChk = false;
+    float unEquipDelay = 0;
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_OnThrowGrenade()
+    public void RPC_OnThrowReady()
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (throwChk) return;
         if (_player.inventory.consume[0]?.curNum <= 0) return;
         if (_player.inventory.consume[0] == null) return;
-
         throwChk = true;
+
+        unEquipDelay = GetActiveWeapon().UnEquipDelay;
+        Invoke(nameof(ActivateGrenade), unEquipDelay);
+
         _animator.SetTrigger(THROW_GRENADE);
-        Invoke(nameof(RPC_ThrowGrenade), GetActiveWeapon().UnEquipDelay);
+        _animator.SetTrigger(THROW_PRESS);
+
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnThrowGrenade()
+    {
+        if (!throwChk) return;
+        _animator.SetTrigger(THROW_FELL);
         _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
+
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ThrowGrenade()
-    {
-        _player.Consumes.ActivateGrenade();
-        GetActiveWeapon().gameObject.SetActive(false);
-        Invoke(nameof(Throw), 1.5f);
-        Invoke(nameof(SetWeaponVisible), 0.5f);
-        Invoke(nameof(DeactivateGrenade), 2.5f);
-    }
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    //public void RPC_ThrowGrenade()
+    //{
+    //    Invoke(nameof(Throw), 1f);
+    //    Invoke(nameof(DeactivateGrenade), 1.5f);
+    //}
 
     private void Throw()
     {
         _player.Consumes.DeactivateGrenade();
         _player.Consumes.Throw();
+    }
+
+    private void ActivateGrenade()
+    {
+        _player.Consumes.ActivateGrenade();
     }
 
     private void DeactivateGrenade()
@@ -282,6 +296,8 @@ public class WeaponSpawner : NetworkBehaviour
     private static int TAC_SPRINT_WEIGHT = Animator.StringToHash("TacSprintWeight");
     private static int GRENADE_WEIGHT = Animator.StringToHash("GrenadeWeight");
     private static int THROW_GRENADE = Animator.StringToHash("ThrowGrenade");
+    private static int THROW_PRESS = Animator.StringToHash("IsPress");
+    private static int THROW_FELL = Animator.StringToHash("IsFell");
     private static int GAIT = Animator.StringToHash("Gait");
     private static int IS_IN_AIR = Animator.StringToHash("IsInAir");
 
