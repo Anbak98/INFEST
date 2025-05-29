@@ -785,13 +785,13 @@ MonoBehaviour:
   ragdollCapsuleCollider: []
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
-  _CurHealth: -1
+  <CurHealth>k__BackingField: -1
   <CurDamage>k__BackingField: 0
   <CurDef>k__BackingField: 0
-  _BaseHealth: -1
+  <BaseHealth>k__BackingField: -1
   <BaseDamage>k__BackingField: 0
   <BaseDef>k__BackingField: 0
-  _OffsetHealth: -1
+  <OffsetHealth>k__BackingField: -1
   <OffsetDamage>k__BackingField: 0
   <OffsetDef>k__BackingField: 0
   _IsAttack:
@@ -827,9 +827,7 @@ MonoBehaviour:
     _value: 0
   _IsPhaseWonder:
     _value: 0
-  _IsPhaseAttackOne:
-    _value: 0
-  _IsPhaseAttackTwo:
+  _IsPhaseAttack:
     _value: 0
 --- !u!114 &4037491669542359682
 MonoBehaviour:
@@ -2474,13 +2472,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424b386db5b9165488d149f3ee8e252e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpHeight: 10
-  jumpDistance: 10
-  obstacleDetectDistance: 2
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  moveSpeed: 30
+  jumpHeight: 20
+  ps: {fileID: 5071062677382311638}
 --- !u!1 &7076725619382270367
 GameObject:
   m_ObjectHideFlags: 0
@@ -3398,55 +3392,110 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198079886963610350, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 198324401746647892, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198324401746647892, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198334940033457708, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198334940033457708, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 198337014526576000, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198337014526576000, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198530950498740444, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198530950498740444, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 198534744390258538, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198534744390258538, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198606511873398880, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198606511873398880, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 198701871819743318, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198701871819743318, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198816868994796806, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198816868994796806, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 198866204677630900, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198866204677630900, guid: 8a5811ae0a0f7804fbff1cf892735c20,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198930795902428608, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198930795902428608, guid: 8a5811ae0a0f7804fbff1cf892735c20,
         type: 3}
-      propertyPath: looping
-      value: 0
+      propertyPath: moveWithTransform
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

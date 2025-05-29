@@ -246,8 +246,8 @@ public class PlayerController : NetworkBehaviour
         //player.statHandler.IsDead = false;
         //player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
         //if (alivePlayerCameras.Count > 0)
-
         player.cameraHandler.ResetSpectatorTarget();
+        player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
         //isFocusing = false;
     }
 

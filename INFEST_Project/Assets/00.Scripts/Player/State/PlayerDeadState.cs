@@ -14,12 +14,14 @@ public class PlayerDeadState : PlayerBaseState
     public override void Enter()
     {
         player.animationController.Die = true;
+        player.targetableFromMonsterCollider.enabled = false;
         //player.statHandler.IsDead = true;
         Debug.Log("DeadState");
     }
 
     public override void Exit()
     {
+        player.targetableFromMonsterCollider.enabled = true;
     }
 
     public override void OnUpdate(NetworkInputData data)
