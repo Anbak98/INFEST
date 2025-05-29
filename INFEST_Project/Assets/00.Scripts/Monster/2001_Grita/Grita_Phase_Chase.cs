@@ -31,7 +31,7 @@ public class Grita_Phase_Chase : MonsterPhase<Monster_Grita>
             return;
         }
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
 
         if (!monster.AIPathing.pathPending)
         {

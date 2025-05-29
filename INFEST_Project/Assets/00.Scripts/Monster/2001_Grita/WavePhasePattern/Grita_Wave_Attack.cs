@@ -30,7 +30,7 @@ public class Grita_Wave_Attack : MonsterStateNetworkBehaviour<Monster_Grita, Gri
 
         if (_tickTimer.Expired(Runner))
         {
-            monster.AIPathing.SetDestination(monster.target.position);
+           monster.MoveToTarget();
             monster.IsAttack = false;
             if (!monster.AIPathing.pathPending && !monster.IsDead)
             {

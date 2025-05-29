@@ -22,7 +22,7 @@ public class FieldMonsterSpawn : NetworkBehaviour
             {
                 MonsterNetworkBehaviour mnb = Runner.Spawn(Monster, PossiblePosition()).GetComponent<MonsterNetworkBehaviour>();
                 mnb.GetComponent<NavMeshAgent>().enabled = true;
-                mnb.SetTarget(players[Random.Range(0, players.Length)].transform);
+                mnb.TrySetTarget(players[Random.Range(0, players.Length)].transform);
             }
         }
     }

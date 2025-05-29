@@ -36,7 +36,7 @@ public class WarZ_Phase_Wave : MonsterPhase<Monster_WarZ>
             return;
         }
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
 
         // 생성되자마자 공격되는거 방지
         if (!monster.AIPathing.pathPending)

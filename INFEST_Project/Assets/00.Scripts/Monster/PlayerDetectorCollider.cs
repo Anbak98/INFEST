@@ -7,12 +7,16 @@ public class PlayerDetectorCollider : MonoBehaviour
 
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
+        Debug.Log("1");
         if ((targetLayerMask.value & (1 << other.gameObject.layer)) != 0)
         {
+            Debug.Log("2");
+
             monster.TryAddTarget(other.transform);
             monster.SetTargetRandomly();
         }
     }
+
     private void OnTriggerExit(UnityEngine.Collider other)
     {
         if (other.gameObject.layer == targetLayerMask.value)

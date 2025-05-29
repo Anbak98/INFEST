@@ -21,7 +21,7 @@ public class Monster_RageFang_Phase_AttackTwo : MonsterPhase<Monster_RageFang>
     //public override void MachineExecute()
     //{
     //    base.MachineExecute();
-    //    monster.AIPathing.SetDestination(monster.target.position);
+    //   monster.MoveToTarget();
 
     //    if (!monster.AIPathing.pathPending)
     //    {

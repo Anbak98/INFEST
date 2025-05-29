@@ -22,9 +22,23 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
     {
         base.MachineExecute();
 
+        /// target의 체력이 0이면 null로 만든다
+        if (monster.IsTargetDead())
+        {
+            monster.target = null;
+            // 새로운 목표를 설정한다
+            monster.SetTargetRandomly();
+            // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다
+        }
+        if (monster.target == null)
+        {
+            monster.FSM.ChangePhase<GoreHaul_Phase_Wonder>();
+            return;
+        }
+
         if (monster.IsReadyForChangingState && monster.target != null)
         {
-            monster.AIPathing.SetDestination(monster.target.position);
+           monster.MoveToTarget();
         }
 
         if (!monster.AIPathing.pathPending)
@@ -51,7 +65,7 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
     public void CaculateAttackType(float distance)
     {
         activatedSkilles = new();
-        monster.SetTarget(monster.target.transform);
+        monster.TrySetTarget(monster.target.transform);
 
         bool pattern1Ready = skillCoolDown[1].ExpiredOrNotRunning(Runner);
 

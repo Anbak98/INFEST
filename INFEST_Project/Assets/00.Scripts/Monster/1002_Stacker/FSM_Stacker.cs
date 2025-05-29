@@ -6,7 +6,7 @@ public class FSM_Stacker : MonsterFSM<Monster_Stacker>
         {
             monster.TryAddTarget(other.transform);
             monster.SetTargetRandomly();
-            monster.SetTarget(other.transform);
+            monster.TrySetTarget(other.transform);
             monster.FSM.ChangePhase<Stacker_Phase_Chase>();
         }
     }

@@ -17,7 +17,7 @@ public class Grita_Wave_Run : MonsterStateNetworkBehaviour<Monster_Grita, Grita_
     {
         base.Execute();
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
     }
 
     public override void Exit()

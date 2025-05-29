@@ -8,13 +8,14 @@ public class WarZ_Chase_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Ph
     {
         base.Enter();
 
-        monster.CurMovementSpeed = monster.info.SpeedMove;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
     }
 
     public override void Execute()
     {
         base.Execute();
-        monster.AIPathing.SetDestination(monster.target.position);
+        if (monster.target != null)
+           monster.MoveToTarget();
 
     }
 

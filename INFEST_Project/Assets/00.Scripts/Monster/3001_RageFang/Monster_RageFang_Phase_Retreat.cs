@@ -10,7 +10,6 @@ public class Monster_RageFang_Phase_Retreat : MonsterPhase<Monster_RageFang>
     public LayerMask obstacleLayer;
     public bool FirstJump = false;
 
-
     public override void MachineEnter()
     {
         base.MachineEnter();
@@ -31,7 +30,7 @@ public class Monster_RageFang_Phase_Retreat : MonsterPhase<Monster_RageFang>
 
         if (monster.IsReadyForChangingState)
         {
-            ChangeState<Monster_RageFang_Retreat_Retreat>();
+            ChangeState<Monster_RageFang_Retreat_Jump>();
         }
     }
 
@@ -39,5 +38,6 @@ public class Monster_RageFang_Phase_Retreat : MonsterPhase<Monster_RageFang>
     {
         base.MachineExit();
         monster.AIPathing.enabled = true;
+        monster.ClearTargetList();
     }
 }

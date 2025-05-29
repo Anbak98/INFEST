@@ -17,7 +17,7 @@ public class FSM_Grita : MonsterFSM<Monster_Grita>
         if (other.gameObject.layer == 7)
         {
             monster.TryAddTarget(other.transform);
-            monster.SetTarget(other.transform);
+            monster.TrySetTarget(other.transform);
             monster.SetTargetRandomly();
 
             /// 타겟으로 플레이어가 들어오면

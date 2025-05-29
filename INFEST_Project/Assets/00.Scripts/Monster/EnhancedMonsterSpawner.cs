@@ -33,21 +33,21 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (SpawnWaitingNum <= 0 && SpawnedNum <= 0)
+        if (SpawnWaitingNum <= 0 && SpawnedNum <= 1)
         {
-            NetworkGameManager.Instance.ChangeState(GameState.None);
+            NetworkGameManager.Instance.GameState = GameState.None;
         }
 
         if (waveSpawnDelayTimer.ExpiredOrNotRunning(Runner))
         {
-            if (NetworkGameManager.Instance.gameState == GameState.Wave && SpawnedNum < SpawnedLimit && waveMonsterSpawnQueue.Count > 0 && waveSpawnPoints.Count > 0)
+            if (NetworkGameManager.Instance.GameState == GameState.Wave && SpawnedNum < SpawnedLimit && waveMonsterSpawnQueue.Count > 0 && waveSpawnPoints.Count > 0)
             {
                 int rand = Random.Range(0, waveSpawnPoints.Count);
                 NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(waveMonsterSpawnQueue.Dequeue()), waveSpawnPoints[rand].transform.position);
                 MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
 
                 mnb.TryAddTarget(waveCaller);
-                mnb.SetTarget(waveCaller);
+                mnb.TrySetTarget(waveCaller);
                 waveSpawnDelayTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
 
                 SpawnWaitingNum--;
@@ -56,14 +56,14 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
         if (fieldSpawnDelayTimer.ExpiredOrNotRunning(Runner))
         {
-            if (NetworkGameManager.Instance.gameState == GameState.None)
+            if (NetworkGameManager.Instance.GameState == GameState.None)
             {
 
             }
         }
     }
 
-    public void CallWave(Transform from)
+    public void CallWave(Transform from, bool ForceBigWave = false)
     {
         int distance = 15;
         int iteral = 5;
@@ -77,38 +77,9 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
         if (waveSpawnPoints.Count > 0)
         {
-            waveMonsterSpawnQueue = new();
-
             int totalSpawnNum;
 
-            if (NetworkGameManager.Instance.gameState == GameState.Wave)
-            {
-                Debug.Log("WaveScream;");
-                totalSpawnNum = Random.Range(7, 11);
-
-                for (int i = 0; i < totalSpawnNum; ++i)
-                {
-                    int proba = 0;
-                    int rand = Random.Range(0, 100);
-
-                    foreach(var mst in monsterSpawnTables)
-                    {
-                        proba += (int)(mst.Value.StartByScream + mst.Value.ScreamPer5Min * (Runner.SimulationTime / 300) );
-
-                        if(proba >= rand)
-                        {
-                            waveMonsterSpawnQueue.Enqueue(mst.Key);
-                            SpawnWaitingNum++;
-                            if (mst.Key == 2001)
-                            {
-                                Debug.Log("GritA?!");
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            else
+            if(ForceBigWave || NetworkGameManager.Instance.GameState == GameState.None )
             {
                 Debug.Log("Just Wave");
                 if (Runner.SimulationTime < 300)
@@ -139,8 +110,35 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
                     }
                 }
             }
+            else
+            {
+                Debug.Log("WaveScream;");
+                totalSpawnNum = Random.Range(7, 11);
 
-            NetworkGameManager.Instance.ChangeState(GameState.Wave);
+                for (int i = 0; i < totalSpawnNum; ++i)
+                {
+                    int proba = 0;
+                    int rand = Random.Range(0, 100);
+
+                    foreach (var mst in monsterSpawnTables)
+                    {
+                        proba += (int)(mst.Value.StartByScream + mst.Value.ScreamPer5Min * (Runner.SimulationTime / 300));
+
+                        if (proba >= rand)
+                        {
+                            waveMonsterSpawnQueue.Enqueue(mst.Key);
+                            SpawnWaitingNum++;
+                            if (mst.Key == 2001)
+                            {
+                                Debug.Log("GritA?!");
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            NetworkGameManager.Instance.GameState = GameState.Wave;
 
             waveCaller = from;
             WaveNum++;
@@ -151,7 +149,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public void SpawnOnPos(Transform pos, int monsterKey = 1001)
     {
-        NetworkGameManager.Instance.ChangeState(GameState.None);
+        NetworkGameManager.Instance.GameState = GameState.None;
 
         NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey), pos.transform.position);
     }
@@ -175,15 +173,11 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             iteral--;
         } while (justSpawnPoint.Count == 0 && iteral > 0);
 
-        NetworkGameManager.Instance.ChangeState(GameState.None);
+        NetworkGameManager.Instance.GameState = GameState.None;
 
 
 
         NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey.Value), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
-        MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
-
-        mnb.TryAddTarget(waveCaller);
-        mnb.SetTarget(waveCaller);
     }
 
     public void JustWaveSpawn(Transform from, int? monsterKey = -1)
@@ -205,13 +199,13 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
             iteral--;
         } while (justSpawnPoint.Count == 0 && iteral > 0);
 
-        NetworkGameManager.Instance.ChangeState(GameState.Wave);
+        NetworkGameManager.Instance.GameState = GameState.Wave;
 
 
         NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(monsterKey.Value), justSpawnPoint[Random.Range(0, justSpawnPoint.Count)].transform.position);
         MonsterNetworkBehaviour mnb = monster.GetComponent<MonsterNetworkBehaviour>();
 
         mnb.TryAddTarget(waveCaller);
-        mnb.SetTarget(waveCaller);
+        mnb.TrySetTarget(waveCaller);
     }
 }

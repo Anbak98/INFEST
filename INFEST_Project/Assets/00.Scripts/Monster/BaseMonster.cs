@@ -17,7 +17,7 @@ public class BaseMonster<T> : MonsterNetworkBehaviour where T : BaseMonster<T>
 
         NetworkGameManager.Instance.monsterSpawner.SpawnedNum++;
 
-        if (NetworkGameManager.Instance.gameState == GameState.Wave)
+        if (NetworkGameManager.Instance.GameState == GameState.Wave)
         {
             OnWave();
         }
