@@ -42,6 +42,7 @@ public abstract class PlayerBaseState : IState
     }
     public virtual void OnUpdate(NetworkInputData data)
     {
+        player.animationController.MoveDirection = data.direction;
         player.animationController.isJumping = !controller.IsGrounded();
     }
     public virtual void Exit()

@@ -19,6 +19,7 @@ public class PlayerSitIdleState : PlayerSitState
     }
     public override void Exit()
     {
+        Debug.Log("SitIdle상태 종료");
         base.Exit();
     }
 

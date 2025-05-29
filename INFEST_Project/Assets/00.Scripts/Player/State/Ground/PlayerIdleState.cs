@@ -17,23 +17,18 @@ public class PlayerIdleState : PlayerGroundState
         controller.LockState = PlayerLockState.Free;
 
         base.Enter();   // Ground ¡¯¿‘
-
         player.animationController.Die = false;
-    }
-
-
-    public override void PhysicsUpdate(NetworkInputData data)
-    {
-        base.PhysicsUpdate(data);
-    }
-    public override void Exit()
-    {
-        base.Exit();
-        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
+        player.animationController.isSitting = data.isSitting;
+        player.animationController.isRunning = data.isRunning;
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 }

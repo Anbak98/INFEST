@@ -21,20 +21,16 @@ public class PlayerSitState : PlayerBaseState
         // 앉는다
         controller.StartSit();
     }
-    public override void Exit()
-    {
-        base.Exit();
-        // 일어난다
-        controller.StartStand();
-    }
 
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
         player.animationController.isSitting = data.isSitting; 
-
     }
-    public override void PhysicsUpdate(NetworkInputData data)
+    public override void Exit()
     {
+        base.Exit();
+        // 일어난다
+        controller.StartStand();
     }
 }
