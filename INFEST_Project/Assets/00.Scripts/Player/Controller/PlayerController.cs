@@ -75,6 +75,12 @@ public class PlayerController : NetworkBehaviour
                 stateMachine.OnUpdate(data);
                 HandleMovement(data);
 
+                if (stateMachine.TryGetNextState(data, out var nextState))
+                {
+                    stateMachine.ChangeState(nextState);
+                }
+
+
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
                 {
                     if (!player.isInteraction)

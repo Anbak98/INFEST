@@ -51,7 +51,7 @@ public class PlayerStateMachine
         /// 가장 처음으로 들어가는 State는 IdleState
         currentState?.Exit();
         currentState = newState;
-        currentState?.Enter();        
+        currentState?.Enter();
     }
 
 
@@ -86,10 +86,10 @@ public class PlayerStateMachine
         AimAttackWalkState = new PlayerAimAttackWalkState(controller, this);
 
         ReloadState = new PlayerReloadState(controller, this);
-        
+
         JumpState = new PlayerJumpState(controller, this);
         FallState = new PlayerFallState(controller, this);
-        
+
         SitIdleState = new PlayerSitIdleState(controller, this);
         WaddleState = new PlayerWaddleState(controller, this);
         SitAttackState = new PlayerSitAttackState(controller, this);
@@ -101,6 +101,57 @@ public class PlayerStateMachine
         currentState = IdleState;
 
         //currentState = FallState;         // 처음에 떠있는 상태에서 떨어진다
+    }
+
+    // 지금은 시간이 없으니 여기에 모든 상태를 몰아넣고, 나중에 분리한다
+    // 이렇게 하면 상태에서 다른 상태를 중첩해서 들어가는 일이 없다
+    public bool TryGetNextState(NetworkInputData data, out IState nextState)
+    {
+        nextState = null;
+
+        if (currentState is PlayerIdleState idleState)
+        {
+            if (data.direction != Vector3.zero)
+            {
+                nextState = MoveState;
+                return true;
+            }
+            if (controller.IsGrounded() && data.isJumping)
+            {
+                nextState = JumpState;
+                return true;
+            }
+            //if (Player.Weapons != null && data.isFiring)
+            //{
+            //    Player.animationController.isFiring = data.isFiring;
+            //    //PlayerFire(data);
+            //    //stateMachine.ChangeState(stateMachine.AttackState);
+            //}
+            //if (controller.IsGrounded() && data.isZooming)
+            //{
+            //    //stateMachine.ChangeState(stateMachine.AimState);
+            //}
+        }
+        // MoveState도 동일한 방식으로 처리
+        if (currentState is PlayerMoveState moveState)
+        {
+            if (data.direction == Vector3.zero)
+            {
+                nextState = IdleState;
+                return true;
+            }
+            if (controller.IsGrounded() && data.isJumping)
+            {
+                nextState = JumpState;
+                return true;
+            }
+        }
+
+
+
+
+
+        return false;
     }
 }
 
