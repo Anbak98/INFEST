@@ -13,7 +13,7 @@ public class GoreHaul_JumpAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul
 
         monster.IsJumpAttack = true;
 
-        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, 10f);
+        phase.skillCoolDown[3] = TickTimer.CreateFromSeconds(Runner, monster.skills[3].CoolDown);
     }
 
     public override void Execute()
