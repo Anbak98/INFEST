@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster_RageFang_Attack_FlexingMuscles : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_AttackOne>
+public class Monster_RageFang_Attack_FlexingMuscles : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_Attack>
 {
     public override void Enter()
     {
@@ -10,13 +10,12 @@ public class Monster_RageFang_Attack_FlexingMuscles : MonsterStateNetworkBehavio
         monster.CurMovementSpeed = 0;
         monster.IsFlexingMuscles = true;
         phase.skillCoolDown[4] = TickTimer.CreateFromSeconds(Runner, monster.skills[4].CoolDown);
-        phase.flexingMusclesBuffTimer = TickTimer.CreateFromSeconds(Runner, 30);
+        monster.Buff(30, (int)(monster.BaseDamage / monster.skills[4].DamageCoefficient), (int)(monster.BaseDef / monster.skills[4].DamageCoefficient));
         monster.IsReadyForChangingState = false;
     }
 
     public override void Exit()
     {
         base.Exit();
-        monster.IsFlexingMuscles = false;
     }
 }

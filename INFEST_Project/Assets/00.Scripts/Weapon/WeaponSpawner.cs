@@ -104,12 +104,16 @@ public class WeaponSpawner : NetworkBehaviour
     public void Fire(bool holdingPressed)
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+        if (throwChk) return;
+
         _weapons[_activeWeaponIndex].Fire(holdingPressed);
     }
 
     public void Reload()
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
+        if (throwChk) return;
+
 
         _weapons[_activeWeaponIndex].Reload();
 
@@ -122,6 +126,8 @@ public class WeaponSpawner : NetworkBehaviour
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (value == 0f) return;
         if (_weapons.Count == 1) return;
+        if (throwChk) return;
+
         float delay = GetActiveWeapon().OnUnEquipped();
         //GetActiveWeapon().gameObject.SetActive(false);
         _value = value;
@@ -188,6 +194,7 @@ public class WeaponSpawner : NetworkBehaviour
     public void Aiming(bool _isAiming)
     {
         if (_weapons[_activeWeaponIndex].IsReloading == true) return;
+        if (throwChk) return;
 
         RPC_OnAim(_isAiming);
     }
@@ -228,7 +235,7 @@ public class WeaponSpawner : NetworkBehaviour
     {
         _player.Consumes.ActivateGrenade();
         GetActiveWeapon().gameObject.SetActive(false);
-        Invoke(nameof(Throw), 1.5f);
+        Invoke(nameof(Throw), 2.5f);
         Invoke(nameof(SetWeaponVisible), 0.5f);
         Invoke(nameof(DeactivateGrenade), 1.4f);
     }

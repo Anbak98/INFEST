@@ -244,7 +244,6 @@ public class Weapon : NetworkBehaviour
         if (!IsCollected) return; 
         if (curMagazineBullet <= 0) return; 
         if (IsAiming) return; 
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return; 
 
         IsAiming = true;
         instance.IsAiming();
@@ -263,7 +262,6 @@ public class Weapon : NetworkBehaviour
     {
         if (!IsCollected) return;
         if (!IsAiming) return;
-        if (!_fireCooldown.ExpiredOrNotRunning(Runner)) return;
 
         IsAiming = false;
         instance.StopAiming();

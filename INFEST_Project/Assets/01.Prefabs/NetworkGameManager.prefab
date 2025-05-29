@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5947801513869092885}
   - component: {fileID: 76838703195281468}
-  - component: {fileID: 2155035613921327918}
   m_Layer: 2
   m_Name: MonsterSpawner
   m_TagString: Untagged
@@ -30,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1739778130287168505}
   m_Father: {fileID: 7851311580529667776}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &76838703195281468
@@ -54,21 +54,6 @@ MonoBehaviour:
   SpawnedLimit: 50
   SpawnWaitingNum: 0
   justSpawnMonsterKey: 1001
---- !u!114 &2155035613921327918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376343885394567427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2beb22150a858274a90c01e5b52ba5e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bossSpawnPoint: {fileID: 0}
-  bossPrefab:
-    RawGuidValue: 00000000000000000000000000000000
 --- !u!1 &2819210594177276524
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +113,6 @@ MonoBehaviour:
   - {fileID: 5968973178278424143}
   - {fileID: 8707455988181621235}
   - {fileID: 76838703195281468}
-  - {fileID: 2155035613921327918}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5968973178278424143
 MonoBehaviour:
@@ -687,6 +671,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 253848723194603538, guid: 50d81bacc1117104aa3f38f114b05299,
     type: 3}
   m_PrefabInstance: {fileID: 6683886368134154231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7172084997714473551
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5947801513869092885}
+    m_Modifications:
+    - target: {fileID: 456415521116363141, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_Name
+      value: BossSpawnPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -172.93999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.30999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -16.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9084d50fb5a586d4586583aa598d6c32, type: 3}
+--- !u!4 &1739778130287168505 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8911695347134200246, guid: 9084d50fb5a586d4586583aa598d6c32,
+    type: 3}
+  m_PrefabInstance: {fileID: 7172084997714473551}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7522416660564444444
 PrefabInstance:
