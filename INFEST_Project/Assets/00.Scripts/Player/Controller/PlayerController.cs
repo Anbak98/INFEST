@@ -72,13 +72,14 @@ public class PlayerController : NetworkBehaviour
             DEBUG_DATA = data;
             if (!player.statHandler.IsDead)   // 죽지 않았을때만 가능한 동작
             {
-                stateMachine.OnUpdate(data);
-                HandleMovement(data);
-
+                // 1. 상태 전환 먼저 수행
                 if (stateMachine.TryGetNextState(data, out var nextState))
                 {
                     stateMachine.ChangeState(nextState);
                 }
+                // 2. 현재 상태의 로직 수행
+                stateMachine.OnUpdate(data);
+                HandleMovement(data);
 
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)

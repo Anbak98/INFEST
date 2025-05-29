@@ -28,6 +28,7 @@ public class PlayerSitIdleState : PlayerSitState
 
         //controller.ApplyGravity();  // ม฿ทย
 
+        /*
         if (data.direction != Vector3.zero)
         {
             stateMachine.ChangeState(stateMachine.WaddleState);
@@ -37,14 +38,15 @@ public class PlayerSitIdleState : PlayerSitState
             stateMachine.ChangeState(stateMachine.IdleState);
         }
         // isSitting && isFiring
-        if ((stateMachine.Player.Weapons != null) && data.isFiring)
-        {
-            stateMachine.ChangeState(stateMachine.SitAttackState);
-        }
+        //if ((stateMachine.Player.Weapons != null) && data.isFiring)
+        //{
+        //    stateMachine.ChangeState(stateMachine.SitAttackState);
+        //}
         // isSitting && isReloading
         //if ((stateMachine.Player.GetWeapons() != null) && data.isReloading)
         //{
         //    stateMachine.ChangeState(stateMachine.SitReloadState);
         //}
+        */
     }
 }

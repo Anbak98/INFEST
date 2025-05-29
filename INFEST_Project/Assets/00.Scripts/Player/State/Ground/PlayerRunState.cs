@@ -27,6 +27,7 @@ public class PlayerRunState : PlayerGroundState
         PlayerRun(data);
         //controller.ApplyGravity();  // ม฿ทย
 
+        /*
         if (!data.isRunning)
         {
             stateMachine.ChangeState(stateMachine.MoveState);
@@ -38,6 +39,6 @@ public class PlayerRunState : PlayerGroundState
 
             stateMachine.ChangeState(stateMachine.JumpState);
         }
-
+        */
     }
 }

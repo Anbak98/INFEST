@@ -34,8 +34,7 @@ public class PlayerIdleState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-
-
+        /*
         if ((controller.IsGrounded()) && data.isJumping)
         {
             player.animationController.isJumping = data.isJumping;
@@ -63,17 +62,14 @@ public class PlayerIdleState : PlayerGroundState
         {
             //stateMachine.ChangeState(stateMachine.AimState);
         }
-
         //if(stateMachine.Player.Weapons != null && data.isReloading)
         //{
         //    stateMachine.ChangeState(stateMachine.ReloadState);
         //}
-
-
-        // 앉는 상태는 잠금
         //if (controller.IsGrounded() && data.isSitting)
         //{
         //    stateMachine.ChangeState(stateMachine.SitIdleState);
         //}
+        */
     }
 }

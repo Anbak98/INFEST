@@ -38,6 +38,7 @@ public class PlayerWaddleState : PlayerSitState
         PlayerWaddle(data);
         //controller.ApplyGravity();  // ม฿ทย
 
+        /*
         if (!data.isSitting)
         {
             stateMachine.ChangeState(stateMachine.IdleState);
@@ -59,5 +60,6 @@ public class PlayerWaddleState : PlayerSitState
         //    stateMachine.ChangeState(stateMachine.SitReloadState);
         //    return;
         //}
+        */
     }
 }

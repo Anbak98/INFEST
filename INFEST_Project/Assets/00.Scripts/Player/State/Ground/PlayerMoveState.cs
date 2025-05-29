@@ -28,6 +28,8 @@ public class PlayerMoveState : PlayerGroundState
         player.animationController.MoveDirection = data.direction;
         //PlayerMove(data);
 
+
+        /*
         if (data.isJumping)
         {
             player.animationController.isJumping = data.isJumping;
@@ -54,10 +56,6 @@ public class PlayerMoveState : PlayerGroundState
         {
             //stateMachine.ChangeState(stateMachine.AimWalkState);
         }
-
-        //if (data.isSitting)
-        //{
-        //    stateMachine.ChangeState(stateMachine.SitIdleState);
-        //}
+        */
     }
 }
