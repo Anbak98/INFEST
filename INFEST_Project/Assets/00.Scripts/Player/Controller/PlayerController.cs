@@ -21,9 +21,9 @@ using UnityEngine.UIElements;
 [System.Flags]
 public enum PlayerLockState
 {
-    Free = 0,
+    Free = 0,   // idle
     MoveLock = 1 << 0,  // 0001
-    RunLock = 1 << 1,   // 0010, 앉기, 앉아서 걷기, idle, 조준 상태
+    RunLock = 1 << 1,   // 0010, 앉기, 앉아서 걷기, 조준 상태
     JumpLock = 1 << 2,   // 0100, 조준 상태
     SitLock = 1 << 3,   // 1000, 달리기 상태
     ZoomLock = 1 << 4,   // 10000, 달리기, 점프 상태
@@ -343,13 +343,13 @@ public class PlayerController : NetworkBehaviour
                 {
                     targetSpeed = prevSpeed;  /// 기존의 스피드로 움직인다
                 }
-                else // 앉아서 이동
+                else // 앉기, 앉아서 이동
                 {
                     targetSpeed = waddleSpeed;
                     prevSpeed = waddleSpeed;
                 }
             }
-            else
+            else // idle
             {
                 targetSpeed = walkSpeed;    // 기본 걷기
                 prevSpeed = walkSpeed;
@@ -463,21 +463,21 @@ public class PlayerController : NetworkBehaviour
     public bool IsGrounded() => _simpleKCC.IsGrounded;
     public float GetVerticalVelocity() => verticalVelocity;
     #endregion
-    private void OnGUI()
-    {
-        if (HasInputAuthority)
-        {
-            GUILayout.Label(stateMachine.currentState.ToString());
-            GUILayout.Label(DEBUG_DATA.ToString());
-            //
-            GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
-            GUILayout.Label("PlayerController position: " + transform.position.ToString());
-            GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
-            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
-            ////
-            //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
-            //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
-        }
-    }
+    //private void OnGUI()
+    //{
+    //    if (HasInputAuthority)
+    //    {
+    //        GUILayout.Label(stateMachine.currentState.ToString());
+    //        GUILayout.Label(DEBUG_DATA.ToString());
+    //        //
+    //        GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
+    //        GUILayout.Label("PlayerController position: " + transform.position.ToString());
+    //        GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
+    //        GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+    //        GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+    //        ////
+    //        //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+    //        //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
+    //    }
+    //}
 }

@@ -40,12 +40,12 @@ public abstract class PlayerBaseState : IState
     public virtual void Enter()
     {
     }
-    public virtual void Exit()
-    {
-    }
     public virtual void OnUpdate(NetworkInputData data)
     {
-        player.animationController.isJumping = !controller.IsGrounded();    
+        player.animationController.isJumping = !controller.IsGrounded();
+    }
+    public virtual void Exit()
+    {
     }
     public virtual void PhysicsUpdate(NetworkInputData data)
     {

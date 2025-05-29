@@ -17,15 +17,14 @@ public class PlayerRunState : PlayerGroundState
 
         base.Enter();
     }
+    public override void OnUpdate(NetworkInputData data)
+    {
+        base.OnUpdate(data);
+        player.animationController.isRunning = data.isRunning;
+    }
     public override void Exit()
     {
         base.Exit();
     }
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-        base.OnUpdate(data);
-
-        player.animationController.isFiring = data.isFiring;
-    }
 }

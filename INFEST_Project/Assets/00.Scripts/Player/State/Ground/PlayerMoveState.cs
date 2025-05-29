@@ -18,15 +18,15 @@ public class PlayerMoveState : PlayerGroundState
         base.Enter();
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
 
         player.animationController.MoveDirection = data.direction;
     }
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
 }

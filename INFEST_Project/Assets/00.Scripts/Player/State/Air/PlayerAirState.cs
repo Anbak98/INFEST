@@ -16,15 +16,15 @@ public class PlayerAirState : PlayerBaseState
     {
         base.Enter();
     }
+    public override void OnUpdate(NetworkInputData data)
+    {
+        base.OnUpdate(data);
+    }
     public override void Exit()
     {
         base.Exit();    // 상단의 layer로 나간다
     }
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-        base.OnUpdate(data);
-    }
     public override void PhysicsUpdate(NetworkInputData data)
     {
     }

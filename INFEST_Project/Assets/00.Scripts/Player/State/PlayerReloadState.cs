@@ -17,6 +17,9 @@ public class PlayerReloadState : PlayerBaseState
 
         //StartAnimation(stateMachine.Player.AnimationData.ReloadParameterHash);
     }
+    public override void OnUpdate(NetworkInputData data)
+    {
+    }
     public override void Exit()
     {
         base.Exit();
@@ -24,7 +27,4 @@ public class PlayerReloadState : PlayerBaseState
     }
 
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-    }
 }

@@ -16,14 +16,14 @@ public class PlayerAttackState : PlayerBaseState
     {
         base.Enter();
     }
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
         player.animationController.isFiring = data.isFiring;
     }
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
 }

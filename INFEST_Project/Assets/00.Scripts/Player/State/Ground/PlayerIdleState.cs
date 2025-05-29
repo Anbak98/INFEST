@@ -13,23 +13,23 @@ public class PlayerIdleState : PlayerGroundState
     // 가장 먼저 시작
     public override void Enter()
     {
-        // idle 상태에서 달리기 불가
-        controller.LockState = PlayerLockState.RunLock;
+        // idle 상태에서는 입력에 제약이 없다
+        controller.LockState = PlayerLockState.Free;
 
         base.Enter();   // Ground 진입
 
         player.animationController.Die = false;
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
-    }
 
     public override void PhysicsUpdate(NetworkInputData data)
     {
         base.PhysicsUpdate(data);
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        //StopAnimation(stateMachine.Player.AnimationData.IdleParameterHash);
     }
 
     public override void OnUpdate(NetworkInputData data)

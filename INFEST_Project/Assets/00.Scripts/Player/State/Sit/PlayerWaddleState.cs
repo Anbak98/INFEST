@@ -13,13 +13,14 @@ public class PlayerWaddleState : PlayerSitState
         Debug.Log("Waddle상태 진입");
         base.Enter();
     }
+    public override void OnUpdate(NetworkInputData data)
+    {
+        base.OnUpdate(data);
+        player.animationController.isSitting = data.isSitting;
+    }
     public override void Exit()
     {
         base.Exit();
     }
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-        base.OnUpdate(data);
-    }
 }

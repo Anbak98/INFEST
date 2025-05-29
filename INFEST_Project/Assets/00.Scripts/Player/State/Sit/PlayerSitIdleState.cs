@@ -13,13 +13,13 @@ public class PlayerSitIdleState : PlayerSitState
         base.Enter();
         Debug.Log("SitIdle상태 진입");
     }
+    public override void OnUpdate(NetworkInputData data)
+    {
+        base.OnUpdate(data);
+    }
     public override void Exit()
     {
         base.Exit();
     }
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-        base.OnUpdate(data);
-    }
 }

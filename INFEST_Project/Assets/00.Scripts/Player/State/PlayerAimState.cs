@@ -17,13 +17,13 @@ public class PlayerAimState : PlayerGroundState
 
         base.Enter();
     }
+    public override void OnUpdate(NetworkInputData data)
+    {
+        base.OnUpdate(data);
+    }
     public override void Exit()
     {
         base.Exit();
     }
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-        base.OnUpdate(data);
-    }
 }
