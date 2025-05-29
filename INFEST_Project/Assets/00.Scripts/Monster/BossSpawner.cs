@@ -18,8 +18,8 @@ public class BossSpawner : NetworkBehaviour
 
     private System.Collections.IEnumerator SpawnBossAfterDelay()
     {
-        yield return new WaitForSeconds(10f); // 3분 대기
+        yield return new WaitForSeconds(1f); // 3분 대기
 
-        Runner.Spawn(bossPrefab, bossSpawnPoint.position, bossSpawnPoint.rotation, Object.InputAuthority);
+        Runner.Spawn(bossPrefab, new Vector3(-45, 0, 45));
     }
 }

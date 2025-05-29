@@ -14,7 +14,7 @@ public class Monster_RageFang_Phase_Wonder : MonsterPhase<Monster_RageFang>
 
         if (monster.target != null)
         {
-            monster.FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
+            monster.FSM.ChangePhase<Monster_RageFang_Phase_Attack>();
         }
     }
 

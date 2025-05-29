@@ -88,14 +88,9 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
         CurDetectorRadius = info.DetectAreaNormal;
 
-
         AIPathing.enabled = true;
         AIPathing.speed = info.SpeedMove;
         ActivateRagdoll(false);
-    }
-
-    public void OnEnable()
-    {
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
@@ -286,7 +281,9 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     /// </summary>
     public void ClearTargetList()
     {
+        target = null;
         targets.Clear();
+        targetBridges.Clear();
     }
 
     protected virtual void OnWave()

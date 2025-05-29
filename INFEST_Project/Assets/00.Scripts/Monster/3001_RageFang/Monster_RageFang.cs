@@ -1,11 +1,18 @@
 using Fusion;
 using INFEST.Game;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Monster_RageFang : BaseMonster<Monster_RageFang>
 {
     public Dictionary<int, RageFangSkillTable> skills;
+    public Dictionary<int, BossRunPoint> nextRegion;
+    public int regionIndex = 1;
+
+    public TickTimer RetreatTimer;
+    public bool IsValidRetreat = true;
 
     [Networked, OnChangedRender(nameof(OnPhaseIndexChanged))]
     public short PhaseIndex { get; set; } = 0;
@@ -55,6 +62,7 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     {
         base.Spawned();
         skills = DataManager.Instance.GetDictionary<RageFangSkillTable>();
+        nextRegion = DataManager.Instance.GetDictionary<BossRunPoint>();
 
         OnIsPhaseWonder();
         OnIsPhaseAttackOne();
@@ -82,10 +90,36 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
         target = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(instigator).transform;
         if(FSM.currentPhase is Monster_RageFang_Phase_Wonder)
         {
-            FSM.ChangePhase<Monster_RageFang_Phase_AttackOne>();
+            FSM.ChangePhase<Monster_RageFang_Phase_Attack>();
         }
 
         return base.ApplyDamage(instigator, damage, position, direction, weaponType, isCritical);
+    }
+
+    public IEnumerator Buff(float sec, int dmg, int def)
+    {
+        OffsetDamage += dmg;
+        OffsetDef += def;
+
+        CurDamage = BaseDamage + OffsetDamage;
+        CurDef = BaseDef + OffsetDef;
+
+        yield return new WaitForSeconds(sec);
+
+        OffsetDamage -= dmg;
+        OffsetDef -= def;
+
+        CurDamage = BaseDamage + OffsetDamage;
+        CurDef = BaseDef + OffsetDef;
+    }
+
+    public void Buff(int dmg, int def)
+    {
+        OffsetDamage += dmg;
+        OffsetDef += def;
+
+        CurDamage = BaseDamage + OffsetDamage;
+        CurDef = BaseDef + OffsetDef;
     }
 
     private void OnPhaseIndexChanged() => animator.SetInteger("PhaseIndex", PhaseIndex);
@@ -99,8 +133,8 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
     private void OnIsContinousAttack() => animator.SetBool("IsContinousAttack", IsContinousAttack);
     private void OnIsQuickRollToRun() => animator.SetBool("IsQuickRollToRun", IsQuickRollToRun);
     private void OnIsTurnAttack() => animator.SetBool("IsTurnAttack", IsTurnAttack);
-    private void OnIsRoaring() => animator.Play("AttackTwoPhase.Monster_RageFang_Roaring");
+    private void OnIsRoaring() { if (IsRoaring) animator.Play("AttackTwoPhase.Monster_RageFang_Roaring"); }
     private void OnIsPhaseAttackOne() { if (IsPhaseAttackOne) animator.Play("AttackOnePhase.Monster_RageFang_Run"); }
     private void OnIsPhaseAttackTwo() { if (IsPhaseAttackTwo) animator.Play("AttackTwoPhase.Monster_RageFang_Run"); }
-    private void OnIsPhaseWonder() { if (IsPhaseWonder) animator.Play("AttackOnePhase.Monster_RageFang_Run"); }
+    private void OnIsPhaseWonder() { if (IsPhaseWonder) animator.Play("Wonder.Monster_RageFang_Idle"); }
 }

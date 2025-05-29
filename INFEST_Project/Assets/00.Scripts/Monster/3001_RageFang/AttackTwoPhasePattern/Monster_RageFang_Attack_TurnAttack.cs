@@ -2,22 +2,23 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Monster_RageFang_AttackTwo_ContinuousPunch : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_AttackTwo>
+public class Monster_RageFang_Attack_TurnAttack : MonsterStateNetworkBehaviour<Monster_RageFang, Monster_RageFang_Phase_Attack>
 {
     public override void Enter()
     {
         base.Enter();
         monster.CurMovementSpeed = 0;
-        monster.IsContinousAttack = true;
-        phase.skillCoolDown[7] = TickTimer.CreateFromSeconds(Runner, monster.skills[7].CoolDown);
+        monster.IsTurnAttack = true;
+        phase.skillCoolDown[9] = TickTimer.CreateFromSeconds(Runner, monster.skills[9].CoolDown);
         monster.IsReadyForChangingState = false;
     }
 
     public override void Exit()
     {
         base.Exit();
-        monster.IsContinousAttack = false;
+        monster.IsTurnAttack = false;
     }
+
 
     public float attackRange = 5f;         // 공격 범위
     public float attackAngle = 90f;        // 반원 (90도)
@@ -43,7 +44,7 @@ public class Monster_RageFang_AttackTwo_ContinuousPunch : MonsterStateNetworkBeh
             if (angle <= attackAngle / 2f)
             {
                 // 이 콜라이더는 전방 90도 안에 있음
-                monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[7].DamageCoefficient));
+                monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[9].DamageCoefficient));
             }
         }
     }

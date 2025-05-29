@@ -33,8 +33,8 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
 
     private Vector3 GetRandomPositionOnNavMesh()
     {
-        float minDistance = 10f;
-        float maxDistance = 100f;
+        float minDistance = 5f;
+        float maxDistance = 15f;
 
         for (int i = 0; i < 5; i++)
         {
@@ -45,7 +45,10 @@ public class Monster_RageFang_Wonder_Walk : MonsterStateNetworkBehaviour<Monster
 
             if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 3, NavMesh.AllAreas))
             {
-                return hit.position;
+                if(hit.distance < 15f)
+                {
+                    return hit.position;
+                }
             }
         }
 
