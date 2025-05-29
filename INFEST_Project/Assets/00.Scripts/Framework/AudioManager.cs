@@ -48,6 +48,14 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            float master = PlayerPrefs.GetFloat("Master", 0.5f);
+            float bgm = PlayerPrefs.GetFloat("Bgm", 0.5f);
+            float sfx = PlayerPrefs.GetFloat("Sfx", 0.5f);
+            SetMaster(master);
+            SetBgm(bgm);
+            SetSfx(sfx);
+
             PlayBgm(Bgms.Main);
         }
         else

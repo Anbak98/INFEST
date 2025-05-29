@@ -62,7 +62,7 @@ namespace INFEST.Game
 
         public void VictoryGame()
         {
-            FindAnyObjectByType<InputManager>().SetActive(false);
+            inputManager.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Global.Instance.UIManager.Hide<UIStateView>();
@@ -94,7 +94,7 @@ namespace INFEST.Game
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RPC_BroadcastDefeatGame()
         {
-            FindAnyObjectByType<InputManager>().SetActive(false);
+            inputManager.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Global.Instance.UIManager.Hide<UIStateView>();

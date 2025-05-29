@@ -6,17 +6,13 @@ public class Stacker_Attack : MonsterStateNetworkBehaviour<Monster_Stacker, Stac
 
     public override void Enter()
     {
-        base.Enter();
+        base.Enter();        
 
+        monster.IsReadyForChangingState = false;
         monster.IsPunch = true;
         monster.CurMovementSpeed = 0f;
 
         _tickTimer = TickTimer.CreateFromSeconds(Runner, 2);
-    }
-
-    public override void Execute()
-    {
-        base.Execute();
     }
 
     public override void Exit()
