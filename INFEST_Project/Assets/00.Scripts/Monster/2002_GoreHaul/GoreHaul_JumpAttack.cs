@@ -23,21 +23,24 @@ public class GoreHaul_JumpAttack : MonsterStateNetworkBehaviour<Monster_GoreHaul
         if (monster.target == null)
             return;
 
-        Vector3 direction = (monster.target.position - monster.transform.position).normalized;
+        Vector3 dir = (monster.target.position - monster.transform.position).normalized;
+        dir.y = 0f;
+        Quaternion targetRot = Quaternion.LookRotation(dir);
 
-        monster.transform.position += monster.CurMovementSpeed * Runner.DeltaTime * direction;
+        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, targetRot, Time.deltaTime * 5f);
+        monster.transform.position += monster.CurMovementSpeed * Runner.DeltaTime * dir;
     }
 
     public override void Exit()
     {
         base.Exit();
         monster.IsJumpAttack = false;
-    }    
+    }
 
     public override void Attack()
     {
         base.Attack();
-        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);        
+        AudioManager.instance.PlaySfx(Sfxs.ZombieAttack);
 
         UnityEngine.Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5, layerMask);
 

@@ -70,6 +70,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 6159f1491458a1148ab69d8bf0f738f9
     name: Bgm
+  - guid: 12ec2616f1bfeaf46b9489d22b991b6e
+    name: Fire
   - guid: a59815b8c9f436d4ab71bb58608ed9fd
     name: Master
   - guid: 551915c016b85644cbed95c2cf2b3c74
@@ -132,6 +134,7 @@ AudioMixerSnapshotController:
     551915c016b85644cbed95c2cf2b3c74: -5.7224793
     a59815b8c9f436d4ab71bb58608ed9fd: -5.7224774
     6159f1491458a1148ab69d8bf0f738f9: -6.133707
+    9301eeeba0e4e9c408565e3dd497fb5e: -0.08374829
   m_TransitionOverrides: {}
 --- !u!244 &1047199983976872220
 AudioMixerEffectController:
