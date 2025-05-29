@@ -12,6 +12,9 @@ public class PlayerRunState : PlayerGroundState
 
     public override void Enter()
     {
+        // 달리는 중에 앉기, 조준 불가
+        controller.LockState = PlayerLockState.SitLock | PlayerLockState.ZoomLock;
+
         base.Enter();
     }
     public override void Exit()
@@ -24,7 +27,7 @@ public class PlayerRunState : PlayerGroundState
         base.OnUpdate(data);
 
         player.animationController.isFiring = data.isFiring;
-        PlayerRun(data);
+        //PlayerRun(data);
         //controller.ApplyGravity();  // 중력
 
         /*

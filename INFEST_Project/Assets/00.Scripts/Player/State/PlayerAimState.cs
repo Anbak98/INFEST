@@ -12,6 +12,9 @@ public class PlayerAimState : PlayerGroundState
 
     public override void Enter()
     {
+        // 조준중에는 달리기, 점프 불가
+        controller.LockState = PlayerLockState.RunLock | PlayerLockState.JumpLock;
+
         base.Enter();
     }
     public override void Exit()

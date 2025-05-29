@@ -29,7 +29,7 @@ public class PlayerAttackState : PlayerBaseState
         //PlayerMove(data);
 
         player.animationController.isFiring = data.isFiring;
-        PlayerFire(data);
+        //PlayerFire(data);
 
         /*
         //if (data.direction != Vector3.zero)

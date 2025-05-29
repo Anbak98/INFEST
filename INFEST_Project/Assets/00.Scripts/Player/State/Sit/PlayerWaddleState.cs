@@ -27,15 +27,17 @@ public class PlayerWaddleState : PlayerSitState
 
     public override void OnUpdate(NetworkInputData data)
     {
+        base.OnUpdate(data);
+
         // blend tree 애니메이션에서는 입력값을 업데이트해서 애니메이션을 변경해야한다
-        Vector2 moveInput = data.direction;
+        //Vector2 moveInput = data.direction;
 
         // 지속적으로 Blend Tree 파라미터 업데이트
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveXParameterHash, moveInput.x);
         //SetAnimationFloat(stateMachine.Player.AnimationData.MoveZParameterHash, moveInput.y);
 
         // 플레이어 이동
-        PlayerWaddle(data);
+        //PlayerWaddle(data);
         //controller.ApplyGravity();  // 중력
 
         /*

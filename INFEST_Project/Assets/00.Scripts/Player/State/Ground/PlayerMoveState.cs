@@ -12,6 +12,9 @@ public class PlayerMoveState : PlayerGroundState
 
     public override void Enter()
     {
+        // °È´Â Áß¿¡´Â ¾É±â ºÒ°¡
+        controller.LockState = PlayerLockState.SitLock;
+
         base.Enter();
     }
 

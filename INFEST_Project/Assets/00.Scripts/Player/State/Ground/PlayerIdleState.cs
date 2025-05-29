@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerIdleState : PlayerGroundState
 {
+    
     public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine)
     {
     }
@@ -12,6 +13,9 @@ public class PlayerIdleState : PlayerGroundState
     // 가장 먼저 시작
     public override void Enter()
     {
+        // idle 상태에서 달리기 불가
+        controller.LockState = PlayerLockState.RunLock;
+
         base.Enter();   // Ground 진입
 
         player.animationController.Die = false;

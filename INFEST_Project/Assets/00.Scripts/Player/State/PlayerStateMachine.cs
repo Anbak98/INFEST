@@ -240,22 +240,22 @@ public class PlayerStateMachine
         // Aim
         else if (currentState is PlayerAimState aimState)
         {
-            if (!data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero)
+            if (!data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero && !data.isZooming)
             {
                 nextState = IdleState;
                 return true;
             }
-            else if (!data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero)
+            else if (!data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero && !data.isZooming)
             {
                 nextState = MoveState;
                 return true;
             }
-            else if (data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero)
+            else if (data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero && !data.isZooming)
             {
                 nextState = SitIdleState;
                 return true;
             }
-            else if (data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero)
+            else if (data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero && !data.isZooming)
             {
                 nextState = WaddleState;
                 return true;
@@ -263,7 +263,7 @@ public class PlayerStateMachine
         }
 
 
-        return false;   // Idle
+        return false;   // 이전상태 그대로 유지
     }
 }
 
