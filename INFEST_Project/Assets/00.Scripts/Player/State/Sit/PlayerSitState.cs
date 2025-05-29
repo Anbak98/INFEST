@@ -31,7 +31,7 @@ public class PlayerSitState : PlayerBaseState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-        player.animationController.isSitting = data.isSitting;
+        player.animationController.isSitting = data.isSitting; 
 
     }
     public override void PhysicsUpdate(NetworkInputData data)
