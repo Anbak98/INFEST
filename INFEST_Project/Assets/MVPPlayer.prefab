@@ -1496,7 +1496,7 @@ Transform:
   m_GameObject: {fileID: 2233175047490624745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2183,10 +2183,10 @@ RectTransform:
   - {fileID: 3925369335306342490}
   m_Father: {fileID: 1629500177246760146}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4518936503993475138
 CanvasRenderer:
@@ -3485,7 +3485,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3268cbec4adcb7b4bbd5dcceedf49e76, type: 3}
+  m_Sprite: {fileID: 21300000, guid: de79c6f18b3efe848963dec196ed1646, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5130,6 +5130,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2831176873799362131}
     m_Modifications:
+    - target: {fileID: 3383338721837542113, guid: ed44765b243a3e04090173295f925faa,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: b04eccb126612c64f801778e9f9b5c5c,
+        type: 2}
     - target: {fileID: 4032086537580138804, guid: ed44765b243a3e04090173295f925faa,
         type: 3}
       propertyPath: m_Name
@@ -5137,9 +5143,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
+        type: 3}
+      propertyPath: reloadTime
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325605915954910776, guid: ed44765b243a3e04090173295f925faa,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6680753333699076543, guid: ed44765b243a3e04090173295f925faa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5340,9 +5362,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: e404bc25d418bae41b09bf3a2cc4d0b5,
+        type: 3}
+    - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695685083841125710, guid: cce562ecd6ea1b1429d03f67fb441004,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5782183964679997502, guid: cce562ecd6ea1b1429d03f67fb441004,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5393,6 +5431,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7784558525833575978, guid: cce562ecd6ea1b1429d03f67fb441004,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 8459539ebdd80da4597382d1cea0ee22,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5436,16 +5480,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2831176873799362131}
     m_Modifications:
-    - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
-        type: 3}
-      propertyPath: weaponSpawner
-      value: 
-      objectReference: {fileID: 7032259557335484116}
-    - target: {fileID: 1588471491102761109, guid: f6e5865b5afe01a48a79940bbad9df1d,
-        type: 3}
-      propertyPath: _IsCollected._value
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4034369168780561755, guid: f6e5865b5afe01a48a79940bbad9df1d,
         type: 3}
       propertyPath: m_Name
@@ -5664,6 +5698,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2831176873799362131}
     m_Modifications:
+    - target: {fileID: 319908301438305445, guid: 263d46a54742f554f81d7667f16e865c,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: c30b40f589bcef34ba3253dcb9ede8c4,
+        type: 2}
     - target: {fileID: 472434944859137347, guid: 263d46a54742f554f81d7667f16e865c,
         type: 3}
       propertyPath: m_Name
@@ -5721,9 +5761,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: e6c90bcc59e2d0c499d7be35cb27b2fb,
+        type: 3}
+    - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
+        type: 3}
+      propertyPath: reloadTime
+      value: 2.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281360524913879086, guid: 263d46a54742f554f81d7667f16e865c,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5769,9 +5825,25 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: e404bc25d418bae41b09bf3a2cc4d0b5,
+        type: 3}
+    - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 1066621988817400372, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1405136511983599699, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
         type: 3}
       propertyPath: m_Name
@@ -5827,6 +5899,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6818483394034740614, guid: 42cd3eb49d2a75d4ab6a7bc68272a9e5,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 02fcbed359064394793c4f0dcd37470f,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5870,11 +5948,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2831176873799362131}
     m_Modifications:
+    - target: {fileID: 658169595114379324, guid: 8358c336d99bfba4a856c8d1456671e3,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 994fa12675435d143844dd7c491200fc,
+        type: 2}
     - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513312485970438600, guid: 8358c336d99bfba4a856c8d1456671e3,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6888615015265622251, guid: 8358c336d99bfba4a856c8d1456671e3,
         type: 3}
       propertyPath: m_Name
@@ -8349,6 +8449,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: AK
       objectReference: {fileID: 0}
+    - target: {fileID: 5087505281656563068, guid: c674e0903cd628b4cbd8ec642b3c9162,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: d532f7fdf156db44eb1203f75a5bc17e,
+        type: 2}
     - target: {fileID: 6625856265364813867, guid: c674e0903cd628b4cbd8ec642b3c9162,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8401,9 +8507,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
+        type: 3}
+      propertyPath: reloadTime
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915670443297824317, guid: c674e0903cd628b4cbd8ec642b3c9162,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8497,6 +8619,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6424519791102897419, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: ad22fb579bf27c04eb4a3ec7fbbfbbc0,
+        type: 2}
     - target: {fileID: 6690984862818700287, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
         type: 3}
       propertyPath: m_Name
@@ -8504,9 +8632,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: e404bc25d418bae41b09bf3a2cc4d0b5,
+        type: 3}
+    - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
+        type: 3}
+      propertyPath: reloadTime
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 8907953562990989119, guid: 28c9afe3409de7341b7853e6a5c6b6a3,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8552,9 +8696,25 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: e6c90bcc59e2d0c499d7be35cb27b2fb,
+        type: 3}
+    - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
+        type: 3}
+      propertyPath: reloadTime
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130338631581667773, guid: 12f7747191cd7284ebc0222726e98cef,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3287312209776963579, guid: 12f7747191cd7284ebc0222726e98cef,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8610,6 +8770,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: KXG12
       objectReference: {fileID: 0}
+    - target: {fileID: 5011882838572354030, guid: 12f7747191cd7284ebc0222726e98cef,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: e667597056f9f0843b5dda1c18962fa8,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8660,9 +8826,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
+        type: 3}
+      propertyPath: reloadTime
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 5850662728269957853, guid: 422f521c4cef15e4c9dff27819f809b4,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934185887279331170, guid: 422f521c4cef15e4c9dff27819f809b4,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 4895668e91669224e9a76c9bf9a2bcaa,
+        type: 2}
     - target: {fileID: 8637518443832374898, guid: 422f521c4cef15e4c9dff27819f809b4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8756,6 +8944,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2831176873799362131}
     m_Modifications:
+    - target: {fileID: 765984985503812191, guid: 1ea92b19570345b4098755d4df746797,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 918028f91e0134446b19db15328e2f6e,
+        type: 2}
     - target: {fileID: 1178518933060275582, guid: 1ea92b19570345b4098755d4df746797,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8813,9 +9007,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202181759161789627, guid: 1ea92b19570345b4098755d4df746797,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8914,11 +9124,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kolibri
       objectReference: {fileID: 0}
+    - target: {fileID: 5480030505949486247, guid: 14367c05085a48548948c2b99e0bb756,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: aa1508b5d83ba6048bc3fc849ecab68b,
+        type: 2}
     - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: e404bc25d418bae41b09bf3a2cc4d0b5,
+        type: 3}
+    - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 982335
+      objectReference: {fileID: 0}
+    - target: {fileID: 8797411308782646125, guid: 14367c05085a48548948c2b99e0bb756,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8969,9 +9201,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 982335
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301019062408223184, guid: f265949293dde6e42a4603911941ea5e,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4407176668547430636, guid: f265949293dde6e42a4603911941ea5e,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: cda71ffb4333f9e498ec31127d072b48,
+        type: 2}
     - target: {fileID: 6303582290104636188, guid: f265949293dde6e42a4603911941ea5e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9170,11 +9424,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kar98k
       objectReference: {fileID: 0}
-    - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
-        type: 3}
-      propertyPath: weaponSpawner
-      value: 
-      objectReference: {fileID: 7032259557335484116}
     - target: {fileID: 3757244448247332225, guid: 676d0ee45f3a94d4f81fd641a8b3fe95,
         type: 3}
       propertyPath: _IsCollected._value
@@ -9440,11 +9689,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
         type: 3}
-      propertyPath: weaponSpawner
-      value: 
-      objectReference: {fileID: 7032259557335484116}
-    - target: {fileID: 4252990074851080149, guid: 13fe1fef696a76649afb46771a1127ca,
-        type: 3}
       propertyPath: _IsCollected._value
       value: 1
       objectReference: {fileID: 0}
@@ -9546,11 +9790,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4666150597482243888, guid: 48dfb50408c8c4b468ba57233bf0c908,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: ecdf07fd495ffe6458807e716e5dd556,
+        type: 2}
     - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 78df9d9dff196db4c835d3ffca58fb9d,
+        type: 3}
+    - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258304868466118227, guid: 48dfb50408c8c4b468ba57233bf0c908,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6031535134123767998, guid: 48dfb50408c8c4b468ba57233bf0c908,
         type: 3}
       propertyPath: m_Name
@@ -9604,11 +9870,48 @@ PrefabInstance:
       propertyPath: m_Name
       value: RPG
       objectReference: {fileID: 0}
+    - target: {fileID: 2355898728222709775, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: weaponSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: b70ba7614539a324c9dccd916e459675,
+        type: 2}
     - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
         type: 3}
-      propertyPath: weaponSpawner
+      propertyPath: key
+      value: 10601
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: icon
       value: 
-      objectReference: {fileID: 7032259557335484116}
+      objectReference: {fileID: 21300000, guid: 2a26be694789988409d8e4bbf6d8cc37,
+        type: 3}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: reloadTime
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: HitMask.m_Bits
+      value: 983039
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: _IsCollected._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: rocket.RawGuidValue.Array.data[0]
+      value: 8408163848007781845
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812199076043675069, guid: 43737a3b56849464d8a512959869c5e0,
+        type: 3}
+      propertyPath: rocket.RawGuidValue.Array.data[1]
+      value: -998428832024803671
+      objectReference: {fileID: 0}
     - target: {fileID: 9094881749966266365, guid: 43737a3b56849464d8a512959869c5e0,
         type: 3}
       propertyPath: m_LocalPosition.x

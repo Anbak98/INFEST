@@ -1250,13 +1250,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d114a27dd5723a0479e482c0e1f0d6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   _scopeCam: {fileID: 0}
+  _scopeImage: {fileID: 0}
   _cameraHolder: {fileID: 8220623599345950809}
   _sensitivity: 5
   _parentTransform: {fileID: 7699265124199881149}
   isMenu: 0
-  statHandler: {fileID: 0}
-  virtualCamera: {fileID: 0}
+  _player: {fileID: 0}
+  firstPersonCamera: {fileID: 0}
+  spectatorCamera: {fileID: 0}
+  alivePlayerCameras: []
+  currentPlayerIndex: 0
+  curFocusingCam: {fileID: 0}
+  isFocusing: 0
+  _simpleKCC: {fileID: 0}
 --- !u!114 &3525830744979918221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1516,8 +1524,6 @@ MonoBehaviour:
   _virtualCamera: {fileID: 5252161380220052710}
   _shakeDuration: 0.5
   _shakeIntensity: 2
-  _audioSource: {fileID: 0}
-  _attackedSounds: []
 --- !u!1 &3597567262614780535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,9 +1967,9 @@ MonoBehaviour:
   LockState: 0
   player: {fileID: 8168506967506702566}
   cameraHandler: {fileID: 4380250326704930166}
-  networkCharacterController: {fileID: 0}
+  _simpleKCC: {fileID: 0}
+  CameraHandle: {fileID: 0}
   playerId: 
-  currentPlayerIndex: 0
 --- !u!114 &8168506967506702566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1976,20 +1982,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f685a4701570f0a43b3f780a5ac1281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDead: 0
   inStoreZoon: 0
+  inMysteryBoxZoon: 0
   isInteraction: 0
   animationController: {fileID: 7257102350247664721}
-  data:
-    key: 0
-    Playeridx: 
-    NickName: 
   statHandler: {fileID: 2832379890833165128}
+  controller: {fileID: 0}
   attackedEffectController: {fileID: 0}
   cameraHandler: {fileID: 4380250326704930166}
   store: {fileID: 0}
+  mysteryBox: {fileID: 0}
   inventory: {fileID: 0}
-  FirstPersonCamera: {fileID: 0}
   Weapons: {fileID: 2249048457829884956}
   Consumes: {fileID: 0}
   CameraHandle: {fileID: 8220623599345950809}
@@ -3657,6 +3660,7 @@ MonoBehaviour:
     mid: {fileID: 8024205838321652981}
     root: {fileID: 2516706962856002519}
   _weapons: []
+  _isAiming: 0
 --- !u!114 &5634865597497503781
 MonoBehaviour:
   m_ObjectHideFlags: 0

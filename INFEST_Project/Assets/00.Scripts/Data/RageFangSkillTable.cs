@@ -27,34 +27,64 @@ public class RageFangSkillTable : IKeyedItem
     public float CoolDown;
 
     /// <summary>
-    /// 1m이내일 경우
+    /// 1P_3m이내
     /// </summary>
-    public int Distance_1P1M;
+    public int RF_1P3M;
 
     /// <summary>
-    /// 3m이내일 경우
+    /// 1P_5m이내
     /// </summary>
-    public int Distance_1P3M;
+    public int RF_1P5M;
 
     /// <summary>
-    /// 5m이내일경우
+    /// 1P_7m이내
     /// </summary>
-    public int Distance_1P5M;
+    public int RF_1P7M;
 
     /// <summary>
-    /// 1m이내일 경우
+    /// 2P_3m이내
     /// </summary>
-    public int Distance_2P1M;
+    public int RF_2P3M;
 
     /// <summary>
-    /// 3m이내일 경우
+    /// 2P_5m이내
     /// </summary>
-    public int Distance_2P3M;
+    public int RF_2P5M;
 
     /// <summary>
-    /// 5m이내일경우
+    /// 2P_7m이내
     /// </summary>
-    public int Distance_2P5M;
+    public int RF_2P7M;
+
+    /// <summary>
+    /// 3P_3m이내
+    /// </summary>
+    public int RF_3P3M;
+
+    /// <summary>
+    /// 3P_5m이내
+    /// </summary>
+    public int RF_3P5M;
+
+    /// <summary>
+    /// 3P_7m이내
+    /// </summary>
+    public int RF_3P7M;
+
+    /// <summary>
+    /// 4P_3m이내
+    /// </summary>
+    public int RF_4P3M;
+
+    /// <summary>
+    /// 4P_5m이내
+    /// </summary>
+    public int RF_4P5M;
+
+    /// <summary>
+    /// 4P_7m이내
+    /// </summary>
+    public int RF_4P7M;
 
     public int Key => key;
 
