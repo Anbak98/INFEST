@@ -7,27 +7,10 @@ using UnityEngine;
 /// ThirdPersonRoot의 애니메이션을 기준으로 상태를 나누었다(FirstPersonRoot은 상태와 상관없이 애니메이션이 실행된다)
 /// 단, AttackState는 FirstPersonRoot 기준이다(서서 쏘기, 앉아서 쏘기를 구분하지 않기 때문)
 /// </summary>
-public enum PlayerStateType
-{
-    Idle,
-    Move,
-    Run,
-    Jump,
-    Fall,
-    SitIdle,
-    Waddle,
-    Aim,
-    Dead,
-    Attack
-}
-
 public class PlayerStateMachine
 {
     // player의 입력정보를 가져오기만 한다
     public Player Player { get; }
-
-    public Dictionary<PlayerStateType, IState> stateMap;
-    public PlayerStateType currentStateType;
 
     // 공통
     public PlayerAttackState AttackState { get; private set; }
@@ -102,107 +85,145 @@ public class PlayerStateMachine
         WaddleState = new PlayerWaddleState(controller, this);
         DeadState = new PlayerDeadState(controller, this);
 
-        stateMap = new Dictionary<PlayerStateType, IState>{
-                    { PlayerStateType.Idle, IdleState },
-                    { PlayerStateType.Move, MoveState },
-                    { PlayerStateType.Run, RunState },
-                    { PlayerStateType.Jump, JumpState },
-                    { PlayerStateType.Fall, FallState },
-                    { PlayerStateType.SitIdle, SitIdleState },
-                    { PlayerStateType.Waddle, WaddleState },
-                    { PlayerStateType.Aim, AimState },
-                    { PlayerStateType.Dead, DeadState },
-                    { PlayerStateType.Attack, AttackState }
-                    };
 
         // 처음에는 IdleState시작
-        currentStateType = PlayerStateType.Idle;
-        currentState = stateMap[currentStateType];
+        currentState =IdleState;
     }
 
     public bool TryGetNextState(NetworkInputData data, out IState nextState)
     {
         nextState = null;
-        // Dictionary 검색보다는 변수대입이 연산이 더 적어서 일단은 변수 대입으로 처리했다
-        switch (currentStateType)
+        if (currentState is PlayerIdleState)
         {
-            case PlayerStateType.Idle:
-                if (data.direction != Vector3.zero)
-                    nextState = MoveState;
-                else if (data.isRunning && controller.IsGrounded())
-                    nextState = RunState;
-                else if (data.isJumping && controller.IsGrounded())
-                    nextState = JumpState;
-                else if (data.isSitting && controller.IsGrounded())
-                    nextState = SitIdleState;
-                else if (data.isZooming)
-                    nextState = AimState;
-                break;
-
-            case PlayerStateType.Move:
-                if (data.direction == Vector3.zero)
-                    nextState = IdleState;
-                else if (data.isJumping && controller.IsGrounded())
-                    nextState = JumpState;
-                else if (data.isRunning && controller.IsGrounded())
-                    nextState = RunState;
-                else if (data.isZooming && controller.IsGrounded())
-                    nextState = AimState;
-                break;
-
-            case PlayerStateType.Run:
-                if (data.direction == Vector3.zero)
-                    nextState = IdleState;
-                else if (!data.isRunning && controller.IsGrounded())
-                    nextState = MoveState;
-                else if (data.isJumping && controller.IsGrounded())
-                    nextState = JumpState;
-                break;
-
-            case PlayerStateType.Jump:
-                if (data.direction == Vector3.zero)
-                    nextState = IdleState;
-                else if (data.direction != Vector3.zero)
-                    nextState = MoveState;
-                else if (data.isRunning)
-                    nextState = RunState;
-                break;
-
-            case PlayerStateType.Fall:
-                if (controller.IsGrounded() && !data.isSitting)
-                    nextState = IdleState;
-                else if (controller.IsGrounded() && data.isSitting)
-                    nextState = SitIdleState;
-                break;
-
-            case PlayerStateType.SitIdle:
-                if (!data.isSitting && data.direction == Vector3.zero)
-                    nextState = IdleState;
-                else if (data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero)
-                    nextState = WaddleState;
-                else if (data.isJumping && controller.IsGrounded())
-                    nextState = JumpState;
-                else if (data.isZooming && controller.IsGrounded())
-                    nextState = AimState;
-                break;
-
-            case PlayerStateType.Waddle:
-                if (data.isSitting && data.direction == Vector3.zero)
-                    nextState = SitIdleState;
-                else if (data.isJumping && controller.IsGrounded())
-                    nextState = JumpState;
-                break;
-
-            case PlayerStateType.Aim:
-                if (!data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero && !data.isZooming)
-                    nextState = IdleState;
-                else if (!data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero && !data.isZooming)
-                    nextState = MoveState;
-                else if (data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero && !data.isZooming)
-                    nextState = SitIdleState;
-                else if (data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero && !data.isZooming)
-                    nextState = WaddleState;
-                break;
+            if (data.direction != Vector3.zero)
+            {
+                nextState = MoveState;
+            }
+            else if (data.isRunning && controller.IsGrounded())
+            {
+                nextState = RunState;
+            }
+            else if (data.isJumping && controller.IsGrounded())
+            {
+                nextState = JumpState;
+            }
+            else if (data.isSitting && controller.IsGrounded())
+            {
+                nextState = SitIdleState;
+            }
+            else if (data.isZooming)
+            {
+                nextState = AimState;
+            }
+        }
+        else if (currentState is PlayerMoveState)
+        {
+            if (data.direction == Vector3.zero)
+            {
+                nextState = IdleState;
+            }
+            else if (data.isJumping && controller.IsGrounded())
+            {
+                nextState = JumpState;
+            }
+            else if (data.isRunning && controller.IsGrounded())
+            {
+                nextState = RunState;
+            }
+            else if (data.isZooming && controller.IsGrounded())
+            {
+                nextState = AimState;
+            }
+        }
+        else if (currentState is PlayerRunState)
+        {
+            if (data.direction == Vector3.zero)
+            {
+                nextState = IdleState;
+            }
+            else if (!data.isRunning && controller.IsGrounded())
+            {
+                nextState = MoveState;
+            }
+            else if (data.isJumping && controller.IsGrounded())
+            {
+                nextState = JumpState;
+            }
+        }
+        else if (currentState is PlayerJumpState)
+        {
+            if (data.direction == Vector3.zero)
+            {
+                nextState = IdleState;
+            }
+            else if (data.direction != Vector3.zero)
+            {
+                nextState = MoveState;
+            }
+            else if (data.isRunning)
+            {
+                nextState = RunState;
+            }
+        }
+        else if (currentState is PlayerFallState)
+        {
+            if (controller.IsGrounded() && !data.isSitting)
+            {
+                nextState = IdleState;
+            }
+            else if (controller.IsGrounded() && data.isSitting)
+            {
+                nextState = SitIdleState;
+            }
+        }
+        else if (currentState is PlayerSitIdleState)
+        {
+            if (!data.isSitting && data.direction == Vector3.zero)
+            {
+                nextState = IdleState;
+            }
+            else if (data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero)
+            {
+                nextState = WaddleState;
+            }
+            else if (data.isJumping && controller.IsGrounded())
+            {
+                nextState = JumpState;
+            }
+            else if (data.isZooming && controller.IsGrounded())
+            {
+                nextState = AimState;
+            }
+        }
+        else if (currentState is PlayerWaddleState)
+        {
+            if (data.isSitting && data.direction == Vector3.zero)
+            {
+                nextState = SitIdleState;
+            }
+            else if (data.isJumping && controller.IsGrounded())
+            {
+                nextState = JumpState;
+            }
+        }
+        else if (currentState is PlayerAimState)
+        {
+            if (!data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero && !data.isZooming)
+            {
+                nextState = IdleState;
+            }
+            else if (!data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero && !data.isZooming)
+            {
+                nextState = MoveState;
+            }
+            else if (data.isSitting && controller.IsGrounded() && data.direction == Vector3.zero && !data.isZooming)
+            {
+                nextState = SitIdleState;
+            }
+            else if (data.isSitting && controller.IsGrounded() && data.direction != Vector3.zero && !data.isZooming)
+            {
+                nextState = WaddleState;
+            }
         }
         return nextState != null;   // false: 이전상태 그대로 유지
     }

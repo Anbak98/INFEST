@@ -150,7 +150,7 @@ public class PlayerController : NetworkBehaviour
                 {
                     player.Weapons.RPC_OnThrowReady();
                 }
-                if(data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
                 {
                     player.Weapons.RPC_OnThrowGrenade();
                 }
