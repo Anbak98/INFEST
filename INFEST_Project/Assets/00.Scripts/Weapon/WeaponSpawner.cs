@@ -20,6 +20,7 @@ public class WeaponSpawner : NetworkBehaviour
 {
     [SerializeField] private Player _player;
     public List<Weapon> Weapons;
+    private List<Weapon> _removeWeapon = new List<Weapon>();
     public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
     private TickTimer _switchTimer { get; set; }
 
@@ -218,7 +219,8 @@ public class WeaponSpawner : NetworkBehaviour
     }
 
     bool throwChk = false;
-    public void OnThrowGrenade()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnThrowGrenade()
     {
         if (_weapons[_activeWeaponIndex].IsReloading || IsSwitching) return;
         if (throwChk) return;
@@ -227,11 +229,12 @@ public class WeaponSpawner : NetworkBehaviour
 
         throwChk = true;
         _animator.SetTrigger(THROW_GRENADE);
-        Invoke(nameof(ThrowGrenade), GetActiveWeapon().UnEquipDelay);
+        Invoke(nameof(RPC_ThrowGrenade), GetActiveWeapon().UnEquipDelay);
         _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
     }
 
-    public void ThrowGrenade()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ThrowGrenade()
     {
         _player.Consumes.ActivateGrenade();
         GetActiveWeapon().gameObject.SetActive(false);
@@ -242,8 +245,8 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void Throw()
     {
-        _player.Consumes.Throw();
         _player.Consumes.DeactivateGrenade();
+        _player.Consumes.Throw();
     }
 
     private void DeactivateGrenade()
@@ -303,6 +306,11 @@ public class WeaponSpawner : NetworkBehaviour
     private KTransform _cachedIkMotion = KTransform.Identity;
     private IKMotion _activeMotion;
 
+    public void ExpectedRemove(Weapon weapon)
+    {
+        _removeWeapon.Add(weapon);
+    }
+
     public void RemoveWeapon(Weapon weapon)
     {
         _weapons.Remove(weapon);
@@ -343,6 +351,12 @@ public class WeaponSpawner : NetworkBehaviour
 
         bool triggerAllowed = GetActiveWeapon().weaponSettings.useSprintTriggerDiscipline;
 
+        foreach (var weapon in _removeWeapon)
+        {
+            RemoveWeapon(weapon);
+        }
+
+        _removeWeapon.Clear();
 
 
         _animator.SetLayerWeight(_triggerDisciplineLayerIndex,

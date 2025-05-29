@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8845016111755518467}
   - component: {fileID: 1877447163842500196}
   - component: {fileID: 1235356414609292608}
-  - component: {fileID: 5615081049634877209}
   - component: {fileID: 4854972356494300659}
+  - component: {fileID: 6552283912083369556}
   m_Layer: 0
   m_Name: MysteryBox
   m_TagString: Untagged
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialSiren: {fileID: 7847916451840327392}
   _idList: da270000db270000dc270000dd270000de270000df2700003f28000040280000a1280000a22800000529000069290000
-  col: {fileID: 5615081049634877209}
+  col: {fileID: 6552283912083369556}
   player: {fileID: 0}
 --- !u!114 &1235356414609292608
 MonoBehaviour:
@@ -66,27 +66,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mysteryBox: {fileID: 1877447163842500196}
---- !u!135 &5615081049634877209
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3825901689646309731}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 3.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4854972356494300659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +86,27 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 1877447163842500196}
   ForceRemoteRenderTimeframe: 0
+--- !u!65 &6552283912083369556
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3825901689646309731}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.5, y: 3.5, z: 3.5}
+  m_Center: {x: 0, y: 1.3, z: 0}
 --- !u!1 &7184709211358767272
 GameObject:
   m_ObjectHideFlags: 0

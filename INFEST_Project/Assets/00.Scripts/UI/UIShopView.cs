@@ -282,6 +282,8 @@ public class UIShopView : UIScreen
     public void OnClickSaleBtn(int index)
     {
         if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).inventory.equippedWeapon.IsReloading) return;
+        if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer).Weapons.IsSwitching) return;
+
         _store.RPC_TrySale(NetworkGameManager.Instance.Runner.LocalPlayer, index);
         AudioManager.instance.PlaySfx(Sfxs.Click);
     }
