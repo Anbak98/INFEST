@@ -25,7 +25,7 @@ public class MysteryBox : NetworkBehaviour
     [SerializeField] private List<int> _idList = new List<int>();
     private Dictionary<int, List<int>> _probabilityList = new Dictionary<int, List<int>>();
     private int[] modeSum = new int[4] { 0, 0, 0, 0 };
-    public SphereCollider col;
+    public BoxCollider col;
     public Player player;
 
     #region 상호작용시
