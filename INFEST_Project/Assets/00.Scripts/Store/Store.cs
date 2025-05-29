@@ -213,7 +213,7 @@ public class Store : NetworkBehaviour
                     _player.inventory.auxiliaryWeapon[0].FPSWeapon.activeAmmo = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].curMagazineBullet = _player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
                     _player.inventory.auxiliaryWeapon[0].IsCollected = false;
-                    _player.Weapons._weapons.Remove(_player.inventory.auxiliaryWeapon[0]);
+                    _player.Weapons.ExpectedRemove(_player.inventory.auxiliaryWeapon[0]);
                 }
                 _player.inventory.RemoveWeaponItem(_player.inventory.auxiliaryWeapon[0], 0);
 
@@ -231,7 +231,7 @@ public class Store : NetworkBehaviour
                     _player.inventory.weapon[0].FPSWeapon.activeAmmo = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].curMagazineBullet = _player.inventory.weapon[0].instance.data.MagazineBullet;
                     _player.inventory.weapon[0].IsCollected = false;
-                    _player.Weapons._weapons.Remove(_player.inventory.weapon[0]);
+                    _player.Weapons.ExpectedRemove(_player.inventory.weapon[0]);
 
                 }
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[0], 0);
@@ -250,7 +250,7 @@ public class Store : NetworkBehaviour
                     _player.inventory.weapon[1].FPSWeapon.activeAmmo = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].curMagazineBullet = _player.inventory.weapon[1].instance.data.MagazineBullet;
                     _player.inventory.weapon[1].IsCollected = false;
-                    _player.Weapons._weapons.Remove(_player.inventory.weapon[1]);
+                    _player.Weapons.ExpectedRemove(_player.inventory.weapon[1]);
                 }
                 _player.inventory.RemoveWeaponItem(_player.inventory.weapon[1], 1);
 

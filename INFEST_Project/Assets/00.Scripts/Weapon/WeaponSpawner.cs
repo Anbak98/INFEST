@@ -20,6 +20,7 @@ public class WeaponSpawner : NetworkBehaviour
 {
     [SerializeField] private Player _player;
     public List<Weapon> Weapons;
+    private List<Weapon> _removeWeapon = new List<Weapon>();
     public bool IsSwitching => _switchTimer.ExpiredOrNotRunning(Runner) == false;
     private TickTimer _switchTimer { get; set; }
 
@@ -305,6 +306,11 @@ public class WeaponSpawner : NetworkBehaviour
     private KTransform _cachedIkMotion = KTransform.Identity;
     private IKMotion _activeMotion;
 
+    public void ExpectedRemove(Weapon weapon)
+    {
+        _removeWeapon.Add(weapon);
+    }
+
     public void RemoveWeapon(Weapon weapon)
     {
         _weapons.Remove(weapon);
@@ -345,6 +351,12 @@ public class WeaponSpawner : NetworkBehaviour
 
         bool triggerAllowed = GetActiveWeapon().weaponSettings.useSprintTriggerDiscipline;
 
+        foreach (var weapon in _removeWeapon)
+        {
+            RemoveWeapon(weapon);
+        }
+
+        _removeWeapon.Clear();
 
 
         _animator.SetLayerWeight(_triggerDisciplineLayerIndex,
