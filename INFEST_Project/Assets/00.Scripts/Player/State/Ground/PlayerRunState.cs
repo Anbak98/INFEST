@@ -27,21 +27,5 @@ public class PlayerRunState : PlayerGroundState
         base.OnUpdate(data);
 
         player.animationController.isFiring = data.isFiring;
-        //PlayerRun(data);
-        //controller.ApplyGravity();  // ม฿ทย
-
-        /*
-        if (!data.isRunning)
-        {
-            stateMachine.ChangeState(stateMachine.MoveState);
-            return;
-        }
-        if ((controller.IsGrounded()) && data.isJumping)
-        {
-            player.animationController.MoveDirection = data.direction;
-
-            stateMachine.ChangeState(stateMachine.JumpState);
-        }
-        */
     }
 }

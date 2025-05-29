@@ -45,18 +45,6 @@ public abstract class PlayerBaseState : IState
     }
     public virtual void OnUpdate(NetworkInputData data)
     {
-        //if (statHandler.CurHealth <= 0)
-        //{
-        //    stateMachine.ChangeState(stateMachine.DeadState);
-        //}
-
-        //if(data.isReloading)
-        //{
-        //    stateMachine.ChangeState(stateMachine.ReloadState);
-        //}
-
-        // NetworkCharacterController.Grounded 의 값을 반대로 바꿔서
-        // PlayerAnimationController의 isJumping에 넣으면 애니메이션 문제 해결될 듯
         player.animationController.isJumping = !controller.IsGrounded();    
     }
     public virtual void PhysicsUpdate(NetworkInputData data)

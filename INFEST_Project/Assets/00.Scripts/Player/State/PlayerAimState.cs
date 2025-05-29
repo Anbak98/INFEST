@@ -25,31 +25,5 @@ public class PlayerAimState : PlayerGroundState
     public override void OnUpdate(NetworkInputData data)
     {
         base.OnUpdate(data);
-
-        //player.animationController.MoveDirection = data.direction;
-        //PlayerMove(data);
-
-        //player.animationController.isFiring = data.isFiring;
-        //if (data.isFiring)
-        //    PlayerFire(data);
-
-        /*
-        // Aim 상태에서는 Idle, AimWalk, AimAttack으로 전환 가능
-        if (data.direction != Vector3.zero)
-        {
-            stateMachine.ChangeState(stateMachine.AimWalkState);
-        }
-        if (data.isFiring)
-        {
-            player.animationController.isFiring = data.isFiring;
-            PlayerFire(data);
-
-            stateMachine.ChangeState(stateMachine.AimAttackState);
-        }
-        if (!data.isZooming)
-        {
-            stateMachine.ChangeState(stateMachine.IdleState);
-        }
-        */
     }
 }
