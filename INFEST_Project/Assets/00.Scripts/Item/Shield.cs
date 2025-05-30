@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Shield : Consume
 {
-    private TickTimer _shieldTimer;
     public NetworkPrefabRef mountingPrefab;
     public Transform mountingPoint;
     
@@ -13,7 +12,7 @@ public class Shield : Consume
     {
         Debug.Log("Shield »£√‚");
 
-        if (!_shieldTimer.ExpiredOrNotRunning(Runner)) return;
+        if (!timer.ExpiredOrNotRunning(Runner)) return;
 
         _player.inventory.RemoveConsumeItem(2);
 
@@ -43,10 +42,7 @@ public class Shield : Consume
 
             
         }
-        _shieldTimer = TickTimer.CreateFromSeconds(Runner, 5f);
-        coolTime = _shieldTimer.RemainingTime(Runner) ?? 0;
-        lastUsedTime = Time.time;
-        isCoolingDown = true;
+        SetCoolTime(5f);
     }
 
 }

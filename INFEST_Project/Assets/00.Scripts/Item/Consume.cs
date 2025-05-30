@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Consume : NetworkBehaviour
@@ -8,6 +6,7 @@ public class Consume : NetworkBehaviour
     public int key;
     public ConsumeInstance instance;
     public Player _player;
+    public TickTimer timer;
     public float coolTime;
     public float lastUsedTime;
     public bool isCoolingDown;
@@ -17,6 +16,11 @@ public class Consume : NetworkBehaviour
     public void Awake()
     {
         instance = new(key);
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        
     }
 
     public void AddNum()
@@ -59,6 +63,14 @@ public class Consume : NetworkBehaviour
     public void CollMounting()
     {
         Mounting();
+    }
+
+    protected void SetCoolTime(float time)
+    {
+        timer = TickTimer.CreateFromSeconds(Runner, time);
+        coolTime = timer.RemainingTime(Runner) ?? 0;
+        lastUsedTime = Time.time;
+        isCoolingDown = true;
     }
 
 }
