@@ -39,10 +39,11 @@ public class UIMenuView : UIScreen
     public void OnClickExitBtn()
     {        
         AudioManager.instance.PlaySfx(Sfxs.Click);
+        NetworkGameManager.Instance.RPC_RequestDespawnPlayer(NetworkGameManager.Instance.Runner.LocalPlayer);
         Global.Instance.UIManager.Hide<UIMenuView>();
+        Global.Instance.UIManager.Hide<UIStateView>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        NetworkGameManager.Instance.inputManager.SetActive(true);
         SceneManager.LoadScene(0);        
     }
 }

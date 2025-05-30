@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.UI;
+using UnityEngine.SceneManagement;
 using static UnityEngine.EventSystems.StandaloneInputModule;
 
 /// <summary>
@@ -292,7 +293,7 @@ public class PlayerInputActionHandler : MonoBehaviour
     {
         Debug.Log("[Input] TriggerUseItem - Use item triggered");
         _isUsingGrenad = true;
-        
+
         //Invoke(nameof(CancelUseItem), 0.1f);
     }
 
@@ -378,6 +379,8 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Menu
     private void OpenMenu(InputAction.CallbackContext context)
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+
         _isUsingShop = true;
 
         if (Global.Instance.UIManager.UIList.ContainsKey("UIShopView"))
@@ -396,7 +399,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         {
             if (Global.Instance.UIManager.UIList.ContainsKey("UISetView") &&
                 Global.Instance.UIManager.UIList["UISetView"].gameObject.activeSelf)
-            {                
+            {
                 Global.Instance.UIManager.Hide<UISetView>();
             }
             else
@@ -484,7 +487,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isUsingShield) data.buttons.Set(NetworkInputData.BUTTON_USESHIELD, true);
         if (_isSitting) data.buttons.Set(NetworkInputData.BUTTON_SIT, true);
         if (_isScoreBoardPopup) data.buttons.Set(NetworkInputData.BUTTON_SCOREBOARD, true);
-        if (_isUsingShop) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);        
+        if (_isUsingShop) data.buttons.Set(NetworkInputData.BUTTON_MENU, true);
         if (_isChangingCamera) data.buttons.Set(NetworkInputData.BUTTON_CHANGECAMERA, true);
 
         _isUsingGrenad = false;
@@ -506,7 +509,7 @@ public class PlayerInputActionHandler : MonoBehaviour
         if (_isOnZoom) data.buttons.Set(NetworkInputData.BUTTON_ZOOMPRESSED, true);
         _isOnZoom = false;
 
-        if(_isFellGrenad) data.buttons.Set(NetworkInputData.BUTTON_GRENADPRESSED, true);
+        if (_isFellGrenad) data.buttons.Set(NetworkInputData.BUTTON_GRENADPRESSED, true);
         _isFellGrenad = false;
 
         return data;
