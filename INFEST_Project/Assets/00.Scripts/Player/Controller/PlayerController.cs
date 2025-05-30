@@ -36,9 +36,9 @@ public class PlayerController : NetworkBehaviour
 
     public PlayerLockState LockState = PlayerLockState.Free;
 
-    public float curMoveSpeed = 10f; // 현재 이동 속도
-    public float walkSpeed = 10f;   // 걷기 속도
-    public float runSpeed = 20f;    // 달리기 속도
+    public float curMoveSpeed = 30f; // 현재 이동 속도
+    public float walkSpeed = 30f;   // 걷기 속도
+    public float runSpeed = 100f;    // 달리기 속도
     public float waddleSpeed = 5f;  // 앉아서 걷기 속도
     public float acceleration = 10f;
 
@@ -414,18 +414,18 @@ public class PlayerController : NetworkBehaviour
     public void StartSit()
     {
         // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
-        float playerYpos = player.transform.position.y;
+        float playerYpos = cameraHandler.transform.position.y;
         playerYpos /= 2;
-        player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - playerYpos + 0.01f, player.transform.position.z);
+        cameraHandler.transform.position = new Vector3(cameraHandler.transform.position.x, playerYpos, cameraHandler.transform.position.z);
     }
 
     // 일어난다
     public void StartStand()
     {
         // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
-        float playerYpos = player.transform.position.y;
+        float playerYpos = cameraHandler.transform.position.y;
         playerYpos *= 2;
-        player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + playerYpos + 0.01f, player.transform.position.z);
+        cameraHandler.transform.position = new Vector3(cameraHandler.transform.position.x, playerYpos + 0.01f, cameraHandler.transform.position.z);
     }
 
     public void StartFire(NetworkInputData data)
@@ -476,6 +476,8 @@ public class PlayerController : NetworkBehaviour
             GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
             GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
             GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+            GUILayout.Label("Current Speed: " + curMoveSpeed.ToString());
+
             ////
             //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
             //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);

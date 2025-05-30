@@ -87,7 +87,7 @@ public class PlayerStateMachine
 
 
         // 처음에는 IdleState시작
-        currentState =IdleState;
+        currentState = IdleState;
     }
 
     public bool TryGetNextState(NetworkInputData data, out IState nextState)
@@ -129,6 +129,10 @@ public class PlayerStateMachine
             else if (data.isRunning && controller.IsGrounded())
             {
                 nextState = RunState;
+            }
+            else if (data.isSitting && data.direction != Vector3.zero)
+            {
+                nextState = WaddleState;
             }
             else if (data.isZooming && controller.IsGrounded())
             {
@@ -197,7 +201,15 @@ public class PlayerStateMachine
         }
         else if (currentState is PlayerWaddleState)
         {
-            if (data.isSitting && data.direction == Vector3.zero)
+            if (!data.isSitting && data.direction == Vector3.zero)
+            {
+                nextState = IdleState;
+            }
+            else if (!data.isSitting && data.direction != Vector3.zero)
+            {
+                nextState = MoveState;
+            }
+            else if (data.isSitting && data.direction == Vector3.zero)
             {
                 nextState = SitIdleState;
             }
