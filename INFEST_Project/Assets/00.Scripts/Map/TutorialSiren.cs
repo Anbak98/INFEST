@@ -4,7 +4,7 @@ using INFEST.Game;
 
 public class TutorialSiren : MonoBehaviour
 {
-    public static bool isTrigger = false;
+    public bool isTrigger = false;
 
     private int _playerLayer = 7;
     private Player _player;
@@ -14,13 +14,16 @@ public class TutorialSiren : MonoBehaviour
     {
         if (isTrigger) return;
 
-        Player player = other.GetComponentInParent<Player>();
-        if (other.gameObject.layer == _playerLayer && player)
+        if (NetworkGameManager.Instance.gameState != GameState.Wave)
         {
-            _player = player;
-            isTrigger = true;
-                        
-            StartCoroutine(DelayedSiren(0.1f, _player));
+            Player player = other.GetComponentInParent<Player>();
+            if (other.gameObject.layer == _playerLayer && player)
+            {
+                _player = player;
+                isTrigger = true;
+
+                StartCoroutine(DelayedSiren(0.1f, _player));
+            }
         }
     }
 
