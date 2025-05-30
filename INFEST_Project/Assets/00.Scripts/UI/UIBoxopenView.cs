@@ -4,7 +4,12 @@ using UnityEngine;
 public class UIBoxopenView : UIScreen
 {
     [HideInInspector] public MysteryBox mysteryBox;
+    public Player localPlayer;
 
+    private void Awake()
+    {
+        localPlayer = NetworkGameManager.Instance.gamePlayers.GetPlayerObj(NetworkGameManager.Instance.Runner.LocalPlayer);
+    }
     public override void OnHide()
     {
         base.OnHide();
@@ -19,12 +24,12 @@ public class UIBoxopenView : UIScreen
 
     public void OkBtn()
     {
-//#if UNITY_EDITOR
-//        mysteryBox.player.statHandler.CurGold += 2000;
-//#endif
-
-//        if (mysteryBox.player.statHandler.CurGold < 2000) return;
-//        mysteryBox.player.statHandler.CurGold -= 2000;
+#if UNITY_EDITOR
+        localPlayer.statHandler.CurGold += 2000;
+#endif
+        if (localPlayer.inventory.equippedWeapon.IsReloading) return;
+            if (localPlayer.statHandler.CurGold < 2000) return;
+        localPlayer.statHandler.CurGold -= 2000;
 
         AudioManager.instance.PlaySfx(Sfxs.Click);
         mysteryBox.OpenBox();
