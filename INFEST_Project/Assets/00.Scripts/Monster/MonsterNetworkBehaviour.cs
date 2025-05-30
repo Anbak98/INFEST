@@ -2,6 +2,7 @@ using Fusion;
 using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -73,13 +74,17 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
         AudioManager.instance.PlaySfx(Sfxs.ZombieSpawn);
-        BaseHealth = (int)(info.MinHealth * (1 + info.HPCoef * (Runner.SessionInfo.PlayerCount - 1)));
-        BaseDamage = (int)(info.MinAtk * (1 + info.AtkCoef * (Runner.SessionInfo.PlayerCount - 1)));
-        BaseDef = (int)(info.MinDef * (1 + info.DefCoef * (Runner.SessionInfo.PlayerCount - 1)));
 
-        OffsetHealth = (int)(info.HealthPer5Min * (Runner.SimulationTime / 300));
-        OffsetDamage = (int)(info.AtkPer5Min * (Runner.SimulationTime / 300));
-        OffsetDef = (int)(info.DefPer5Min * (Runner.SimulationTime / 300));
+        int playerCount = Runner.SessionInfo.PlayerCount - 1 > 0 ? Runner.SessionInfo.PlayerCount - 1 : 0;
+        int elapsedTime = (int)(Runner.SimulationTime / 300);
+
+        BaseHealth = (int)(info.MinHealth * (1 + info.HPCoef * playerCount));
+        BaseDamage = (int)(info.MinAtk * (1 + info.AtkCoef * playerCount));
+        BaseDef = (int)(info.MinDef * (1 + info.DefCoef * playerCount));
+
+        OffsetHealth = (int)(info.HealthPer5Min * elapsedTime);
+        OffsetDamage = (int)(info.AtkPer5Min * elapsedTime);
+        OffsetDef = (int)(info.DefPer5Min * elapsedTime);
 
         CurHealth = BaseHealth + OffsetHealth;
         CurDamage = BaseDamage + OffsetDamage;
@@ -98,25 +103,33 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         base.Despawned(runner, hasState);
     }
 
+    private Vector3 lastTargetPosition;
+
     public void MoveToTarget()
     {
-        if(target != null)
+        if (target != null)
         {
             NavMeshPath path = new NavMeshPath();
-
-            if(AIPathing.CalculatePath(target.position, path))
+            Debug.Log(AIPathing.velocity);
+            if (NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path)
+                && path.status == NavMeshPathStatus.PathComplete)
             {
-                if(path.status == NavMeshPathStatus.PathComplete)
+                if (Vector3.Distance(lastTargetPosition, target.position) > 10f)
                 {
+                    Debug.Log("Re");
                     AIPathing.SetDestination(target.position);
+                    lastTargetPosition = target.position;
                 }
-                else
+            }
+            else
+            {
+                Mounting mount = FindAnyObjectByType<Mounting>();
+                if (mount != null)
                 {
-                    Mounting mount = FindAnyObjectByType<Mounting>();
                     TryAddTarget(mount.transform);
                     TrySetTarget(mount.transform);
                 }
-            }    
+            }
         }
     }
 

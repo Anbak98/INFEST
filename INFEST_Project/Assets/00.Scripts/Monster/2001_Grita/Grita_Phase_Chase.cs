@@ -20,7 +20,7 @@ public class Grita_Phase_Chase : MonsterPhase<Monster_Grita>
         /// target의 체력이 0이면 null로 만든다
         if (monster.IsTargetDead())
         {
-            monster.target = null;
+            monster.TryRemoveTarget(monster.target);
             // 새로운 목표를 설정한다
             monster.SetTargetRandomly();
             // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다

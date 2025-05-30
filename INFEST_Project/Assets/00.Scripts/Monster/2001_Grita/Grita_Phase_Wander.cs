@@ -9,6 +9,7 @@ public class Grita_Phase_Wander : MonsterPhase<Monster_Grita>
     public override void MachineEnter()
     {
         base.MachineEnter();
+        monster.IsWonderPhase = true;
 
         // 0초짜리 만들고 Expired를 true로 만들어서 1번 실행
         //screemCooldownTickTimer = TickTimer.CreateFromSeconds(Runner, 0f);
@@ -26,5 +27,11 @@ public class Grita_Phase_Wander : MonsterPhase<Monster_Grita>
         {
             monster.FSM.ChangePhase<Grita_Phase_Chase>();
         }
+    }
+
+    public override void MachineExit()
+    {
+        base.MachineExit();
+        monster.IsWonderPhase = false;
     }
 }
