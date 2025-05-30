@@ -21,18 +21,6 @@ public class PlayerFallState : PlayerAirState
         player.animationController.isJumping = data.isJumping;
 
         base.OnUpdate(data);
-        // 플레이어 이동
-        PlayerMove(data);
-        controller.ApplyGravity();  // 중력
-
-        if(data.isFiring)
-            PlayerFire(data);
-
-        // 땅에 닿을 때까지(IsGrounded == true) 중력을 받는다
-        if (controller.IsGrounded())
-        {
-            stateMachine.ChangeState(stateMachine.IdleState);
-        }
     }
 
     public override void Exit()

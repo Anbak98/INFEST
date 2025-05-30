@@ -19,17 +19,6 @@ public class PlayerJumpState : PlayerAirState
     {
         base.OnUpdate(data);
         player.animationController.isJumping = data.isJumping; 
-        PlayerMove(data);
-
-        player.animationController.isFiring = data.isFiring;
-
-        if (data.isFiring)
-            PlayerFire(data);
-        controller.ApplyGravity();  // ม฿ทย
-        if (controller.GetVerticalVelocity() <= 0)
-        {
-            stateMachine.ChangeState(stateMachine.FallState);
-        }
     }
 
     public override void Exit()

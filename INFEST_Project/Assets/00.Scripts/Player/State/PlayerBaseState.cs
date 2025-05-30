@@ -16,7 +16,7 @@ public interface IState
 
 public abstract class PlayerBaseState : IState
 {
-    protected PlayerController controller;    // PlayerController, 다른 npc의 controller
+    protected PlayerController controller;    // PlayerController
     protected PlayerStateMachine stateMachine;    // PlayerStateMachine
     protected readonly PlayerStatHandler statHandler;   // PlayerStatHandler에 있는 데이터를 읽기만 한다    
     protected Player player;
@@ -40,24 +40,13 @@ public abstract class PlayerBaseState : IState
     public virtual void Enter()
     {
     }
-    public virtual void Exit()
-    {
-    }
     public virtual void OnUpdate(NetworkInputData data)
     {
-        if (statHandler.CurHealth <= 0)
-        {
-            stateMachine.ChangeState(stateMachine.DeadState);
-        }
-
-        if(data.isReloading)
-        {
-            stateMachine.ChangeState(stateMachine.ReloadState);
-        }
-
-        // NetworkCharacterController.Grounded 의 값을 반대로 바꿔서
-        // PlayerAnimationController의 isJumping에 넣으면 애니메이션 문제 해결될 듯
-        player.animationController.isJumping = !controller.IsGrounded();    
+        player.animationController.MoveDirection = data.direction;
+        player.animationController.isJumping = !controller.IsGrounded();
+    }
+    public virtual void Exit()
+    {
     }
     public virtual void PhysicsUpdate(NetworkInputData data)
     {
@@ -94,7 +83,7 @@ public abstract class PlayerBaseState : IState
     protected void PlayerFire(NetworkInputData data)
     {
         // 발사로직 PlayerController에 옮길것
-        controller.StartFire(data);
+        //controller.StartFire(data);
     }
     protected void Reload(NetworkInputData data)
     {
@@ -109,7 +98,7 @@ public abstract class PlayerBaseState : IState
     protected void PlayerJump()
     {
         // Junp 키입력하면 내부에서 1번만 y축 힘받고 그 외는 땅에 닿을 때까지 중력만 받을것이다
-        controller.StartJump();
+        //controller.StartJump();
     }
     protected void PlayerSit(NetworkInputData data)
     {
@@ -124,13 +113,13 @@ public abstract class PlayerBaseState : IState
     {
         Debug.Log("SitFire");
         // 카메라의 회전방향(CameraHandler의 Update에서 실시간으로 업데이트)으로 이동한다
-        controller.StartFire(data);
+        //controller.StartFire(data);
     }
     protected void SitReload(NetworkInputData data)
     {
         // 장전
         Debug.Log("Reload");
-        controller.StartReload(data);
+        //controller.StartReload(data);
     }
     // 조준(애니메이션은 바꾸고, 카메라를 따로 조작)
     protected void PlayerZoom(NetworkInputData data)

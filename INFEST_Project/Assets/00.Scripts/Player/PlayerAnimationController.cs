@@ -46,7 +46,7 @@ public class PlayerAnimationController : NetworkBehaviour
     // isGround가 false && isjumping이 false인 것으로 표현할 수 있어서 파라미터는 없어도 된다
     // 문제는 parameter가 없을때 idle과 구분해야한다는거
 
-    //private string _sitParameterName = "@Sit";
+    private string _sitParameterName = "@Sit";
 
     // 앉아서 이동(105)하는건 새로운 애니메이션이 필요하지만 파라미터는 Sit && Move로 처리할 수 있다
     //[SerializeField] private string _waddleParameterName = "Waddle";
@@ -118,7 +118,7 @@ public class PlayerAnimationController : NetworkBehaviour
         JumpParameterHash = Animator.StringToHash(_jumpParameterName);
         GroundedParameterHash = Animator.StringToHash(_groundedParameterName);
 
-        //SitParameterHash = Animator.StringToHash(_sitParameterName);
+        SitParameterHash = Animator.StringToHash(_sitParameterName);
         AttackParameterHash = Animator.StringToHash(_attackParameterName);
         ReloadParameterHash = Animator.StringToHash(_reloadParameterName);
         AimParameterHash = Animator.StringToHash(_aimParameterName);
@@ -153,6 +153,7 @@ public class PlayerAnimationController : NetworkBehaviour
         playerAnimator.SetBool(ReloadParameterHash, isReloading);
         playerAnimator.SetBool(AttackParameterHash, isFiring);
         playerAnimator.SetBool(RunParameterHash, isRunning);
+        playerAnimator.SetBool(SitParameterHash, isSitting);
         //playerAnimator.SetBool(SitParameterHash, isSitting);
         playerAnimator.SetBool("Die", Die);
     }

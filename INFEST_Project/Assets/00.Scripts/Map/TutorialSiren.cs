@@ -4,7 +4,7 @@ using INFEST.Game;
 
 public class TutorialSiren : MonoBehaviour
 {
-    public static bool isTrigger = false;
+    public bool isTrigger = false;
 
     private int _playerLayer = 7;
     private Player _player;
@@ -19,9 +19,10 @@ public class TutorialSiren : MonoBehaviour
         {
             _player = player;
             isTrigger = true;
-                        
+
             StartCoroutine(DelayedSiren(0.1f, _player));
         }
+
     }
 
     private IEnumerator DelayedSiren(float delay, Player player)
