@@ -1,4 +1,5 @@
 using Fusion;
+using UnityEngine;
 
 public class HealItem : Consume
 {
@@ -14,7 +15,9 @@ public class HealItem : Consume
         _player.statHandler.Heal(instance.data.Effect);
 
         _healTimer = TickTimer.CreateFromSeconds(Runner, 5f);
-
+        coolTime = _healTimer.RemainingTime(Runner) ?? 0;
+        lastUsedTime = Time.time;
+        isCoolingDown = true;
     }
 
 }

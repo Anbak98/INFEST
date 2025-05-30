@@ -33,7 +33,7 @@ public class GrenadeProjectile : NetworkBehaviour
     private int _isStopHash = Animator.StringToHash("IsStop");
     private List<LagCompensatedHit> hits = new();
 
-    private float _safeTime = 0.1f;
+    private float _safeTime = 0.5f;
     private float _spawnTime;
 
 
