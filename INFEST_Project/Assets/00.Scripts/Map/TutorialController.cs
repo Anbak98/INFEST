@@ -37,7 +37,7 @@ public class TutorialController : MonoBehaviour
                 WallDeactivate(0);
                 shopArrow[0].gameObject.SetActive(true);
                 shopArrow[1].gameObject.SetActive(true);
-                player.statHandler.CurGold += 1500;
+                player.statHandler.CurGold += 2000;
                 break;
             case 3:
                 WallDeactivate(2);
