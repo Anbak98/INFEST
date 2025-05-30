@@ -227,6 +227,8 @@ public class WeaponSpawner : NetworkBehaviour
         if (throwChk) return;
         if (_player.inventory.consume[0]?.curNum <= 0) return;
         if (_player.inventory.consume[0] == null) return;
+        if (!_player.inventory.consume[0].timer.ExpiredOrNotRunning(Runner)) return;
+
         throwChk = true;
 
         unEquipDelay = GetActiveWeapon().UnEquipDelay;
@@ -241,7 +243,7 @@ public class WeaponSpawner : NetworkBehaviour
     {
         if (!throwChk) return;
         _animator.SetTrigger(THROW_FELL);
-        _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, 3f);
 
     }
 

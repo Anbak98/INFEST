@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Grenade : Consume
 {
-    private TickTimer _throwTimer;
     public NetworkPrefabRef projectilePrefab;
     public Transform throwPoint;
     private GrenadeProjectile grenade;
@@ -12,8 +11,7 @@ public class Grenade : Consume
     public override void Throw()
     {
         Debug.Log("Grenade »£√‚");
-
-        if (!_throwTimer.ExpiredOrNotRunning(Runner)) return;
+        if (!timer.ExpiredOrNotRunning(Runner)) return;
     
         _player.inventory.RemoveConsumeItem(0);
 
@@ -48,11 +46,8 @@ public class Grenade : Consume
             _grenade.Init(velocity, throwPoint.position);
             RPC_Init(_grenade, velocity);
         }
-        _throwTimer = TickTimer.CreateFromSeconds(Runner, 2.5f);
+        SetCoolTime(3f);
 
-        coolTime = _throwTimer.RemainingTime(Runner)?? 0f;
-        lastUsedTime = Time.time;
-        isCoolingDown = true;
     }
 
     [Rpc(RpcSources.StateAuthority,RpcTargets.All)]
