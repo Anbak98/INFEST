@@ -66,6 +66,8 @@ public class PlayerController : NetworkBehaviour
     [Networked] private TickTimer respawnTimer { get; set; }
     float respawnTime = 10f;
 
+    private float _standHeight;
+    private float _sitHeight;
 
     public void Init()
     {
@@ -77,8 +79,10 @@ public class PlayerController : NetworkBehaviour
 
         // Set custom gravity.
         _simpleKCC.SetGravity(Physics.gravity.magnitude * -4.0f);
-
+        Debug.Log(cameraHandler.transform.position.y);
         targetSpeed = walkSpeed;
+        _standHeight = cameraHandler.transform.position.y - player.transform.position.y;
+        _sitHeight = _standHeight / 2; // 원하는 비율로 조정 가능
     }
 
     public override void FixedUpdateNetwork()
@@ -261,6 +265,7 @@ public class PlayerController : NetworkBehaviour
         if (player.cameraHandler.alivePlayerCameras.Count > 0)
             player.cameraHandler.FindAlivePlayers(); // 리스트 갱신
 
+        weaponSpawner.SetWeaponAnimaDieParam(true);
         // 서버 권한 로직은 여전히 이 아래에서 실행됨
         respawnTimer = TickTimer.CreateFromSeconds(Runner, respawnTime);
 
@@ -278,6 +283,8 @@ public class PlayerController : NetworkBehaviour
         //if (alivePlayerCameras.Count > 0)
         player.cameraHandler.ResetSpectatorTarget();
         player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
+        weaponSpawner.SetWeaponAnimaDieParam(false);
+
         //isFocusing = false;
     }
 
@@ -380,8 +387,6 @@ public class PlayerController : NetworkBehaviour
             //    moveDir
             //);
 
-            Debug.Log(moveVelocity.magnitude);  
-
             // Update camera pivot and transfer properties from camera handle to Main Camera.
             // LateUpdate() is called after all Render() calls - the character is already interpolated.
             //// 회전 강제 고정: 카메라가 지정한 forward로
@@ -421,18 +426,14 @@ public class PlayerController : NetworkBehaviour
     public void StartSit()
     {
         // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
-        float playerYpos = cameraHandler.transform.position.y;
-        playerYpos /= 2;
-        cameraHandler.transform.position = new Vector3(cameraHandler.transform.position.x, playerYpos, cameraHandler.transform.position.z);
+        cameraHandler.transform.position = new Vector3(cameraHandler.transform.position.x, _sitHeight, cameraHandler.transform.position.z);
     }
 
     // 일어난다
     public void StartStand()
     {
         // collider는 상태에서 변화시키므로 여기서는 transform만 아래로
-        float playerYpos = cameraHandler.transform.position.y;
-        playerYpos *= 2;
-        cameraHandler.transform.position = new Vector3(cameraHandler.transform.position.x, playerYpos + 0.01f, cameraHandler.transform.position.z);
+        cameraHandler.transform.position = new Vector3(cameraHandler.transform.position.x, _standHeight, cameraHandler.transform.position.z);
     }
 
     public void StartFire(NetworkInputData data)
