@@ -14,17 +14,15 @@ public class TutorialSiren : MonoBehaviour
     {
         if (isTrigger) return;
 
-        if (NetworkGameManager.Instance.gameState != GameState.Wave)
+        Player player = other.GetComponentInParent<Player>();
+        if (other.gameObject.layer == _playerLayer && player)
         {
-            Player player = other.GetComponentInParent<Player>();
-            if (other.gameObject.layer == _playerLayer && player)
-            {
-                _player = player;
-                isTrigger = true;
+            _player = player;
+            isTrigger = true;
 
-                StartCoroutine(DelayedSiren(0.1f, _player));
-            }
+            StartCoroutine(DelayedSiren(0.1f, _player));
         }
+
     }
 
     private IEnumerator DelayedSiren(float delay, Player player)
