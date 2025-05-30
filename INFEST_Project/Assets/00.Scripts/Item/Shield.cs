@@ -43,7 +43,10 @@ public class Shield : Consume
 
             
         }
-        _shieldTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
+        _shieldTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+        coolTime = _shieldTimer.RemainingTime(Runner) ?? 0;
+        lastUsedTime = Time.time;
+        isCoolingDown = true;
     }
 
 }

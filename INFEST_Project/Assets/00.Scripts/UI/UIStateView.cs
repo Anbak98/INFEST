@@ -13,6 +13,7 @@ public class UIStateView : UIScreen
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI bulletText;
     public TextMeshProUGUI[] itemText;
+    public Image[] itemFil;
     public RawImage crosshair;
 
     [Header("Job Icon")]
@@ -47,6 +48,7 @@ public class UIStateView : UIScreen
         UpdateJobIcon();
         UpdateWeaponIcon();
         OnShow();
+        SetItem();
     }
 
     private void Update()
@@ -56,6 +58,7 @@ public class UIStateView : UIScreen
         if (localPlayer.inventory != null)
             UpdateWeaponIcon();
 
+        ItemCooldown();
     }
 
     public override void OnShow()
@@ -213,6 +216,39 @@ public class UIStateView : UIScreen
             case 5:
                 launcher.gameObject.SetActive(true);
                 break;
+        }
+    }
+
+    private void SetItem()
+    {
+        foreach(var item in itemFil)
+        {
+            item.fillAmount = 0;
+        }
+    }
+
+    private void ItemCooldown()
+    {
+        if (localPlayer.inventory.consume == null) return;
+
+        Consume[] item = localPlayer.inventory.consume;
+
+        for (int i=0; i<item.Length; i++)
+        {
+            if(item[i] == null) continue;
+
+            if (item[i].isCoolingDown)
+            {
+                float elapsed = Time.time - item[i].lastUsedTime;
+                float ratio = Mathf.Clamp01(elapsed / item[i].coolTime);
+                itemFil[i].fillAmount = 1 - ratio;
+
+                if (elapsed >= item[i].coolTime)
+                {
+                    item[i].isCoolingDown = false;
+                    itemFil[i].fillAmount = 0;
+                }
+            }
         }
     }
 }

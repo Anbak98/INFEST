@@ -49,6 +49,10 @@ public class Grenade : Consume
             RPC_Init(_grenade, velocity);
         }
         _throwTimer = TickTimer.CreateFromSeconds(Runner, 2.5f);
+
+        coolTime = _throwTimer.RemainingTime(Runner)?? 0f;
+        lastUsedTime = Time.time;
+        isCoolingDown = true;
     }
 
     [Rpc(RpcSources.StateAuthority,RpcTargets.All)]
