@@ -156,7 +156,7 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
         PlayerPrefs.SetInt("GameMode", (int)GameMode.Single);
         await Runner.LoadScene("Tutorial");
-
+        AudioManager.instance.StopBgm();
     }
 
     public async void PlayerSoloGame()
