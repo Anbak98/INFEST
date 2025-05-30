@@ -27,6 +27,7 @@ public enum PlayerLockState
     JumpLock = 1 << 2,   // 0100, 조준 상태
     SitLock = 1 << 3,   // 1000, 달리기 상태
     ZoomLock = 1 << 4,   // 10000, 달리기, 점프 상태
+    FireLock = 1 << 5,    // 100000, 달리기
 }
 
 public class PlayerController : NetworkBehaviour
@@ -434,7 +435,7 @@ public class PlayerController : NetworkBehaviour
         if (HasStateAuthority && delay.ExpiredOrNotRunning(Runner) && !player.isInteraction)
         {
             // 마우스 좌클릭(공격)
-            if (data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
+            if ((LockState & PlayerLockState.FireLock) == 0 && data.buttons.IsSet(NetworkInputData.BUTTON_FIRE))
             {
                 //data.isShotgunOnFiring = true;
                 player.Weapons.Fire(data.buttons.IsSet(NetworkInputData.BUTTON_FIREPRESSED));
