@@ -3424,13 +3424,13 @@ MonoBehaviour:
   - {fileID: 4287713249687267531}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
-  _CurHealth: -1
+  <CurHealth>k__BackingField: -1
   <CurDamage>k__BackingField: 0
   <CurDef>k__BackingField: 0
-  _BaseHealth: -1
+  <BaseHealth>k__BackingField: -1
   <BaseDamage>k__BackingField: 0
   <BaseDef>k__BackingField: 0
-  _OffsetHealth: -1
+  <OffsetHealth>k__BackingField: -1
   <OffsetDamage>k__BackingField: 0
   <OffsetDef>k__BackingField: 0
   _IsAttack:
@@ -3990,7 +3990,7 @@ SkinnedMeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 3be513b3c58dc3343b1653f408cb44f6, type: 2}
   - {fileID: 2100000, guid: 9126db3dcc65f6a4e9328327274babc5, type: 2}
-  - {fileID: -5850870784039101595, guid: f4007b55b1269c74cacc13fa4705389e, type: 3}
+  - {fileID: 2100000, guid: 9126db3dcc65f6a4e9328327274babc5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

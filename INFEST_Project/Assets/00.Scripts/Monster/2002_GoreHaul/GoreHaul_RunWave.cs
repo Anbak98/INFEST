@@ -12,7 +12,7 @@ public class GoreHaul_RunWave : MonsterStateNetworkBehaviour<Monster_GoreHaul, G
     {
         base.Execute();
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
 
         // 아직 경로가 계산되지 않았거나 도착한 경우
         if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)

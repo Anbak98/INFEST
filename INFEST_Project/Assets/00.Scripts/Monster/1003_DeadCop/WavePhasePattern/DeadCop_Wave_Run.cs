@@ -14,7 +14,7 @@ public class DeadCop_Wave_Run : MonsterStateNetworkBehaviour<Monster_DeadCop, De
     {
         base.Execute();
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
     }
 
     public override void Exit()

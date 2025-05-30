@@ -15,7 +15,7 @@ public class WarZ_Wave_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Pha
     {
         base.Execute();
 
-        monster.AIPathing.SetDestination(monster.target.position);
+       monster.MoveToTarget();
     }
 
     public override void Exit()

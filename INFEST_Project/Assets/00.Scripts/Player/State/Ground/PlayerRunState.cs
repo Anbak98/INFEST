@@ -12,32 +12,20 @@ public class PlayerRunState : PlayerGroundState
 
     public override void Enter()
     {
+        // 달리는 중에 앉기, 조준 불가
+        controller.LockState = PlayerLockState.SitLock | PlayerLockState.ZoomLock;
+
         base.Enter();
+    }
+    public override void OnUpdate(NetworkInputData data)
+    {
+        base.OnUpdate(data);
+        player.animationController.isRunning = data.isRunning;
+
     }
     public override void Exit()
     {
         base.Exit();
     }
 
-    public override void OnUpdate(NetworkInputData data)
-    {
-        base.OnUpdate(data);
-
-        player.animationController.isFiring = data.isFiring;
-        PlayerRun(data);
-        //controller.ApplyGravity();  // 중력
-
-        if (!data.isRunning)
-        {
-            stateMachine.ChangeState(stateMachine.MoveState);
-            return;
-        }
-        if ((controller.IsGrounded()) && data.isJumping)
-        {
-            player.animationController.MoveDirection = data.direction;
-
-            stateMachine.ChangeState(stateMachine.JumpState);
-        }
-
-    }
 }

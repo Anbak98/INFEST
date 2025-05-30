@@ -184,6 +184,53 @@ Transform:
   - {fileID: 7275514993626627979}
   m_Father: {fileID: 7963464110142773873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4780715310324299362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3200953098037645083}
+  - component: {fileID: 1224328973929187087}
+  m_Layer: 7
+  m_Name: TargetableFromMonster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3200953098037645083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780715310324299362}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.751, y: 0.66, z: 0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3571117842420855697}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1224328973929187087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780715310324299362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f2eb0099c44ee43b090262a4dde797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStatHandler: {fileID: 0}
+  CurHealth: 9999
+  obj: {fileID: 0}
 --- !u!1 &5832041937112713749
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,10 +564,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3571117842420855697}
   - component: {fileID: 2938268913886870492}
-  - component: {fileID: 4237144409082372567}
   - component: {fileID: 1953299711370643801}
   - component: {fileID: 6692519207517648144}
   - component: {fileID: 6248011446354281198}
+  - component: {fileID: 8322258371204481113}
   m_Layer: 15
   m_Name: Shield
   m_TagString: Untagged
@@ -547,6 +594,7 @@ Transform:
   - {fileID: 234404411665253090}
   - {fileID: 4807720125851884896}
   - {fileID: 7963464110142773873}
+  - {fileID: 3200953098037645083}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2938268913886870492
@@ -570,22 +618,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4237144409082372567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7477081543358798588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1f2eb0099c44ee43b090262a4dde797, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStatHandler: {fileID: 0}
-  CurHealth: 9999
-  _curDurability: 0
-  obj: {fileID: 0}
 --- !u!114 &1953299711370643801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,8 +635,8 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 4237144409082372567}
   - {fileID: 6692519207517648144}
+  - {fileID: 1224328973929187087}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6692519207517648144
 MonoBehaviour:
@@ -644,6 +676,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 4.1257386, z: 6.354062}
   m_Center: {x: 0, y: 2.074021, z: -0.002670765}
+--- !u!208 &8322258371204481113
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477081543358798588}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &9035467263786625601
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public class Stacker_AttackWave : MonsterStateNetworkBehaviour<Monster_Stacker, 
         base.Execute();
         if (_tickTimer.Expired(Runner))
         {
-            monster.AIPathing.SetDestination(monster.target.position);
+           monster.MoveToTarget();
             monster.IsAttack = false;
             if (!monster.AIPathing.pathPending && !monster.IsDead)
             {

@@ -13,6 +13,8 @@ public class Player : NetworkBehaviour
     public bool inMysteryBoxZoon = false;
 
     public bool isInteraction = false;
+    public TargetableFromMonster targetableFromMonster;
+    public BoxCollider targetableFromMonsterCollider;
     public PlayerAnimationController animationController;
     public PlayerStatHandler statHandler;
     public PlayerController controller;

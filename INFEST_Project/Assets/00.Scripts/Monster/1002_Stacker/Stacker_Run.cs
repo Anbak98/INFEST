@@ -6,7 +6,7 @@ public class Stacker_Run : MonsterStateNetworkBehaviour<Monster_Stacker, Stacker
     {
         base.Enter();
         monster.IsRun = true;
-        monster.CurMovementSpeed = monster.info.SpeedMove;        
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;        
     }
 
     public override void Exit()

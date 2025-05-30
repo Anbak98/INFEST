@@ -27,7 +27,7 @@ public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_H
         base.Execute(); 
         if (_tickTimer.Expired(Runner))
         {
-            monster.AIPathing.SetDestination(monster.target.position);
+           monster.MoveToTarget();
             monster.IsAttack = false;
             if (!monster.AIPathing.pathPending && !monster.IsDead)
             {

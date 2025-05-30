@@ -18,10 +18,6 @@ public class PlayerGroundState : PlayerBaseState
     {
         base.Enter();
     }
-    public override void Exit()
-    {
-        base.Exit();
-    }
 
     public override void OnUpdate(NetworkInputData data)
     {
@@ -43,6 +39,10 @@ public class PlayerGroundState : PlayerBaseState
         }
         // x방향은 회전이 끝나면 정지해야하므로 lookDelta를 그대로 사용한다
         player.animationController.lookDelta = new Vector2(data.lookDelta.x, dotY);
+    }
+    public override void Exit()
+    {
+        base.Exit();
     }
     public override void PhysicsUpdate(NetworkInputData data)
     {

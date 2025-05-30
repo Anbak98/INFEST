@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Mounting : TargetableFromMonster
 {
-    [Networked] public float curDurability { get; set; }
-
     public Shield obj;
 
     private Animator animator;
@@ -15,16 +13,15 @@ public class Mounting : TargetableFromMonster
 
     private void Awake()
     {
+        CurHealth = 1000;
         animator = GetComponent<Animator>();
     }
 
     public override void ApplyDamage(MonsterNetworkBehaviour attacker, int amount)
     {
-        curDurability -= amount;
-        CurHealth = (int)curDurability;
-        if (curDurability <= 0)
+        CurHealth -= amount;
+        if (CurHealth <= 0)
         {
-            curDurability = 0;
             CurHealth = 0;
             attacker.TryRemoveTarget(transform);
             Runner.Despawn(Object);
@@ -34,7 +31,7 @@ public class Mounting : TargetableFromMonster
     public void Init(Shield shield)
     {
         obj = shield;
-        curDurability = obj.instance.data.Effect;
+        CurHealth = obj.instance.data.Effect;
     }
 
     public void StopAnimation()

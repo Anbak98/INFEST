@@ -17,10 +17,16 @@ using UnityEngine.UIElements;
 /// 플레이어의 동작 및 상태 관리
 /// FixedUpdateNetwork()에서 Fusion으로부터 받은 입력 데이터를 기반으로 시뮬레이션 수행.
 /// </summary>
+
+[System.Flags]
 public enum PlayerLockState
 {
-    Free,
-    MoveLock
+    Free = 0,   // idle
+    MoveLock = 1 << 0,  // 0001
+    RunLock = 1 << 1,   // 0010, 앉기, 앉아서 걷기, 조준 상태
+    JumpLock = 1 << 2,   // 0100, 조준 상태
+    SitLock = 1 << 3,   // 1000, 달리기 상태
+    ZoomLock = 1 << 4,   // 10000, 달리기, 점프 상태
 }
 
 public class PlayerController : NetworkBehaviour
@@ -28,6 +34,15 @@ public class PlayerController : NetworkBehaviour
     NetworkInputData DEBUG_DATA;
 
     public PlayerLockState LockState = PlayerLockState.Free;
+
+    public float curMoveSpeed = 10f; // 현재 이동 속도
+    public float walkSpeed = 10f;   // 걷기 속도
+    public float runSpeed = 20f;    // 달리기 속도
+    public float waddleSpeed = 5f;  // 앉아서 걷기 속도
+    public float acceleration = 10f;
+
+    public float targetSpeed;
+    public float prevSpeed;
 
     // 동적 연결되는 변수 숨기기
     public Player player;
@@ -60,6 +75,8 @@ public class PlayerController : NetworkBehaviour
 
         // Set custom gravity.
         _simpleKCC.SetGravity(Physics.gravity.magnitude * -4.0f);
+
+        targetSpeed = walkSpeed;
     }
 
     public override void FixedUpdateNetwork()
@@ -70,8 +87,16 @@ public class PlayerController : NetworkBehaviour
             DEBUG_DATA = data;
             if (!player.statHandler.IsDead)   // 죽지 않았을때만 가능한 동작
             {
+                // 1. 상태 전환 먼저 수행
+                if (stateMachine.TryGetNextState(data, out var nextState))
+                {
+                    stateMachine.ChangeState(nextState);
+                }
+                // 2. 현재 상태의 로직 수행
                 stateMachine.OnUpdate(data);
                 HandleMovement(data);
+                StartFire(data);
+                StartReload(data);
 
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
                 {
@@ -113,20 +138,19 @@ public class PlayerController : NetworkBehaviour
                     player.Weapons.Swap(data.scrollValue.y);
                 }
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM) && (LockState & PlayerLockState.ZoomLock) == 0)
                 {
                     player.Weapons.Aiming(true);
                 }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED) && (LockState & PlayerLockState.ZoomLock) == 0)
                 {
                     player.Weapons.Aiming(false);
                 }
-
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
                 {
                     player.Weapons.RPC_OnThrowReady();
                 }
-                if(data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
                 {
                     player.Weapons.RPC_OnThrowGrenade();
                 }
@@ -246,8 +270,8 @@ public class PlayerController : NetworkBehaviour
         //player.statHandler.IsDead = false;
         //player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
         //if (alivePlayerCameras.Count > 0)
-
         player.cameraHandler.ResetSpectatorTarget();
+        player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
         //isFocusing = false;
     }
 
@@ -272,7 +296,7 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
-    #region 이동, 점프
+    #region 이동, 점프, 앉기, 달리기, 사격
     // 플레이어의 이동(방향은 CameraHandler에서 설정) 처리. 그 방향이 transform.forward로 이미 설정되었다
     private void HandleMovement(NetworkInputData input)
     {
@@ -294,14 +318,56 @@ public class PlayerController : NetworkBehaviour
 
             moveDir.y = 0f; // 수직 방향 제거
 
-            Vector3 moveVelocity = moveDir * 10f;
+
+            bool CanRun = (LockState & PlayerLockState.RunLock) == 0;
+            bool CanJump = (LockState & PlayerLockState.JumpLock) == 0;
+            bool CanSit = (LockState & PlayerLockState.SitLock) == 0;
+            bool CanZoom = (LockState & PlayerLockState.ZoomLock) == 0;
+
+            // 상태에 따라 목표 속도 결정
+            if (!CanZoom)
+            {
+                if (!CanSit) // 달리기
+                {
+                    targetSpeed = runSpeed;
+                    prevSpeed = runSpeed;
+                }
+                else // 점프
+                {
+                    targetSpeed = prevSpeed;    /// 기존의 스피드로 움직인다
+                }
+            }
+            else if (!CanRun)
+            {
+                if (!CanJump) // 조준
+                {
+                    targetSpeed = prevSpeed;  /// 기존의 스피드로 움직인다
+                }
+                else // 앉기, 앉아서 이동
+                {
+                    targetSpeed = waddleSpeed;
+                    prevSpeed = waddleSpeed;
+                }
+            }
+            else // idle
+            {
+                targetSpeed = walkSpeed;    // 기본 걷기
+                prevSpeed = walkSpeed;
+            }
+
+            // 부드러운 속도 전환
+            curMoveSpeed = Mathf.MoveTowards(curMoveSpeed, targetSpeed, acceleration * Time.deltaTime);
+
+            Vector3 moveVelocity = moveDir * curMoveSpeed;
+
             Vector3 jumpImpulse = Vector3.zero;
 
-            if (input.isJumping == true && _simpleKCC.IsGrounded == true)
+            if (CanJump && input.isJumping == true && _simpleKCC.IsGrounded == true)
             {
                 // Set world space jump vector.
                 jumpImpulse = Vector3.up * 10.0f;
             }
+
 
             _simpleKCC.Move(moveVelocity, jumpImpulse.magnitude);
             //networkCharacterController.Move(
@@ -401,14 +467,14 @@ public class PlayerController : NetworkBehaviour
     {
         if (HasInputAuthority)
         {
-            //GUILayout.Label(stateMachine.currentState.ToString());
-            //GUILayout.Label(DEBUG_DATA.ToString());
-            ////
-            //GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
-            //GUILayout.Label("PlayerController position: " + transform.position.ToString());
-            //GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
-            //GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-            //GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+            GUILayout.Label(stateMachine.currentState.ToString());
+            GUILayout.Label(DEBUG_DATA.ToString());
+            //
+            GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
+            GUILayout.Label("PlayerController position: " + transform.position.ToString());
+            GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
+            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
             ////
             //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
             //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
