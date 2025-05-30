@@ -489,6 +489,7 @@ public class PlayerController : NetworkBehaviour
             ////
             //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
             //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
+
         }
     }
 }

@@ -560,5 +560,6 @@ public class WeaponSpawner : NetworkBehaviour
     public void SetWeaponAnimaDieParam(bool b)
     {
         _animator.SetBool(Die, b); // Animator 파라미터 값을 변경
+
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Fusion;
-using INFEST.Game;
 using UnityEngine;
 
 public class MysteryInstance
@@ -18,8 +17,6 @@ public class MysteryInstance
 public class MysteryBox : NetworkBehaviour
 {
     Dictionary<int, MysteryInstance> _instances = new();
-    UIBoxopenView _uIBoxopenView;
-    List<int> LevelList;
     public TutorialSiren tutorialSiren;
 
     [SerializeField] private List<int> _idList = new List<int>();
@@ -114,7 +111,7 @@ public class MysteryBox : NetworkBehaviour
                 appearedKey = _idList[i];
                 Debug.Log("π´±‚ ≈∞∞™ :" + appearedKey);
 
-                SetWeapon(appearedKey, i);
+                SetWeapon(appearedKey, i+5);
                 break;
             }
         }
@@ -150,61 +147,62 @@ public class MysteryBox : NetworkBehaviour
         bool auxiliaryWeapon = weaponChk < 200 && weaponChk > 0;
         bool mainWeapon = weaponChk < 700 && weaponChk > 200;
 
-        if (auxiliaryWeapon)
-        {
-            if (player.inventory.auxiliaryWeapon[0] == null)
-            {
-                player.inventory.auxiliaryWeapon[0] = player.Weapons.Weapons[index];
-                player.inventory.auxiliaryWeapon[0].IsCollected = true;
-                player.Weapons._weapons.Add(player.inventory.auxiliaryWeapon[0]);
+        //if (auxiliaryWeapon)
+        //{
+        //    if (player.inventory.auxiliaryWeapon[0] == null)
+        //    {
+        //        player.inventory.auxiliaryWeapon[0] = player.Weapons.Weapons[index];
+        //        player.inventory.auxiliaryWeapon[0].IsCollected = true;
+        //        player.Weapons._weapons.Add(player.inventory.auxiliaryWeapon[0]);
 
-            }
-            else // ±«√—¿Ã ¿÷¿∏∏È
-            {
-                //±«√— √—æÀ √ ±‚»≠
-                player.inventory.auxiliaryWeapon[0].FPSWeapon.activeAmmo = player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
-                player.inventory.auxiliaryWeapon[0].curMagazineBullet = player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
-                player.inventory.auxiliaryWeapon[0].curBullet = player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
+        //    }
+        //    else // ±«√—¿Ã ¿÷¿∏∏È
+        //    {
+        //        //±«√— √—æÀ √ ±‚»≠
+        //        player.inventory.auxiliaryWeapon[0].FPSWeapon.activeAmmo = player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
+        //        player.inventory.auxiliaryWeapon[0].curMagazineBullet = player.inventory.auxiliaryWeapon[0].instance.data.MagazineBullet;
+        //        player.inventory.auxiliaryWeapon[0].curBullet = player.inventory.auxiliaryWeapon[0].instance.data.MaxBullet;
 
-                // ∫∏¿Ø ±«√—¿Ã, ≈∏∞Ÿ ±«√—∫∏¥Ÿ ∫ÒΩŒ∏È
-                if (player.inventory.auxiliaryWeapon[0].instance.data.Price > player.Weapons.Weapons[index].instance.data.Price)
-                {
-                    if (player.inventory.weapon[0] != null)
-                    {
-                        player.inventory.weapon[0].FPSWeapon.activeAmmo = player.inventory.weapon[0].instance.data.MagazineBullet;
-                        player.inventory.weapon[0].curMagazineBullet = player.inventory.weapon[0].instance.data.MagazineBullet;
-                        player.inventory.weapon[0].curBullet = player.inventory.weapon[0].instance.data.MaxBullet;
-                    }
-                    if (player.inventory.weapon[1] != null)
-                    {
-                        player.inventory.weapon[1].FPSWeapon.activeAmmo = player.inventory.weapon[1].instance.data.MagazineBullet;
-                        player.inventory.weapon[1].curMagazineBullet = player.inventory.weapon[1].instance.data.MagazineBullet;
-                        player.inventory.weapon[1].curBullet = player.inventory.weapon[1].instance.data.MaxBullet;
-                    }
-                }
-                else // ∫∏¿Ø ±«√—¿Ã, ≈∏∞Ÿ ±«√—∫∏¥Ÿ ΩŒ∏È
-                {
-                    // ¿Â¬¯¡ﬂ¿Œ √—¿Ã ±«√—¿Œ¡ˆ
-                    if (player.inventory.equippedWeapon == player.inventory.auxiliaryWeapon[0])
-                    {
-                        player.Weapons.Swap(1, true);
-                        player.inventory.auxiliaryWeapon[0] = player.Weapons.Weapons[index];
-                        player.Weapons.Weapons[index].IsCollected = true;
-                        player.Weapons._weapons.Add(player.Weapons.Weapons[index]);
-                    }
-                    else
-                    {
-                        player.inventory.auxiliaryWeapon[0].IsCollected = false;
-                        player.Weapons._weapons.Remove(player.inventory.auxiliaryWeapon[0]);
-                        player.inventory.auxiliaryWeapon[0] = player.Weapons.Weapons[index];
-                        player.Weapons.Weapons[index].IsCollected = true;
-                        player.Weapons._weapons.Add(player.Weapons.Weapons[index]);
+        //        // ∫∏¿Ø ±«√—¿Ã, ≈∏∞Ÿ ±«√—∫∏¥Ÿ ∫ÒΩŒ∏È
+        //        if (player.inventory.auxiliaryWeapon[0].instance.data.Price > player.Weapons.Weapons[index].instance.data.Price)
+        //        {
+        //            if (player.inventory.weapon[0] != null)
+        //            {
+        //                player.inventory.weapon[0].FPSWeapon.activeAmmo = player.inventory.weapon[0].instance.data.MagazineBullet;
+        //                player.inventory.weapon[0].curMagazineBullet = player.inventory.weapon[0].instance.data.MagazineBullet;
+        //                player.inventory.weapon[0].curBullet = player.inventory.weapon[0].instance.data.MaxBullet;
+        //            }
+        //            if (player.inventory.weapon[1] != null)
+        //            {
+        //                player.inventory.weapon[1].FPSWeapon.activeAmmo = player.inventory.weapon[1].instance.data.MagazineBullet;
+        //                player.inventory.weapon[1].curMagazineBullet = player.inventory.weapon[1].instance.data.MagazineBullet;
+        //                player.inventory.weapon[1].curBullet = player.inventory.weapon[1].instance.data.MaxBullet;
+        //            }
+        //        }
+        //        else // ∫∏¿Ø ±«√—¿Ã, ≈∏∞Ÿ ±«√—∫∏¥Ÿ ΩŒ∏È
+        //        {
+        //            // ¿Â¬¯¡ﬂ¿Œ √—¿Ã ±«√—¿Œ¡ˆ
+        //            if (player.inventory.equippedWeapon == player.inventory.auxiliaryWeapon[0])
+        //            {
+        //                player.Weapons.Swap(1, true);
+        //                player.inventory.auxiliaryWeapon[0] = player.Weapons.Weapons[index];
+        //                player.Weapons.Weapons[index].IsCollected = true;
+        //                player.Weapons._weapons.Add(player.Weapons.Weapons[index]);
+        //            }
+        //            else
+        //            {
+        //                player.inventory.auxiliaryWeapon[0].IsCollected = false;
+        //                player.Weapons._weapons.Remove(player.inventory.auxiliaryWeapon[0]);
+        //                player.inventory.auxiliaryWeapon[0] = player.Weapons.Weapons[index];
+        //                player.Weapons.Weapons[index].IsCollected = true;
+        //                player.Weapons._weapons.Add(player.Weapons.Weapons[index]);
 
-                    }
-                }
-            }
-        }
-        else if (mainWeapon)
+        //            }
+        //        }
+        //    }
+        //}
+        //else
+        if (mainWeapon)
         {
             if (player.inventory.weapon[0] == null)
             {
