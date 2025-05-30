@@ -36,7 +36,7 @@ namespace INFEST.Game
 
         private void OnStateChanged()
         {
-            OnChangeGameState?.Invoke(); 
+            OnChangeGameState?.Invoke();
         }
 
         public void ChangeStore()
@@ -70,7 +70,7 @@ namespace INFEST.Game
 
             int weaponOneKey = 0;
 
-            if(gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0] != null)
+            if (gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0] != null)
             {
                 weaponOneKey = gamePlayers.GetPlayerObj(Runner.LocalPlayer).Weapons._weapons[0].instance.data.Key;
             }
@@ -114,6 +114,25 @@ namespace INFEST.Game
 
             AnalyticsManager.analyticsGameEnd(2, (int)Runner.SimulationTime, weaponOneKey, weaponTwoKey);
             gev.Defeat();
+        }
+
+        public async void DespawnPlayer(PlayerRef playerRef)
+        {
+            if (!gamePlayers.IsValid(playerRef)) return;
+
+            Player playerObj = gamePlayers.GetPlayerObj(playerRef);
+            if (playerObj == null) return;
+
+            Runner.Despawn(playerObj.Object);
+            gamePlayers.RemovePlayer(playerRef);
+
+            await Runner.Shutdown();
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_RequestDespawnPlayer(PlayerRef player)
+        {
+            DespawnPlayer(player);
         }
     }
 }
