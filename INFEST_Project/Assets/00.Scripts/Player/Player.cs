@@ -166,6 +166,8 @@ public class Player : NetworkBehaviour
             cameraHandler.curFocusingCam = cameraHandler.firstPersonCamera;
             cameraHandler.alivePlayerCameras.Add(cameraHandler.spectatorCamera);
             cameraHandler.isFocusing = true;
+            // Animator를 FirstPerson으로 바꾼다
+            //animationController.playerAnimator = 
         }
     }
 

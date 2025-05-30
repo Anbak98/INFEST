@@ -337,12 +337,10 @@ public class PlayerInputActionHandler : MonoBehaviour
     #region Run
     private void StartRunState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] StartRunState - Running Started");
         _isRunning = true;
     }
     private void CancelRunState(InputAction.CallbackContext context)
     {
-        Debug.Log($"[Input] CancelRunState - Running Canceled");
         _isRunning = false;
     }
     public bool GetIsRunning() => _isRunning;

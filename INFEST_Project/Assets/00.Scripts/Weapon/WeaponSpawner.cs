@@ -301,6 +301,10 @@ public class WeaponSpawner : NetworkBehaviour
     private static int GAIT = Animator.StringToHash("Gait");
     private static int IS_IN_AIR = Animator.StringToHash("IsInAir");
 
+    // 사망 애니메이션 실행(로컬)
+    public static int Die = Animator.StringToHash("Die");
+
+
     private static Quaternion ANIMATED_OFFSET = Quaternion.Euler(90f, 0f, 0f);
 
     private int _tacSprintLayerIndex;
@@ -551,4 +555,10 @@ public class WeaponSpawner : NetworkBehaviour
         ApplyIkData(_leftHandIk, leftHand);
     }
     #endregion
+
+    // 플레이어의 사망, 부활시 호출
+    public void SetWeaponAnimaDieParam(bool b)
+    {
+        _animator.SetBool(Die, b); // Animator 파라미터 값을 변경
+    }
 }

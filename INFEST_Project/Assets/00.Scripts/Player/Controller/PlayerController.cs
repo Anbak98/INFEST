@@ -36,14 +36,16 @@ public class PlayerController : NetworkBehaviour
 
     public PlayerLockState LockState = PlayerLockState.Free;
 
-    public float curMoveSpeed = 30f; // 현재 이동 속도
-    public float walkSpeed = 30f;   // 걷기 속도
-    public float runSpeed = 100f;    // 달리기 속도
-    public float waddleSpeed = 5f;  // 앉아서 걷기 속도
+    public float curMoveSpeed; // 현재 이동 속도
+    public float walkSpeed;   // 걷기 속도
+    public float runSpeed;    // 달리기 속도
+    public float waddleSpeed;  // 앉아서 걷기 속도
     public float acceleration = 10f;
 
     public float targetSpeed;
     public float prevSpeed;
+
+    public WeaponSpawner weaponSpawner; // firstPersonAnimator를 가지고 있다 
 
     // 동적 연결되는 변수 숨기기
     public Player player;
@@ -64,7 +66,6 @@ public class PlayerController : NetworkBehaviour
     [Networked] private TickTimer respawnTimer { get; set; }
     float respawnTime = 10f;
 
-    //public bool isFocusing = false; // 포커스 중인 플레이어에 true
 
     public void Init()
     {
@@ -249,6 +250,10 @@ public class PlayerController : NetworkBehaviour
             renderer.enabled = true;
     }
 
+    // PlayerAnimationController의 Animator를 바꿔야한다
+
+
+
 
     #region 부활,관전모드
     private void OnDeath()
@@ -374,6 +379,8 @@ public class PlayerController : NetworkBehaviour
             //networkCharacterController.Move(
             //    moveDir
             //);
+
+            Debug.Log(moveVelocity.magnitude);  
 
             // Update camera pivot and transfer properties from camera handle to Main Camera.
             // LateUpdate() is called after all Render() calls - the character is already interpolated.
