@@ -22,6 +22,7 @@ public class PlayerMoveState : PlayerGroundState
     {
         base.OnUpdate(data);
         player.animationController.isRunning = data.isRunning;
+        player.Weapons.OffSprint();
     }
     public override void Exit()
     {

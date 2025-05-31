@@ -99,10 +99,7 @@ public class PlayerStateMachine
             {
                 nextState = MoveState;
             }
-            else if (data.isRunning && controller.IsGrounded())
-            {
-                nextState = RunState;
-            }
+
             else if (data.isJumping && controller.IsGrounded())
             {
                 nextState = JumpState;

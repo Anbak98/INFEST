@@ -7,6 +7,7 @@ using KINEMATION.ProceduralRecoilAnimationSystem.Runtime;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public struct IKTransforms
@@ -269,6 +270,36 @@ public class WeaponSpawner : NetworkBehaviour
     {
         throwChk = false;
     }
+
+    public void OnJump()
+    {
+        _animator.SetBool(IS_IN_AIR, true);
+        Invoke(nameof(OnLand), 0.4f);
+
+    }
+
+    public void OnLand()
+    {
+        _animator.SetBool(IS_IN_AIR, false);
+    }
+
+    public void OnSprint()
+    {
+        _bSprinting = true;
+    }
+
+    public void OffSprint()
+    {
+        _bSprinting = false;
+    }
+
+
+    public void OnTacSprint()
+    {
+        if (!_bSprinting) return;
+        _bTacSprinting = true;
+    }
+
 
     #region Model
     public float AdsWeight => _adsWeight;
