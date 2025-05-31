@@ -17,12 +17,6 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
         base.MachineEnter();
         monster.IsValidRetreat = true;
         monster.RetreatTimer = TickTimer.CreateFromSeconds(Runner, 120f);
-        monster.PhaseIndex = 1;
-
-        for (int i = 0; i < skillCoolDown.Length; i++)
-        {
-            skillCoolDown[i] = TickTimer.CreateFromSeconds(Runner, 0);
-        }
         patternTickTimer = TickTimer.CreateFromSeconds(Runner, 0);
         monster.IsPhaseAttack = true;
     }
@@ -37,7 +31,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
         {
             if (monster.IsReadyForChangingState)
             {
-                CaculateAttackType(monster.AIPathing.remainingDistance);
+                CaculateAttackType();
 
                 switch (nextPatternIndex)
                 {
@@ -72,12 +66,12 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
         monster.IsPhaseAttack = false;
     }
 
-    public void CaculateAttackType(float distance)
+    public void CaculateAttackType()
     {
         activatedSkills = new();
         int totalProbability = 0;
 
-        if (distance > 15)
+        if (!monster.IsTargetInRange(15))
         {
             monster.IsReadyForChangingState = true;
             nextPatternIndex = 0;
@@ -86,7 +80,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
 
         for (int i = 1; i < skillCoolDown.Length; ++i)
         {
-            if (skillCoolDown[i].Expired(Runner))
+            if (skillCoolDown[i].ExpiredOrNotRunning(Runner))
             {
                 int thr = 0;
                 int fiv = 0;
@@ -115,17 +109,17 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
                         break;
                 }
 
-                if (distance <= 3 && thr > 0)
+                if (monster.IsTargetInRange(3) && thr > 0)
                 {
                     totalProbability += thr;
                     activatedSkills.Add(i);
                 }
-                else if (distance <= 5 && fiv > 0)
+                else if (monster.IsTargetInRange(5) && fiv > 0)
                 {
                     totalProbability += fiv;
                     activatedSkills.Add(i);
                 }
-                else if (distance <= 7 && sev> 0)
+                else if (monster.IsTargetInRange(15) && sev> 0)
                 {
                     totalProbability += sev;
                     activatedSkills.Add(i);
@@ -136,7 +130,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
 
         if (activatedSkills.Count == 0)
         {
-            if (distance <= 5)
+            if (monster.IsTargetInRange(3))
             {
                 nextPatternIndex = 1;
             }
@@ -181,15 +175,15 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
                     break;
             }
 
-            if (distance <= 3)
+            if (monster.IsTargetInRange(3))
             {
                 temp += thr;
             }
-            else if (distance <= 5)
+            else if (monster.IsTargetInRange(5))
             {
                 temp += fiv;
             }
-            else if (distance <= 7)
+            else if (monster.IsTargetInRange(15))
             {
                 temp += sev;
             }
@@ -199,7 +193,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
                 nextPatternIndex = index;
 
                 patternCount++;
-
+                
                 if (patternCount > 1)
                 {
                     monster.SetTargetRandomly();

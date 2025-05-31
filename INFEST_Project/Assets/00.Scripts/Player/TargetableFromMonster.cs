@@ -5,6 +5,9 @@ using UnityEngine;
 public class TargetableFromMonster : NetworkBehaviour
 {
     [SerializeField] private PlayerStatHandler playerStatHandler;
+    [SerializeField] private Player player;
+
+    public IState CurState => player.controller.stateMachine.currentState;
 
     public int CurHealth = 9999;
 

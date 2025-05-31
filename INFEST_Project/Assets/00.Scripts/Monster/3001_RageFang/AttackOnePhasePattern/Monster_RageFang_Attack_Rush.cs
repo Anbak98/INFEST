@@ -8,7 +8,7 @@ public class Monster_RageFang_Attack_Rush : MonsterStateNetworkBehaviour<Monster
     {
         base.Enter();
         AudioManager.instance.PlaySfx(Sfxs.RageFang_Rush);
-        monster.CurMovementSpeed = 8;
+        monster.CurMovementSpeed = 15;
         monster.IsRush = true;
         phase.skillCoolDown[5] = TickTimer.CreateFromSeconds(Runner, monster.skills[5].CoolDown);
         monster.IsReadyForChangingState = false;

@@ -49,7 +49,7 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         {
             if (monster.IsReadyForChangingState)
             {
-                CaculateAttackType(monster.AIPathing.remainingDistance);
+                CaculateAttackType();
 
                 switch (nextPatternIndex)
                 {
@@ -73,7 +73,7 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         monster.IsRun = false;
     }
 
-    public void CaculateAttackType(float distance)
+    public void CaculateAttackType()
     {
         activatedSkilles = new();
 
@@ -85,14 +85,14 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         {
             if (skillCoolDown[i].ExpiredOrNotRunning(Runner))
             {                
-                if (distance <= monster.skills[2].UseRange)
+                if (monster.IsTargetInRange(monster.skills[i].UseRange))
                 {
                     activatedSkilles.Add(i);
                 }
             }
         }
 
-        if (activatedSkilles.Count == 0 && distance <= monster.skills[1].UseRange && pattern1Ready)
+        if (activatedSkilles.Count == 0 && monster.IsTargetInRange(monster.skills[1].UseRange) && pattern1Ready)
         {
             activatedSkilles.Add(1);
         }

@@ -20,6 +20,6 @@ public class BossSpawner : NetworkBehaviour
     {
         yield return new WaitForSeconds(1f); // 3ºÐ ´ë±â
 
-        Runner.Spawn(bossPrefab, new Vector3(-45, 0, 45));
+        Runner.Spawn(bossPrefab, new Vector3(-45, 0, 45), Quaternion.identity);
     }
 }

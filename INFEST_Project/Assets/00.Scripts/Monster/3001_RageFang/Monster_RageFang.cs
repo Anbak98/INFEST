@@ -9,7 +9,7 @@ public class Monster_RageFang : BaseMonster<Monster_RageFang>
 {
     public Dictionary<int, RageFangSkillTable> skills;
     public Dictionary<int, BossRunPoint> nextRegion;
-    public int regionIndex = 1;
+    public int regionIndex = 2;
 
     public TickTimer RetreatTimer;
     public bool IsValidRetreat = true;

@@ -6,7 +6,7 @@ public class Monster_RageFang_FSM : MonsterFSM<Monster_RageFang>
     {
         if(monster.regionIndex < 5)
         {
-            if (monster.IsValidRetreat && monster.RetreatTimer.ExpiredOrNotRunning(Runner))
+            if (monster.IsValidRetreat && monster.RetreatTimer.Expired(Runner))
             {
                 ChangePhase<Monster_RageFang_Phase_Retreat>();
                 monster.IsValidRetreat = false;
