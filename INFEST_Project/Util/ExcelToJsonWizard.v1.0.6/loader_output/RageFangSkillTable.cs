@@ -37,7 +37,7 @@ public class RageFangSkillTable
     public int RF_1P5M;
 
     /// <summary>
-    /// 1P_7m이내
+    /// 1P_7m이상
     /// </summary>
     public int RF_1P7M;
 
@@ -52,7 +52,7 @@ public class RageFangSkillTable
     public int RF_2P5M;
 
     /// <summary>
-    /// 2P_7m이내
+    /// 2P_7m이상
     /// </summary>
     public int RF_2P7M;
 
@@ -67,7 +67,7 @@ public class RageFangSkillTable
     public int RF_3P5M;
 
     /// <summary>
-    /// 3P_7m이내
+    /// 3P_7m이상
     /// </summary>
     public int RF_3P7M;
 
@@ -82,7 +82,7 @@ public class RageFangSkillTable
     public int RF_4P5M;
 
     /// <summary>
-    /// 4P_7m이내
+    /// 4P_7m이상
     /// </summary>
     public int RF_4P7M;
 
