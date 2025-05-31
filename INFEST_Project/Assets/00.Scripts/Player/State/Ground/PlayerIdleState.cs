@@ -25,6 +25,8 @@ public class PlayerIdleState : PlayerGroundState
         base.OnUpdate(data);
         player.animationController.isSitting = data.isSitting;
         player.animationController.isRunning = data.isRunning;
+        player.Weapons.OffSprint();
+
     }
     public override void Exit()
     {
