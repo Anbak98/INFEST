@@ -105,71 +105,68 @@ public class PlayerController : NetworkBehaviour
                 StartFire(data);
                 StartReload(data);
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
+                if (stateMachine.currentState != stateMachine.RunState)
                 {
-                    if (!player.isInteraction)
-                        player.store.RPC_RequestInteraction(Object.InputAuthority);
-                    else
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
+                    {
+                        if (!player.isInteraction)
+                            player.store.RPC_RequestInteraction(Object.InputAuthority);
+                        else
+                            player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+
+                        player.isInteraction = !player.isInteraction;
+
+                    }
+
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inStoreZoon)
+                    {
                         player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+                        player.isInteraction = !player.isInteraction;
+                    }
 
-                    player.isInteraction = !player.isInteraction;
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inMysteryBoxZoon)
+                    {
+                        if (!player.isInteraction)
+                            player.mysteryBox.RPC_RequestInteraction(Object.InputAuthority);
+                        else
+                            player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
 
-                }
+                        player.isInteraction = !player.isInteraction;
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inStoreZoon)
-                {
-                    player.store.RPC_RequestStopInteraction(Object.InputAuthority);
-                    player.isInteraction = !player.isInteraction;
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inMysteryBoxZoon)
-                {
-                    if (!player.isInteraction)
-                        player.mysteryBox.RPC_RequestInteraction(Object.InputAuthority);
-                    else
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inMysteryBoxZoon)
+                    {
                         player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
-
-                    player.isInteraction = !player.isInteraction;
-
+                        player.isInteraction = !player.isInteraction;
+                    }
+                    if (data.scrollValue.y != 0)
+                    {
+                        player.Weapons.Swap(data.scrollValue.y);
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM) && (LockState & PlayerLockState.ZoomLock) == 0)
+                    {
+                        player.Weapons.Aiming(true);
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED) && (LockState & PlayerLockState.ZoomLock) == 0)
+                    {
+                        player.Weapons.Aiming(false);
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
+                    {
+                        player.Weapons.RPC_OnThrowReady();
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
+                    {
+                        player.Weapons.RPC_OnThrowGrenade();
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
+                    {
+                        player.Consumes.Mounting();
+                    }
                 }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inMysteryBoxZoon)
-                {
-                    player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
-                    player.isInteraction = !player.isInteraction;
-                }
-
-
-                if (data.scrollValue.y != 0)
-                {
-                    player.Weapons.Swap(data.scrollValue.y);
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM) && (LockState & PlayerLockState.ZoomLock) == 0)
-                {
-                    player.Weapons.Aiming(true);
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED) && (LockState & PlayerLockState.ZoomLock) == 0)
-                {
-                    player.Weapons.Aiming(false);
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
-                {
-                    player.Weapons.RPC_OnThrowReady();
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
-                {
-                    player.Weapons.RPC_OnThrowGrenade();
-                }
-
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
                 {
                     player.Consumes.Heal();
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
-                {
-                    player.Consumes.Mounting();
                 }
             }
         }
