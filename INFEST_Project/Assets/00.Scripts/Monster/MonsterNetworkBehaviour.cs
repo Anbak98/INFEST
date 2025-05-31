@@ -2,6 +2,8 @@ using Fusion;
 using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -73,13 +75,17 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     {
         info = DataManager.Instance.GetByKey<MonsterInfo>(key);
         AudioManager.instance.PlaySfx(Sfxs.ZombieSpawn);
-        BaseHealth = (int)(info.MinHealth * (1 + info.HPCoef * (Runner.SessionInfo.PlayerCount - 1)));
-        BaseDamage = (int)(info.MinAtk * (1 + info.AtkCoef * (Runner.SessionInfo.PlayerCount - 1)));
-        BaseDef = (int)(info.MinDef * (1 + info.DefCoef * (Runner.SessionInfo.PlayerCount - 1)));
 
-        OffsetHealth = (int)(info.HealthPer5Min * (Runner.SimulationTime / 300));
-        OffsetDamage = (int)(info.AtkPer5Min * (Runner.SimulationTime / 300));
-        OffsetDef = (int)(info.DefPer5Min * (Runner.SimulationTime / 300));
+        int playerCount = Runner.SessionInfo.PlayerCount - 1 > 0 ? Runner.SessionInfo.PlayerCount - 1 : 0;
+        int elapsedTime = (int)(Runner.SimulationTime / 300);
+
+        BaseHealth = (int)(info.MinHealth * (1 + info.HPCoef * playerCount));
+        BaseDamage = (int)(info.MinAtk * (1 + info.AtkCoef * playerCount));
+        BaseDef = (int)(info.MinDef * (1 + info.DefCoef * playerCount));
+
+        OffsetHealth = (int)(info.HealthPer5Min * elapsedTime);
+        OffsetDamage = (int)(info.AtkPer5Min * elapsedTime);
+        OffsetDef = (int)(info.DefPer5Min * elapsedTime);
 
         CurHealth = BaseHealth + OffsetHealth;
         CurDamage = BaseDamage + OffsetDamage;
@@ -98,26 +104,70 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         base.Despawned(runner, hasState);
     }
 
+    private Vector3 lastTargetPosition;
+
     public void MoveToTarget()
     {
-        if(target != null)
+        if (target == null || !HasStateAuthority)
+            return;
+
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0; // y 축 무시 (2D 평면 이동)
+
+        if (direction.magnitude > AIPathing.stoppingDistance)
         {
             NavMeshPath path = new NavMeshPath();
-
-            if(AIPathing.CalculatePath(target.position, path))
+            if (AIPathing.CalculatePath(target.position, path) && path.status == NavMeshPathStatus.PathComplete)
             {
-                if(path.status == NavMeshPathStatus.PathComplete)
+                if (Vector3.Distance(lastTargetPosition, target.position) > 0.1f)
                 {
-                    AIPathing.SetDestination(target.position);
+                    lastTargetPosition = target.position;
                 }
-                else
+
+                // 경로 따라 이동
+                if (AIPathing.enabled)
                 {
-                    Mounting mount = FindAnyObjectByType<Mounting>();
+                    AIPathing.Move(direction.normalized * AIPathing.speed * Runner.DeltaTime);
+                    transform.rotation = Quaternion.LookRotation(direction); // 회전도 동기화하려면 별도 처리 필요
+                }
+            }
+            else
+            {
+                Debug.Log(path.status);
+                Mounting mount = FindAnyObjectByType<Mounting>();
+                if (mount != null)
+                {
                     TryAddTarget(mount.transform);
                     TrySetTarget(mount.transform);
                 }
-            }    
+            }
         }
+
+        //if (target != null)
+        //{
+        //    NavMeshPath path = new NavMeshPath();
+        //    Debug.Log(AIPathing.velocity.magnitude);
+        //    AIPathing.velocity *= Runner.DeltaTime * 100;
+        //    if (NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path)
+        //        && path.status == NavMeshPathStatus.PathComplete)
+        //    {
+        //        if (Vector3.Distance(lastTargetPosition, target.position) > 10f)
+        //        {
+        //            Debug.Log("Re");
+        //            AIPathing.SetDestination(target.position);
+        //            lastTargetPosition = target.position;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Mounting mount = FindAnyObjectByType<Mounting>();
+        //        if (mount != null)
+        //        {
+        //            TryAddTarget(mount.transform);
+        //            TrySetTarget(mount.transform);
+        //        }
+        //    }
+        //}
     }
 
     public bool IsLookPlayer()
@@ -164,6 +214,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         return false;
     }
 
+    public bool IsTargetInRange(float range)
+    {
+        return Vector3.Distance(transform.position, target.position) < range;
+    }
+
     public void SetTargetRandomly()
     {
         if (targets.Count > 0)
@@ -191,7 +246,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         Debug.Log(newTarget);
         if (!targets.Contains(newTarget))
         {
-            Debug.Log(newTarget);
             if (newTarget.TryGetComponent(out TargetableFromMonster bridge))
             {
                 Debug.Log(newTarget);

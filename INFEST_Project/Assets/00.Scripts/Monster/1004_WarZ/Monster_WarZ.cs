@@ -6,6 +6,7 @@ using UnityEngine;
 public class Monster_WarZ : BaseMonster<Monster_WarZ>
 {
     public TickTimer animTickTimer;   // 애니메이션의 재생시간동안 다른 동작으로 못바꾼다(특히 공격)
+    public Dictionary<int, CommonSkillTable> CommonSkillTable;
 
     [Networked, OnChangedRender(nameof(OnPhaseIndexChanged))]
     public short PhaseIndex { get; set; } = 0;
@@ -19,6 +20,11 @@ public class Monster_WarZ : BaseMonster<Monster_WarZ>
 
     [Networked, OnChangedRender(nameof(OnIsWave))]
     public NetworkBool IsWave { get; set; } = false;
+
+    public void Start()
+    {
+        CommonSkillTable = DataManager.Instance.GetDictionary<CommonSkillTable>();
+    }
 
     public override void Render()
     {

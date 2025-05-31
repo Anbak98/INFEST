@@ -14,9 +14,6 @@ public class WarZ_Chase_Run : MonsterStateNetworkBehaviour<Monster_WarZ, WarZ_Ph
     public override void Execute()
     {
         base.Execute();
-        if (monster.target != null)
-           monster.MoveToTarget();
-
     }
 
     public override void Exit()

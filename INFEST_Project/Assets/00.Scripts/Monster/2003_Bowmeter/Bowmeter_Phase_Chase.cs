@@ -14,6 +14,8 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
     {
         base.MachineEnter();
 
+        monster.IsRun = true;
+
         for (int i = 0; i < skillCoolDown.Length; i++)
         {
             skillCoolDown[i] = TickTimer.CreateFromSeconds(Runner, 0);
@@ -27,7 +29,7 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
         /// target의 체력이 0이면 null로 만든다
         if (monster.IsTargetDead())
         {
-            monster.target = null;
+            monster.TryRemoveTarget(monster.target);
             // 새로운 목표를 설정한다
             monster.SetTargetRandomly();
             // 몬스터 리스트에 플레이어가 있다면 타겟이 설정되고, 없으면 주변에 플레이어가 없으니 null이다
@@ -62,6 +64,13 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
                 }
             }
         }
+    }
+
+    public override void MachineExit()
+    {
+        base.MachineExit();
+
+        monster.IsRun = false;
     }
 
     public void CaculateAttackType(float distance)

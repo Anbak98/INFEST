@@ -70,7 +70,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
         do
         {
-            waveSpawnPoints = Physics.OverlapSphere(from.position, distance, spawnPointLayerMask).ToList();
+            waveSpawnPoints = Physics.OverlapSphere(from.transform.position, distance, spawnPointLayerMask).ToList();
             distance *= 2;
             iteral--;
         } while (waveSpawnPoints.Count == 0 && iteral > 0);
@@ -81,7 +81,6 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
             if(ForceBigWave || NetworkGameManager.Instance.GameState == GameState.None )
             {
-                Debug.Log("Just Wave");
                 if (Runner.SimulationTime < 300)
                     totalSpawnNum = 30;
                 else if (Runner.SimulationTime < 600)

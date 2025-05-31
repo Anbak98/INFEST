@@ -35,7 +35,7 @@ public class Monster_Grita : BaseMonster<Monster_Grita>
     [Networked, OnChangedRender(nameof(OnIsPunch))]
     public NetworkBool IsPunch { get; set; } = false;
 
-    private void OnIsWonderPhase() { if (IsWonderPhase) animator.Play("Wonder.Idle"); }
+    private void OnIsWonderPhase() { if (IsWonderPhase) animator.Play("Wonder.Grita_Idle"); }
     private void OnIsChasePhase() { if (IsChasePhase) animator.Play("Chase.Grita_Run"); }
     private void OnIsScreamChanged() { if (IsScream) animator.Play("Scream.Grita_Scream"); }
     private void OnIsPunch() => animator.SetBool("IsPunch", IsPunch);

@@ -65,6 +65,8 @@ public class PlayerController : NetworkBehaviour
     // 리스폰
     [Networked] private TickTimer respawnTimer { get; set; }
     float respawnTime = 10f;
+    [Networked]
+    private Vector3 _moveVelocity { get; set; }
 
     private float _standHeight;
     private float _sitHeight;
@@ -79,7 +81,6 @@ public class PlayerController : NetworkBehaviour
 
         // Set custom gravity.
         _simpleKCC.SetGravity(Physics.gravity.magnitude * -4.0f);
-        Debug.Log(cameraHandler.transform.position.y);
         targetSpeed = walkSpeed;
         _standHeight = cameraHandler.transform.position.y - player.transform.position.y;
         _sitHeight = _standHeight / 2; // 원하는 비율로 조정 가능
@@ -369,9 +370,7 @@ public class PlayerController : NetworkBehaviour
             }
 
             // 부드러운 속도 전환
-            curMoveSpeed = Mathf.MoveTowards(curMoveSpeed, targetSpeed, acceleration * Time.deltaTime);
-
-            Vector3 moveVelocity = moveDir * curMoveSpeed;
+            _moveVelocity = Vector3.Lerp(_moveVelocity, moveDir * targetSpeed, acceleration * Runner.DeltaTime);
 
             Vector3 jumpImpulse = Vector3.zero;
 
@@ -381,8 +380,7 @@ public class PlayerController : NetworkBehaviour
                 jumpImpulse = Vector3.up * 10.0f;
             }
 
-
-            _simpleKCC.Move(moveVelocity, jumpImpulse.magnitude);
+            _simpleKCC.Move(_moveVelocity, jumpImpulse.magnitude);
             //networkCharacterController.Move(
             //    moveDir
             //);
@@ -485,6 +483,7 @@ public class PlayerController : NetworkBehaviour
             GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
             GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
             GUILayout.Label("Current Speed: " + curMoveSpeed.ToString());
+            GUILayout.Label("Velocity Speed: " + _simpleKCC.RealVelocity.magnitude);
 
             ////
             //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());

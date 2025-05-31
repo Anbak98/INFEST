@@ -10,6 +10,7 @@ public class DeadCop_Chase_Punch : MonsterStateNetworkBehaviour<Monster_DeadCop,
         base.Enter();
         monster.CurMovementSpeed = 0f;
         monster.IsRightPunch = true;
+        phase.CoolDowns[1] = TickTimer.CreateFromSeconds(Runner, monster.CommonSkillTable[1].CoolDown);
 
         // 애니메이션이 끝나기 전에는 상태가 안바뀐다
         monster.IsReadyForChangingState = false;
