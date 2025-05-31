@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 1254564693942686775}
   - component: {fileID: 4674507085392816256}
   - component: {fileID: 3282424280708016148}
+  - component: {fileID: 9217657200775650637}
   m_Layer: 0
   m_Name: WarZ
   m_TagString: Untagged
@@ -412,6 +413,7 @@ MonoBehaviour:
   - {fileID: 2544540002031531952}
   - {fileID: 1254564693942686775}
   - {fileID: 3282424280708016148}
+  - {fileID: 9217657200775650637}
   - {fileID: 3796872193394634844}
   - {fileID: 9045797473767521328}
   - {fileID: 7083824917247520130}
@@ -455,9 +457,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 9999
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 9999
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -648,13 +650,13 @@ MonoBehaviour:
   - {fileID: 5998655290992013049}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
-  _CurHealth: -1
+  <CurHealth>k__BackingField: -1
   <CurDamage>k__BackingField: 0
   <CurDef>k__BackingField: 0
-  _BaseHealth: -1
+  <BaseHealth>k__BackingField: -1
   <BaseDamage>k__BackingField: 0
   <BaseDef>k__BackingField: 0
-  _OffsetHealth: -1
+  <OffsetHealth>k__BackingField: -1
   <OffsetDamage>k__BackingField: 0
   <OffsetDef>k__BackingField: 0
   _IsAttack:
@@ -670,6 +672,18 @@ MonoBehaviour:
     _value: 0
   _IsWave:
     _value: 0
+--- !u!114 &9217657200775650637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555052715085286590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c13f5500db4e04daa7930545fb713c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &561453594499189886
 GameObject:
   m_ObjectHideFlags: 0

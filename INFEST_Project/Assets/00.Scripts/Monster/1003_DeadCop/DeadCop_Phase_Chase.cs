@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
 {
     [SerializeField] private int nextPatternIndex = 0;
+
+    public TickTimer[] CoolDowns = new TickTimer[3];
 
     public override void MachineEnter()
     {
@@ -29,8 +32,7 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
         }
         if (monster.target == null)
         {
-            monster.FSM.ChangePhase<DeadCop_Phase_Wander>();
-            return;
+            nextPatternIndex = 3;
         }
 
        monster.MoveToTarget();
@@ -41,23 +43,25 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
             // 애니메이션이 끝나고 나서 상태 전환을 한다
             {
                 if (monster.IsReadyForChangingState)
-                    CaculateAttackType(monster.AIPathing.remainingDistance);
+                {
+                    CaculateAttackType();
+                }
 
                 switch (nextPatternIndex)
                 {
                     case 0:
                         ChangeState<DeadCop_Chase_Run>(); break;
                     case 1:
-                        ChangeState<DeadCop_Chase_HeadButt>(); break;
-                    case 2:
                         ChangeState<DeadCop_Chase_Punch>(); break;
+                    case 2:
+                        ChangeState<DeadCop_Chase_HeadButt>(); break;
                     case 3:
                         monster.FSM.ChangePhase<DeadCop_Phase_Wander>(); break;
                 }
             }
         }
     }
-    public void CaculateAttackType(float distance)
+    public void CaculateAttackType()
     {
         // 너무 멀거나 Wander로 돌아가야한다       
         //if (distance > 10f)
@@ -68,18 +72,27 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
         //    return;
         //}
 
-        // 가까울 때 DropKick, 멀면 Punch 하면 된다
-        if (distance <= 0.5)
+        if (CoolDowns[2].ExpiredOrNotRunning(Runner))
         {
-            // DropKick
-            nextPatternIndex = 2;
-            return;
+            if (monster.IsTargetInRange(monster.CommonSkillTable[2].UseRange))
+            {
+                nextPatternIndex = 2;
+            }
+            else
+            {
+                nextPatternIndex = 0;
+            }
         }
-        else if (distance > 0.5f && distance < 1.0f)
+        else if(CoolDowns[1].ExpiredOrNotRunning(Runner))
         {
-            // Punch
-            nextPatternIndex = 1;
-            return;
+            if (monster.IsTargetInRange(monster.CommonSkillTable[1].UseRange))
+            {
+                nextPatternIndex = 1;
+            }
+            else
+            {
+                nextPatternIndex = 0;
+            }
         }
         else
         {
@@ -87,5 +100,4 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
             nextPatternIndex = 0;
         }
     }
-
 }

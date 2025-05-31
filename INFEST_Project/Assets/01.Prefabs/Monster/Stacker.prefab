@@ -3476,9 +3476,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 9999
   avoidancePriority: 50
-  m_AngularSpeed: 500
+  m_AngularSpeed: 9999
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -3583,13 +3583,13 @@ MonoBehaviour:
   - {fileID: 1906178677462191398}
   _CurMovementSpeed: 0
   _CurDetectorRadius: 0
-  _CurHealth: -1
+  <CurHealth>k__BackingField: -1
   <CurDamage>k__BackingField: 0
   <CurDef>k__BackingField: 0
-  _BaseHealth: -1
+  <BaseHealth>k__BackingField: -1
   <BaseDamage>k__BackingField: 0
   <BaseDef>k__BackingField: 0
-  _OffsetHealth: -1
+  <OffsetHealth>k__BackingField: -1
   <OffsetDamage>k__BackingField: 0
   <OffsetDef>k__BackingField: 0
   _IsAttack:

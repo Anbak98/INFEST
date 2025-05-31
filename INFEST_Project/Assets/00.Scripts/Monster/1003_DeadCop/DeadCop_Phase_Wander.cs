@@ -11,8 +11,6 @@ public class DeadCop_Phase_Wander : MonsterPhase<Monster_DeadCop>
         monster.animator.Play("Wander.DeadCop_Idle");
     }
 
-
-
     public override void MachineExecute()
     {
         base.MachineExecute();

@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PJ_HI_Phase_Chase : MonsterPhase<Monster_PJ_HI>
 {
@@ -7,7 +8,7 @@ public class PJ_HI_Phase_Chase : MonsterPhase<Monster_PJ_HI>
     {
         base.MachineEnter();
         monster.CurDetectorRadius = monster.info.DetectAreaWave;
-        monster.AIPathing.speed = monster.info.SpeedMoveWave;
+        monster.CurMovementSpeed = monster.info.SpeedMoveWave;
 
         monster.IsReadyForChangingState = true;
         monster.IsChasePhase = true;
@@ -37,7 +38,7 @@ public class PJ_HI_Phase_Chase : MonsterPhase<Monster_PJ_HI>
         {
             if (monster.IsReadyForChangingState)
             {
-                if (monster.AIPathing.remainingDistance <= monster.CommonSkillTable[1].UseRange)
+                if (monster.IsTargetInRange(monster.CommonSkillTable[1].UseRange))
                 {
                     ChangeState<PJ_HI_Attack>();
                 }
