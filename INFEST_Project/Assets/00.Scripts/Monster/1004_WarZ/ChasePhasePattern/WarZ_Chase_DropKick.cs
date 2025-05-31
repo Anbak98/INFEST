@@ -11,6 +11,7 @@ public class WarZ_Chase_DropKick : MonsterStateNetworkBehaviour<Monster_WarZ, Wa
         monster.CurMovementSpeed = 0f;
         monster.IsDropKick = true;
 
+        phase.CoolDown[2] = TickTimer.CreateFromSeconds(Runner, monster.CommonSkillTable[3].CoolDown);
         // 애니메이션이 끝나기 전에는 상태가 안바뀐다
         monster.IsReadyForChangingState = false;
     }

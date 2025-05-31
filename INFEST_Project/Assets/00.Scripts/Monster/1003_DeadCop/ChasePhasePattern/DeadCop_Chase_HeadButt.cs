@@ -8,6 +8,7 @@ public class DeadCop_Chase_HeadButt : MonsterStateNetworkBehaviour<Monster_DeadC
 
         monster.CurMovementSpeed = 0f;
         monster.IsHeadButt= true;
+        phase.CoolDowns[2] = TickTimer.CreateFromSeconds(Runner, monster.CommonSkillTable[2].CoolDown);
 
         // 애니메이션이 끝나기 전에는 상태가 안바뀐다
         monster.IsReadyForChangingState = false;

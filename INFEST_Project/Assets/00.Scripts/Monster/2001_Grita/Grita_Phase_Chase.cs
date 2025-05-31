@@ -37,7 +37,7 @@ public class Grita_Phase_Chase : MonsterPhase<Monster_Grita>
         {
             if (monster.IsReadyForChangingState)
             {
-                if (monster.AIPathing.remainingDistance <= monster.skill[1].UseRange)
+                if (monster.IsTargetInRange(monster.skill[1].UseRange))
                 {
                     ChangeState<Grita_Chase_Attack>();
                 }

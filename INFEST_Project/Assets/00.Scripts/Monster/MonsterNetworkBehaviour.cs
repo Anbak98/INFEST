@@ -2,6 +2,7 @@ using Fusion;
 using INFEST.Game;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -107,22 +108,32 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void MoveToTarget()
     {
-        if (target != null)
+        if (target == null || !HasStateAuthority)
+            return;
+
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0; // y 축 무시 (2D 평면 이동)
+
+        if (direction.magnitude > AIPathing.stoppingDistance)
         {
             NavMeshPath path = new NavMeshPath();
-            Debug.Log(AIPathing.velocity);
-            if (NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path)
-                && path.status == NavMeshPathStatus.PathComplete)
+            if (AIPathing.CalculatePath(target.position, path) && path.status == NavMeshPathStatus.PathComplete)
             {
-                if (Vector3.Distance(lastTargetPosition, target.position) > 10f)
+                if (Vector3.Distance(lastTargetPosition, target.position) > 0.1f)
                 {
-                    Debug.Log("Re");
-                    AIPathing.SetDestination(target.position);
                     lastTargetPosition = target.position;
+                }
+
+                // 경로 따라 이동
+                if (AIPathing.enabled)
+                {
+                    AIPathing.Move(direction.normalized * AIPathing.speed * Runner.DeltaTime);
+                    transform.rotation = Quaternion.LookRotation(direction); // 회전도 동기화하려면 별도 처리 필요
                 }
             }
             else
             {
+                Debug.Log(path.status);
                 Mounting mount = FindAnyObjectByType<Mounting>();
                 if (mount != null)
                 {
@@ -131,6 +142,32 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
                 }
             }
         }
+
+        //if (target != null)
+        //{
+        //    NavMeshPath path = new NavMeshPath();
+        //    Debug.Log(AIPathing.velocity.magnitude);
+        //    AIPathing.velocity *= Runner.DeltaTime * 100;
+        //    if (NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path)
+        //        && path.status == NavMeshPathStatus.PathComplete)
+        //    {
+        //        if (Vector3.Distance(lastTargetPosition, target.position) > 10f)
+        //        {
+        //            Debug.Log("Re");
+        //            AIPathing.SetDestination(target.position);
+        //            lastTargetPosition = target.position;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Mounting mount = FindAnyObjectByType<Mounting>();
+        //        if (mount != null)
+        //        {
+        //            TryAddTarget(mount.transform);
+        //            TrySetTarget(mount.transform);
+        //        }
+        //    }
+        //}
     }
 
     public bool IsLookPlayer()
@@ -177,6 +214,11 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         return false;
     }
 
+    public bool IsTargetInRange(float range)
+    {
+        return Vector3.Distance(transform.position, target.position) < range;
+    }
+
     public void SetTargetRandomly()
     {
         if (targets.Count > 0)
@@ -204,7 +246,6 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         Debug.Log(newTarget);
         if (!targets.Contains(newTarget))
         {
-            Debug.Log(newTarget);
             if (newTarget.TryGetComponent(out TargetableFromMonster bridge))
             {
                 Debug.Log(newTarget);

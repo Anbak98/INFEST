@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
 {
     [SerializeField] private int nextPatternIndex = 0;
+    public TickTimer[] CoolDown = new TickTimer[3];
 
     public override void MachineEnter()
     {
@@ -29,8 +31,7 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         }
         if (monster.target == null)
         {
-            monster.FSM.ChangePhase<WarZ_Phase_Wander>();
-            return;
+            nextPatternIndex = 3;
         }
 
        monster.MoveToTarget();
@@ -42,16 +43,16 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
             {
                 if (monster.IsReadyForChangingState)
                 {
-                    CaculateAttackType(monster.AIPathing.remainingDistance);
+                    CaculateAttackType();
 
                     switch (nextPatternIndex)
                     {
                         case 0:
                             ChangeState<WarZ_Chase_Run>(); break;
                         case 1:
-                            ChangeState<WarZ_Chase_DropKick>(); break;
-                        case 2:
                             ChangeState<WarZ_Chase_Punch>(); break;
+                        case 2:
+                            ChangeState<WarZ_Chase_DropKick>(); break;
                         case 3:
                             monster.FSM.ChangePhase<WarZ_Phase_Wander>(); break;
                     }
@@ -60,21 +61,31 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         }
     }
 
-    public void CaculateAttackType(float distance)
+    public void CaculateAttackType()
     {
-
         // 가까울 때 DropKick, 멀면 Punch 하면 된다
-        if (distance <= 1.5)
+        if (CoolDown[2].ExpiredOrNotRunning(Runner))
         {
-            // DropKick
-            nextPatternIndex = 2;
-            return;
+            if (monster.IsTargetInRange(monster.CommonSkillTable[3].UseRange))
+            {
+                // DropKick
+                nextPatternIndex = 2;
+            }
+            else
+            {
+                nextPatternIndex = 0;
+            }
         }
-        else if (distance < 2.0f)
+        else if (CoolDown[1].ExpiredOrNotRunning(Runner))
         {
-            // Punch
-            nextPatternIndex = 1;
-            return;
+            if (monster.IsTargetInRange(monster.CommonSkillTable[1].UseRange))
+            {
+                nextPatternIndex = 1;
+            }
+            else
+            {
+                nextPatternIndex = 0;
+            }
         }
         else
         {

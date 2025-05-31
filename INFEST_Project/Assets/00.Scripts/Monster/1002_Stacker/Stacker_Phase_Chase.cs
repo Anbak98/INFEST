@@ -37,7 +37,7 @@ public class Stacker_Phase_Chase : MonsterPhase<Monster_Stacker>
         {
             if (monster.IsReadyForChangingState)
             {
-                if (monster.AIPathing.remainingDistance <= monster.commonSkill[1].UseRange)
+                if (monster.IsTargetInRange(monster.commonSkill[1].UseRange))
                 {
                     ChangeState<Stacker_Attack>();
                 }
