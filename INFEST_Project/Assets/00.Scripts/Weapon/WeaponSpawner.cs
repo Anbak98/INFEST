@@ -227,6 +227,8 @@ public class WeaponSpawner : NetworkBehaviour
         if (throwChk) return;
         if (_player.inventory.consume[0]?.curNum <= 0) return;
         if (_player.inventory.consume[0] == null) return;
+        if (!_player.inventory.consume[0].timer.ExpiredOrNotRunning(Runner)) return;
+
         throwChk = true;
 
         unEquipDelay = GetActiveWeapon().UnEquipDelay;
@@ -241,7 +243,7 @@ public class WeaponSpawner : NetworkBehaviour
     {
         if (!throwChk) return;
         _animator.SetTrigger(THROW_FELL);
-        _switchTimer = TickTimer.CreateFromSeconds(Runner, 2.7f);
+        _switchTimer = TickTimer.CreateFromSeconds(Runner, 3f);
 
     }
 
@@ -302,7 +304,7 @@ public class WeaponSpawner : NetworkBehaviour
     private static int IS_IN_AIR = Animator.StringToHash("IsInAir");
 
     // 사망 애니메이션 실행(로컬)
-    public static int Die = Animator.StringToHash("Die");
+    public static int IS_DIE = Animator.StringToHash("IsDie");
 
 
     private static Quaternion ANIMATED_OFFSET = Quaternion.Euler(90f, 0f, 0f);
@@ -559,7 +561,6 @@ public class WeaponSpawner : NetworkBehaviour
     // 플레이어의 사망, 부활시 호출
     public void SetWeaponAnimaDieParam(bool b)
     {
-        _animator.SetBool(Die, b); // Animator 파라미터 값을 변경
-
+        _animator.SetBool(IS_DIE, b); // Animator 파라미터 값을 변경
     }
 }
