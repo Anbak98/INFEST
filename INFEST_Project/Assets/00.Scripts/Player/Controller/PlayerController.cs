@@ -267,23 +267,27 @@ public class PlayerController : NetworkBehaviour
         // 서버 권한 로직은 여전히 이 아래에서 실행됨
         respawnTimer = TickTimer.CreateFromSeconds(Runner, respawnTime);
 
+        player.cameraHandler.SwitchToNextFocusingCam(1);
         stateMachine.ChangeState(stateMachine.DeadState);
     }
 
     private void OnRespawn()
     {
-        /// 생성된 위치로 들고온다
-        int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
-        player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
+        if(NetworkGameManager.Instance.GameState != GameState.End)
+        {
+            /// 생성된 위치로 들고온다
+            int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
+            player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
 
-        //player.statHandler.IsDead = false;
-        //player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
-        //if (alivePlayerCameras.Count > 0)
-        player.cameraHandler.ResetSpectatorTarget();
-        player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
-        weaponSpawner.SetWeaponAnimaDieParam(false);
+            player.statHandler.IsDead = false;
+            //player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
+            //if (alivePlayerCameras.Count > 0)
+            player.cameraHandler.ResetSpectatorTarget();
+            player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
+            weaponSpawner.SetWeaponAnimaDieParam(false);
 
-        //isFocusing = false;
+            //isFocusing = false;
+        }
     }
 
     /// 관전 모드에서 시점 전환 처리 (로컬 전용)
@@ -467,25 +471,25 @@ public class PlayerController : NetworkBehaviour
     public bool IsGrounded() => _simpleKCC.IsGrounded;
     public float GetVerticalVelocity() => verticalVelocity;
     #endregion
-    private void OnGUI()
-    {
-        if (HasInputAuthority)
-        {
-            GUILayout.Label(stateMachine.currentState.ToString());
-            GUILayout.Label(DEBUG_DATA.ToString());
-            //
-            GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
-            GUILayout.Label("PlayerController position: " + transform.position.ToString());
-            GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
-            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
-            GUILayout.Label("Current Speed: " + curMoveSpeed.ToString());
-            GUILayout.Label("Velocity Speed: " + _simpleKCC.RealVelocity.magnitude);
+    //private void OnGUI()
+    //{
+    //    if (HasInputAuthority)
+    //    {
+    //        GUILayout.Label(stateMachine.currentState.ToString());
+    //        GUILayout.Label(DEBUG_DATA.ToString());
+    //        //
+    //        GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
+    //        GUILayout.Label("PlayerController position: " + transform.position.ToString());
+    //        GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
+    //        GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+    //        GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+    //        GUILayout.Label("Current Speed: " + curMoveSpeed.ToString());
+    //        GUILayout.Label("Velocity Speed: " + _simpleKCC.RealVelocity.magnitude);
 
-            ////
-            //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
-            //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
+    //        ////
+    //        //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+    //        //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
 
-        }
-    }
+    //    }
+    //}
 }

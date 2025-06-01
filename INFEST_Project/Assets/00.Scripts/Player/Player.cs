@@ -34,6 +34,7 @@ public class Player : NetworkBehaviour
     private ChangeDetector _changeDetector;
     public Material _material;
     private TMP_Text _messages;
+    [SerializeField] private TMP_Text _playerName;
 
     [Networked] public bool spawnedProjectile { get; set; }
 
@@ -43,6 +44,7 @@ public class Player : NetworkBehaviour
     {
         NetworkGameManager.Instance.gamePlayers.AddPlayerObj(Object.InputAuthority, Object.Id);
 
+        _playerName.text = NetworkGameManager.Instance.gamePlayers.GetProfile(Object.InputAuthority).nickname.ToString();
         //_cc = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
 

@@ -134,29 +134,27 @@ public class PlayerStatHandler : NetworkBehaviour
         IsDead = true;
 
         OnDeath?.Invoke();
-        ////NetworkGameManager.Instance.playerCount--;
+        //NetworkGameManager.Instance.playerCount--;
 
-        //int deathCount = 0;
+        int deathCount = 0;
 
-        //foreach (var player in NetworkGameManager.Instance.gamePlayers.GetPlayerRefs())
-        //{
-        //    if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(player).IsDead)
-        //    {
-        //        deathCount++;
-        //    }
-        //}
+        foreach (var player in NetworkGameManager.Instance.gamePlayers.GetPlayerRefs())
+        {
+            if (NetworkGameManager.Instance.gamePlayers.GetPlayerObj(player).statHandler.IsDead)
+            {
+                deathCount++;
+            }
+        }
 
-        //if (deathCount >= Runner.SessionInfo.PlayerCount)
-        //{
-        //    NetworkGameManager.Instance.DefeatGame();
-        //    RPC_HideDeathScreen();
-        //}
-        //else
-        //{
-        //    RPC_ShowDeathScreen();
-        //}
-
-        //int d
+        if (deathCount >= Runner.SessionInfo.PlayerCount)
+        {
+            NetworkGameManager.Instance.DefeatGame();
+            RPC_HideDeathScreen();
+        }
+        else
+        {
+            RPC_ShowDeathScreen();
+        }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]

@@ -31,7 +31,8 @@ public class WarZ_Phase_Chase : MonsterPhase<Monster_WarZ>
         }
         if (monster.target == null)
         {
-            nextPatternIndex = 3;
+            monster.FSM.ChangePhase<WarZ_Phase_Wander>(); 
+            return;
         }
 
        monster.MoveToTarget();
