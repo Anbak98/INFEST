@@ -367,6 +367,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     private void OnChangedMovementSpeed()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
+        AIPathing.speed = CurMovementSpeed;
     }
 
     private void OnChangedDetectorRadiusSpeed()
