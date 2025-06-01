@@ -221,14 +221,19 @@ public class MatchManager : SingletonBehaviour<MatchManager>
 
     private async void JoinSessionRunner(string code)
     {
+        await Task.Delay(1000);
+
         if (Runner != null)
             await Runner.Shutdown();
+
+        // 货肺款 Runner 积己
+        var runnerGO = new GameObject("Runner (Shared)");
+        Runner = runnerGO.AddComponent<NetworkRunner>();
 
         await Runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = code,
-            EnableClientSessionCreation = false,
             SceneManager = gameObject.AddGetComponent<NetworkSceneManagerDefault>()
         });
 

@@ -189,16 +189,14 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             NavMeshPath path = new NavMeshPath();
             if (AIPathing.CalculatePath(target.position, path) && path.status == NavMeshPathStatus.PathComplete)
             {
-                if (Vector3.Distance(lastTargetPosition, target.position) > 0.1f)
+                if (path.corners.Length > 1)
                 {
-                    lastTargetPosition = target.position;
-                }
+                    Vector3 nextCorner = path.corners[1]; // 다음 포인트
+                    Vector3 moveDirection = (nextCorner - transform.position).normalized;
+                    moveDirection.y = 0;
 
-                // 경로 따라 이동
-                if (AIPathing.enabled)
-                {
-                    AIPathing.Move(direction.normalized * AIPathing.speed * Runner.DeltaTime);
-                    transform.rotation = Quaternion.LookRotation(direction); // 회전도 동기화하려면 별도 처리 필요
+                    AIPathing.Move(moveDirection * AIPathing.speed * Runner.DeltaTime);
+                    transform.rotation = Quaternion.LookRotation(moveDirection);
                 }
             }
             else

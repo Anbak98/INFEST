@@ -116,7 +116,6 @@ public class Weapon : NetworkBehaviour
         int id = Animator.StringToHash("Fire");
     }
 
-
     public void Fire(bool holdingPressed)
     {
         if (!IsCollected) return;
@@ -220,6 +219,7 @@ public class Weapon : NetworkBehaviour
                     projectileData.hitNormal = -fireDirection;
                     projectileData.showHitEffect = false;
                 }
+                SpawnDummyProjectile(firePosition, fireDirection, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
                 Rpc_SpawnDummyProjectile(firePosition, fireDirection, projectileData.hitPosition, projectileData.hitNormal, projectileData.showHitEffect);
                 _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
                 _fireCount++;
@@ -283,10 +283,19 @@ public class Weapon : NetworkBehaviour
         IsAiming = true;
         instance.IsAiming();
     }
+    private void SpawnDummyProjectile(Vector3 pos, Vector3 dir, Vector3 hitPos, Vector3 hitNormal, bool showHitEffect)
+    {
+        Debug.Log(pos + " " + firstPersonMuzzleTransform.position);
+        var dummy = DummyProjectilePool.Instance.Get();
+        dummy.transform.position = pos;
+        dummy.transform.rotation = Quaternion.LookRotation(dir);
+        dummy.SetHit(hitPos, hitNormal, showHitEffect);
+    }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void Rpc_SpawnDummyProjectile(Vector3 pos, Vector3 dir, Vector3 hitPos, Vector3 hitNormal, bool showHitEffect)
     {
+        Debug.Log(pos + " " + firstPersonMuzzleTransform.position);
         var dummy = DummyProjectilePool.Instance.Get();
         dummy.transform.position = pos;
         dummy.transform.rotation = Quaternion.LookRotation(dir);
