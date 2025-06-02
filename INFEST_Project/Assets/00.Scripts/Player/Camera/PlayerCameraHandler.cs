@@ -83,7 +83,7 @@ public class PlayerCameraHandler : NetworkBehaviour
             _cameraHolder.localRotation = Quaternion.Euler(pitchRotation);
         }
 
-        if (_player.inventory.equippedWeapon.scope != null)
+        if (_player.inventory.equippedWeapon.scope != null && HasInputAuthority)
         {
             _scopeImage.gameObject.SetActive(_player.inventory.equippedWeapon.IsAiming);
             _scopeCam.enabled = _player.inventory.equippedWeapon.IsAiming;
