@@ -40,7 +40,7 @@ public class Bowmeter_Phase_Chase : MonsterPhase<Monster_Bowmeter>
             return;
         }
 
-        if (monster.IsReadyForChangingState && monster.target != null)
+        if (monster.IsReadyForChangingState)
         {
            monster.MoveToTarget();
         }
