@@ -5,8 +5,6 @@ public class GoreHaul_Run : MonsterStateNetworkBehaviour<Monster_GoreHaul, GoreH
         base.Enter();
         monster.IsRun = true;
         monster.CurMovementSpeed = monster.info.SpeedMoveWave;
-
-        monster.SetTargetRandomly();
     }
 
     public override void Execute()

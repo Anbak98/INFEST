@@ -36,7 +36,7 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
             return;
         }
 
-        if (monster.IsReadyForChangingState && monster.target != null)
+        if (monster.IsReadyForChangingState)
         {
            monster.MoveToTarget();
         }

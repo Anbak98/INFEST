@@ -7,8 +7,6 @@ public class Bowmeter_Run : MonsterStateNetworkBehaviour<Monster_Bowmeter, Bowme
         base.Enter();
         monster.IsRun = true;
         monster.CurMovementSpeed = monster.info.SpeedMoveWave;
-
-        monster.SetTargetRandomly();
     }
 
     public override void Execute()
