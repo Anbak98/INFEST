@@ -44,7 +44,7 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
             // 애니메이션이 끝나고 나서 상태 전환을 한다
             {
                 if (monster.IsReadyForChangingState)
-                    CaculateAttackType(monster.AIPathing.remainingDistance);
+                    CaculateAttackType();
 
                 switch (nextPatternIndex)
                 {
@@ -69,7 +69,7 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
         monster.PlayerDetectorCollider.radius = monster.info.DetectAreaNormal;
     }
 
-    public void CaculateAttackType(float distance)
+    public void CaculateAttackType()
     {
         // 너무 멀거나 Wander로 돌아가야한다       
         //if (distance > 10f)
@@ -79,21 +79,21 @@ public class DeadCop_Phase_Wave : MonsterPhase<Monster_DeadCop>
         //    nextPatternIndex = 3;
         //    return;
         //}
-        if (distance <= 0.5)
-        {
-            // DropKick
-            nextPatternIndex = 2;
-        }
-        else if (distance > 0.5f && distance < 1.0f)
-        {
-            // Punch
-            nextPatternIndex = 1;
-        }
-        else if (distance > 1.0f && distance < 10f)
-        {
-            // Run
-            nextPatternIndex = 0;
-        }
+        //if (monster.IsTargetInRange(0.5))
+        //{
+        //    // DropKick
+        //    nextPatternIndex = 2;
+        //}
+        //else if (distance > 0.5f && distance < 1.0f)
+        //{
+        //    // Punch
+        //    nextPatternIndex = 1;
+        //}
+        //else if (distance > 1.0f && distance < 10f)
+        //{
+        //    // Run
+        //    nextPatternIndex = 0;
+        //}
         /// Wave 시간 간격 초과하면 원래 상태로 돌아간다
     }
 }

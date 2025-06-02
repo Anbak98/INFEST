@@ -15,7 +15,6 @@ public class Monster_RageFang_Retreat_Jump : MonsterStateNetworkBehaviour<Monste
     public override void Enter()
     {
         base.Enter();
-        monster.AIPathing.enabled = false;
         isJumping = true;
     }
 
@@ -31,7 +30,6 @@ public class Monster_RageFang_Retreat_Jump : MonsterStateNetworkBehaviour<Monste
     public override void Exit()
     {
         base.Exit();
-        monster.AIPathing.enabled = true;
     }
 
     public override void Effect()

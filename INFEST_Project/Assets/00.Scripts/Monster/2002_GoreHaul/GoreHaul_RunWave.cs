@@ -15,16 +15,16 @@ public class GoreHaul_RunWave : MonsterStateNetworkBehaviour<Monster_GoreHaul, G
        monster.MoveToTarget();
 
         // 아직 경로가 계산되지 않았거나 도착한 경우
-        if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)
-        {
+        //if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)
+        //{
 
-            if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
-            {
-                Debug.Log(monster.target.position + "  " + transform.position);
-                Debug.Log(monster.AIPathing.remainingDistance + "  " + monster.AIPathing.stoppingDistance);
-                phase.ChangeState<GoreHaul_AttackWave>();
-            }
-        }
+        //    if (monster.IsTargetInRange() <= monster.AIPathing.stoppingDistance)
+        //    {
+        //        Debug.Log(monster.target.position + "  " + transform.position);
+        //        Debug.Log(monster.IsTargetInRange() + "  " + monster.AIPathing.stoppingDistance);
+        //        phase.ChangeState<GoreHaul_AttackWave>();
+        //    }
+        //}
     }
 
     public override void Exit()

@@ -20,6 +20,7 @@ public class Monster_RageFang_Attack_JumpAttack : MonsterStateNetworkBehaviour<M
     {
         base.Exit();
         monster.IsJumpAttack = false;
+        monster.CurMovementSpeed = 0;
     }
 
     public override void Attack()

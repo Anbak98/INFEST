@@ -11,13 +11,12 @@ public class PJ_HI_Attack : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_Ph
         
         monster.CurMovementSpeed = 0f;
         monster.IsReadyForChangingState = false;
-        monster.IsPunch = true;
+        monster.IsPunch = !monster.IsPunch;
     }
 
     public override void Exit()
     {
         base.Exit();
-        monster.IsPunch = false;
         monster.SetTargetRandomly();
     }
 

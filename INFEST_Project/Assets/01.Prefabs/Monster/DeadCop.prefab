@@ -4340,7 +4340,6 @@ GameObject:
   - component: {fileID: 5318771021199015657}
   - component: {fileID: 495497738683632763}
   - component: {fileID: 5701049252326376654}
-  - component: {fileID: 6363264733641246437}
   m_Layer: 0
   m_Name: DeadCop
   m_TagString: Untagged
@@ -4386,7 +4385,6 @@ MonoBehaviour:
   - {fileID: 609808660196021573}
   - {fileID: 5318771021199015657}
   - {fileID: 5701049252326376654}
-  - {fileID: 6363264733641246437}
   - {fileID: 1027173438931070269}
   - {fileID: 668850986746338721}
   - {fileID: 7981839305881400692}
@@ -4645,18 +4643,6 @@ MonoBehaviour:
     _value: 0
   _IsWave:
     _value: 0
---- !u!114 &6363264733641246437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8755949433335676351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c13f5500db4e04daa7930545fb713c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8821473972312123958
 GameObject:
   m_ObjectHideFlags: 0

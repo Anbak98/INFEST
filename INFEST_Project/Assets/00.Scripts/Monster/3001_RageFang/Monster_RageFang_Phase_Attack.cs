@@ -16,7 +16,7 @@ public class Monster_RageFang_Phase_Attack  : MonsterPhase<Monster_RageFang>
     {
         base.MachineEnter();
         monster.IsValidRetreat = true;
-        monster.RetreatTimer = TickTimer.CreateFromSeconds(Runner, 120f);
+        monster.RetreatTimer = TickTimer.CreateFromSeconds(Runner, 60f);
         patternTickTimer = TickTimer.CreateFromSeconds(Runner, 0);
         monster.IsPhaseAttack = true;
     }

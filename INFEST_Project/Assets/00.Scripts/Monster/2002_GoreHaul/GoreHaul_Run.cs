@@ -13,7 +13,7 @@ public class GoreHaul_Run : MonsterStateNetworkBehaviour<Monster_GoreHaul, GoreH
     {
         base.Execute();
 
-        if (!monster.AIPathing.pathPending && monster.AIPathing.remainingDistance <= 7f)
+        if (!monster.AIPathing.pathPending && monster.IsTargetInRange(7f))
         {
             monster.IsReadyForChangingState = true;
         }

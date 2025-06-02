@@ -176,32 +176,49 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         }
     }
 
+    private NavMeshPath debugPath;
     public void MoveToTarget()
     {
         if (target == null || !HasStateAuthority)
             return;
 
         Vector3 direction = target.position - transform.position;
-        direction.y = 0; // y 축 무시 (2D 평면 이동)
+        direction.y = 0;
 
-        if (direction.magnitude > AIPathing.stoppingDistance)
+        if (direction.magnitude > 1f)
         {
             NavMeshPath path = new NavMeshPath();
+
             if (AIPathing.CalculatePath(target.position, path) && path.status == NavMeshPathStatus.PathComplete)
             {
+                debugPath = path;
+
                 if (path.corners.Length > 1)
                 {
-                    Vector3 nextCorner = path.corners[1]; // 다음 포인트
-                    Vector3 moveDirection = (nextCorner - transform.position).normalized;
+                    Vector3 nextCorner = path.corners[1];
+                    Vector3 moveDirection = (nextCorner - transform.position);
                     moveDirection.y = 0;
 
-                    AIPathing.Move(moveDirection * AIPathing.speed * Runner.DeltaTime);
-                    transform.rotation = Quaternion.LookRotation(moveDirection);
+                        Vector3 normalizedDirection = moveDirection.normalized;
+                        AIPathing.Move(normalizedDirection * AIPathing.speed * Runner.DeltaTime);
+                        transform.rotation = Quaternion.LookRotation(normalizedDirection);
+
+                        // 디버그용 선 그리기
+                        Debug.DrawLine(transform.position, nextCorner, Color.green);                    
+                }
+                else
+                {
+                    Vector3 moveDirection = (target.position - transform.position);
+                    moveDirection.y = 0;
+
+                    Vector3 normalizedDirection = moveDirection.normalized;
+                    AIPathing.Move(normalizedDirection * AIPathing.speed * Runner.DeltaTime);
                 }
             }
             else
             {
-                Debug.Log(path.status);
+                debugPath = path;
+                Debug.LogWarning($"Path status: {path.status}");
 
                 Mounting mount = FindAnyObjectByType<Mounting>();
                 if (mount != null)
@@ -211,6 +228,20 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
                 }
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (debugPath != null && debugPath.corners.Length > 1)
+        {
+            Gizmos.color = Color.red;
+            for (int i = 0; i < debugPath.corners.Length - 1; i++)
+            {
+                Gizmos.DrawLine(debugPath.corners[i], debugPath.corners[i + 1]);
+            }
+        }
+    }
+
 
         //if (target != null)
         //{
@@ -237,7 +268,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         //        }
         //    }
         //}
-    }
+    
 
     public bool IsLookPlayer()
     {
@@ -461,6 +492,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     protected virtual void OnWave()
     {
+        CurDetectorRadius = info.DetectAreaWave;
     }
 
     protected virtual void OnDead()

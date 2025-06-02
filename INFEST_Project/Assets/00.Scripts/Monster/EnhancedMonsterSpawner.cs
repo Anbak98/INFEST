@@ -33,14 +33,12 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (SpawnWaitingNum <= 0 && SpawnedNum <= 1)
-        {
-            NetworkGameManager.Instance.GameState = GameState.None;
-        }
+        NetworkGameManager.Instance.GameState = GameState.Wave;
+        
 
         if (waveSpawnDelayTimer.ExpiredOrNotRunning(Runner))
         {
-            if (NetworkGameManager.Instance.GameState == GameState.Wave && SpawnedNum < SpawnedLimit && waveMonsterSpawnQueue.Count > 0 && waveSpawnPoints.Count > 0)
+            if (SpawnedNum < SpawnedLimit && waveMonsterSpawnQueue.Count > 0 && waveSpawnPoints.Count > 0)
             {
                 int rand = Random.Range(0, waveSpawnPoints.Count);
                 NetworkObject monster = Runner.Spawn(MonsterMap.GetByKey(waveMonsterSpawnQueue.Dequeue()), waveSpawnPoints[rand].transform.position);
@@ -63,7 +61,7 @@ public class EnhancedMonsterSpawner : NetworkBehaviour
         }
     }
 
-    public void CallWave(Transform from, bool ForceBigWave = false)
+    public void CallWave(Transform from, bool ForceBigWave = true)
     {
         int distance = 15;
         int iteral = 5;

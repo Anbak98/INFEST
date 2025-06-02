@@ -6,6 +6,16 @@ public class Stacker_Phase_Wonder : MonsterPhase<Monster_Stacker>
         monster.IsWonderPhase = true;
     }
 
+    public override void MachineExecute()
+    {
+        base.MachineExecute();
+
+        if (monster.IsFindPlayer() && !monster.IsDead)
+        {
+            monster.FSM.ChangePhase<Stacker_Phase_Chase>();
+        }
+    }
+
     public override void MachineExit()
     {
         base.MachineExit();

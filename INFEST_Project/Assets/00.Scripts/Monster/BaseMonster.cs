@@ -26,6 +26,7 @@ public class BaseMonster<T> : MonsterNetworkBehaviour where T : BaseMonster<T>
     public void OnAnimationEventIsReady()
     {
         IsReadyForChangingState = true;
+        Debug.Log("H");
     }
 
     public void OnAnimationEventIsAttack()

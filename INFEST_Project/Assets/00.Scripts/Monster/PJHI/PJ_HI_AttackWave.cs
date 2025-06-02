@@ -31,11 +31,11 @@ public class PJ_HI_AttackWave : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_H
             monster.IsAttack = false;
             if (!monster.AIPathing.pathPending && !monster.IsDead)
             {
-                if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
+                if (monster.IsTargetInRange(1f))
                 {
                     phase.ChangeState<PJ_HI_AttackWave>();
                 }
-                else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
+                else
                 {
                     phase.ChangeState<PJ_HI_RunWave>();
                 }
