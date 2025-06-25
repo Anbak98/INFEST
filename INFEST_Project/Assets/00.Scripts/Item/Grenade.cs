@@ -43,18 +43,18 @@ public class Grenade : Consume
             Object.InputAuthority
             ).GetComponent<GrenadeProjectile>();
 
-            _grenade.Init(velocity, throwPoint.position);
-            RPC_Init(_grenade, velocity);
+            _grenade.Init(velocity);
+            RPC_Init(_grenade);
         }
         SetCoolTime(3f);
 
     }
 
     [Rpc(RpcSources.StateAuthority,RpcTargets.All)]
-    private void RPC_Init(GrenadeProjectile _grenade, Vector3 _velocity)
+    private void RPC_Init(GrenadeProjectile _grenade)
     {
         grenade = _grenade;
 
-        grenade.GetGrenade(this, _velocity);
+        grenade.GetGrenade(this);
     }
 }

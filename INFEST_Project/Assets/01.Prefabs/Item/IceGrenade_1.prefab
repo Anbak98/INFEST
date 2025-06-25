@@ -73,7 +73,9 @@ GameObject:
   - component: {fileID: 8507663795923855459}
   - component: {fileID: 4487747352658162237}
   - component: {fileID: 3436245618755873297}
-  - component: {fileID: -3204671009002069753}
+  - component: {fileID: 3780230841789682921}
+  - component: {fileID: 2372427832664322812}
+  - component: {fileID: 5358800647234067664}
   m_Layer: 0
   m_Name: IceGrenade_1
   m_TagString: Untagged
@@ -114,7 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GrenadeExplosion: {fileID: 8352233495559714631}
   explosionParticles: {fileID: 758419690796270212}
-  throwPoint: {fileID: 8150324225739335967}
   obj: {fileID: 0}
   rendering: {fileID: 5970999077936220585}
   _layerMask:
@@ -138,7 +139,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8507663795923855459}
-  - {fileID: -3204671009002069753}
+  - {fileID: 2372427832664322812}
   - {fileID: 8352233495559714631}
   ForceRemoteRenderTimeframe: 0
 --- !u!95 &3436245618755873297
@@ -162,7 +163,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-3204671009002069753
+--- !u!54 &3780230841789682921
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3012177413184663908}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2372427832664322812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,14 +199,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 3012177413184663908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
   SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
+--- !u!135 &5358800647234067664
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3012177413184663908}
+  m_Material: {fileID: 13400000, guid: a97b99a6c26e070439000113593d4851, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3613485337882992435
 GameObject:
   m_ObjectHideFlags: 0
