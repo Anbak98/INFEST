@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GrenadeProjectile : NetworkBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     TickTimer _activeTimer;
     TickTimer _lifeTimer;
     public GrenadeExplosion GrenadeExplosion;
@@ -26,7 +26,6 @@ public class GrenadeProjectile : NetworkBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
     }
 
     public override void FixedUpdateNetwork()
