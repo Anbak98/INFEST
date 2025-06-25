@@ -18,13 +18,11 @@ public class Stacker_RunWave : MonsterStateNetworkBehaviour<Monster_Stacker, Sta
         if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)
         {
 
-            if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
+            if (monster.IsTargetInRange(1f))
             {
-                Debug.Log(monster.target.position + "  " + transform.position);
-                Debug.Log(monster.AIPathing.remainingDistance + "  " + monster.AIPathing.stoppingDistance);
                 phase.ChangeState<Stacker_AttackWave>();
             }
-            //else if (monster.AIPathing.remainingDistance > 10f)
+            //else if (monster.IsTargetInRange() > 10f)
             //{
             //    monster.FSM.ChangePhase<Stacker_Phase_Wonder>();
             //}

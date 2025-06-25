@@ -105,35 +105,121 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
     }
 
     private Vector3 lastTargetPosition;
+    private Vector3? randomDestination = null;
 
+    public bool MoveToRandomPositionAndCheck(float minDistance, float maxDistance, float radius)
+    {
+        if (randomDestination == null || Vector3.Distance(transform.position, randomDestination.Value) < 0.5f)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Vector3 randomDirection = Random.onUnitSphere;
+                randomDirection.y = 0;
+                randomDirection *= Random.Range(minDistance, maxDistance);
+                Vector3 samplePosition = transform.position + randomDirection;
+
+                if (NavMesh.SamplePosition(samplePosition, out NavMeshHit hit, radius, NavMesh.AllAreas))
+                {
+                    Vector3 candidate = hit.position;
+
+                    // 실제 경로 길이 계산
+                    float pathLength;
+
+                    NavMeshPath path = new NavMeshPath();
+                    if (NavMesh.CalculatePath(transform.position, candidate, NavMesh.AllAreas, path))
+                    {
+                        float length = 0.0f;
+                        for (int j = 1; j < path.corners.Length; j++)
+                        {
+                            length += Vector3.Distance(path.corners[j - 1], path.corners[j]);
+                        }
+                        pathLength = length;
+                    }
+                    else
+                    {
+                        pathLength = float.MaxValue; // 경로 계산 실패 시 매우 큰 값 반환
+                    }
+
+                    if (pathLength >= minDistance && pathLength <= maxDistance)
+                    {
+                        randomDestination = candidate;
+                        break; // 유효한 경로 거리면 선택
+                    }
+                }
+            }
+
+            if (randomDestination == null)
+            {
+                randomDestination = transform.position;
+            }
+        }
+
+        if (randomDestination.HasValue)
+        {
+            Vector3 direction = (randomDestination.Value - transform.position);
+            direction.y = 0;
+
+            if (direction.magnitude > 0.1f)
+            {
+                AIPathing.Move(direction.normalized * AIPathing.speed * Runner.DeltaTime);
+                transform.rotation = Quaternion.LookRotation(direction); // 회전 적용
+            }
+        }
+
+        if (Vector3.Distance(transform.position, randomDestination.Value) < 0.5f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private NavMeshPath debugPath;
     public void MoveToTarget()
     {
         if (target == null || !HasStateAuthority)
             return;
 
         Vector3 direction = target.position - transform.position;
-        direction.y = 0; // y 축 무시 (2D 평면 이동)
+        direction.y = 0;
 
-        if (direction.magnitude > AIPathing.stoppingDistance)
+        if (direction.magnitude > 1f)
         {
             NavMeshPath path = new NavMeshPath();
+
             if (AIPathing.CalculatePath(target.position, path) && path.status == NavMeshPathStatus.PathComplete)
             {
-                if (Vector3.Distance(lastTargetPosition, target.position) > 0.1f)
-                {
-                    lastTargetPosition = target.position;
-                }
+                debugPath = path;
 
-                // 경로 따라 이동
-                if (AIPathing.enabled)
+                if (path.corners.Length > 1)
                 {
-                    AIPathing.Move(direction.normalized * AIPathing.speed * Runner.DeltaTime);
-                    transform.rotation = Quaternion.LookRotation(direction); // 회전도 동기화하려면 별도 처리 필요
+                    Vector3 nextCorner = path.corners[1];
+                    Vector3 moveDirection = (nextCorner - transform.position);
+                    moveDirection.y = 0;
+
+                        Vector3 normalizedDirection = moveDirection.normalized;
+                        AIPathing.Move(normalizedDirection * AIPathing.speed * Runner.DeltaTime);
+                        transform.rotation = Quaternion.LookRotation(normalizedDirection);
+
+                        // 디버그용 선 그리기
+                        Debug.DrawLine(transform.position, nextCorner, Color.green);                    
+                }
+                else
+                {
+                    Vector3 moveDirection = (target.position - transform.position);
+                    moveDirection.y = 0;
+
+                    Vector3 normalizedDirection = moveDirection.normalized;
+                    AIPathing.Move(normalizedDirection * AIPathing.speed * Runner.DeltaTime);
                 }
             }
             else
             {
-                Debug.Log(path.status);
+                debugPath = path;
+                Debug.LogWarning($"Path status: {path.status}");
+
                 Mounting mount = FindAnyObjectByType<Mounting>();
                 if (mount != null)
                 {
@@ -142,6 +228,20 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
                 }
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (debugPath != null && debugPath.corners.Length > 1)
+        {
+            Gizmos.color = Color.red;
+            for (int i = 0; i < debugPath.corners.Length - 1; i++)
+            {
+                Gizmos.DrawLine(debugPath.corners[i], debugPath.corners[i + 1]);
+            }
+        }
+    }
+
 
         //if (target != null)
         //{
@@ -168,7 +268,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         //        }
         //    }
         //}
-    }
+    
 
     public bool IsLookPlayer()
     {
@@ -237,7 +337,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     public void TrySetTarget(Transform newTarget)
     {
-        if(targets.Contains(newTarget))
+        if (targets.Contains(newTarget))
             this.target = newTarget;
     }
 
@@ -278,10 +378,25 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
         }
     }
 
+    public void TryAttackTarget(TargetableFromMonster bridge, int damage)
+    {
+        bridge.ApplyDamage(this, damage);
+    }
+
+    public IState GetTryTargetState(Transform target)
+    {
+        if(targetBridges.TryGetValue(target, out TargetableFromMonster tfm))
+        {
+            return tfm.CurState;
+        }
+
+        return null;
+    }
+
     private void OnChangedMovementSpeed()
     {
         animator.SetFloat("MovementSpeed", CurMovementSpeed);
-        AIPathing.speed = CurMovementSpeed * 2.8f;
+        AIPathing.speed = CurMovementSpeed;
     }
 
     private void OnChangedDetectorRadiusSpeed()
@@ -313,7 +428,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
             IsDead = true;
 
             if (weaponType == EWeaponType.Launcher)
-            {                
+            {
                 RPC_RagdollEffect(position);
             }
 
@@ -341,7 +456,7 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_RagdollEffect(Vector3 position)
-    { 
+    {
         ActivateRagdoll(true);
 
         foreach (var rb in ragdollRigidbodys)
@@ -377,12 +492,13 @@ public class MonsterNetworkBehaviour : NetworkBehaviour
 
     protected virtual void OnWave()
     {
+        CurDetectorRadius = info.DetectAreaWave;
     }
 
     protected virtual void OnDead()
     {
         ActivateRagdoll(true);
-        GetComponent<NetworkTransform>().enabled = false; 
+        GetComponent<NetworkTransform>().enabled = false;
         if (NetworkGameManager.Instance != null)
             NetworkGameManager.Instance.monsterSpawner.SpawnedNum--;
         AnalyticsManager.analyticsZombieKill(key);

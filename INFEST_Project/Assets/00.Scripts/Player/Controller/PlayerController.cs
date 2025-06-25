@@ -105,71 +105,68 @@ public class PlayerController : NetworkBehaviour
                 StartFire(data);
                 StartReload(data);
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
+                if (stateMachine.currentState != stateMachine.RunState)
                 {
-                    if (!player.isInteraction)
-                        player.store.RPC_RequestInteraction(Object.InputAuthority);
-                    else
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inStoreZoon)
+                    {
+                        if (!player.isInteraction)
+                            player.store.RPC_RequestInteraction(Object.InputAuthority);
+                        else
+                            player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+
+                        player.isInteraction = !player.isInteraction;
+
+                    }
+
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inStoreZoon)
+                    {
                         player.store.RPC_RequestStopInteraction(Object.InputAuthority);
+                        player.isInteraction = !player.isInteraction;
+                    }
 
-                    player.isInteraction = !player.isInteraction;
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inMysteryBoxZoon)
+                    {
+                        if (!player.isInteraction)
+                            player.mysteryBox.RPC_RequestInteraction(Object.InputAuthority);
+                        else
+                            player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
 
-                }
+                        player.isInteraction = !player.isInteraction;
 
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inStoreZoon)
-                {
-                    player.store.RPC_RequestStopInteraction(Object.InputAuthority);
-                    player.isInteraction = !player.isInteraction;
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_INTERACT) && player.inMysteryBoxZoon)
-                {
-                    if (!player.isInteraction)
-                        player.mysteryBox.RPC_RequestInteraction(Object.InputAuthority);
-                    else
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inMysteryBoxZoon)
+                    {
                         player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
-
-                    player.isInteraction = !player.isInteraction;
-
+                        player.isInteraction = !player.isInteraction;
+                    }
+                    if (data.scrollValue.y != 0)
+                    {
+                        player.Weapons.Swap(data.scrollValue.y);
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM) && (LockState & PlayerLockState.ZoomLock) == 0)
+                    {
+                        player.Weapons.Aiming(true);
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED) && (LockState & PlayerLockState.ZoomLock) == 0)
+                    {
+                        player.Weapons.Aiming(false);
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
+                    {
+                        player.Weapons.RPC_OnThrowReady();
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
+                    {
+                        player.Weapons.RPC_OnThrowGrenade();
+                    }
+                    if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
+                    {
+                        player.Consumes.Mounting();
+                    }
                 }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_MENU) && player.isInteraction && player.inMysteryBoxZoon)
-                {
-                    player.mysteryBox.RPC_RequestStopInteraction(Object.InputAuthority);
-                    player.isInteraction = !player.isInteraction;
-                }
-
-
-                if (data.scrollValue.y != 0)
-                {
-                    player.Weapons.Swap(data.scrollValue.y);
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOM) && (LockState & PlayerLockState.ZoomLock) == 0)
-                {
-                    player.Weapons.Aiming(true);
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_ZOOMPRESSED) && (LockState & PlayerLockState.ZoomLock) == 0)
-                {
-                    player.Weapons.Aiming(false);
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEGRENAD))
-                {
-                    player.Weapons.RPC_OnThrowReady();
-                }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_GRENADPRESSED))
-                {
-                    player.Weapons.RPC_OnThrowGrenade();
-                }
-
                 if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
                 {
                     player.Consumes.Heal();
-                }
-
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USESHIELD))
-                {
-                    player.Consumes.Mounting();
                 }
             }
         }
@@ -270,23 +267,27 @@ public class PlayerController : NetworkBehaviour
         // 서버 권한 로직은 여전히 이 아래에서 실행됨
         respawnTimer = TickTimer.CreateFromSeconds(Runner, respawnTime);
 
+        player.cameraHandler.SwitchToNextFocusingCam(1);
         stateMachine.ChangeState(stateMachine.DeadState);
     }
 
     private void OnRespawn()
     {
-        /// 생성된 위치로 들고온다
-        int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
-        player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
+        if(NetworkGameManager.Instance.GameState != GameState.End)
+        {
+            /// 생성된 위치로 들고온다
+            int randomIndex = UnityEngine.Random.Range(0, NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints.Count);
+            player.transform.position = NetworkGameManager.Instance.gamePlayers.PlayerSpawnPoints[randomIndex].transform.position;
 
-        //player.statHandler.IsDead = false;
-        //player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
-        //if (alivePlayerCameras.Count > 0)
-        player.cameraHandler.ResetSpectatorTarget();
-        player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
-        weaponSpawner.SetWeaponAnimaDieParam(false);
+            player.statHandler.IsDead = false;
+            //player.statHandler.SetHealth(200);  // 여기에서 IsDead를 false로 만들어준다
+            //if (alivePlayerCameras.Count > 0)
+            player.cameraHandler.ResetSpectatorTarget();
+            player.targetableFromMonster.CurHealth = player.statHandler.CurHealth;
+            weaponSpawner.SetWeaponAnimaDieParam(false);
 
-        //isFocusing = false;
+            //isFocusing = false;
+        }
     }
 
     /// 관전 모드에서 시점 전환 처리 (로컬 전용)
@@ -470,25 +471,25 @@ public class PlayerController : NetworkBehaviour
     public bool IsGrounded() => _simpleKCC.IsGrounded;
     public float GetVerticalVelocity() => verticalVelocity;
     #endregion
-    private void OnGUI()
-    {
-        if (HasInputAuthority)
-        {
-            GUILayout.Label(stateMachine.currentState.ToString());
-            GUILayout.Label(DEBUG_DATA.ToString());
-            //
-            GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
-            GUILayout.Label("PlayerController position: " + transform.position.ToString());
-            GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
-            GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
-            GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
-            GUILayout.Label("Current Speed: " + curMoveSpeed.ToString());
-            GUILayout.Label("Velocity Speed: " + _simpleKCC.RealVelocity.magnitude);
+    //private void OnGUI()
+    //{
+    //    if (HasInputAuthority)
+    //    {
+    //        GUILayout.Label(stateMachine.currentState.ToString());
+    //        GUILayout.Label(DEBUG_DATA.ToString());
+    //        //
+    //        GUILayout.Label("Player HP: " + player.statHandler.CurHealth.ToString());
+    //        GUILayout.Label("PlayerController position: " + transform.position.ToString());
+    //        GUILayout.Label("PlayerController rotation: " + transform.rotation.ToString());
+    //        GUILayout.Label("CameraHandler position: " + cameraHandler.transform.position.ToString());
+    //        GUILayout.Label("CameraHandler rotation: " + cameraHandler.transform.rotation.ToString());
+    //        GUILayout.Label("Current Speed: " + curMoveSpeed.ToString());
+    //        GUILayout.Label("Velocity Speed: " + _simpleKCC.RealVelocity.magnitude);
 
-            ////
-            //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
-            //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
+    //        ////
+    //        //GUILayout.Label("Grounded: " + networkCharacterController.Grounded.ToString());
+    //        //GUILayout.Label("Equip: " + stateMachine.Player.GetWeapons()?.CurrentWeapon);
 
-        }
-    }
+    //    }
+    //}
 }

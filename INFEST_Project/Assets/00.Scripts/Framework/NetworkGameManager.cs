@@ -9,7 +9,8 @@ namespace INFEST.Game
     {
         None,
         Wave,
-        Boss
+        Boss,
+        End
     }
 
     public class NetworkGameManager : SingletonNetworkBehaviour<NetworkGameManager>
@@ -61,6 +62,7 @@ namespace INFEST.Game
 
         public void VictoryGame()
         {
+            GameState = GameState.End;
             inputManager.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -87,6 +89,7 @@ namespace INFEST.Game
 
         public void DefeatGame()
         {
+            GameState = GameState.End;
             RPC_BroadcastDefeatGame();
         }
 

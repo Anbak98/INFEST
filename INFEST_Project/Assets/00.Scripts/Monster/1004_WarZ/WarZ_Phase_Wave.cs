@@ -44,7 +44,7 @@ public class WarZ_Phase_Wave : MonsterPhase<Monster_WarZ>
             // 애니메이션이 끝나고 나서 상태 전환을 한다
             {
                 if (monster.IsReadyForChangingState)
-                    CaculateAttackType(monster.AIPathing.remainingDistance);
+                    //CaculateAttackType(monster.IsTargetInRange());
 
                 switch (nextPatternIndex)
                 {

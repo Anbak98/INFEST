@@ -27,7 +27,7 @@ public class Monster_RageFang_Phase_AttackTwo : MonsterPhase<Monster_RageFang>
     //    {
     //        if (monster.IsReadyForChangingState)
     //        {
-    //            CaculateAttackType(monster.AIPathing.remainingDistance);
+    //            CaculateAttackType(monster.IsTargetInRange());
     //            monster.transform.forward = monster.target.position - monster.transform.position;
 
     //            switch (nextPatternIndex)

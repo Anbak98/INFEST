@@ -800,7 +800,7 @@ MonoBehaviour:
     _value: 0
   FSM: {fileID: 475638282718721317}
   IsReadyForChangingState: 1
-  regionIndex: 1
+  regionIndex: 2
   IsValidRetreat: 1
   _PhaseIndex: 0
   _IsStretch:
@@ -1934,11 +1934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dca647a2825df547bc3b44e851487e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 5
-  attackAngle: 90
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &5885595680226268423
 GameObject:
   m_ObjectHideFlags: 0
@@ -3035,6 +3030,9 @@ MonoBehaviour:
   - {fileID: 4993333446007890333}
   - {fileID: 6202520446169626753}
   - {fileID: 7005932725445556376}
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!135 &6504012940396282111
 SphereCollider:
   m_ObjectHideFlags: 0

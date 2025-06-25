@@ -17,7 +17,7 @@ public class Monster_PJ_HI : BaseMonster<Monster_PJ_HI>
 
     private void OnIsWonderPhase() { if (IsWonderPhase) animator.Play("Wonder.Idle"); }
     private void OnIsChasePhase() { if (IsChasePhase) animator.Play("Chase.Run"); }
-    private void OnIsPunch() => animator.SetBool("IsPunch", IsPunch);
+    private void OnIsPunch() => animator.SetTrigger("IsPunch");
 
     public override void Spawned()
     {

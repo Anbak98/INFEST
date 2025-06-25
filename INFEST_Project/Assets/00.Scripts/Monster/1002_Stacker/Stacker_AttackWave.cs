@@ -28,11 +28,11 @@ public class Stacker_AttackWave : MonsterStateNetworkBehaviour<Monster_Stacker, 
             monster.IsAttack = false;
             if (!monster.AIPathing.pathPending && !monster.IsDead)
             {
-                if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
+                if (monster.IsTargetInRange(1f))
                 {
                     phase.ChangeState<Stacker_AttackWave>();
                 }
-                else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
+                else if (monster.IsTargetInRange(1f))
                 {
                     phase.ChangeState<Stacker_RunWave>();
                 }

@@ -22,6 +22,14 @@ public class Monster_RageFang_Attack_LeftSwip : MonsterStateNetworkBehaviour<Mon
     public override void Attack()
     {
         base.Attack();
+
+        var state = monster.GetTryTargetState(monster.target);
+        if (state is PlayerWaddleState || state is PlayerSitIdleState || state is PlayerSitState)
+        {
+            Debug.Log("Dodge");
+            return;
+        }
+
         monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[2].DamageCoefficient));
     }
 }

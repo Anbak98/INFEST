@@ -32,7 +32,8 @@ public class DeadCop_Phase_Chase : MonsterPhase<Monster_DeadCop>
         }
         if (monster.target == null)
         {
-            nextPatternIndex = 3;
+            monster.FSM.ChangePhase<DeadCop_Phase_Wander>();
+            return;
         }
 
        monster.MoveToTarget();

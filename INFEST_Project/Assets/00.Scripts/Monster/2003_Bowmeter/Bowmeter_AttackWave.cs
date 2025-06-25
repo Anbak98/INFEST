@@ -22,22 +22,22 @@ public class Bowmeter_AttackWave : MonsterStateNetworkBehaviour<Monster_Bowmeter
     public override void Execute()
     {
         base.Execute();
-        if (_tickTimer.Expired(Runner))
-        {
-           monster.MoveToTarget();
-            monster.IsAttack = false;
-            if (!monster.AIPathing.pathPending && !monster.IsDead)
-            {
-                if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
-                {
-                    phase.ChangeState<Bowmeter_AttackWave>();
-                }
-                else if (monster.AIPathing.remainingDistance > monster.AIPathing.stoppingDistance)
-                {
-                    phase.ChangeState<Bowmeter_RunWave>();
-                }
-            }
-        }
+        //if (_tickTimer.Expired(Runner))
+        //{
+        //   monster.MoveToTarget();
+        //    monster.IsAttack = false;
+        //    if (!monster.AIPathing.pathPending && !monster.IsDead)
+        //    {
+        //        if (monster.IsTargetInRange() <= monster.AIPathing.stoppingDistance)
+        //        {
+        //            phase.ChangeState<Bowmeter_AttackWave>();
+        //        }
+        //        else if (monster.IsTargetInRange() > monster.AIPathing.stoppingDistance)
+        //        {
+        //            phase.ChangeState<Bowmeter_RunWave>();
+        //        }
+        //    }
+        //}
     }
 
     public override void Exit()

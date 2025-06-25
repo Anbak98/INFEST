@@ -19,13 +19,13 @@ public class PJ_HI_RunWave : MonsterStateNetworkBehaviour<Monster_PJ_HI, PJ_HI_P
         if (monster.AIPathing.enabled && !monster.AIPathing.pathPending)
         {
 
-            if (monster.AIPathing.remainingDistance <= monster.AIPathing.stoppingDistance)
-            {
-                Debug.Log(monster.target.position + "  " + transform.position);
-                Debug.Log(monster.AIPathing.remainingDistance + "  " + monster.AIPathing.stoppingDistance);
-                phase.ChangeState<PJ_HI_AttackWave>();
-            }
-            //else if (monster.AIPathing.remainingDistance > 10f)
+            //if (monster.IsTargetInRange() <= monster.AIPathing.stoppingDistance)
+            //{
+            //    Debug.Log(monster.target.position + "  " + transform.position);
+            //    Debug.Log(monster.IsTargetInRange() + "  " + monster.AIPathing.stoppingDistance);
+            //    phase.ChangeState<PJ_HI_AttackWave>();
+            //}
+            //else if (monster.IsTargetInRange() > 10f)
             //{
             //    monster.FSM.ChangePhase<PJ_HI_WonderPhase>();
             //}

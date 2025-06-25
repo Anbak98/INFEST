@@ -18,6 +18,7 @@ public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Mons
     public override void Exit()
     {
         base.Exit();
+        Debug.Log("HH");
         monster.IsJumping = false;
     }
     public override void Attack()
@@ -28,7 +29,10 @@ public class Monster_RageFang_Attack_Jumping : MonsterStateNetworkBehaviour<Mons
 
         foreach (UnityEngine.Collider collider in hitColliders)
         {
-            monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[3].DamageCoefficient));
+            if(collider.TryGetComponent(out TargetableFromMonster TFM))
+            {
+                monster.TryAttackTarget(TFM, (int)(monster.CurDamage * monster.skills[3].DamageCoefficient));
+            }
         }
     }
 

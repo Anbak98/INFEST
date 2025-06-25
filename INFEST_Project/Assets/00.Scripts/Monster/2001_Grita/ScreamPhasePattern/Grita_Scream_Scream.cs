@@ -26,7 +26,7 @@ public class Grita_Scream_Scream : MonsterStateNetworkBehaviour<Monster_Grita, G
     {
         base.Effect();
         RPC_PlayerScreamingSount();
-        NetworkGameManager.Instance.monsterSpawner.CallWave(monster.target);
+        NetworkGameManager.Instance.monsterSpawner.CallWave(monster.target, false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

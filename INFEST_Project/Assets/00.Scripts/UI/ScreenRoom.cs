@@ -12,11 +12,14 @@ public class ScreenRoom : UIScreen
     [SerializeField] private UIPlayerProfile _uiMyProfile;
     [SerializeField] private UIPlayerProfile[] _uiTeamProfiles;
     [SerializeField] private TMP_Text _roomName;
-    [SerializeField] private TMP_InputField _joinSessionCode;
+    [SerializeField] private TMP_InputField _sessionCode;
     [SerializeField] private MatchManager _matchManager;
     [SerializeField] private GameObject _playSoloButtonObject;
     [SerializeField] private GameObject _playPartyButtonObject;
     [SerializeField] private GameObject _quickMatchButtonObject;
+    [SerializeField] private GameObject[] _playerOnlyModels;
+    [SerializeField] private GameObject _uiJoinSessionCode;
+    [SerializeField] private GameObject _uICopySessionCode;
 
     protected override void Start()
     {
@@ -40,6 +43,8 @@ public class ScreenRoom : UIScreen
             ui.gameObject.SetActive(true);
         }
 
+        _uICopySessionCode.SetActive(true);
+        _uiJoinSessionCode.SetActive(false);
         _playSoloButtonObject.SetActive(false);
         _quickMatchButtonObject.SetActive(false);
     }
@@ -52,10 +57,25 @@ public class ScreenRoom : UIScreen
     #region Private
     private void UpdateTeamProfiles(List<PlayerProfile> teamProfiles)
     {
+        foreach(var obj in _playerOnlyModels)
+        {
+            obj.SetActive(false);
+        }
+
         for (int i = 0; i < _uiTeamProfiles.Length; ++i)
         {
             if (i < teamProfiles.Count)
+            {
                 _uiTeamProfiles[i].Set(teamProfiles[i].Info);
+                foreach (var model in _playerOnlyModels)
+                {
+                    if(model.activeSelf == false)
+                    {
+                        model.SetActive(true);
+                        break;
+                    }
+                }
+            }
             else
                 _uiTeamProfiles[i].Clear();
         }
@@ -125,7 +145,7 @@ public class ScreenRoom : UIScreen
         AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         AnalyticsManager.analyticsMatching(2);
-        _matchManager.JoinSession(_joinSessionCode.text);
+        _matchManager.JoinSession(_sessionCode.text);
     }
 
     public void OnPressedQuickMatch()
@@ -162,6 +182,11 @@ public class ScreenRoom : UIScreen
         AudioManager.instance.PlaySfx(Sfxs.Click);
         Global.Instance.UIManager.Show<UILoadingPopup>();
         _matchManager.CreateNewSession(false);
+    }
+    public void OnPressedCopyutton()
+    {
+        AudioManager.instance.PlaySfx(Sfxs.Click);
+        GUIUtility.systemCopyBuffer = _roomName.text;
     }
     #endregion
 }

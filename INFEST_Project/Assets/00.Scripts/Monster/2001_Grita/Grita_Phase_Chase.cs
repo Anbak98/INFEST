@@ -1,9 +1,13 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Grita_Phase_Chase : MonsterPhase<Monster_Grita>
 {
+
+    public TickTimer screamDealy;
+
     public override void MachineEnter()
     {
         base.MachineEnter();
@@ -40,6 +44,11 @@ public class Grita_Phase_Chase : MonsterPhase<Monster_Grita>
                 if (monster.IsTargetInRange(monster.skill[1].UseRange))
                 {
                     ChangeState<Grita_Chase_Attack>();
+                }
+                else if (monster.IsTargetInRange(5f) && !monster.IsDead && screamDealy.ExpiredOrNotRunning(Runner))
+                {
+                    screamDealy = TickTimer.CreateFromSeconds(Runner, 300f);
+                    monster.FSM.ChangePhase<Grita_Phase_Scream>();
                 }
                 else
                 {

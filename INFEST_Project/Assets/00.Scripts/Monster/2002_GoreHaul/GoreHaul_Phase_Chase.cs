@@ -36,7 +36,7 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
             return;
         }
 
-        if (monster.IsReadyForChangingState && monster.target != null)
+        if (monster.IsReadyForChangingState)
         {
            monster.MoveToTarget();
         }
@@ -45,7 +45,7 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
         {
             if (monster.IsReadyForChangingState)
             {
-                CaculateAttackType(monster.AIPathing.remainingDistance);
+                CaculateAttackType();
 
                 switch (nextPatternIndex)
                 {
@@ -62,7 +62,7 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
         }
     }
 
-    public void CaculateAttackType(float distance)
+    public void CaculateAttackType()
     {
         activatedSkilles = new();
         monster.TrySetTarget(monster.target.transform);
@@ -73,14 +73,14 @@ public class GoreHaul_Phase_Chase : MonsterPhase<Monster_GoreHaul>
         {
             if (skillCoolDown[i].ExpiredOrNotRunning(Runner))
             {
-                if (distance <= monster.skills[2].UseRange)
+                if (monster.IsTargetInRange(monster.skills[i].UseRange))
                 {
                     activatedSkilles.Add(i);
                 }
             }
         }
 
-        if (activatedSkilles.Count == 0 && distance <= monster.skills[1].UseRange && pattern1Ready)
+        if (activatedSkilles.Count == 0 && monster.IsTargetInRange(monster.skills[1].UseRange) && pattern1Ready)
         {
             activatedSkilles.Add(1);
         }

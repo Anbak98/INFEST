@@ -12,7 +12,6 @@ public class Monster_RageFang_Attack_Run : MonsterStateNetworkBehaviour<Monster_
     public override void Execute()
     {
         base.Execute();
-       monster.MoveToTarget();
     }
 
     public override void Exit()

@@ -20,6 +20,7 @@ public class Monster_RageFang_Attack_JumpAttack : MonsterStateNetworkBehaviour<M
     {
         base.Exit();
         monster.IsJumpAttack = false;
+        monster.CurMovementSpeed = 0;
     }
 
     public override void Attack()
@@ -30,7 +31,13 @@ public class Monster_RageFang_Attack_JumpAttack : MonsterStateNetworkBehaviour<M
 
         foreach (UnityEngine.Collider collider in hitColliders)
         {
-            monster.TryAttackTarget((int)(monster.CurDamage * monster.skills[6].DamageCoefficient));
+            if (collider.TryGetComponent(out TargetableFromMonster TFM))
+            {
+                if(TFM.CurState is not PlayerJumpState)
+                {
+                    monster.TryAttackTarget(TFM, (int)(monster.CurDamage * monster.skills[3].DamageCoefficient));
+                }
+            }
         }
     }
 
