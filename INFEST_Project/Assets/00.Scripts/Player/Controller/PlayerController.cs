@@ -164,7 +164,7 @@ public class PlayerController : NetworkBehaviour
                         player.Consumes.Mounting();
                     }
                 }
-                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL))
+                if (data.buttons.IsSet(NetworkInputData.BUTTON_USEHEAL) && player.statHandler.CurHealth != player.statHandler.info.data.Health)
                 {
                     player.Consumes.Heal();
                 }
