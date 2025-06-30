@@ -42,14 +42,14 @@ namespace INFEST.Game
 
         public void ChangeStore()
         {
-            if (GameState == GameState.None)
-            {
+            //if (GameState == GameState.None)
+            //{
                 storeController.Activate();
-            }
-            else
-            {
-                storeController.Deactivate();
-            }
+            //}
+            //else
+            //{
+            //    storeController.Deactivate();
+            //}
         }
 
         protected override void Awake()
