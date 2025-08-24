@@ -179,18 +179,18 @@ public class Player : NetworkBehaviour
     /// </summary>
     public override void Render()
     {
-        //foreach (var change in _changeDetector.DetectChanges(this))
-        //{
-        //    switch (change)
-        //    {
-        //        case nameof(spawnedProjectile):
-        //            /// PlayerColor 스크립트의 MeshRenderer에 접근하여 material의 색깔 변경
-        //            _material.color = Color.white;
-        //            break;
-        //    }
-        //}
-        ///// PlayerColor 스크립트의 MeshRenderer에 접근하여 material의 색깔 변경
-        //_material.color = Color.Lerp(_material.color, Color.blue, Time.deltaTime);
+        foreach (var change in _changeDetector.DetectChanges(this))
+        {
+            switch (change)
+            {
+                case nameof(spawnedProjectile):
+                    /// PlayerColor 스크립트의 MeshRenderer에 접근하여 material의 색깔 변경
+                    _material.color = Color.white;
+                    break;
+            }
+        }
+        /// PlayerColor 스크립트의 MeshRenderer에 접근하여 material의 색깔 변경
+        _material.color = Color.Lerp(_material.color, Color.blue, Time.deltaTime);
     }
 
     private void SetFirstPersonVisuals(bool firstPerson)
