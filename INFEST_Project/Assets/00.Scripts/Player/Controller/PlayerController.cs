@@ -208,6 +208,7 @@ public class PlayerController : NetworkBehaviour
             ShowThirdPersonModel(player.ThirdPersonRoot);
         }
     }
+
     void HideFirstPersonModel(GameObject firstPersonRoot)
     {
         //firstPersonRoot.SetActive(false);
